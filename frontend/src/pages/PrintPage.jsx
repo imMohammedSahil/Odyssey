@@ -3,8 +3,16 @@ import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import * as pdfjsLib from "pdfjs-dist";
 
-// PDF.js worker
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// PDF.js worker setup with fallback
+try {
+  if (typeof window !== "undefined" && typeof Worker !== "undefined") {
+    pdfjsLib.GlobalWorkerOptions.workerPort = new Worker("/pdf.worker.min.mjs", { type: "module" });
+  } else {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+  }
+} catch (e) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+}
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&family=Creepster&family=Titan+One&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
