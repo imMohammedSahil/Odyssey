@@ -630,6 +630,14 @@ const styles = `
     transform: scale(1.05);
   }
 
+  .print-step-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    justify-content: space-between;
+  }
+
   /* COLOR MODE SELECTOR (NEOBRUTAL PILLS) */
   .print-mode-grid {
     display: grid;
