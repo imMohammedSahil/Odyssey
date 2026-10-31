@@ -205,42 +205,21 @@ const styles = `
     100% { transform: scale(1.15) rotate(15deg); opacity: 1; }
   }
 
-  /* ZOMBIE MASCOT CORNER EMBLEM */
-  .writing-hero-zombie-mascot {
-    position: absolute;
-    top: -26px;
-    right: 24px;
-    width: 72px;
-    height: 72px;
-    object-fit: contain;
-    filter: drop-shadow(3px 3px 0px var(--void-black));
-    transform: rotate(6deg);
-    z-index: 10;
-    transition: transform 0.2s ease;
-    cursor: pointer;
-  }
-
-  .writing-hero-zombie-mascot:hover {
-    transform: rotate(0deg) scale(1.12);
-  }
-
-  /* JAGGED COMIC STARBURST BADGE */
+  /* CLEAN COMIC CALLOUT BADGE */
   .writing-starburst-badge {
     align-self: flex-start;
     background: var(--pure-white);
     border: 3.5px solid var(--void-black);
+    border-radius: 16px;
     box-shadow: 4px 4px 0px var(--void-black);
-    padding: 10px 18px;
+    padding: 8px 18px 10px 18px;
     position: relative;
-    transform: rotate(-2deg);
-    border-radius: 12px;
-    clip-path: polygon(
-      0% 12%, 8% 0%, 24% 10%, 42% 0%, 58% 12%, 76% 2%, 92% 14%, 100% 0%, 
-      98% 38%, 100% 64%, 94% 88%, 100% 100%, 78% 92%, 58% 100%, 40% 90%, 
-      22% 100%, 6% 92%, 0% 100%, 4% 68%, 0% 42%
-    );
-    margin-top: -12px;
+    transform: rotate(-1.5deg);
+    margin-top: 0;
     margin-bottom: 2px;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 2px;
   }
 
   .writing-starburst-protocol {
@@ -886,13 +865,7 @@ function Writing() {
             <span className="writing-sparkle" style={{ top: 72, left: 24, fontSize: 14 }}>✧</span>
             <span className="writing-sparkle" style={{ bottom: 120, right: 18, fontSize: 16 }}>✦</span>
 
-            {/* ZOMBIE MASCOT EMBLEM */}
-            <img
-              src="/zombie-head-transparent.png"
-              alt="Zombie mascot"
-              className="writing-hero-zombie-mascot"
-              title="Campus Outpost Survivor"
-            />
+
 
             {/* JAGGED COMIC STARBURST BADGE */}
             <div className="writing-starburst-badge">
