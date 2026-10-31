@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useNavigationType } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import PhoneChatDispatch from "../components/PhoneChatDispatch";
 import ZombieLeft from "../components/ZombieLeft";
@@ -619,6 +619,17 @@ const styles = `
 export default function UploadOrder() {
   const navigate = useNavigate();
   const location = useLocation();
+  const navType = useNavigationType();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const cartContext = useCart();
   const cartItems = cartContext?.cartItems || [];
@@ -681,13 +692,25 @@ export default function UploadOrder() {
       setTimeout(() => {
         smoothScrollToKits(1300);
       }, 150);
+    } else if (navType === "POP") {
+      const savedY = sessionStorage.getItem("student_scroll_y");
+      if (savedY !== null) {
+        const targetY = parseInt(savedY, 10);
+        window.scrollTo(0, targetY);
+        const timer1 = setTimeout(() => window.scrollTo(0, targetY), 50);
+        const timer2 = setTimeout(() => window.scrollTo(0, targetY), 150);
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+        };
+      }
     } else {
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);
       }
       window.scrollTo(0, 0);
     }
-  }, [location.state, navigate, location.pathname]);
+  }, [location.state, navigate, location.pathname, navType]);
 
   const services = [
     {
@@ -991,7 +1014,10 @@ export default function UploadOrder() {
                   <div className="neo-card-action">
                     <button
                       className="neo-card-btn"
-                      onClick={() => navigate(svc.to)}
+                      onClick={() => {
+                        sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+                        navigate(svc.to);
+                      }}
                     >
                       {svc.btnText} →
                     </button>
