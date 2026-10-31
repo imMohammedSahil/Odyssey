@@ -1472,7 +1472,7 @@ function Print() {
                         </div>
                         {file?.size && (
                           <div className="print-file-pages-box" style={{ background: "rgba(0, 0, 0, 0.08)" }}>
-                            📦 {(file.size / (1024 * 1024)).toFixed(2)} MB
+                            {(file.size / (1024 * 1024)).toFixed(2)} MB
                           </div>
                         )}
                       </div>
