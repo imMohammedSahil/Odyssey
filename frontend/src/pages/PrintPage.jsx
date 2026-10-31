@@ -1505,55 +1505,59 @@ function Print() {
 
             {/* STEP 3: COPIES */}
             {currentStep === 3 && (
-              <div>
+              <div className="print-step-content">
                 <div className="print-sec-header">
                   <span className="print-sec-tag">Step 3 of 3</span>
                   <h2 className="print-sec-title">Number of Copies</h2>
                 </div>
 
-                <div className="print-stepper-box">
-                  <button
-                    className="print-step-btn"
-                    onClick={() => setCopies((prev) => Math.max(1, (Number(prev) || 1) - 1))}
-                  >
-                    −
-                  </button>
-                  <div className="print-step-value">{copies || 1}</div>
-                  <button
-                    className="print-step-btn"
-                    onClick={() => setCopies((prev) => (Number(prev) || 1) + 1)}
-                  >
-                    +
-                  </button>
-                </div>
-
-                <div className="print-presets-row">
-                  {[1, 2, 5, 10].map((preset) => (
+                <div className="print-stepper-hero-card">
+                  <div className="print-stepper-ctrl-row">
                     <button
-                      key={preset}
-                      className={`print-preset-pill ${copies === preset ? "active" : ""}`}
-                      onClick={() => setCopies(preset)}
+                      type="button"
+                      className="print-step-btn"
+                      onClick={() => setCopies((prev) => Math.max(1, (Number(prev) || 1) - 1))}
+                      aria-label="Decrease copies"
                     >
-                      {preset} {preset === 1 ? "Copy" : "Copies"}
+                      −
                     </button>
-                  ))}
+
+                    <div className="print-step-value-col">
+                      <div className="print-step-value">{copies || 1}</div>
+                      <span className="print-step-value-label">Copies Selected</span>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="print-step-btn plus-btn"
+                      onClick={() => setCopies((prev) => (Number(prev) || 1) + 1)}
+                      aria-label="Increase copies"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <div className="print-presets-grid">
+                    {[1, 2, 5, 10].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        className={`print-preset-pill ${copies === preset ? "active" : ""}`}
+                        onClick={() => setCopies(preset)}
+                      >
+                        {preset} {preset === 1 ? "Copy" : "Copies"}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="print-step-footer">
+                <div className="print-step-footer" style={{ justifyContent: "flex-start" }}>
                   <button
                     type="button"
                     className="print-step-btn-back"
                     onClick={() => goToStep(2)}
                   >
                     ← Back to Color
-                  </button>
-                  <button
-                    type="button"
-                    className="print-step-btn-next"
-                    style={{ background: "var(--hazard-gold)" }}
-                    onClick={handleAdd}
-                  >
-                    Add to Cart • ₹{total}
                   </button>
                 </div>
               </div>
