@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
@@ -569,7 +569,7 @@ const styles = `
     text-transform: uppercase;
   }
 
-  /* STEPPER AND TOTAL ROW */
+  /* STEPPER AND PRESETS ROW */
   .writing-stepper-row {
     display: flex;
     align-items: center;
@@ -615,6 +615,36 @@ const styles = `
     text-align: center;
     border-left: 2px solid var(--void-black);
     border-right: 2px solid var(--void-black);
+  }
+
+  .writing-presets-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .writing-preset-btn {
+    background: var(--pure-white);
+    border: 2px solid var(--void-black);
+    border-radius: 9999px;
+    padding: 4px 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: var(--void-black);
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--void-black);
+    transition: all 0.1s ease;
+  }
+
+  .writing-preset-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--void-black);
+  }
+
+  .writing-preset-btn.active {
+    background: var(--planet-yellow);
+    transform: translate(1px, 1px);
+    box-shadow: 0px 0px 0px var(--void-black);
   }
 
   .writing-total-banner {
@@ -787,6 +817,17 @@ function Writing() {
   const [qty, setQty] = useState(1);
   const [toast, setToast] = useState({ show: false, message: "" });
 
+  // Escape key returns to base
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        navigate(-1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
+
   const showToast = (message) => {
     setToast({ show: true, message });
     setTimeout(() => setToast({ show: false, message: "" }), 2500);
@@ -852,7 +893,7 @@ function Writing() {
               type="button"
               className="writing-btn-pill"
               onClick={() => navigate(-1)}
-              title="Return to base"
+              title="Return to base (Esc)"
             >
               ← BACK TO BASE
             </button>
@@ -1054,26 +1095,41 @@ function Writing() {
               </div>
             )}
 
-            {/* QUANTITY & TOTAL */}
+            {/* QUANTITY & RAPID PRESETS */}
             <div className="writing-stepper-row">
-              <div className="writing-stepper-ctrl">
-                <button
-                  type="button"
-                  className="writing-step-btn"
-                  onClick={() => setQty((prev) => Math.max(1, prev - 1))}
-                  aria-label="Decrease quantity"
-                >
-                  −
-                </button>
-                <span className="writing-step-val">{qty}</span>
-                <button
-                  type="button"
-                  className="writing-step-btn"
-                  onClick={() => setQty((prev) => prev + 1)}
-                  aria-label="Increase quantity"
-                >
-                  +
-                </button>
+              <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                <div className="writing-stepper-ctrl">
+                  <button
+                    type="button"
+                    className="writing-step-btn"
+                    onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <span className="writing-step-val">{qty}</span>
+                  <button
+                    type="button"
+                    className="writing-step-btn"
+                    onClick={() => setQty((prev) => prev + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div className="writing-presets-row">
+                  {[1, 2, 5, 10].map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      className={`writing-preset-btn ${qty === preset ? "active" : ""}`}
+                      onClick={() => setQty(preset)}
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="writing-total-banner">
