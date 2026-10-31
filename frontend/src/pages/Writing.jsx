@@ -39,11 +39,13 @@ const styles = `
     color: var(--void-black);
     padding-bottom: 60px;
     position: relative;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   /* TOP RETRO-COMIC APOCALYPSE BANNER */
   .writing-header-bar {
+    width: 100%;
+    box-sizing: border-box;
     background: var(--blood-red);
     border-bottom: 4px solid var(--void-black);
     padding: 14px 24px;
@@ -54,6 +56,7 @@ const styles = `
     position: sticky;
     top: 0;
     z-index: 50;
+    contain: layout paint;
   }
 
   .writing-brand-capsule {
@@ -67,6 +70,8 @@ const styles = `
     box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.25);
     user-select: none;
     cursor: default;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .writing-brand-icon-circle {
@@ -102,6 +107,7 @@ const styles = `
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
   }
 
   .writing-brand-title span {
@@ -115,12 +121,15 @@ const styles = `
     letter-spacing: 0.8px;
     margin-top: 3px;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .writing-header-actions {
     display: flex;
     align-items: center;
     gap: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .writing-btn-pill {
