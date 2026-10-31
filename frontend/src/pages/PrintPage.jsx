@@ -1396,7 +1396,7 @@ function Print() {
 
             {/* STEP 2: COLOR MODE */}
             {currentStep === 2 && (
-              <div>
+              <div className="print-step-content">
                 <div className="print-sec-header">
                   <span className="print-sec-tag">Step 2 of 3</span>
                   <h2 className="print-sec-title">Select Color Mode</h2>
@@ -1407,37 +1407,56 @@ function Print() {
                     className={`print-mode-btn ${color === "bw" ? "active" : ""}`}
                     onClick={() => setColor("bw")}
                   >
-                    <span className="print-mode-btn-title">
-                      Black & White
-                    </span>
-                    <span className="print-mode-rate-pill">₹1 / page</span>
+                    <div className="print-mode-btn-top">
+                      <div className="print-mode-icon-circle">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M12 2a10 10 0 0 1 0 20z" fill="currentColor" />
+                        </svg>
+                      </div>
+                      <span className="print-mode-rate-pill">₹1 / page</span>
+                    </div>
+
+                    <div className="print-mode-btn-bottom">
+                      <span className="print-mode-btn-title">
+                        Black & White
+                      </span>
+                      <span className="print-mode-btn-sub">Laser Monochromatic</span>
+                    </div>
                   </div>
 
                   <div
                     className={`print-mode-btn ${color === "color" ? "active color-active" : ""}`}
                     onClick={() => setColor("color")}
                   >
-                    <span className="print-mode-btn-title">
-                      Full Color
-                    </span>
-                    <span className="print-mode-rate-pill">₹10 / page</span>
+                    <div className="print-mode-btn-top">
+                      <div className="print-mode-icon-circle">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10" />
+                          <circle cx="12" cy="8" r="3" fill="#FF70A6" stroke="none" />
+                          <circle cx="8" cy="14" r="3" fill="#9DE869" stroke="none" />
+                          <circle cx="16" cy="14" r="3" fill="#F7B919" stroke="none" />
+                        </svg>
+                      </div>
+                      <span className="print-mode-rate-pill">₹10 / page</span>
+                    </div>
+
+                    <div className="print-mode-btn-bottom">
+                      <span className="print-mode-btn-title">
+                        Full Color
+                      </span>
+                      <span className="print-mode-btn-sub">Vibrant CMYK Gloss</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="print-step-footer">
+                <div className="print-step-footer" style={{ justifyContent: "flex-start" }}>
                   <button
                     type="button"
                     className="print-step-btn-back"
                     onClick={() => goToStep(1)}
                   >
                     ← Back to Upload
-                  </button>
-                  <button
-                    type="button"
-                    className="print-step-btn-next"
-                    onClick={() => goToStep(3)}
-                  >
-                    Proceed to Copies →
                   </button>
                 </div>
               </div>
