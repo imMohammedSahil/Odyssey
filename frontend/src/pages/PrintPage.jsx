@@ -1334,32 +1334,53 @@ function Print() {
                   </div>
                 ) : (
                   <div className="print-file-ready">
-                    <div className="print-file-top">
+                    <div className="print-file-top-bar">
                       <span className="print-file-badge">PDF Verified</span>
-                      <span style={{ fontSize: 12, fontWeight: 900 }}>Ready to configure</span>
-                    </div>
-                    <div className="print-file-name" title={file.name}>
-                      {file.name}
-                    </div>
-                    <div className="print-file-pages">
-                      {loading ? (
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                          <span className="print-spinner" /> Reading pages...
-                        </span>
-                      ) : (
-                        `Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
-                      )}
+                      <span className="print-file-status-text">Decontaminated</span>
                     </div>
 
-                    <label className="print-reupload-label">
-                      <input
-                        type="file"
-                        accept="application/pdf"
-                        onChange={handleFileUpload}
-                        style={{ display: "none" }}
-                      />
-                      ↺ Replace with another PDF
-                    </label>
+                    <div className="print-file-center-body">
+                      <div className="print-file-doc-icon">
+                        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                          <polyline points="14 2 14 8 20 8" />
+                          <path d="m9 15 2 2 4-4" />
+                        </svg>
+                      </div>
+
+                      <h3 className="print-file-name" title={file.name}>
+                        {file.name}
+                      </h3>
+
+                      <div className="print-file-pages-box">
+                        {loading ? (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                            <span className="print-spinner" /> Reading pages...
+                          </span>
+                        ) : (
+                          `Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
+                        )}
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "10px", alignItems: "center", justifyContent: "center", flexWrap: "wrap", width: "100%" }}>
+                      <label className="print-reupload-label">
+                        <input
+                          type="file"
+                          accept="application/pdf"
+                          onChange={handleFileUpload}
+                          style={{ display: "none" }}
+                        />
+                        ↺ Replace with another PDF
+                      </label>
+                      <button
+                        type="button"
+                        className="print-cancel-order-btn"
+                        onClick={handleCancel}
+                      >
+                        ✕ Cancel
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
