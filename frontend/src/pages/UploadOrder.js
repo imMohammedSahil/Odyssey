@@ -1025,6 +1025,7 @@ export default function UploadOrder() {
                         sessionStorage.setItem("student_scroll_y", String(window.scrollY));
                         navigate(svc.to);
                       }}
+                      aria-label={`Open ${svc.label}`}
                     >
                       {svc.btnText} →
                     </button>
