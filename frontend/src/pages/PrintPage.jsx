@@ -898,6 +898,27 @@ const styles = `
   }
 `;
 
+// IndexedDB persistence for active print job so page refresh preserves state
+const DB_NAME = "OdysseyPrintDB";
+const STORE_NAME = "active_print_job";
+
+const getDB = () =>
+  new Promise((resolve) => {
+    if (typeof window === "undefined" || !window.indexedDB) {
+      resolve(null);
+      return;
+    }
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME);
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => resolve(null);
+  });
+
 function Print() {
   const navigate = useNavigate();
   const { addToCart, cartItems } = useCart();
