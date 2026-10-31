@@ -332,7 +332,7 @@ const styles = `
     justify-content: space-between;
     margin-top: 24px;
     padding-top: 18px;
-    border-top: 2px dashed var(--card-border);
+    border-top: 2px dashed rgba(255, 255, 255, 0.28);
     gap: 12px;
   }
 
