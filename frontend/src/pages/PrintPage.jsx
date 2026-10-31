@@ -839,6 +839,23 @@ function Print() {
 
         {/* WORKBENCH CARD */}
         <main className="print-workbench">
+          {/* SKETCHED PROGRESS BAR (Matching reference image) */}
+          <div className="print-progress-wrapper">
+            <div className="print-progress-header">
+              <span className="print-progress-status">
+                MISSION PROGRESS: STEP {currentStep} OF 3
+              </span>
+              <div className="print-progress-steps-row">
+                <button type="button" className={`print-progress-tab ${currentStep === 1 ? "active" : ""}`} onClick={() => goToStep(1)}>1. Upload</button>
+                <button type="button" className={`print-progress-tab ${currentStep === 2 ? "active" : ""}`} onClick={() => goToStep(2)}>2. Color</button>
+                <button type="button" className={`print-progress-tab ${currentStep === 3 ? "active" : ""}`} onClick={() => goToStep(3)}>3. Copies & Review</button>
+              </div>
+            </div>
+
+            <div className="print-kid-track">
+              <div className="print-kid-fill" style={{ width: currentStep === 1 ? "35%" : currentStep === 2 ? "68%" : "100%" }} />
+            </div>
+          </div>
           {/* LEFT: DOCUMENT & PRINT SETTINGS */}
           <div className="print-col-config">
             {/* STEP 1: UPLOAD */}
