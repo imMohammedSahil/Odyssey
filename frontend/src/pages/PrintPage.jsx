@@ -289,7 +289,7 @@ const styles = `
     height: 42px;
     background: #FFFFFF;
     border: 3.5px solid #23272D;
-    border-radius: 9999px;
+    border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
     padding: 4px;
     box-shadow: 4px 4px 0px #0D0D0D;
     display: flex;
@@ -303,19 +303,21 @@ const styles = `
 
   .print-kid-fill {
     height: 100%;
-    border-radius: 9999px;
+    border-radius: 255px 20px 225px 20px/20px 225px 20px 255px;
     border: 2.5px solid #1E232B;
     background-color: #8DE045;
     background-image: repeating-linear-gradient(
       -55deg,
       #8DE045 0px,
-      #8DE045 7px,
-      #1F2916 7px,
-      #1F2916 9.5px
+      #8DE045 6.5px,
+      #1F2916 7.5px,
+      #1F2916 9px,
+      #8DE045 10px
     );
     box-shadow: 0 0 0 3px rgba(134, 214, 60, 0.7);
-    transition: width 0.4s cubic-bezier(0.34, 1.25, 0.64, 1);
+    transition: width 2.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.8s ease;
     position: relative;
+    will-change: width;
   }
 
   @media (max-width: 680px) {
