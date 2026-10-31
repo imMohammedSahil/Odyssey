@@ -178,7 +178,7 @@ const styles = `
   }
 
   .writing-unified-card {
-    background: #12151C;
+    background: #1B241C;
     border: 4px solid var(--void-black);
     border-radius: 28px;
     box-shadow: 6px 6px 0px var(--void-black);
@@ -190,7 +190,7 @@ const styles = `
 
   /* LEFT HERO SHOWCASE PANEL */
   .writing-hero-panel {
-    background: #12151C;
+    background: #1B241C;
     border-right: 3.5px solid var(--void-black);
     padding: 28px 26px;
     display: flex;
@@ -264,7 +264,7 @@ const styles = `
     font-size: 13px;
     line-height: 1.4;
     font-weight: 500;
-    color: #94A3B8;
+    color: #A5B89F;
   }
 
   .writing-lore-item strong {
@@ -287,7 +287,7 @@ const styles = `
   }
 
   .writing-hero-status-pill {
-    background: #1A1F2C;
+    background: #232E24;
     border: 2px solid var(--void-black);
     border-radius: 9999px;
     padding: 6px 12px;
@@ -317,7 +317,7 @@ const styles = `
   }
 
   .writing-spec-tile {
-    background: #1A1F2C;
+    background: #232E24;
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
     padding: 8px 10px;
@@ -330,7 +330,7 @@ const styles = `
   .writing-spec-tile-label {
     font-family: 'Archivo Black', sans-serif;
     font-size: 9px;
-    color: #94A3B8;
+    color: #A5B89F;
     text-transform: uppercase;
     letter-spacing: 0.4px;
   }
@@ -389,7 +389,7 @@ const styles = `
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    background: #1A1F2C;
+    background: #232E24;
     border: 3px solid var(--void-black);
     border-radius: 16px;
     padding: 8px 12px;
@@ -400,7 +400,7 @@ const styles = `
   .writing-arcade-arrow-btn {
     width: 44px;
     height: 40px;
-    background: #242A38;
+    background: #2E3B30;
     border: 3px solid var(--void-black);
     border-radius: 10px;
     font-family: 'Archivo Black', sans-serif;
@@ -417,7 +417,7 @@ const styles = `
   .writing-arcade-arrow-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #2E3648;
+    background: #394A3C;
   }
 
   .writing-arcade-arrow-btn:active {
@@ -458,7 +458,7 @@ const styles = `
 
   /* RIGHT: INTERACTIVE WORKBENCH PANEL */
   .writing-workbench-panel {
-    background: #12151C;
+    background: #1B241C;
     padding: 28px 26px;
     display: flex;
     flex-direction: column;
@@ -505,7 +505,7 @@ const styles = `
 
   .writing-cat-btn {
     flex: 1;
-    background: #1A1F2C;
+    background: #232E24;
     border: 3px solid var(--void-black);
     border-radius: 14px;
     padding: 10px 6px;
@@ -525,7 +525,7 @@ const styles = `
   .writing-cat-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 4px 4px 0px var(--void-black);
-    background: #242A38;
+    background: #2E3B30;
   }
 
   .writing-cat-btn.active {
@@ -553,7 +553,7 @@ const styles = `
   }
 
   .writing-model-btn {
-    background: #242A38;
+    background: #2E3B30;
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
     padding: 10px 12px;
@@ -570,7 +570,7 @@ const styles = `
   .writing-model-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #2E3648;
+    background: #394A3C;
   }
 
   .writing-model-btn.active {
@@ -595,7 +595,7 @@ const styles = `
   .writing-model-tag {
     font-size: 9.5px;
     font-weight: 600;
-    color: #94A3B8;
+    color: #A5B89F;
     line-height: 1.2;
   }
 
@@ -616,7 +616,7 @@ const styles = `
 
   /* SUB-OPTION SECTION */
   .writing-field-box {
-    background: #1A1F2C;
+    background: #232E24;
     border: 3px solid var(--void-black);
     border-radius: 18px;
     padding: 16px;
@@ -644,7 +644,7 @@ const styles = `
   }
 
   .writing-pill-btn {
-    background: #242A38;
+    background: #2E3B30;
     border: 2.5px solid var(--void-black);
     border-radius: 9999px;
     padding: 6px 14px;
@@ -659,7 +659,7 @@ const styles = `
   .writing-pill-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #2E3648;
+    background: #394A3C;
   }
 
   .writing-pill-btn.active {
@@ -677,7 +677,7 @@ const styles = `
   }
 
   .writing-color-card {
-    background: #242A38;
+    background: #2E3B30;
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
     padding: 8px;
@@ -693,7 +693,7 @@ const styles = `
   .writing-color-card:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #2E3648;
+    background: #394A3C;
   }
 
   .writing-color-card.active {
@@ -735,7 +735,7 @@ const styles = `
   .writing-stepper-ctrl {
     display: flex;
     align-items: center;
-    background: #1A1F2C;
+    background: #232E24;
     border: 3px solid var(--void-black);
     border-radius: 9999px;
     box-shadow: 3px 3px 0px var(--void-black);
@@ -779,7 +779,7 @@ const styles = `
   }
 
   .writing-preset-btn {
-    background: #242A38;
+    background: #2E3B30;
     border: 2px solid var(--void-black);
     border-radius: 9999px;
     padding: 4px 10px;
@@ -794,7 +794,7 @@ const styles = `
   .writing-preset-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #2E3648;
+    background: #394A3C;
   }
 
   .writing-preset-btn.active {
