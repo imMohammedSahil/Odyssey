@@ -995,6 +995,16 @@ function Print() {
   const progressRatio = currentStep === 1 ? 0.35 : currentStep === 2 ? 0.68 : 0.98;
   const fillWidth = Math.round(668 * progressRatio);
 
+  const handleCancel = async () => {
+    await clearActiveJob();
+    setFile(null);
+    setPages(0);
+    setColor("bw");
+    setCopies(1);
+    setCurrentStep(1);
+    showToastMessage("Order cancelled & document removed", "info");
+  };
+
   const showToastMessage = (message, type = "success") => {
     setToast({ show: true, message, type });
     setTimeout(() => {
@@ -1102,6 +1112,7 @@ function Print() {
       file,
     });
 
+    clearActiveJob();
     showToastMessage("Added to survival loadout!", "success");
   };
 
