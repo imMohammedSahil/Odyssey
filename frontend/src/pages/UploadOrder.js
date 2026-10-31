@@ -630,9 +630,14 @@ export default function UploadOrder() {
       });
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
