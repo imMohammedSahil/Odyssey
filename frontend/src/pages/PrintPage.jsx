@@ -1287,6 +1287,11 @@ function Print() {
       return;
     }
 
+    if (!copies || Number(copies) < 1) {
+      showToastMessage("Minimum 1 copy required!", "error");
+      return;
+    }
+
     addToCart({
       name: `Print (${color === "bw" ? "B/W" : "Color"}) - ${file.name}`,
       pages,
