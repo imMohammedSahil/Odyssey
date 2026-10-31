@@ -475,74 +475,159 @@ const styles = `
     color: var(--text-muted);
   }
 
-  /* FILE DETECTED CARD */
+  /* FILE DETECTED CARD - FILLS CONTAINER & CENTERED */
   .print-file-ready {
     background: var(--slime-green);
     color: var(--void-black);
     border: 3.5px solid #000000;
     border-radius: 24px;
-    padding: 30px 24px;
+    padding: 26px 28px;
     min-height: 320px;
     flex: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
     box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
   }
 
-  .print-file-top {
+  .print-file-top-bar {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgba(0,0,0,0.25);
   }
 
   .print-file-badge {
     background: var(--void-black);
-    color: #FFFFFF;
+    color: var(--slime-green);
+    font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
     font-weight: 900;
-    padding: 3px 10px;
+    padding: 4px 12px;
     border-radius: 9999px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 2px solid #000000;
+  }
+
+  .print-file-status-text {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--void-black);
+  }
+
+  .print-file-center-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin: auto 0;
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .print-file-doc-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--void-black);
+    color: var(--slime-green);
+    border-radius: 50%;
+    border: 3px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
+    margin-bottom: 4px;
   }
 
   .print-file-name {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 6px;
+    font-size: 21px;
     color: var(--void-black);
+    word-break: break-word;
+    line-height: 1.25;
+    margin: 0;
   }
 
-  .print-file-pages {
+  .print-file-pages-box {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.12);
+    border: 2px solid var(--void-black);
+    padding: 6px 18px;
+    border-radius: 9999px;
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--void-black);
   }
 
   .print-reupload-label {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 12px;
+    gap: 8px;
+    font-size: 13px;
     font-weight: 900;
     color: #FFFFFF;
     background: var(--void-black);
-    border: 2px solid #000000;
-    padding: 6px 14px;
+    border: 2.5px solid #000000;
+    padding: 9px 22px;
     border-radius: 9999px;
-    margin-top: 10px;
     cursor: pointer;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
-    transition: transform 0.1s ease;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    transition: all 0.15s ease;
   }
 
   .print-reupload-label:hover {
-    transform: translate(-1px, -1px);
-    background: #252830;
+    transform: translateY(-2px);
+    background: #1e222b;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+  }
+
+  .print-cancel-order-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 900;
+    color: #FFFFFF;
+    background: #E63946;
+    border: 2.5px solid #000000;
+    padding: 9px 20px;
+    border-radius: 9999px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    transition: all 0.15s ease;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .print-cancel-order-btn:hover {
+    transform: translateY(-2px);
+    background: #FF4D5E;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+  }
+
+  .print-cancel-pill {
+    background: rgba(0,0,0,0.15);
+    color: var(--void-black);
+    border: 2px solid var(--border-dark);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+  }
+  .print-cancel-pill:hover {
+    background: #E63946;
+    color: #FFFFFF;
+    border-color: #000000;
+    transform: scale(1.05);
   }
 
   /* COLOR MODE SELECTOR (NEOBRUTAL PILLS) */
