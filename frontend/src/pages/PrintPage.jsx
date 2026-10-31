@@ -829,8 +829,8 @@ function Print() {
         {/* HERO HEADING */}
         <div className="print-hero-heading">
           <h1 className="print-title">
-            PRINT ORDER DISPATCH
-            <span className="print-title-star">✳</span>
+            OUTBREAK PRINT BUNKER
+            
           </h1>
           <p className="print-subtitle">
             Upload your assignments, notes & documents. High-speed laser output with instant library pickup.
