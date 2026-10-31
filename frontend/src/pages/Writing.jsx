@@ -65,12 +65,8 @@ const styles = `
     border-radius: 9999px;
     border: 3px solid var(--void-black);
     box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.25);
-    text-decoration: none;
-    transition: transform 0.12s ease;
-  }
-
-  .writing-brand-capsule:hover {
-    transform: translate(-1.5px, -1.5px);
+    user-select: none;
+    cursor: default;
   }
 
   .writing-brand-icon-circle {
@@ -831,7 +827,7 @@ function Writing() {
       <div className="writing-page-shell">
         {/* TOP COMIC HEADER BAR */}
         <header className="writing-header-bar">
-          <Link to="/student" className="writing-brand-capsule">
+          <div className="writing-brand-capsule">
             <div className="writing-brand-icon-circle">
               <img src="/zombie-head-transparent.png" alt="Zombie mascot" />
             </div>
@@ -839,7 +835,7 @@ function Writing() {
               <span className="writing-brand-title">ODYSSEY // <span>OUTPOST</span></span>
               <span className="writing-brand-badge-tag">TACTICAL WRITING ARSENAL</span>
             </div>
-          </Link>
+          </div>
 
           <div className="writing-header-actions">
             <button
