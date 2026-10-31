@@ -953,9 +953,10 @@ function Print() {
             )}
 
             {/* STEP 3: COPIES */}
-            <div>
-              <div className="print-sec-header">
-                <span className="print-sec-tag">Step 3</span>
+            {currentStep === 3 && (
+              <div>
+                <div className="print-sec-header">
+                  <span className="print-sec-tag">Step 3 of 3</span>
                 <h2 className="print-sec-title">Number of Copies</h2>
               </div>
 
@@ -986,7 +987,12 @@ function Print() {
                   </button>
                 ))}
               </div>
-            </div>
+              <div className="print-step-footer">
+                  <button type="button" className="print-step-btn-back" onClick={() => goToStep(2)}>← Back to Color</button>
+                  <button type="button" className="print-step-btn-next" style={{ background: "var(--hazard-gold)" }} onClick={handleAdd}>Add to Cart • ₹{total}</button>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* RIGHT: LIVE ESTIMATE & CHECKOUT */}
