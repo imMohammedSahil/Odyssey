@@ -425,8 +425,13 @@ const styles = `
 
   .writing-cat-btn.active {
     background: var(--slime-green);
+    color: var(--void-black);
     transform: translate(2px, 2px);
     box-shadow: 1px 1px 0px var(--void-black);
+  }
+
+  .writing-cat-btn.active span {
+    color: var(--void-black);
   }
 
   /* MODEL SELECTION GRID */
