@@ -706,84 +706,125 @@ const styles = `
     border-color: #000000;
   }
 
-  /* COPIES STEPPER & PRESETS */
-  .print-stepper-box {
+  /* COPIES STEPPER & PRESETS (BIGGER & FULL CONTAINER) */
+  .print-stepper-hero-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     background: var(--card-surface);
-    border: 3px solid var(--card-border);
-    border-radius: 18px;
-    padding: 10px 18px;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.6);
-    margin-bottom: 10px;
+    border: 3.5px solid #000000;
+    border-radius: 24px;
+    padding: 28px 24px 22px;
+    flex: 1;
+    min-height: 200px;
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.7);
+    margin: 6px 0 0;
   }
 
-  .print-step-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    border: 2.5px solid var(--border-dark);
+  .print-stepper-ctrl-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    gap: 28px;
+    width: 100%;
+  }
+
+  .print-step-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    border: 3px solid #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
-    transition: transform 0.1s ease;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.6);
+    transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    user-select: none;
+  }
+
+  .print-step-btn.plus-btn {
+    background: var(--slime-green);
   }
 
   .print-step-btn:hover {
-    background: #FFCA3A;
-    transform: translate(-1px, -1px);
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.8);
   }
 
   .print-step-btn:active {
-    transform: translate(1.5px, 1.5px);
-    box-shadow: 0px 0px 0px rgba(0,0,0,0.5);
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+  }
+
+  .print-step-value-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 130px;
   }
 
   .print-step-value {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 24px;
-    min-width: 60px;
-    text-align: center;
-    color: #FFFFFF;
+    font-size: 64px;
+    color: var(--slime-green);
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: 3.5px 3.5px 0px #000000;
+    user-select: none;
   }
 
-  .print-presets-row {
-    display: flex;
-    gap: 8px;
+  .print-step-value-label {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .print-presets-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    width: 100%;
+    margin-top: 20px;
+    border-top: 2px dashed rgba(255, 255, 255, 0.28);
+    padding-top: 16px;
   }
 
   .print-preset-pill {
-    flex: 1;
     text-align: center;
-    padding: 7px 0;
-    background: var(--card-surface);
+    padding: 12px 6px;
+    background: #14171E;
     color: var(--text-muted);
-    border: 2.5px solid var(--card-border);
-    border-radius: 9999px;
-    font-size: 12px;
-    font-weight: 800;
+    border: 3px solid #000000;
+    border-radius: 16px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
     cursor: pointer;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
-    transition: all 0.15s ease;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .print-preset-pill.active {
     background: var(--hazard-gold);
     color: var(--void-black);
-    border-color: #000000;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.85);
   }
 
   .print-preset-pill:hover:not(.active) {
     background: #272C38;
     color: #FFFFFF;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.7);
   }
 
   /* RIGHT COLUMN: SUMMARY & CTA */
