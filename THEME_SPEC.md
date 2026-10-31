@@ -88,4 +88,15 @@ Based on the reference design, this guide defines the theme, color palette, typo
    - Feature blocks (Print, Stationery, Writing) mapped to the 3 colored zones (Black, Seafoam, Hazard Yellow).
 3. **Phase 3: Core App Pages**
    - Redesign Print Upload, Stationery Store, Cart, and Admin Dashboard into the new theme.
+---
 
+## 6. Hand-Drawn Rendering & Scroll Standards
+
+### A. Anti-Aliased Kid Hand-Drawn Contours
+- **SVG Displacement Filter**: Scale restricted to `1.0` with `feGaussianBlur stdDeviation="0.35"` and `color-interpolation-filters="sRGB"`. Avoid raw unsmoothed displacement maps which shear diagonal vector fills.
+- **Organic Radius**: Asymmetrical quad radii (`border-radius: 255px 25px 225px 25px / 25px 225px 25px 255px`) provide comic imperfection naturally.
+- **Repeating Diagonal Stripes**: Include 0.5px–1px anti-aliased intermediate stops to prevent scanline frequency moiré.
+
+### B. Portal Scroll Restoration
+- Continuous Y-coordinate tracking to `sessionStorage` via throttled `requestAnimationFrame`.
+- Seamless position restoration on React Router `POP` navigations (browser back & "Back to Base" buttons), bounded by document height.
