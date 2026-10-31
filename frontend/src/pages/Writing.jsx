@@ -195,21 +195,7 @@ const styles = `
     gap: 18px;
   }
 
-  /* FLOATING SPARKLE STARS */
-  .writing-sparkle {
-    position: absolute;
-    color: var(--pure-white);
-    font-size: 18px;
-    text-shadow: 1px 1px 0px var(--void-black);
-    pointer-events: none;
-    user-select: none;
-    animation: sparkleBob 3s ease-in-out infinite alternate;
-  }
 
-  @keyframes sparkleBob {
-    0% { transform: scale(0.9) rotate(0deg); opacity: 0.8; }
-    100% { transform: scale(1.15) rotate(15deg); opacity: 1; }
-  }
 
   /* CLEAN COMIC CALLOUT BADGE */
   .writing-starburst-badge {
@@ -866,10 +852,7 @@ function Writing() {
         <div className="writing-layout-container">
           {/* LEFT: HERO SHOWCASE STAGE */}
           <section className="writing-hero-card">
-            {/* SPARKLES */}
-            <span className="writing-sparkle" style={{ top: 16, right: 28 }}>✦</span>
-            <span className="writing-sparkle" style={{ top: 72, left: 24, fontSize: 14 }}>✧</span>
-            <span className="writing-sparkle" style={{ bottom: 120, right: 18, fontSize: 16 }}>✦</span>
+
 
 
 
