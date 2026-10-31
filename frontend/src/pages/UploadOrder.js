@@ -622,11 +622,16 @@ export default function UploadOrder() {
   const navType = useNavigationType();
 
   useEffect(() => {
+    let scrollTimeout = null;
     const handleScroll = () => {
-      sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+      if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
+      scrollTimeout = requestAnimationFrame(() => {
+        sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+      });
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
+      if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
