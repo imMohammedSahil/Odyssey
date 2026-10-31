@@ -260,6 +260,35 @@ const styles = `
     cursor: pointer;
   }
 
+  .writing-pedestal-tool-graphic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transform: rotateX(-20deg) translateY(-12px);
+  }
+
+  .writing-pedestal-code {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: var(--slime-green);
+    background: var(--void-black);
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 2px solid var(--slime-green);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+  }
+
+  .writing-pedestal-stylus {
+    width: 14px;
+    height: 72px;
+    background: linear-gradient(180deg, var(--pure-white) 0%, var(--slime-green) 70%, var(--void-black) 100%);
+    border: 3px solid var(--void-black);
+    border-radius: 6px 6px 2px 2px;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
+  }
+
   .writing-pedestal-item:hover {
     transform: rotateX(-20deg) translateY(-26px) scale(1.15);
   }
@@ -762,7 +791,7 @@ const CATALOG_ITEMS = [
     type: "Gel",
     title: "NEO-GEL BIOHAZARD PEN",
     protocol: "BIOHAZARD PROTOCOL // SEC-01",
-    icon: "🖊️",
+    badge: "GEL-01",
     basePrice: 10,
     lore1: "Zero-bleed tungsten carbide ball nib with acid-resistant dark pigment.",
     lore2: "Combat-grade flow engineered for thesis defense and blackout exam blitzes.",
@@ -773,7 +802,7 @@ const CATALOG_ITEMS = [
     type: "Ball",
     title: "OUTPOST TACTICAL BALLPOINT",
     protocol: "SURVIVAL DEPLOYMENT // SEC-02",
-    icon: "🖋️",
+    badge: "BALL-02",
     basePrice: 10,
     lore1: "High-viscosity pressurized formula that glides across damp evidence logs.",
     lore2: "Ergonomic knurled rubber shock grip eliminates wrist fatigue.",
@@ -784,7 +813,7 @@ const CATALOG_ITEMS = [
     type: "Graphite",
     title: "SURVIVAL 2B GRAPHITE CORE",
     protocol: "RECON LOGGING // SEC-03",
-    icon: "✏️",
+    badge: "LEAD-03",
     basePrice: 10,
     lore1: "Dense micro-carbon core engineered for break-resistant mathematical graphing.",
     lore2: "Smooth dark lead deposit calibrated for architectural sketches and OMR sheets.",
@@ -795,7 +824,7 @@ const CATALOG_ITEMS = [
     type: "Mechanical",
     title: "AERO-CLUTCH TITAN MECHANICAL",
     protocol: "PRECISION ENG // SEC-04",
-    icon: "📐",
+    badge: "MECH-04",
     basePrice: 50,
     lore1: "Hardened three-jaw brass clutch prevents lead snaps under panic pressure.",
     lore2: "Low center of gravity with knurled steel grip for tactical precision.",
@@ -876,9 +905,9 @@ function Writing() {
   const grandTotal = price * (qty || 1);
 
   const handleAdd = () => {
-    if (!name) return showToast("⚠️ Complete tool selection first!");
+    if (!name) return showToast("Complete tool selection first!");
     addToCart({ name, price, quantity: qty });
-    showToast(`🧟 Added ${qty}x ${name} to Survival Loadout!`);
+    showToast(`Added ${qty}x ${name} to Survival Loadout!`);
   };
 
   return (
@@ -907,7 +936,7 @@ function Writing() {
               ← BACK TO BASE
             </button>
             <Link to="/cart" className="writing-btn-pill writing-cart-pill">
-              🛒 CART ({cartItems ? cartItems.length : 0})
+              CART ({cartItems ? cartItems.length : 0})
             </Link>
           </div>
         </header>
@@ -929,12 +958,10 @@ function Writing() {
                   alt="Zombie mascot peeking"
                   className="writing-pedestal-mascot-img"
                 />
-                <span className="writing-pedestal-item" title={currentCatalog.title}>
-                  {currentCatalog.icon}
-                </span>
-                <span className="writing-pedestal-item" style={{ fontSize: 44, opacity: 0.9 }}>
-                  🧠
-                </span>
+                <div className="writing-pedestal-tool-graphic">
+                  <span className="writing-pedestal-code">{currentCatalog.badge}</span>
+                  <div className="writing-pedestal-stylus" />
+                </div>
               </div>
             </div>
 
@@ -1011,7 +1038,7 @@ function Writing() {
                 className={`writing-cat-btn ${category === "pen" ? "active" : ""}`}
                 onClick={() => handleCategoryChange("pen")}
               >
-                <span style={{ fontSize: 20 }}>🖊️</span>
+                
                 <span>PENS</span>
               </button>
               <button
@@ -1019,7 +1046,7 @@ function Writing() {
                 className={`writing-cat-btn ${category === "pencil" ? "active" : ""}`}
                 onClick={() => handleCategoryChange("pencil")}
               >
-                <span style={{ fontSize: 20 }}>✏️</span>
+                
                 <span>PENCILS</span>
               </button>
               <button
@@ -1027,7 +1054,7 @@ function Writing() {
                 className={`writing-cat-btn ${category === "mechanical" ? "active" : ""}`}
                 onClick={() => handleCategoryChange("mechanical")}
               >
-                <span style={{ fontSize: 20 }}>📐</span>
+                
                 <span>MECHANICAL</span>
               </button>
             </div>
@@ -1044,7 +1071,7 @@ function Writing() {
                       className={`writing-pill-btn ${penType === type ? "active" : ""}`}
                       onClick={() => setPenType(type)}
                     >
-                      {type === "Gel" ? "⚡ Quick-Dry Gel" : "🖊️ Durable Ballpoint"}
+                      {type === "Gel" ? "Quick-Dry Gel" : "Durable Ballpoint"}
                     </button>
                   ))}
                 </div>
@@ -1157,7 +1184,7 @@ function Writing() {
               className="writing-add-cta"
               onClick={handleAdd}
             >
-              Add to Survival Loadout • ₹{grandTotal} 🎒
+              Add to Survival Loadout • ₹{grandTotal}
             </button>
           </main>
         </div>
