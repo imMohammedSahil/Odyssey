@@ -709,7 +709,7 @@ const styles = `
     filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.85));
     position: absolute;
     bottom: -14px;
-    left: calc(50% + 36px);
+    left: calc(50% + 85px);
     transform: translateX(-50%);
     z-index: 5;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
