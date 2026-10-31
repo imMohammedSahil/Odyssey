@@ -286,6 +286,7 @@ const styles = `
 
   .print-kid-track {
     width: 100%;
+    min-width: 0;
     height: 42px;
     background: #FFFFFF;
     border: 3.5px solid #23272D;
@@ -299,6 +300,7 @@ const styles = `
     overflow: hidden;
     filter: url(#kid-pen-wobble);
     margin-top: 4px;
+    contain: paint;
   }
 
   .print-kid-fill {
