@@ -1453,13 +1453,20 @@ function Print() {
                         {file.name}
                       </h3>
 
-                      <div className="print-file-pages-box">
-                        {loading ? (
-                          <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                            <span className="print-spinner" /> Reading pages...
-                          </span>
-                        ) : (
-                          `Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
+                      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
+                        <div className="print-file-pages-box">
+                          {loading ? (
+                            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                              <span className="print-spinner" /> Reading pages...
+                            </span>
+                          ) : (
+                            `Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
+                          )}
+                        </div>
+                        {file?.size && (
+                          <div className="print-file-pages-box" style={{ background: "rgba(0, 0, 0, 0.08)" }}>
+                            📦 {(file.size / (1024 * 1024)).toFixed(2)} MB
+                          </div>
                         )}
                       </div>
                     </div>
