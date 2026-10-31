@@ -1218,32 +1218,21 @@ function Print() {
           {/* RIGHT: LIVE ESTIMATE & CHECKOUT */}
           <div className="print-col-summary">
             <div className="print-summary-card">
-              <div className="print-summary-mascot-row">
-                <div>
-                  <h3 className="print-summary-title">Order Breakdown</h3>
-                </div>
-
-                  {/* Retro comic mascot sticker icon */}
-                  <div
-                    style={{
-                      width: 44,
-                      height: 44,
-                      background: "var(--hazard-gold)",
-                      borderRadius: "50%",
-                      border: "2.5px solid var(--border-dark)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "2px 2px 0px var(--border-dark)",
-                    }}
-                  >
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 6 2 18 2 18 9" />
-                      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                      <rect x="6" y="14" width="12" height="8" />
-                    </svg>
-                  </div>
-                </div>
+              {/* Zombie Head Mascot directly above Order Breakdown */}
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "10px", borderBottom: "2px solid var(--border-dark)", paddingBottom: "8px" }}>
+                <img
+                  src="/zombie-head-transparent.png"
+                  alt="Zombie Head Mascot"
+                  style={{
+                    width: 58,
+                    height: 58,
+                    objectFit: "contain",
+                    filter: "drop-shadow(2px 3px 0px rgba(0,0,0,0.75))",
+                    marginBottom: 4,
+                  }}
+                />
+                <h3 className="print-summary-title" style={{ margin: 0, textAlign: "center" }}>Order Breakdown</h3>
+              </div>
 
                 <div className="print-calc-list">
                   <div className="print-calc-row">
