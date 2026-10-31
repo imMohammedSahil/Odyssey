@@ -183,7 +183,7 @@ const styles = `
 
   /* LEFT HERO SHOWCASE CARD */
   .writing-hero-card {
-    background: var(--card-cream);
+    background: #12151C;
     border: 4px solid var(--void-black);
     border-radius: 28px;
     padding: 28px 24px 24px 24px;
@@ -193,6 +193,7 @@ const styles = `
     display: flex;
     flex-direction: column;
     gap: 18px;
+    color: #F1F5F9;
   }
 
   /* SLIME GREEN COMIC CALLOUT BADGE */
@@ -240,7 +241,7 @@ const styles = `
   .writing-hero-title {
     font-family: 'Titan One', cursive;
     font-size: 24px;
-    color: var(--void-black);
+    color: #FFFFFF;
     text-transform: uppercase;
     line-height: 1.15;
     letter-spacing: 0.4px;
@@ -257,15 +258,18 @@ const styles = `
   .writing-lore-item {
     font-size: 13px;
     line-height: 1.4;
-    font-weight: 600;
-    color: #1F2421;
+    font-weight: 500;
+    color: #94A3B8;
   }
 
   .writing-lore-item strong {
-    color: var(--void-black);
+    color: var(--slime-green);
     font-weight: 800;
     display: block;
     margin-bottom: 2px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.5px;
   }
 
   /* RETRO ARCADE CONTROLLER */
@@ -274,32 +278,34 @@ const styles = `
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    background: rgba(0, 0, 0, 0.08);
+    background: #1A1F2C;
     border: 3px solid var(--void-black);
     border-radius: 16px;
     padding: 8px 12px;
+    box-shadow: 3px 3px 0px var(--void-black);
   }
 
   .writing-arcade-arrow-btn {
     width: 44px;
     height: 40px;
-    background: var(--pure-white);
+    background: #242A38;
     border: 3px solid var(--void-black);
     border-radius: 10px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 16px;
-    color: var(--void-black);
+    color: #FFFFFF;
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
   }
 
   .writing-arcade-arrow-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
+    background: #2E3648;
   }
 
   .writing-arcade-arrow-btn:active {
@@ -318,13 +324,13 @@ const styles = `
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--void-black);
+    background: var(--slime-green);
   }
 
   .writing-track-bar {
     flex: 1;
     height: 10px;
-    background: rgba(0, 0, 0, 0.18);
+    background: rgba(0, 0, 0, 0.45);
     border: 2px solid var(--void-black);
     border-radius: 9999px;
     overflow: hidden;
@@ -333,14 +339,14 @@ const styles = `
 
   .writing-track-fill {
     height: 100%;
-    background: var(--void-black);
+    background: var(--slime-green);
     border-radius: 9999px;
     transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
   /* RIGHT: INTERACTIVE WORKBENCH CARD */
   .writing-workbench-card {
-    background: var(--card-cream);
+    background: #12151C;
     border: 4px solid var(--void-black);
     border-radius: 28px;
     padding: 26px;
@@ -348,6 +354,7 @@ const styles = `
     display: flex;
     flex-direction: column;
     gap: 20px;
+    color: #F1F5F9;
   }
 
   .writing-sec-header {
@@ -363,7 +370,7 @@ const styles = `
   .writing-sec-title {
     font-family: 'Titan One', cursive;
     font-size: 20px;
-    color: var(--void-black);
+    color: #FFFFFF;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -387,13 +394,13 @@ const styles = `
 
   .writing-cat-btn {
     flex: 1;
-    background: var(--pure-white);
+    background: #1A1F2C;
     border: 3px solid var(--void-black);
     border-radius: 14px;
     padding: 10px 6px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 12px;
-    color: var(--void-black);
+    color: #FFFFFF;
     text-align: center;
     cursor: pointer;
     box-shadow: 3px 3px 0px var(--void-black);
@@ -407,6 +414,7 @@ const styles = `
   .writing-cat-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 4px 4px 0px var(--void-black);
+    background: #242A38;
   }
 
   .writing-cat-btn.active {
@@ -417,7 +425,7 @@ const styles = `
 
   /* SUB-OPTION SECTION */
   .writing-field-box {
-    background: var(--pure-white);
+    background: #1A1F2C;
     border: 3px solid var(--void-black);
     border-radius: 18px;
     padding: 16px;
@@ -431,7 +439,7 @@ const styles = `
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
     text-transform: uppercase;
-    color: var(--void-black);
+    color: var(--slime-green);
     letter-spacing: 0.5px;
     display: flex;
     align-items: center;
@@ -445,13 +453,13 @@ const styles = `
   }
 
   .writing-pill-btn {
-    background: #F1F3F5;
+    background: #242A38;
     border: 2.5px solid var(--void-black);
     border-radius: 9999px;
     padding: 6px 14px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
-    color: var(--void-black);
+    color: #FFFFFF;
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
@@ -460,6 +468,7 @@ const styles = `
   .writing-pill-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
+    background: #2E3648;
   }
 
   .writing-pill-btn.active {
@@ -477,7 +486,7 @@ const styles = `
   }
 
   .writing-color-card {
-    background: var(--pure-white);
+    background: #242A38;
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
     padding: 8px;
@@ -487,11 +496,13 @@ const styles = `
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
+    color: #FFFFFF;
   }
 
   .writing-color-card:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
+    background: #2E3648;
   }
 
   .writing-color-card.active {
@@ -528,7 +539,7 @@ const styles = `
   .writing-stepper-ctrl {
     display: flex;
     align-items: center;
-    background: var(--pure-white);
+    background: #1A1F2C;
     border: 3px solid var(--void-black);
     border-radius: 9999px;
     box-shadow: 3px 3px 0px var(--void-black);
@@ -542,7 +553,7 @@ const styles = `
     border: none;
     font-family: 'Archivo Black', sans-serif;
     font-size: 18px;
-    color: var(--void-black);
+    color: #FFFFFF;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -557,6 +568,7 @@ const styles = `
   .writing-step-val {
     font-family: 'Archivo Black', sans-serif;
     font-size: 15px;
+    color: #FFFFFF;
     padding: 0 14px;
     min-width: 44px;
     text-align: center;
@@ -571,13 +583,13 @@ const styles = `
   }
 
   .writing-preset-btn {
-    background: var(--pure-white);
+    background: #242A38;
     border: 2px solid var(--void-black);
     border-radius: 9999px;
     padding: 4px 10px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
-    color: var(--void-black);
+    color: #FFFFFF;
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
@@ -586,6 +598,7 @@ const styles = `
   .writing-preset-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
+    background: #2E3648;
   }
 
   .writing-preset-btn.active {
