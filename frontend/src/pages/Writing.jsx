@@ -523,8 +523,13 @@ const styles = `
   .writing-color-text {
     font-family: 'Archivo Black', sans-serif;
     font-size: 10px;
-    color: var(--void-black);
+    color: #FFFFFF;
     text-transform: uppercase;
+    transition: color 0.1s ease;
+  }
+
+  .writing-color-card.active .writing-color-text {
+    color: var(--void-black);
   }
 
   /* STEPPER AND PRESETS ROW */
