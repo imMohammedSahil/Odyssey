@@ -6,19 +6,18 @@ const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
   :root {
-    --planet-yellow: #F7B919;
-    --planet-yellow-light: #FDE047;
-    --planet-red: #E63946;
-    --planet-red-dark: #C1121F;
-    --planet-purple: #5A2BD8;
-    --planet-purple-dark: #3F1999;
-    --planet-purple-light: #8A63FF;
-    --planet-purple-pedestal: #6830EC;
+    --hazard-gold: #F7B919;
+    --hazard-gold-light: #FDE047;
+    --blood-red: #E63946;
+    --blood-red-dark: #C1121F;
+    --toxic-purple: #5A2BD8;
+    --toxic-purple-dark: #3F1999;
+    --toxic-purple-pedestal: #6830EC;
     --slime-green: #9DE869;
     --slime-green-dark: #76C740;
+    --brain-pink: #FF70A6;
     --void-black: #0D0D0D;
     --pure-white: #FFFFFF;
-    --parchment: #FDFBF7;
     --card-cream: #FFFDF0;
   }
 
@@ -30,7 +29,7 @@ const styles = `
 
   .writing-page-shell {
     min-height: 100vh;
-    background-color: var(--planet-yellow);
+    background-color: var(--hazard-gold);
     background-image: 
       radial-gradient(var(--void-black) 1.2px, transparent 1.2px),
       radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px);
@@ -43,9 +42,9 @@ const styles = `
     overflow-x: hidden;
   }
 
-  /* TOP RED RETRO-COMIC HEADER BANNER */
+  /* TOP RETRO-COMIC APOCALYPSE BANNER */
   .writing-header-bar {
-    background: var(--planet-red);
+    background: var(--blood-red);
     border-bottom: 4px solid var(--void-black);
     padding: 14px 24px;
     display: flex;
@@ -75,15 +74,21 @@ const styles = `
   }
 
   .writing-brand-icon-circle {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: var(--planet-yellow);
+    background: var(--slime-green);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
     border: 2px solid var(--void-black);
+    overflow: hidden;
+  }
+
+  .writing-brand-icon-circle img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
   }
 
   .writing-brand-text-col {
@@ -103,15 +108,16 @@ const styles = `
   }
 
   .writing-brand-title span {
-    color: var(--planet-yellow);
+    color: var(--slime-green);
   }
 
-  .writing-brand-kanji {
-    font-size: 9px;
-    font-weight: 800;
-    color: var(--planet-yellow);
-    letter-spacing: 1px;
-    margin-top: 2px;
+  .writing-brand-badge-tag {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 8.5px;
+    color: var(--hazard-gold);
+    letter-spacing: 0.8px;
+    margin-top: 3px;
+    text-transform: uppercase;
   }
 
   .writing-header-actions {
@@ -149,16 +155,16 @@ const styles = `
   }
 
   .writing-cart-pill {
-    background: var(--planet-yellow);
+    background: var(--slime-green);
     color: var(--void-black);
     border-color: var(--void-black);
   }
 
   .writing-cart-pill:hover {
-    background: #FFE066;
+    background: #AEF37B;
   }
 
-  /* WRITING WRAPPER & MAIN WORKBENCH GRID */
+  /* WRITING CONTAINER */
   .writing-layout-container {
     max-width: 1080px;
     margin: 28px auto 0 auto;
@@ -169,9 +175,9 @@ const styles = `
     align-items: start;
   }
 
-  /* LEFT HERO SHOWCASE CARD (PLANET-OÑO RETRO STYLE) */
+  /* LEFT HERO SHOWCASE CARD */
   .writing-hero-card {
-    background: var(--planet-yellow);
+    background: var(--hazard-gold);
     border: 4px solid var(--void-black);
     border-radius: 28px;
     padding: 24px;
@@ -199,12 +205,12 @@ const styles = `
     100% { transform: scale(1.15) rotate(15deg); opacity: 1; }
   }
 
-  /* 3D PURPLE ISOMETRIC PEDESTAL */
+  /* 3D PURPLE ISOMETRIC PEDESTAL WITH ZOMBIE MASCOT */
   .writing-pedestal-wrapper {
     position: relative;
     width: 100%;
     height: 220px;
-    background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle at 50% 35%, rgba(157, 232, 105, 0.3) 0%, transparent 70%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -214,12 +220,12 @@ const styles = `
   .writing-isometric-pedestal {
     width: 250px;
     height: 120px;
-    background: var(--planet-purple-pedestal);
+    background: var(--toxic-purple-pedestal);
     border: 3.5px solid var(--void-black);
     border-radius: 24px;
     transform: perspective(600px) rotateX(28deg) rotateZ(-3deg);
     box-shadow: 
-      0 18px 0px var(--planet-purple-dark),
+      0 18px 0px var(--toxic-purple-dark),
       0 22px 0px var(--void-black),
       6px 28px 0px rgba(0, 0, 0, 0.4);
     position: relative;
@@ -227,6 +233,23 @@ const styles = `
     align-items: center;
     justify-content: space-around;
     padding: 12px;
+  }
+
+  .writing-pedestal-mascot-img {
+    position: absolute;
+    top: -46px;
+    left: 8px;
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: drop-shadow(3px 3px 0px var(--void-black));
+    transform: rotate(-8deg);
+    z-index: 10;
+    transition: transform 0.2s ease;
+  }
+
+  .writing-pedestal-mascot-img:hover {
+    transform: rotate(0deg) scale(1.15);
   }
 
   .writing-pedestal-item {
@@ -241,16 +264,7 @@ const styles = `
     transform: rotateX(-20deg) translateY(-26px) scale(1.15);
   }
 
-  .writing-pedestal-mascot {
-    position: absolute;
-    top: -24px;
-    left: 18px;
-    font-size: 38px;
-    filter: drop-shadow(2px 2px 0px var(--void-black));
-    transform: rotate(-10deg);
-  }
-
-  /* JAGGED COMIC EXPLOSION STARBURST BADGE */
+  /* JAGGED COMIC STARBURST BADGE */
   .writing-starburst-badge {
     align-self: flex-start;
     background: var(--pure-white);
@@ -269,10 +283,10 @@ const styles = `
     margin-bottom: 2px;
   }
 
-  .writing-starburst-kanji {
+  .writing-starburst-protocol {
+    font-family: 'Archivo Black', sans-serif;
     font-size: 9px;
-    font-weight: 900;
-    color: var(--planet-red);
+    color: var(--blood-red);
     text-transform: uppercase;
     letter-spacing: 0.8px;
     display: block;
@@ -282,14 +296,14 @@ const styles = `
   .writing-starburst-text {
     font-family: 'Titan One', cursive;
     font-size: 20px;
-    color: var(--planet-red);
+    color: var(--blood-red);
     letter-spacing: 0.5px;
     line-height: 1.1;
     text-align: center;
     margin: 0;
   }
 
-  /* HERO PUNCHY COMIC HEADINGS & DUAL-COL LORE */
+  /* HERO PUNCHY TITLES & DUAL-COL LORE */
   .writing-hero-title {
     font-family: 'Titan One', cursive;
     font-size: 24px;
@@ -321,7 +335,7 @@ const styles = `
     margin-bottom: 2px;
   }
 
-  /* RETRO ARCADE CAROUSEL CONTROLLER */
+  /* RETRO ARCADE CONTROLLER */
   .writing-arcade-controller {
     display: flex;
     align-items: center;
@@ -422,7 +436,7 @@ const styles = `
   }
 
   .writing-sec-tag {
-    background: var(--planet-red);
+    background: var(--blood-red);
     color: var(--pure-white);
     font-family: 'Archivo Black', sans-serif;
     font-size: 10px;
@@ -463,7 +477,7 @@ const styles = `
   }
 
   .writing-cat-btn.active {
-    background: var(--planet-yellow);
+    background: var(--slime-green);
     transform: translate(2px, 2px);
     box-shadow: 1px 1px 0px var(--void-black);
   }
@@ -516,7 +530,7 @@ const styles = `
   }
 
   .writing-pill-btn.active {
-    background: var(--planet-red);
+    background: var(--blood-red);
     color: var(--pure-white);
     transform: translate(1.5px, 1.5px);
     box-shadow: 0px 0px 0px var(--void-black);
@@ -548,7 +562,7 @@ const styles = `
   }
 
   .writing-color-card.active {
-    background: #FDE047;
+    background: var(--hazard-gold-light);
     border-color: var(--void-black);
     transform: translate(1.5px, 1.5px);
     box-shadow: 0px 0px 0px var(--void-black);
@@ -604,7 +618,7 @@ const styles = `
   }
 
   .writing-step-btn:hover {
-    background: var(--planet-yellow);
+    background: var(--slime-green);
   }
 
   .writing-step-val {
@@ -642,7 +656,7 @@ const styles = `
   }
 
   .writing-preset-btn.active {
-    background: var(--planet-yellow);
+    background: var(--slime-green);
     transform: translate(1px, 1px);
     box-shadow: 0px 0px 0px var(--void-black);
   }
@@ -662,7 +676,7 @@ const styles = `
   .writing-total-label {
     font-family: 'Archivo Black', sans-serif;
     font-size: 10px;
-    color: var(--planet-yellow);
+    color: var(--slime-green);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -731,9 +745,6 @@ const styles = `
     .writing-header-bar {
       padding: 10px 14px;
     }
-    .writing-brand-kanji {
-      display: none;
-    }
     .writing-btn-pill {
       font-size: 10px;
       padding: 6px 10px;
@@ -749,57 +760,53 @@ const CATALOG_ITEMS = [
     id: "pen-gel",
     category: "pen",
     type: "Gel",
-    title: "NEO-GEL MARATHON PEN",
-    kanji: "ハイパーゲルペン",
+    title: "NEO-GEL BIOHAZARD PEN",
+    protocol: "BIOHAZARD PROTOCOL // SEC-01",
     icon: "🖊️",
-    mascot: "🐥",
     basePrice: 10,
-    lore1: "Zero-bleed tungsten carbide ball nib with quick-drying deep pigment.",
-    lore2: "Specially weighted for marathon exams and high-velocity lecture notes.",
+    lore1: "Zero-bleed tungsten carbide ball nib with acid-resistant dark pigment.",
+    lore2: "Combat-grade flow engineered for thesis defense and blackout exam blitzes.",
   },
   {
     id: "pen-ball",
     category: "pen",
     type: "Ball",
-    title: "RAPID BALLPOINT TITAN",
-    kanji: "高耐久ボールペン",
+    title: "OUTPOST TACTICAL BALLPOINT",
+    protocol: "SURVIVAL DEPLOYMENT // SEC-02",
     icon: "🖋️",
-    mascot: "⚡",
     basePrice: 10,
-    lore1: "High-viscosity oil-based formula that glides over any paper stock.",
-    lore2: "Ergonomic tactile rubber ribbing eliminates wrist fatigue.",
+    lore1: "High-viscosity pressurized formula that glides across damp evidence logs.",
+    lore2: "Ergonomic knurled rubber shock grip eliminates wrist fatigue.",
   },
   {
     id: "pencil-graphite",
     category: "pencil",
     type: "Graphite",
-    title: "TITAN 2B GRAPHITE PENCIL",
-    kanji: "最高級黒鉛鉛筆",
+    title: "SURVIVAL 2B GRAPHITE CORE",
+    protocol: "RECON LOGGING // SEC-03",
     icon: "✏️",
-    mascot: "⭐",
     basePrice: 10,
     lore1: "Dense micro-carbon core engineered for break-resistant mathematical graphing.",
-    lore2: "Smooth velvety deposit perfect for shading, drafts, and OMR sheets.",
+    lore2: "Smooth dark lead deposit calibrated for architectural sketches and OMR sheets.",
   },
   {
     id: "pencil-mechanical",
     category: "mechanical",
     type: "Mechanical",
-    title: "AERO-CLUTCH MECHANICAL",
-    kanji: "製図用シャープペン",
+    title: "AERO-CLUTCH TITAN MECHANICAL",
+    protocol: "PRECISION ENG // SEC-04",
     icon: "📐",
-    mascot: "🚀",
     basePrice: 50,
-    lore1: "Brass three-jaw chuck system prevents lead snaps under heavy pressure.",
-    lore2: "Knurled steel grip and low center of gravity for surgical drafting accuracy.",
+    lore1: "Hardened three-jaw brass clutch prevents lead snaps under panic pressure.",
+    lore2: "Low center of gravity with knurled steel grip for tactical precision.",
   },
 ];
 
 const INK_COLORS = [
-  { name: "Midnight Blue", hex: "#1D4ED8" },
-  { name: "Abyssal Black", hex: "#0F172A" },
-  { name: "Crimson Red", hex: "#DC2626" },
-  { name: "Toxic Green", hex: "#16A34A" },
+  { name: "Abyssal Black", hex: "#0D0D0D" },
+  { name: "Toxic Blue", hex: "#1D4ED8" },
+  { name: "Zombie Blood Red", hex: "#DC2626" },
+  { name: "Slime Green", hex: "#16A34A" },
 ];
 
 function Writing() {
@@ -811,7 +818,7 @@ function Writing() {
 
   const [category, setCategory] = useState("pen");
   const [penType, setPenType] = useState("Gel");
-  const [color, setColor] = useState("Midnight Blue");
+  const [color, setColor] = useState("Abyssal Black");
   const [pencilType, setPencilType] = useState("HB");
   const [mechSize, setMechSize] = useState("0.5 mm");
   const [qty, setQty] = useState(1);
@@ -871,7 +878,7 @@ function Writing() {
   const handleAdd = () => {
     if (!name) return showToast("⚠️ Complete tool selection first!");
     addToCart({ name, price, quantity: qty });
-    showToast(`⚡ Added ${qty}x ${name} to Survival Loadout!`);
+    showToast(`🧟 Added ${qty}x ${name} to Survival Loadout!`);
   };
 
   return (
@@ -881,10 +888,12 @@ function Writing() {
         {/* TOP COMIC HEADER BAR */}
         <header className="writing-header-bar">
           <Link to="/student" className="writing-brand-capsule">
-            <div className="writing-brand-icon-circle">✏️</div>
+            <div className="writing-brand-icon-circle">
+              <img src="/zombie-head-transparent.png" alt="Zombie mascot" />
+            </div>
             <div className="writing-brand-text-col">
-              <span className="writing-brand-title">PLANET<span>ODYSSEY</span></span>
-              <span className="writing-brand-kanji">筆記具・文房具</span>
+              <span className="writing-brand-title">ODYSSEY // <span>OUTPOST</span></span>
+              <span className="writing-brand-badge-tag">TACTICAL WRITING ARSENAL</span>
             </div>
           </Link>
 
@@ -912,29 +921,33 @@ function Writing() {
             <span className="writing-sparkle" style={{ top: 72, left: 24, fontSize: 14 }}>✧</span>
             <span className="writing-sparkle" style={{ bottom: 120, right: 18, fontSize: 16 }}>✦</span>
 
-            {/* 3D ISOMETRIC PEDESTAL */}
+            {/* 3D ISOMETRIC PEDESTAL WITH ZOMBIE MASCOT */}
             <div className="writing-pedestal-wrapper">
               <div className="writing-isometric-pedestal">
-                <span className="writing-pedestal-mascot">{currentCatalog.mascot}</span>
+                <img
+                  src="/zombie-head-transparent.png"
+                  alt="Zombie mascot peeking"
+                  className="writing-pedestal-mascot-img"
+                />
                 <span className="writing-pedestal-item" title={currentCatalog.title}>
                   {currentCatalog.icon}
                 </span>
                 <span className="writing-pedestal-item" style={{ fontSize: 44, opacity: 0.9 }}>
-                  📝
+                  🧠
                 </span>
               </div>
             </div>
 
             {/* JAGGED COMIC STARBURST BADGE */}
             <div className="writing-starburst-badge">
-              <span className="writing-starburst-kanji">{currentCatalog.kanji}</span>
+              <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
               <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
             </div>
 
             {/* PUNCHY TITLE & TWO-COLUMN LORE */}
             <div>
               <h3 className="writing-hero-title">
-                CELESTIAL FUEL FOR MARATHON WRITERS
+                APOCALYPSE-GRADE TOOLS FOR EXAM SURVIVORS
               </h3>
             </div>
 
@@ -988,7 +1001,7 @@ function Writing() {
           <main className="writing-workbench-card">
             <div className="writing-sec-header">
               <h2 className="writing-sec-title">TOOL CONFIGURATION</h2>
-              <span className="writing-sec-tag">TACTICAL STUDY ARSENAL</span>
+              <span className="writing-sec-tag">SURVIVAL LOADOUT ARSENAL</span>
             </div>
 
             {/* CATEGORY SWITCHER */}
