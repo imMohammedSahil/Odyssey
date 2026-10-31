@@ -183,7 +183,7 @@ const styles = `
 
   /* LEFT HERO SHOWCASE CARD */
   .writing-hero-card {
-    background: var(--hazard-gold);
+    background: var(--card-cream);
     border: 4px solid var(--void-black);
     border-radius: 28px;
     padding: 28px 24px 24px 24px;
@@ -195,12 +195,10 @@ const styles = `
     gap: 18px;
   }
 
-
-
-  /* CLEAN COMIC CALLOUT BADGE */
+  /* SLIME GREEN COMIC CALLOUT BADGE */
   .writing-starburst-badge {
     align-self: flex-start;
-    background: var(--pure-white);
+    background: var(--slime-green);
     border: 3.5px solid var(--void-black);
     border-radius: 16px;
     box-shadow: 4px 4px 0px var(--void-black);
@@ -211,13 +209,17 @@ const styles = `
     margin-bottom: 2px;
     display: inline-flex;
     flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    gap: 4px;
   }
 
   .writing-starburst-protocol {
     font-family: 'Archivo Black', sans-serif;
     font-size: 9px;
-    color: var(--blood-red);
+    color: var(--void-black);
+    background: rgba(0, 0, 0, 0.12);
+    padding: 2px 10px;
+    border-radius: 9999px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     display: block;
@@ -227,7 +229,7 @@ const styles = `
   .writing-starburst-text {
     font-family: 'Titan One', cursive;
     font-size: 20px;
-    color: var(--blood-red);
+    color: var(--void-black);
     letter-spacing: 0.5px;
     line-height: 1.1;
     text-align: center;
