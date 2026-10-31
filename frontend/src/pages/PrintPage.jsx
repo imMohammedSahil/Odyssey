@@ -917,9 +917,10 @@ function Print() {
             )}
 
             {/* STEP 2: COLOR MODE */}
-            <div>
-              <div className="print-sec-header">
-                <span className="print-sec-tag">Step 2</span>
+            {currentStep === 2 && (
+              <div>
+                <div className="print-sec-header">
+                  <span className="print-sec-tag">Step 2 of 3</span>
                 <h2 className="print-sec-title">Color Mode</h2>
               </div>
 
@@ -944,7 +945,12 @@ function Print() {
                   <span className="print-mode-rate-pill">₹10 / page</span>
                 </div>
               </div>
-            </div>
+              <div className="print-step-footer">
+                  <button type="button" className="print-step-btn-back" onClick={() => goToStep(1)}>← Back to Upload</button>
+                  <button type="button" className="print-step-btn-next" onClick={() => goToStep(3)}>Proceed to Copies →</button>
+                </div>
+              </div>
+            )}
 
             {/* STEP 3: COPIES */}
             <div>
