@@ -7,7 +7,7 @@ import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&family=Creepster&family=Titan+One&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
 
   :root {
     --slime-green: #9DE869;
