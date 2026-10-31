@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate, useLocation, useNavigationType } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import PhoneChatDispatch from "../components/PhoneChatDispatch";
@@ -620,24 +620,23 @@ export default function UploadOrder() {
   const navigate = useNavigate();
   const location = useLocation();
   const navType = useNavigationType();
+  const isRestoringRef = useRef(navType === "POP");
 
   useEffect(() => {
     let scrollTimeout = null;
     const handleScroll = () => {
+      if (isRestoringRef.current) return;
       if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
       scrollTimeout = requestAnimationFrame(() => {
-        sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+        if (!isRestoringRef.current && window.scrollY > 0) {
+          sessionStorage.setItem("student_scroll_y", String(window.scrollY));
+        }
       });
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    const handleBeforeUnload = () => {
-      sessionStorage.setItem("student_scroll_y", String(window.scrollY));
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       if (scrollTimeout) cancelAnimationFrame(scrollTimeout);
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -706,16 +705,26 @@ export default function UploadOrder() {
       const savedY = sessionStorage.getItem("student_scroll_y");
       if (savedY !== null) {
         const rawY = parseInt(savedY, 10);
-        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-        const targetY = Math.max(0, Math.min(rawY, maxScroll));
-        window.scrollTo(0, targetY);
-        const timer1 = setTimeout(() => window.scrollTo(0, targetY), 50);
-        const timer2 = setTimeout(() => window.scrollTo(0, targetY), 150);
-        return () => {
-          clearTimeout(timer1);
-          clearTimeout(timer2);
-        };
+        if (rawY > 0) {
+          isRestoringRef.current = true;
+          const restore = () => {
+            window.scrollTo({ top: rawY, behavior: "instant" });
+          };
+          restore();
+          const timer1 = setTimeout(restore, 50);
+          const timer2 = setTimeout(restore, 150);
+          const timer3 = setTimeout(() => {
+            restore();
+            isRestoringRef.current = false;
+          }, 350);
+          return () => {
+            clearTimeout(timer1);
+            clearTimeout(timer2);
+            clearTimeout(timer3);
+          };
+        }
       }
+      isRestoringRef.current = false;
     } else {
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);

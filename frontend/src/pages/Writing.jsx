@@ -853,6 +853,11 @@ function Writing() {
   const [qty, setQty] = useState(1);
   const [toast, setToast] = useState({ show: false, message: "" });
 
+  // Scroll to top on fresh mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Escape key returns to base
   useEffect(() => {
     const handleKeyDown = (e) => {
