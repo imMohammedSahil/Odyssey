@@ -842,7 +842,7 @@ function Writing() {
               <img src="/zombie-rip-pfp.jpg" alt="Zombie pfp" />
             </div>
             <div className="writing-brand-text-col">
-              <span className="writing-brand-title">ODYSSEY // <span>OUTPOST</span></span>
+              <span className="writing-brand-title">ODYSSEY // <span>UNDEAD EXAM SURVIVAL</span></span>
               <span className="writing-brand-badge-tag">TACTICAL WRITING ARSENAL</span>
             </div>
           </div>
