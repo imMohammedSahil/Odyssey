@@ -692,7 +692,7 @@ function Print() {
     if (!selected) return;
 
     if (selected.type !== "application/pdf") {
-      showToastMessage("Please upload a valid PDF document ⚠️", "error");
+      showToastMessage("Please upload a valid PDF document ", "error");
       return;
     }
 
@@ -706,7 +706,7 @@ function Print() {
         const pdf = await pdfjsLib.getDocument(typedArray).promise;
         setPages(pdf.numPages);
         setFile(selected);
-        showToastMessage(`PDF verified: ${pdf.numPages} pages detected! ✓`, "success");
+        showToastMessage(`PDF verified: ${pdf.numPages} pages detected! `, "success");
       } catch (err) {
         showToastMessage("Could not parse PDF. Please try another file.", "error");
       } finally {
@@ -719,7 +719,7 @@ function Print() {
 
   const handleAdd = () => {
     if (!file) {
-      showToastMessage("Upload a PDF document first! ⚠️", "error");
+      showToastMessage("Upload a PDF document first! ", "error");
       return;
     }
 
@@ -732,7 +732,7 @@ function Print() {
       file,
     });
 
-    showToastMessage("Added to survival loadout! 🛒", "success");
+    showToastMessage("Added to survival loadout! ", "success");
   };
 
   return (
@@ -753,7 +753,7 @@ function Print() {
               ← BACK TO BASE
             </button>
             <Link to="/cart" className="print-btn-pill print-cart-pill">
-              🛒 CART ({cartItems ? cartItems.length : 0})
+               CART ({cartItems ? cartItems.length : 0})
             </Link>
           </div>
         </header>
@@ -809,7 +809,7 @@ function Print() {
               ) : (
                 <div className="print-file-ready">
                   <div className="print-file-top">
-                    <span className="print-file-badge">✓ PDF Verified</span>
+                    <span className="print-file-badge"> PDF Verified</span>
                     <span style={{ fontSize: 12, fontWeight: 900 }}>Ready to print</span>
                   </div>
                   <div className="print-file-name" title={file.name}>
@@ -821,7 +821,7 @@ function Print() {
                         <span className="print-spinner" /> Reading pages...
                       </span>
                     ) : (
-                      `📊 Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
+                      ` Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
                     )}
                   </div>
 
@@ -851,7 +851,7 @@ function Print() {
                   onClick={() => setColor("bw")}
                 >
                   <span className="print-mode-btn-title">
-                    🖤 Black & White
+                     Black & White
                   </span>
                   <span className="print-mode-rate-pill">₹1 / page</span>
                 </div>
@@ -861,7 +861,7 @@ function Print() {
                   onClick={() => setColor("color")}
                 >
                   <span className="print-mode-btn-title">
-                    🎨 Full Color
+                     Full Color
                   </span>
                   <span className="print-mode-rate-pill">₹10 / page</span>
                 </div>
@@ -967,7 +967,7 @@ function Print() {
             {/* ACTION CTA */}
             <div>
               <button className="print-action-cta" onClick={handleAdd}>
-                Add to Survival Loadout 🛒
+                Add to Survival Loadout 
               </button>
             </div>
           </div>
