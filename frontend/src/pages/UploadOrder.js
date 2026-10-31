@@ -695,7 +695,9 @@ export default function UploadOrder() {
     } else if (navType === "POP") {
       const savedY = sessionStorage.getItem("student_scroll_y");
       if (savedY !== null) {
-        const targetY = parseInt(savedY, 10);
+        const rawY = parseInt(savedY, 10);
+        const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+        const targetY = Math.max(0, Math.min(rawY, maxScroll));
         window.scrollTo(0, targetY);
         const timer1 = setTimeout(() => window.scrollTo(0, targetY), 50);
         const timer2 = setTimeout(() => window.scrollTo(0, targetY), 150);
