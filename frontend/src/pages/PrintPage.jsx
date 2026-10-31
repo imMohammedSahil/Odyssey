@@ -52,7 +52,8 @@ const styles = `
   /* TOP NAVBAR */
   .print-nav {
     width: 100%;
-    max-width: 1040px;
+    max-width: 100%;
+    padding: 4px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -173,7 +174,7 @@ const styles = `
   /* MAIN WORKBENCH CARD (VOid Black Chassis) */
   .print-workbench {
     width: 100%;
-    max-width: 1040px;
+    max-width: 1240px;
     background: var(--void-black);
     color: #FFFFFF;
     border: 4px solid #000000;
