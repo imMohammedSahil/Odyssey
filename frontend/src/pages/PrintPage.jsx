@@ -708,14 +708,16 @@ const styles = `
     object-fit: contain;
     filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.85));
     position: absolute;
-    bottom: -8px;
+    bottom: -14px;
+    left: calc(50% + 36px);
+    transform: translateX(-50%);
     z-index: 5;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
   }
 
   .print-zombie-head-mascot:hover {
-    transform: scale(1.1) rotate(-4deg);
+    transform: translateX(-50%) scale(1.1) rotate(-4deg);
   }
 
   .print-summary-card {
@@ -1255,26 +1257,26 @@ function Print() {
                 <h3 className="print-summary-title">Order Breakdown</h3>
               </div>
 
-                <div className="print-calc-list">
-                  <div className="print-calc-row">
-                    <span>Document Pages:</span>
-                    <span style={{ fontWeight: 900 }}>{pages || 0} pgs</span>
-                  </div>
-                  <div className="print-calc-row">
-                    <span>Unit Rate ({color === "bw" ? "B&W" : "Color"}):</span>
-                    <span style={{ fontWeight: 900 }}>₹{rate} / pg</span>
-                  </div>
-                  <div className="print-calc-row">
-                    <span>Quantity:</span>
-                    <span style={{ fontWeight: 900 }}>× {copies || 1}</span>
-                  </div>
+              <div className="print-calc-list">
+                <div className="print-calc-row">
+                  <span>Document Pages:</span>
+                  <span style={{ fontWeight: 900 }}>{pages || 0} pgs</span>
                 </div>
-
-                <div className="print-calc-total-box">
-                  <span className="print-total-label">Grand Total:</span>
-                  <span className="print-total-price">₹{total}</span>
+                <div className="print-calc-row">
+                  <span>Unit Rate ({color === "bw" ? "B&W" : "Color"}):</span>
+                  <span style={{ fontWeight: 900 }}>₹{rate} / pg</span>
+                </div>
+                <div className="print-calc-row">
+                  <span>Quantity:</span>
+                  <span style={{ fontWeight: 900 }}>× {copies || 1}</span>
                 </div>
               </div>
+
+              <div className="print-calc-total-box">
+                <span className="print-total-label">Grand Total:</span>
+                <span className="print-total-price">₹{total}</span>
+              </div>
+            </div>
 
             {/* ACTION CTA */}
             <div style={{ marginTop: "12px" }}>
