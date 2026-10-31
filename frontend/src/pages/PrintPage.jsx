@@ -229,6 +229,64 @@ const styles = `
     gap: 22px;
   }
 
+  /* STEP ACTIONS FOOTER */
+  .print-step-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 2px dashed var(--card-border);
+    gap: 12px;
+  }
+
+  .print-step-btn-back {
+    background: var(--card-surface);
+    color: #FFFFFF;
+    border: 2.5px solid var(--border-dark);
+    border-radius: 9999px;
+    padding: 10px 20px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: var(--shadow-solid-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .print-step-btn-back:hover {
+    background: #272D3A;
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 3.5px 3.5px 0px var(--border-dark);
+  }
+
+  .print-step-btn-next {
+    background: var(--slime-green);
+    color: var(--void-black);
+    border: 3px solid var(--border-dark);
+    border-radius: 9999px;
+    padding: 12px 24px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: var(--shadow-solid-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  }
+
+  .print-step-btn-next:hover {
+    background: #B4FF7B;
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 4.5px 4.5px 0px var(--border-dark);
+  }
+
   /* DROPZONE (Dark Neon Brutal) */
   .print-dropzone {
     border: 3.5px dashed var(--slime-green);
