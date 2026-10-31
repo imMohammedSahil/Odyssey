@@ -178,7 +178,7 @@ const styles = `
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
-    align-items: start;
+    align-items: stretch;
   }
 
   /* LEFT HERO SHOWCASE CARD */
@@ -194,6 +194,8 @@ const styles = `
     flex-direction: column;
     gap: 18px;
     color: #F1F5F9;
+    height: 100%;
+    box-sizing: border-box;
   }
 
   /* SLIME GREEN COMIC CALLOUT BADGE */
@@ -283,6 +285,7 @@ const styles = `
     border-radius: 16px;
     padding: 8px 12px;
     box-shadow: 3px 3px 0px var(--void-black);
+    margin-top: auto;
   }
 
   .writing-arcade-arrow-btn {
@@ -355,6 +358,9 @@ const styles = `
     flex-direction: column;
     gap: 20px;
     color: #F1F5F9;
+    height: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
   }
 
   .writing-sec-header {
