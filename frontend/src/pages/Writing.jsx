@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
@@ -13,6 +13,7 @@ const styles = `
     --planet-purple: #5A2BD8;
     --planet-purple-dark: #3F1999;
     --planet-purple-light: #8A63FF;
+    --planet-purple-pedestal: #6830EC;
     --void-black: #0D0D0D;
     --pure-white: #FFFFFF;
     --parchment: #FDFBF7;
@@ -155,11 +156,243 @@ const styles = `
     background: #FFE066;
   }
 
-  /* WRITING WRAPPER & CONTAINER */
+  /* WRITING WRAPPER & MAIN WORKBENCH GRID */
   .writing-layout-container {
-    max-width: 1060px;
+    max-width: 1080px;
     margin: 28px auto 0 auto;
     padding: 0 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* LEFT HERO SHOWCASE CARD (PLANET-OÑO RETRO STYLE) */
+  .writing-hero-card {
+    background: var(--planet-yellow);
+    border: 4px solid var(--void-black);
+    border-radius: 28px;
+    padding: 24px;
+    box-shadow: 6px 6px 0px var(--void-black);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  /* FLOATING SPARKLE STARS */
+  .writing-sparkle {
+    position: absolute;
+    color: var(--pure-white);
+    font-size: 18px;
+    text-shadow: 1px 1px 0px var(--void-black);
+    pointer-events: none;
+    user-select: none;
+    animation: sparkleBob 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes sparkleBob {
+    0% { transform: scale(0.9) rotate(0deg); opacity: 0.8; }
+    100% { transform: scale(1.15) rotate(15deg); opacity: 1; }
+  }
+
+  /* 3D PURPLE ISOMETRIC PEDESTAL */
+  .writing-pedestal-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  .writing-isometric-pedestal {
+    width: 250px;
+    height: 120px;
+    background: var(--planet-purple-pedestal);
+    border: 3.5px solid var(--void-black);
+    border-radius: 24px;
+    transform: perspective(600px) rotateX(28deg) rotateZ(-3deg);
+    box-shadow: 
+      0 18px 0px var(--planet-purple-dark),
+      0 22px 0px var(--void-black),
+      6px 28px 0px rgba(0, 0, 0, 0.4);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 12px;
+  }
+
+  .writing-pedestal-item {
+    font-size: 52px;
+    filter: drop-shadow(3px 4px 0px rgba(0, 0, 0, 0.5));
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: rotateX(-20deg) translateY(-16px);
+    cursor: pointer;
+  }
+
+  .writing-pedestal-item:hover {
+    transform: rotateX(-20deg) translateY(-26px) scale(1.15);
+  }
+
+  .writing-pedestal-mascot {
+    position: absolute;
+    top: -24px;
+    left: 18px;
+    font-size: 38px;
+    filter: drop-shadow(2px 2px 0px var(--void-black));
+    transform: rotate(-10deg);
+  }
+
+  /* JAGGED COMIC EXPLOSION STARBURST BADGE */
+  .writing-starburst-badge {
+    align-self: flex-start;
+    background: var(--pure-white);
+    border: 3.5px solid var(--void-black);
+    box-shadow: 4px 4px 0px var(--void-black);
+    padding: 10px 18px;
+    position: relative;
+    transform: rotate(-2deg);
+    border-radius: 12px;
+    clip-path: polygon(
+      0% 12%, 8% 0%, 24% 10%, 42% 0%, 58% 12%, 76% 2%, 92% 14%, 100% 0%, 
+      98% 38%, 100% 64%, 94% 88%, 100% 100%, 78% 92%, 58% 100%, 40% 90%, 
+      22% 100%, 6% 92%, 0% 100%, 4% 68%, 0% 42%
+    );
+    margin-top: -12px;
+    margin-bottom: 2px;
+  }
+
+  .writing-starburst-kanji {
+    font-size: 9px;
+    font-weight: 900;
+    color: var(--planet-red);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    display: block;
+    text-align: center;
+  }
+
+  .writing-starburst-text {
+    font-family: 'Titan One', cursive;
+    font-size: 20px;
+    color: var(--planet-red);
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* HERO PUNCHY COMIC HEADINGS & DUAL-COL LORE */
+  .writing-hero-title {
+    font-family: 'Titan One', cursive;
+    font-size: 24px;
+    color: var(--void-black);
+    text-transform: uppercase;
+    line-height: 1.15;
+    letter-spacing: 0.4px;
+  }
+
+  .writing-lore-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    border-top: 2px dashed rgba(13, 13, 13, 0.35);
+    padding-top: 14px;
+  }
+
+  .writing-lore-item {
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 600;
+    color: #1F2421;
+  }
+
+  .writing-lore-item strong {
+    color: var(--void-black);
+    font-weight: 800;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* RETRO ARCADE CAROUSEL CONTROLLER */
+  .writing-arcade-controller {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.08);
+    border: 3px solid var(--void-black);
+    border-radius: 16px;
+    padding: 8px 12px;
+  }
+
+  .writing-arcade-arrow-btn {
+    width: 44px;
+    height: 40px;
+    background: var(--pure-white);
+    border: 3px solid var(--void-black);
+    border-radius: 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    color: var(--void-black);
+    cursor: pointer;
+    box-shadow: 2px 2px 0px var(--void-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .writing-arcade-arrow-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--void-black);
+  }
+
+  .writing-arcade-arrow-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px var(--void-black);
+  }
+
+  .writing-arcade-slider-track {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .writing-track-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--void-black);
+  }
+
+  .writing-track-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.18);
+    border: 2px solid var(--void-black);
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .writing-track-fill {
+    height: 100%;
+    background: var(--void-black);
+    border-radius: 9999px;
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  @media (max-width: 860px) {
+    .writing-layout-container {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (max-width: 600px) {
@@ -173,14 +406,71 @@ const styles = `
       font-size: 10px;
       padding: 6px 10px;
     }
+    .writing-lore-grid {
+      grid-template-columns: 1fr;
+    }
   }
 `;
+
+const CATALOG_ITEMS = [
+  {
+    id: "pen-gel",
+    category: "pen",
+    type: "Gel",
+    title: "NEO-GEL MARATHON PEN",
+    kanji: "ハイパーゲルペン",
+    icon: "🖊️",
+    mascot: "🐥",
+    basePrice: 10,
+    lore1: "Zero-bleed tungsten carbide ball nib with quick-drying deep pigment.",
+    lore2: "Specially weighted for marathon exams and high-velocity lecture notes.",
+  },
+  {
+    id: "pen-ball",
+    category: "pen",
+    type: "Ball",
+    title: "RAPID BALLPOINT TITAN",
+    kanji: "高耐久ボールペン",
+    icon: "🖋️",
+    mascot: "⚡",
+    basePrice: 10,
+    lore1: "High-viscosity oil-based formula that glides over any paper stock.",
+    lore2: "Ergonomic tactile rubber ribbing eliminates wrist fatigue.",
+  },
+  {
+    id: "pencil-graphite",
+    category: "pencil",
+    type: "Graphite",
+    title: "TITAN 2B GRAPHITE PENCIL",
+    kanji: "最高級黒鉛鉛筆",
+    icon: "✏️",
+    mascot: "⭐",
+    basePrice: 10,
+    lore1: "Dense micro-carbon core engineered for break-resistant mathematical graphing.",
+    lore2: "Smooth velvety deposit perfect for shading, drafts, and OMR sheets.",
+  },
+  {
+    id: "pencil-mechanical",
+    category: "mechanical",
+    type: "Mechanical",
+    title: "AERO-CLUTCH MECHANICAL",
+    kanji: "製図用シャープペン",
+    icon: "📐",
+    mascot: "🚀",
+    basePrice: 50,
+    lore1: "Brass three-jaw chuck system prevents lead snaps under heavy pressure.",
+    lore2: "Knurled steel grip and low center of gravity for surgical drafting accuracy.",
+  },
+];
 
 function Writing() {
   const navigate = useNavigate();
   const { cartItems, addToCart } = useCart();
 
-  const [category, setCategory] = useState("pen");
+  const [activeIndex, setActiveIndex] = useState(0);
+  const currentCatalog = CATALOG_ITEMS[activeIndex];
+
+  const [category, setCategory] = useState(currentCatalog.category);
   const [penType, setPenType] = useState("Gel");
   const [color, setColor] = useState("Midnight Blue");
   const [pencilType, setPencilType] = useState("HB");
@@ -188,9 +478,12 @@ function Writing() {
   const [qty, setQty] = useState(1);
   const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
-  const showToast = (message, type = "success") => {
-    setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "success" }), 2500);
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev > 0 ? prev - 1 : CATALOG_ITEMS.length - 1));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev < CATALOG_ITEMS.length - 1 ? prev + 1 : 0));
   };
 
   return (
@@ -222,9 +515,88 @@ function Writing() {
           </div>
         </header>
 
-        {/* MAIN STAGE */}
+        {/* MAIN STAGE CONTAINER */}
         <div className="writing-layout-container">
-          {/* Work in progress next edit */}
+          {/* LEFT: HERO SHOWCASE STAGE */}
+          <section className="writing-hero-card">
+            {/* SPARKLES */}
+            <span className="writing-sparkle" style={{ top: 16, right: 28 }}>✦</span>
+            <span className="writing-sparkle" style={{ top: 72, left: 24, fontSize: 14 }}>✧</span>
+            <span className="writing-sparkle" style={{ bottom: 120, right: 18, fontSize: 16 }}>✦</span>
+
+            {/* 3D ISOMETRIC PEDESTAL */}
+            <div className="writing-pedestal-wrapper">
+              <div className="writing-isometric-pedestal">
+                <span className="writing-pedestal-mascot">{currentCatalog.mascot}</span>
+                <span className="writing-pedestal-item" title={currentCatalog.title}>
+                  {currentCatalog.icon}
+                </span>
+                <span className="writing-pedestal-item" style={{ fontSize: 44, opacity: 0.9 }}>
+                  📝
+                </span>
+              </div>
+            </div>
+
+            {/* JAGGED COMIC STARBURST BADGE */}
+            <div className="writing-starburst-badge">
+              <span className="writing-starburst-kanji">{currentCatalog.kanji}</span>
+              <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
+            </div>
+
+            {/* PUNCHY TITLE & TWO-COLUMN LORE */}
+            <div>
+              <h3 className="writing-hero-title">
+                CELESTIAL FUEL FOR MARATHON WRITERS
+              </h3>
+            </div>
+
+            <div className="writing-lore-grid">
+              <div className="writing-lore-item">
+                <strong>SPECIFICATION //</strong>
+                {currentCatalog.lore1}
+              </div>
+              <div className="writing-lore-item">
+                <strong>DEPLOYMENT //</strong>
+                {currentCatalog.lore2}
+              </div>
+            </div>
+
+            {/* RETRO ARCADE CONTROLLER */}
+            <div className="writing-arcade-controller">
+              <button
+                type="button"
+                className="writing-arcade-arrow-btn"
+                onClick={handlePrev}
+                aria-label="Previous item"
+              >
+                ←
+              </button>
+
+              <div className="writing-arcade-slider-track">
+                <div className="writing-track-dot" />
+                <div className="writing-track-bar">
+                  <div
+                    className="writing-track-fill"
+                    style={{
+                      width: `${((activeIndex + 1) / CATALOG_ITEMS.length) * 100}%`,
+                    }}
+                  />
+                </div>
+                <div className="writing-track-dot" />
+              </div>
+
+              <button
+                type="button"
+                className="writing-arcade-arrow-btn"
+                onClick={handleNext}
+                aria-label="Next item"
+              >
+                →
+              </button>
+            </div>
+          </section>
+
+          {/* RIGHT: INTERACTIVE WORKBENCH CONFIG (Step 3 next commit) */}
         </div>
       </div>
     </>
