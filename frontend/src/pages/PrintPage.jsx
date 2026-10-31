@@ -1331,21 +1331,21 @@ function Print() {
               <div className="print-progress-steps-row">
                 <button
                   type="button"
-                  className={`print-progress-tab ${currentStep === 1 ? "active" : ""}`}
+                  className={`print-progress-tab ${currentStep === 1 ? "active" : ""}`} aria-current={currentStep === 1 ? "step" : undefined}
                   onClick={() => goToStep(1)}
                 >
                   1. Upload
                 </button>
                 <button
                   type="button"
-                  className={`print-progress-tab ${currentStep === 2 ? "active" : ""}`}
+                  className={`print-progress-tab ${currentStep === 2 ? "active" : ""}`} aria-current={currentStep === 2 ? "step" : undefined}
                   onClick={() => goToStep(2)}
                 >
                   2. Color
                 </button>
                 <button
                   type="button"
-                  className={`print-progress-tab ${currentStep === 3 ? "active" : ""}`}
+                  className={`print-progress-tab ${currentStep === 3 ? "active" : ""}`} aria-current={currentStep === 3 ? "step" : undefined}
                   onClick={() => goToStep(3)}
                 >
                   3. Copies & Review
@@ -1368,7 +1368,7 @@ function Print() {
             </svg>
 
             {/* FULL-WIDTH LEFT-TO-RIGHT TRACK MATCHING IMAGE */}
-            <div className="print-kid-track">
+            <div className="print-kid-track" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={3} aria-valuetext={`Step ${currentStep} of 3`}>
               <div
                 className="print-kid-fill"
                 style={{
