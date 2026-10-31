@@ -274,6 +274,173 @@ const styles = `
     letter-spacing: 0.5px;
   }
 
+  /* REVAMPED HERO CARD STYLES */
+  .writing-hero-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .writing-hero-status-pill {
+    background: #1A1F2C;
+    border: 2px solid var(--void-black);
+    border-radius: 9999px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    color: var(--slime-green);
+    letter-spacing: 0.5px;
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  .writing-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--slime-green);
+    box-shadow: 0 0 6px var(--slime-green);
+  }
+
+  /* TACTICAL SCHEMATIC BLUEPRINT HUD */
+  .writing-schematic-box {
+    background: #0E1117;
+    border: 3px solid var(--void-black);
+    border-radius: 18px;
+    padding: 14px 16px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 3px 3px 0px var(--void-black);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .writing-schematic-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px dashed rgba(168, 255, 0, 0.3);
+    padding-bottom: 6px;
+  }
+
+  .writing-schematic-tag {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    color: var(--slime-green);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .writing-schematic-tag::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--slime-green);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--slime-green);
+  }
+
+  .writing-schematic-status {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 9.5px;
+    color: #94A3B8;
+    letter-spacing: 0.5px;
+  }
+
+  .writing-schematic-svg-wrap {
+    width: 100%;
+    height: 86px;
+    background: radial-gradient(circle at center, #161D2B 0%, #0A0D14 100%);
+    border: 2px solid #232B3E;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 4-QUADRANT STATS MATRIX */
+  .writing-spec-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .writing-spec-tile {
+    background: #1A1F2C;
+    border: 2.5px solid var(--void-black);
+    border-radius: 12px;
+    padding: 8px 10px;
+    box-shadow: 2px 2px 0px var(--void-black);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .writing-spec-tile-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 9px;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .writing-spec-tile-val {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: #FFFFFF;
+    text-transform: uppercase;
+  }
+
+  .writing-spec-tile-val.accent-green {
+    color: var(--slime-green);
+  }
+
+  .writing-spec-tile-val.accent-gold {
+    color: var(--hazard-gold-light);
+  }
+
+  /* SURVIVOR FIELD MEMO DISPATCH */
+  .writing-field-dispatch {
+    background: rgba(255, 201, 0, 0.08);
+    border: 2px dashed #FFC900;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #CBD5E1;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .writing-dispatch-badge {
+    background: #FFC900;
+    color: var(--void-black);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 9px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .writing-arcade-counter {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: var(--slime-green);
+    white-space: nowrap;
+    padding: 0 4px;
+  }
+
   /* RETRO ARCADE CONTROLLER */
   .writing-arcade-controller {
     display: flex;
@@ -1113,23 +1280,69 @@ function Writing() {
         <div className="writing-layout-container">
           {/* LEFT: HERO SHOWCASE STAGE */}
           <section className="writing-hero-card">
-
-
-
-
-            {/* JAGGED COMIC STARBURST BADGE */}
-            <div className="writing-starburst-badge">
-              <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
-              <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
+            {/* TOP HEADER ROW: STARBURST BADGE & STATUS PILL */}
+            <div className="writing-hero-header-row">
+              <div className="writing-starburst-badge">
+                <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
+                <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
+              </div>
+              <div className="writing-hero-status-pill">
+                <span className="writing-status-dot" />
+                <span>SURVIVOR ISSUE // ₹{currentCatalog.basePrice}</span>
+              </div>
             </div>
 
-            {/* PUNCHY TITLE & TWO-COLUMN LORE */}
-            <div>
-              <h3 className="writing-hero-title">
-                APOCALYPSE-GRADE TOOLS FOR EXAM SURVIVORS
-              </h3>
+            {/* TACTICAL SCHEMATIC BLUEPRINT HUD */}
+            <div className="writing-schematic-box">
+              <div className="writing-schematic-header">
+                <span className="writing-schematic-tag">TACTICAL SCHEMATIC // HUD-V4</span>
+                <span className="writing-schematic-status">CORE: {currentCatalog.modelName.toUpperCase()}</span>
+              </div>
+              <div className="writing-schematic-svg-wrap">
+                <svg viewBox="0 0 380 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <pattern id="blueprint-grid" width="16" height="16" patternUnits="userSpaceOnUse">
+                      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
+                  <line x1="30" y1="45" x2="350" y2="45" stroke="rgba(168,255,0,0.2)" strokeWidth="1" strokeDasharray="3 3" />
+                  
+                  {/* Tip */}
+                  <polygon points="35,45 65,37 65,53" fill="#A8FF00" stroke="#000" strokeWidth="2" />
+                  <line x1="35" y1="45" x2="25" y2="45" stroke="#A8FF00" strokeWidth="2.5" />
+                  
+                  {/* Grip with ribs */}
+                  <rect x="65" y="35" width="70" height="20" rx="3" fill="#242A38" stroke="#000" strokeWidth="2" />
+                  <line x1="78" y1="35" x2="78" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
+                  <line x1="90" y1="35" x2="90" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
+                  <line x1="102" y1="35" x2="102" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
+                  <line x1="114" y1="35" x2="114" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
+                  <line x1="126" y1="35" x2="126" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
+                  
+                  {/* Main Chassis */}
+                  <rect x="135" y="37" width="155" height="16" rx="2" fill="#1A1F2C" stroke="#000" strokeWidth="2" />
+                  <rect x="145" y="41" width="115" height="8" rx="2" fill="#12151C" />
+                  <line x1="145" y1="45" x2="235" y2="45" stroke="#38BDF8" strokeWidth="3" strokeLinecap="round" />
+                  
+                  {/* Endcap & Mechanism */}
+                  <rect x="290" y="38" width="22" height="14" rx="2" fill="#334155" stroke="#000" strokeWidth="1.5" />
+                  <rect x="312" y="41" width="14" height="8" rx="1" fill="#FFC900" stroke="#000" strokeWidth="1.5" />
+                  <rect x="326" y="43" width="8" height="4" fill="#E2E8F0" />
+                  
+                  {/* Callouts */}
+                  <circle cx="35" cy="45" r="3" fill="#A8FF00" />
+                  <polyline points="35,45 45,20 105,20" fill="none" stroke="#A8FF00" strokeWidth="1.2" strokeDasharray="2 2" />
+                  <text x="110" y="23" fill="#A8FF00" fontSize="8" fontFamily="'Archivo Black', sans-serif">BALLISTIC POINT</text>
+                  
+                  <circle cx="200" cy="45" r="3" fill="#38BDF8" />
+                  <polyline points="200,45 210,70 260,70" fill="none" stroke="#38BDF8" strokeWidth="1.2" strokeDasharray="2 2" />
+                  <text x="265" y="73" fill="#38BDF8" fontSize="8" fontFamily="'Archivo Black', sans-serif">CORE RESERVOIR</text>
+                </svg>
+              </div>
             </div>
 
+            {/* TWO-COLUMN LORE */}
             <div className="writing-lore-grid">
               <div className="writing-lore-item">
                 <strong>SPECIFICATION //</strong>
@@ -1139,6 +1352,32 @@ function Writing() {
                 <strong>DEPLOYMENT //</strong>
                 {currentCatalog.lore2}
               </div>
+            </div>
+
+            {/* 4-QUADRANT STATS MATRIX */}
+            <div className="writing-spec-matrix">
+              <div className="writing-spec-tile">
+                <span className="writing-spec-tile-label">FLOW VELOCITY</span>
+                <span className="writing-spec-tile-val accent-green">ZERO DRAG // FAST-DRY</span>
+              </div>
+              <div className="writing-spec-tile">
+                <span className="writing-spec-tile-label">OMR SCAN RATING</span>
+                <span className="writing-spec-tile-val accent-gold">100% OPTICAL READ PASS</span>
+              </div>
+              <div className="writing-spec-tile">
+                <span className="writing-spec-tile-label">BARREL CHASSIS</span>
+                <span className="writing-spec-tile-val">ANTI-FATIGUE ERGO</span>
+              </div>
+              <div className="writing-spec-tile">
+                <span className="writing-spec-tile-label">EXAM ENDURANCE</span>
+                <span className="writing-spec-tile-val">3-HOUR MARATHON RATED</span>
+              </div>
+            </div>
+
+            {/* SURVIVOR FIELD MEMO DISPATCH */}
+            <div className="writing-field-dispatch">
+              <span className="writing-dispatch-badge">DISPATCH</span>
+              <span>SURVIVOR MEMO: Calibrated for rapid answer-sheet penetration under timed examination siege.</span>
             </div>
 
             {/* RETRO ARCADE CONTROLLER */}
@@ -1164,6 +1403,10 @@ function Writing() {
                 </div>
                 <div className="writing-track-dot" />
               </div>
+
+              <span className="writing-arcade-counter">
+                {currentCatIdx + 1} / {categoryItems.length}
+              </span>
 
               <button
                 type="button"
