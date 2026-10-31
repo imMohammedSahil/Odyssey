@@ -70,8 +70,8 @@ const styles = `
   }
 
   .writing-brand-icon-circle {
-    width: 36px;
-    height: 36px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: var(--slime-green);
     display: flex;
@@ -79,12 +79,13 @@ const styles = `
     justify-content: center;
     border: 2px solid var(--void-black);
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   .writing-brand-icon-circle img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .writing-brand-text-col {
@@ -829,7 +830,7 @@ function Writing() {
         <header className="writing-header-bar">
           <div className="writing-brand-capsule">
             <div className="writing-brand-icon-circle">
-              <img src="/zombie-head-transparent.png" alt="Zombie mascot" />
+              <img src="/zombie-rip-pfp.jpg" alt="Zombie pfp" />
             </div>
             <div className="writing-brand-text-col">
               <span className="writing-brand-title">ODYSSEY // <span>OUTPOST</span></span>
