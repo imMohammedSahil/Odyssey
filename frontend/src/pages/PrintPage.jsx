@@ -215,6 +215,7 @@ const styles = `
     display: flex;
     align-items: center;
     gap: 8px;
+    height: 36px;
     margin-bottom: 12px;
   }
 
@@ -391,6 +392,7 @@ const styles = `
     text-transform: uppercase;
     letter-spacing: -0.2px;
     color: #FFFFFF;
+    margin: 0;
   }
 
   /* LEFT COLUMN (CONFIG) */
@@ -688,9 +690,32 @@ const styles = `
     display: flex;
     flex-direction: column;
     height: 100%;
-    justify-content: space-between;
-    gap: 12px;
     margin-top: 0px;
+  }
+
+  .print-summary-mascot-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 36px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .print-zombie-head-mascot {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+    filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.85));
+    position: absolute;
+    bottom: -8px;
+    z-index: 5;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+  }
+
+  .print-zombie-head-mascot:hover {
+    transform: scale(1.1) rotate(-4deg);
   }
 
   .print-summary-card {
@@ -707,13 +732,11 @@ const styles = `
     justify-content: space-between;
   }
 
-  .print-summary-mascot-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .print-summary-title-row {
     margin-bottom: 10px;
     border-bottom: 2px solid var(--border-dark);
     padding-bottom: 8px;
+    text-align: center;
   }
 
   .print-summary-title {
@@ -722,6 +745,7 @@ const styles = `
     text-transform: uppercase;
     letter-spacing: -0.3px;
     color: var(--void-black);
+    margin: 0;
   }
 
   .print-calc-list {
@@ -1217,21 +1241,18 @@ function Print() {
 
           {/* RIGHT: LIVE ESTIMATE & CHECKOUT */}
           <div className="print-col-summary">
+            {/* Mascot row above card matching left column header so blue box top aligns with green dropzone */}
+            <div className="print-summary-mascot-row">
+              <img
+                src="/zombie-head-transparent.png"
+                alt="Zombie Mascot"
+                className="print-zombie-head-mascot"
+              />
+            </div>
+
             <div className="print-summary-card">
-              {/* Zombie Head Mascot directly above Order Breakdown */}
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "10px", borderBottom: "2px solid var(--border-dark)", paddingBottom: "8px" }}>
-                <img
-                  src="/zombie-head-transparent.png"
-                  alt="Zombie Head Mascot"
-                  style={{
-                    width: 58,
-                    height: 58,
-                    objectFit: "contain",
-                    filter: "drop-shadow(2px 3px 0px rgba(0,0,0,0.75))",
-                    marginBottom: 4,
-                  }}
-                />
-                <h3 className="print-summary-title" style={{ margin: 0, textAlign: "center" }}>Order Breakdown</h3>
+              <div className="print-summary-title-row">
+                <h3 className="print-summary-title">Order Breakdown</h3>
               </div>
 
                 <div className="print-calc-list">
@@ -1256,7 +1277,7 @@ function Print() {
               </div>
 
             {/* ACTION CTA */}
-            <div>
+            <div style={{ marginTop: "12px" }}>
               {currentStep < 3 ? (
                 <button
                   className="print-action-cta"
