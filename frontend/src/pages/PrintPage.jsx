@@ -632,14 +632,6 @@ const styles = `
     transform: scale(1.05);
   }
 
-  .print-step-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    height: 100%;
-    justify-content: space-between;
-  }
-
   /* COLOR MODE SELECTOR (NEOBRUTAL CARDS - EXPANDED & BOLD) */
   .print-mode-grid {
     display: grid;
@@ -901,15 +893,14 @@ const styles = `
     filter: drop-shadow(2px 4px 0px rgba(0,0,0,0.85));
     position: absolute;
     bottom: -14px;
-    left: calc(50% + 85px);
-    transform: translateX(-50%);
+    right: 36px;
     z-index: 5;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     cursor: pointer;
   }
 
   .print-zombie-head-mascot:hover {
-    transform: translateX(-50%) scale(1.1) rotate(-4deg);
+    transform: scale(1.1) rotate(-4deg);
   }
 
   .print-summary-card {
@@ -1175,10 +1166,6 @@ function Print() {
     }
   }, [file, pages, color, copies, currentStep]);
 
-
-  const progressRatio = currentStep === 1 ? 0.35 : currentStep === 2 ? 0.68 : 0.98;
-  const fillWidth = Math.round(668 * progressRatio);
-
   const handleCancel = async () => {
     await clearActiveJob();
     setFile(null);
@@ -1366,12 +1353,16 @@ function Print() {
               </div>
             </div>
 
-            {/* INLINE SVG FILTER FOR HAND-DRAWN PEN JITTER */}
+            {/* INLINE SVG FILTER FOR HAND-DRAWN PEN JITTER WITH ANTI-ALIASING */}
             <svg style={{ position: "absolute", width: 0, height: 0, pointerEvents: "none" }}>
               <defs>
-                <filter id="kid-pen-wobble">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+                <filter id="kid-pen-wobble" x="-5%" y="-10%" width="110%" height="120%" colorInterpolationFilters="sRGB">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.02 0.04" numOctaves="2" result="noise" />
+                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.0" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+                  <feGaussianBlur in="displaced" stdDeviation="0.35" result="softened" />
+                  <feMerge>
+                    <feMergeNode in="softened" />
+                  </feMerge>
                 </filter>
               </defs>
             </svg>
