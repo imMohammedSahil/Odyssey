@@ -1146,6 +1146,17 @@ function Print() {
   const rate = color === "bw" ? 1 : 10;
   const total = (pages || 0) * rate * (copies || 1);
 
+  // Keyboard shortcut: Escape returns to base
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        navigate(-1);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [navigate]);
+
   // Restore active job from IndexedDB on refresh
   useEffect(() => {
     loadActiveJob().then((saved) => {
