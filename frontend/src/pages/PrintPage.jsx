@@ -638,33 +638,36 @@ const styles = `
     justify-content: space-between;
   }
 
-  /* COLOR MODE SELECTOR (NEOBRUTAL PILLS) */
+  /* COLOR MODE SELECTOR (NEOBRUTAL CARDS - EXPANDED & BOLD) */
   .print-mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 18px;
+    flex: 1;
+    min-height: 250px;
+    margin: 6px 0 0;
   }
 
   .print-mode-btn {
-    border: 3px solid var(--card-border);
-    border-radius: 18px;
-    padding: 14px 16px;
+    border: 3.5px solid #000000;
+    border-radius: 24px;
+    padding: 24px 22px;
     background: var(--card-surface);
     color: #FFFFFF;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.6);
-    transition: all 0.15s ease;
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.7);
+    transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 8px;
     text-align: left;
+    position: relative;
   }
 
   .print-mode-btn:hover:not(.active) {
     background: #272C38;
-    border-color: #3E4554;
     transform: translateY(-2px);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.8);
   }
 
   .print-mode-btn.active {
@@ -672,7 +675,7 @@ const styles = `
     color: var(--void-black);
     border-color: #000000;
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.8);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.9);
   }
 
   .print-mode-btn.active.color-active {
@@ -680,30 +683,75 @@ const styles = `
     color: var(--void-black);
   }
 
-  .print-mode-btn-title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 14px;
-    text-transform: uppercase;
+  .print-mode-btn-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .print-mode-icon-circle {
+    width: 54px;
+    height: 54px;
+    background: var(--void-black);
+    color: var(--slime-green);
+    border-radius: 16px;
+    border: 3px solid #000000;
     display: flex;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
+  }
+
+  .print-mode-btn.active .print-mode-icon-circle {
+    background: var(--void-black);
+    color: var(--slime-green);
+  }
+
+  .print-mode-btn.active.color-active .print-mode-icon-circle {
+    background: var(--void-black);
+    color: var(--brain-pink);
   }
 
   .print-mode-rate-pill {
-    align-self: flex-start;
-    padding: 3px 10px;
+    padding: 6px 14px;
     border-radius: 9999px;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 900;
-    border: 2px solid var(--border-dark);
+    border: 2.5px solid #000000;
     background: var(--hazard-gold);
     color: var(--void-black);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+    letter-spacing: -0.2px;
   }
 
   .print-mode-btn.active .print-mode-rate-pill {
     background: var(--void-black);
     color: #FFFFFF;
     border-color: #000000;
+  }
+
+  .print-mode-btn-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 18px;
+  }
+
+  .print-mode-btn-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 21px;
+    text-transform: uppercase;
+    letter-spacing: -0.4px;
+    line-height: 1.15;
+  }
+
+  .print-mode-btn-sub {
+    font-size: 12px;
+    font-weight: 800;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   /* COPIES STEPPER & PRESETS (BIGGER & FULL CONTAINER) */
