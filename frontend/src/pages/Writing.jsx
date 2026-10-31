@@ -1061,7 +1061,7 @@ function Writing() {
 
   // Compute product name & price
   let name = "";
-  const basePrice = currentCatalog.basePrice;
+  const price = currentCatalog.basePrice;
 
   if (category === "pen") {
     name = `${currentCatalog.modelName} (${color}, ${penType})`;
@@ -1071,7 +1071,7 @@ function Writing() {
     name = `${currentCatalog.modelName} (${mechSize})`;
   }
 
-  const grandTotal = basePrice * (qty || 1);
+  const grandTotal = price * (qty || 1);
 
   const handleAdd = () => {
     if (!name) return showToast("Complete tool selection first!");
