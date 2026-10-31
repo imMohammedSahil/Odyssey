@@ -833,7 +833,7 @@ function Print() {
             
           </h1>
           <p className="print-subtitle">
-            Upload your assignments, notes & documents. High-speed laser output with instant library pickup.
+            High-speed document printing for campus survival. Upload your PDF and collect at the library desk.
           </p>
         </div>
 
