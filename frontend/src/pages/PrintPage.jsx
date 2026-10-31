@@ -41,7 +41,7 @@ const styles = `
     background-position: 0 0, 13px 13px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: var(--void-black);
-    padding: 20px 16px 60px;
+    padding: 16px 24px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -57,8 +57,8 @@ const styles = `
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    gap: 12px;
+    margin-bottom: 28px;
+    gap: 16px;
     flex-wrap: wrap;
   }
 
@@ -133,23 +133,36 @@ const styles = `
   /* HERO BANNER */
   .print-hero-heading {
     text-align: center;
-    margin-bottom: 24px;
-    max-width: 720px;
+    margin-top: 20px;
+    margin-bottom: 34px;
+    max-width: 980px;
   }
 
   .print-title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(28px, 4.5vw, 44px);
+    font-family: 'Rubik Wet Paint', 'Creepster', 'Titan One', cursive, sans-serif;
+    font-size: clamp(38px, 6.2vw, 64px);
+    font-weight: 500;
     text-transform: uppercase;
-    color: var(--void-black);
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
+    letter-spacing: 2.5px;
+    line-height: 1.25;
+    margin-bottom: 22px;
+    display: inline-block;
+    text-align: center;
+    /* Melting lime ooze falling down into pumpkin orange inside the letters */
+    background-image: 
+      radial-gradient(circle at 14% 34%, #D4F024 0%, #D4F024 12px, transparent 13px),
+      radial-gradient(circle at 36% 40%, #D4F024 0%, #D4F024 15px, transparent 16px),
+      radial-gradient(circle at 64% 36%, #D4F024 0%, #D4F024 13px, transparent 14px),
+      radial-gradient(circle at 84% 42%, #D4F024 0%, #D4F024 16px, transparent 17px),
+      linear-gradient(180deg, #D4F024 0%, #D8F428 24%, #FFA21C 32%, #FF6A13 42%, #FF5200 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.2px #0D0D0D;
+    paint-order: stroke fill;
+    filter: drop-shadow(0 2px 0 #0D0D0D)
+            drop-shadow(0 5px 0 #D4F024)
+            drop-shadow(0 8px 0 #0D0D0D)
+            drop-shadow(4px 13px 0px rgba(0, 0, 0, 0.85));
   }
 
   .print-title-star {
@@ -165,10 +178,12 @@ const styles = `
   }
 
   .print-subtitle {
-    font-size: 14.5px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--void-black);
-    opacity: 0.9;
+    opacity: 0.95;
+    line-height: 1.5;
+    margin-top: 6px;
   }
 
   /* MAIN WORKBENCH CARD (VOid Black Chassis) */
@@ -180,7 +195,7 @@ const styles = `
     border: 4px solid #000000;
     border-radius: 28px;
     box-shadow: var(--shadow-solid-lg);
-    padding: 32px 32px 36px;
+    padding: 34px 36px 38px;
     display: grid;
     grid-template-columns: 1.25fr 0.95fr;
     gap: 32px;
@@ -203,30 +218,102 @@ const styles = `
     margin-bottom: 12px;
   }
 
-  .print-sec-tag {
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  /* SKETCHED HAND-DRAWN PROGRESS BAR (Matches uploaded comic image) */
+  .print-progress-wrapper {
+    grid-column: 1 / -1;
+    margin-bottom: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
 
-  .print-sec-title {
+  .print-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 4px;
+    margin-bottom: 2px;
+  }
+
+  .print-progress-status {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 17px;
+    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: -0.2px;
+    color: var(--slime-green);
+    letter-spacing: 0.8px;
+  }
+
+  .print-progress-steps-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .print-progress-tab {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    transition: all 0.15s ease;
+  }
+
+  .print-progress-tab:hover {
     color: #FFFFFF;
   }
 
-  /* LEFT COLUMN (CONFIG) */
-  .print-col-config {
+  .print-progress-tab.active {
+    color: var(--void-black);
+    background: var(--hazard-gold);
+    border: 2px solid var(--border-dark);
+    box-shadow: 2px 2px 0px var(--border-dark);
+  }
+
+  .print-kid-track {
+    width: 100%;
+    height: 42px;
+    background: #FFFFFF;
+    border: 3.5px solid #23272D;
+    border-radius: 9999px;
+    padding: 4px;
+    box-shadow: 4px 4px 0px #0D0D0D;
     display: flex;
-    flex-direction: column;
-    gap: 22px;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    filter: url(#kid-pen-wobble);
+    margin-top: 4px;
+  }
+
+  .print-kid-fill {
+    height: 100%;
+    border-radius: 9999px;
+    border: 2.5px solid #1E232B;
+    background-color: #8DE045;
+    background-image: repeating-linear-gradient(
+      -55deg,
+      #8DE045 0px,
+      #8DE045 7px,
+      #1F2916 7px,
+      #1F2916 9.5px
+    );
+    box-shadow: 0 0 0 3px rgba(134, 214, 60, 0.7);
+    transition: width 0.4s cubic-bezier(0.34, 1.25, 0.64, 1);
+    position: relative;
+  }
+
+  @media (max-width: 680px) {
+    .print-progress-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 
   /* STEP ACTIONS FOOTER */
@@ -287,16 +374,55 @@ const styles = `
     box-shadow: 4.5px 4.5px 0px var(--border-dark);
   }
 
+  .print-sec-tag {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .print-sec-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 17px;
+    text-transform: uppercase;
+    letter-spacing: -0.2px;
+    color: #FFFFFF;
+  }
+
+  /* LEFT COLUMN (CONFIG) */
+  .print-col-config {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .print-step-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 1;
+  }
+
   /* DROPZONE (Dark Neon Brutal) */
   .print-dropzone {
     border: 3.5px dashed var(--slime-green);
-    border-radius: 20px;
+    border-radius: 24px;
     background: var(--card-dark);
-    padding: 28px 18px;
+    padding: 48px 28px;
+    min-height: 380px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     position: relative;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.6);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
     transition: all 0.15s ease;
   }
 
@@ -310,29 +436,31 @@ const styles = `
   .print-dropzone input[type="file"] {
     position: absolute;
     inset: 0;
-    opacity: 0;
+    opacity: 0 !important;
     cursor: pointer;
     width: 100%;
     height: 100%;
-    z-index: 5;
+    z-index: 10;
+    font-size: 0;
+    color: transparent;
   }
 
   .print-drop-icon {
     font-size: 38px;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
     display: inline-block;
   }
 
   .print-drop-main {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     color: var(--slime-green);
   }
 
   .print-drop-sub {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--text-muted);
   }
@@ -342,8 +470,13 @@ const styles = `
     background: var(--slime-green);
     color: var(--void-black);
     border: 3.5px solid #000000;
-    border-radius: 20px;
-    padding: 18px 20px;
+    border-radius: 24px;
+    padding: 36px 28px;
+    min-height: 380px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
   }
 
@@ -554,8 +687,10 @@ const styles = `
   .print-col-summary {
     display: flex;
     flex-direction: column;
+    height: 100%;
     justify-content: space-between;
-    gap: 20px;
+    gap: 16px;
+    margin-top: 36px;
   }
 
   .print-summary-card {
@@ -566,6 +701,10 @@ const styles = `
     padding: 22px 20px;
     box-shadow: 5px 5px 0px rgba(0,0,0,0.6);
     position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .print-summary-mascot-row {
@@ -729,16 +868,19 @@ function Print() {
   const navigate = useNavigate();
   const { addToCart, cartItems } = useCart();
 
+  const [currentStep, setCurrentStep] = useState(1);
   const [file, setFile] = useState(null);
   const [pages, setPages] = useState(0);
   const [copies, setCopies] = useState(1);
   const [color, setColor] = useState("bw");
-  const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
   const rate = color === "bw" ? 1 : 10;
   const total = (pages || 0) * rate * (copies || 1);
+
+  const progressRatio = currentStep === 1 ? 0.35 : currentStep === 2 ? 0.68 : 0.98;
+  const fillWidth = Math.round(668 * progressRatio);
 
   const showToastMessage = (message, type = "success") => {
     setToast({ show: true, message, type });
@@ -760,7 +902,7 @@ function Print() {
     if (!selected) return;
 
     if (selected.type !== "application/pdf") {
-      showToastMessage("Please upload a valid PDF document ", "error");
+      showToastMessage("Please upload a valid PDF document", "error");
       return;
     }
 
@@ -774,7 +916,7 @@ function Print() {
         const pdf = await pdfjsLib.getDocument(typedArray).promise;
         setPages(pdf.numPages);
         setFile(selected);
-        showToastMessage(`PDF verified: ${pdf.numPages} pages detected! `, "success");
+        showToastMessage(`PDF verified: ${pdf.numPages} pages detected!`, "success");
       } catch (err) {
         showToastMessage("Could not parse PDF. Please try another file.", "error");
       } finally {
@@ -787,7 +929,7 @@ function Print() {
 
   const handleAdd = () => {
     if (!file) {
-      showToastMessage("Upload a PDF document first! ", "error");
+      showToastMessage("Upload a PDF document first!", "error");
       return;
     }
 
@@ -800,7 +942,7 @@ function Print() {
       file,
     });
 
-    showToastMessage("Added to survival loadout! ", "success");
+    showToastMessage("Added to survival loadout!", "success");
   };
 
   return (
@@ -821,7 +963,7 @@ function Print() {
               ← BACK TO BASE
             </button>
             <Link to="/cart" className="print-btn-pill print-cart-pill">
-               CART ({cartItems ? cartItems.length : 0})
+              CART ({cartItems ? cartItems.length : 0})
             </Link>
           </div>
         </header>
@@ -830,7 +972,6 @@ function Print() {
         <div className="print-hero-heading">
           <h1 className="print-title">
             OUTBREAK PRINT BUNKER
-            
           </h1>
           <p className="print-subtitle">
             High-speed document printing for campus survival. Upload your PDF and collect at the library desk.
@@ -846,91 +987,126 @@ function Print() {
                 MISSION PROGRESS: STEP {currentStep} OF 3
               </span>
               <div className="print-progress-steps-row">
-                <button type="button" className={`print-progress-tab ${currentStep === 1 ? "active" : ""}`} onClick={() => goToStep(1)}>1. Upload</button>
-                <button type="button" className={`print-progress-tab ${currentStep === 2 ? "active" : ""}`} onClick={() => goToStep(2)}>2. Color</button>
-                <button type="button" className={`print-progress-tab ${currentStep === 3 ? "active" : ""}`} onClick={() => goToStep(3)}>3. Copies & Review</button>
+                <button
+                  type="button"
+                  className={`print-progress-tab ${currentStep === 1 ? "active" : ""}`}
+                  onClick={() => goToStep(1)}
+                >
+                  1. Upload
+                </button>
+                <button
+                  type="button"
+                  className={`print-progress-tab ${currentStep === 2 ? "active" : ""}`}
+                  onClick={() => goToStep(2)}
+                >
+                  2. Color
+                </button>
+                <button
+                  type="button"
+                  className={`print-progress-tab ${currentStep === 3 ? "active" : ""}`}
+                  onClick={() => goToStep(3)}
+                >
+                  3. Copies & Review
+                </button>
               </div>
             </div>
 
+            {/* INLINE SVG FILTER FOR HAND-DRAWN PEN JITTER */}
+            <svg style={{ position: "absolute", width: 0, height: 0, pointerEvents: "none" }}>
+              <defs>
+                <filter id="kid-pen-wobble">
+                  <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
+                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+                </filter>
+              </defs>
+            </svg>
+
+            {/* FULL-WIDTH LEFT-TO-RIGHT TRACK MATCHING IMAGE */}
             <div className="print-kid-track">
-              <div className="print-kid-fill" style={{ width: currentStep === 1 ? "35%" : currentStep === 2 ? "68%" : "100%" }} />
+              <div
+                className="print-kid-fill"
+                style={{
+                  width: currentStep === 1 ? "35%" : currentStep === 2 ? "68%" : "100%",
+                }}
+              />
             </div>
           </div>
-          {/* LEFT: DOCUMENT & PRINT SETTINGS */}
+
+          {/* LEFT: CURRENT SEQUENTIAL STEP CONFIG */}
           <div className="print-col-config">
-            {/* STEP 1: UPLOAD */}
+            {/* STEP 1: UPLOAD MANUSCRIPT */}
             {currentStep === 1 && (
-              <div>
+              <div className="print-step-content">
                 <div className="print-sec-header">
                   <span className="print-sec-tag">Step 1 of 3</span>
-                <h2 className="print-sec-title">Upload Manuscript</h2>
-              </div>
-
-              {!file ? (
-                <div className="print-dropzone">
-                  <input
-                    type="file"
-                    accept="application/pdf"
-                    onChange={handleFileUpload}
-                  />
-                  <div className="print-drop-icon">
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-      <polyline points="14 2 14 8 20 8" />
-      <line x1="16" y1="13" x2="8" y2="13" />
-      <line x1="16" y1="17" x2="8" y2="17" />
-      <polyline points="10 9 9 9 8 9" />
-    </svg>
-  </div>
-                  <h3 className="print-drop-main">DRAG & DROP PDF HERE</h3>
-                  <p className="print-drop-sub">or click anywhere to browse files</p>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      marginTop: 12,
-                      background: "var(--slime-green)",
-                      color: "var(--void-black)",
-                      padding: "4px 12px",
-                      borderRadius: 9999,
-                      fontSize: 11,
-                      fontWeight: 900,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    PDF Format • Max 100MB
-                  </div>
+                  <h2 className="print-sec-title">Upload Manuscript</h2>
                 </div>
-              ) : (
-                <div className="print-file-ready">
-                  <div className="print-file-top">
-                    <span className="print-file-badge"> PDF Verified</span>
-                    <span style={{ fontSize: 12, fontWeight: 900 }}>Ready to print</span>
-                  </div>
-                  <div className="print-file-name" title={file.name}>
-                    {file.name}
-                  </div>
-                  <div className="print-file-pages">
-                    {loading ? (
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        <span className="print-spinner" /> Reading pages...
-                      </span>
-                    ) : (
-                      ` Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
-                    )}
-                  </div>
 
-                  <label className="print-reupload-label">
+                {!file ? (
+                  <div className="print-dropzone">
                     <input
                       type="file"
                       accept="application/pdf"
                       onChange={handleFileUpload}
-                      style={{ display: "none" }}
                     />
-                    ↺ Replace with another PDF
-                  </label>
-                </div>
-              )}
-            </div>
+                    <div className="print-drop-icon">
+                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="16" y1="13" x2="8" y2="13" />
+                        <line x1="16" y1="17" x2="8" y2="17" />
+                        <polyline points="10 9 9 9 8 9" />
+                      </svg>
+                    </div>
+                    <h3 className="print-drop-main">DRAG & DROP PDF HERE</h3>
+                    <p className="print-drop-sub">or click anywhere to browse files</p>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        marginTop: 12,
+                        background: "var(--slime-green)",
+                        color: "var(--void-black)",
+                        padding: "4px 12px",
+                        borderRadius: 9999,
+                        fontSize: 11,
+                        fontWeight: 900,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      PDF Format • Max 100MB
+                    </div>
+                  </div>
+                ) : (
+                  <div className="print-file-ready">
+                    <div className="print-file-top">
+                      <span className="print-file-badge">PDF Verified</span>
+                      <span style={{ fontSize: 12, fontWeight: 900 }}>Ready to configure</span>
+                    </div>
+                    <div className="print-file-name" title={file.name}>
+                      {file.name}
+                    </div>
+                    <div className="print-file-pages">
+                      {loading ? (
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                          <span className="print-spinner" /> Reading pages...
+                        </span>
+                      ) : (
+                        `Total: ${pages} page${pages !== 1 ? "s" : ""} counted`
+                      )}
+                    </div>
+
+                    <label className="print-reupload-label">
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={handleFileUpload}
+                        style={{ display: "none" }}
+                      />
+                      ↺ Replace with another PDF
+                    </label>
+                  </div>
+                )}
+              </div>
             )}
 
             {/* STEP 2: COLOR MODE */}
@@ -938,33 +1114,46 @@ function Print() {
               <div>
                 <div className="print-sec-header">
                   <span className="print-sec-tag">Step 2 of 3</span>
-                <h2 className="print-sec-title">Color Mode</h2>
-              </div>
-
-              <div className="print-mode-grid">
-                <div
-                  className={`print-mode-btn ${color === "bw" ? "active" : ""}`}
-                  onClick={() => setColor("bw")}
-                >
-                  <span className="print-mode-btn-title">
-                     Black & White
-                  </span>
-                  <span className="print-mode-rate-pill">₹1 / page</span>
+                  <h2 className="print-sec-title">Select Color Mode</h2>
                 </div>
 
-                <div
-                  className={`print-mode-btn ${color === "color" ? "active color-active" : ""}`}
-                  onClick={() => setColor("color")}
-                >
-                  <span className="print-mode-btn-title">
-                     Full Color
-                  </span>
-                  <span className="print-mode-rate-pill">₹10 / page</span>
+                <div className="print-mode-grid">
+                  <div
+                    className={`print-mode-btn ${color === "bw" ? "active" : ""}`}
+                    onClick={() => setColor("bw")}
+                  >
+                    <span className="print-mode-btn-title">
+                      Black & White
+                    </span>
+                    <span className="print-mode-rate-pill">₹1 / page</span>
+                  </div>
+
+                  <div
+                    className={`print-mode-btn ${color === "color" ? "active color-active" : ""}`}
+                    onClick={() => setColor("color")}
+                  >
+                    <span className="print-mode-btn-title">
+                      Full Color
+                    </span>
+                    <span className="print-mode-rate-pill">₹10 / page</span>
+                  </div>
                 </div>
-              </div>
-              <div className="print-step-footer">
-                  <button type="button" className="print-step-btn-back" onClick={() => goToStep(1)}>← Back to Upload</button>
-                  <button type="button" className="print-step-btn-next" onClick={() => goToStep(3)}>Proceed to Copies →</button>
+
+                <div className="print-step-footer">
+                  <button
+                    type="button"
+                    className="print-step-btn-back"
+                    onClick={() => goToStep(1)}
+                  >
+                    ← Back to Upload
+                  </button>
+                  <button
+                    type="button"
+                    className="print-step-btn-next"
+                    onClick={() => goToStep(3)}
+                  >
+                    Proceed to Copies →
+                  </button>
                 </div>
               </div>
             )}
@@ -974,39 +1163,53 @@ function Print() {
               <div>
                 <div className="print-sec-header">
                   <span className="print-sec-tag">Step 3 of 3</span>
-                <h2 className="print-sec-title">Number of Copies</h2>
-              </div>
+                  <h2 className="print-sec-title">Number of Copies</h2>
+                </div>
 
-              <div className="print-stepper-box">
-                <button
-                  className="print-step-btn"
-                  onClick={() => setCopies((prev) => Math.max(1, (Number(prev) || 1) - 1))}
-                >
-                  −
-                </button>
-                <div className="print-step-value">{copies || 1}</div>
-                <button
-                  className="print-step-btn"
-                  onClick={() => setCopies((prev) => (Number(prev) || 1) + 1)}
-                >
-                  +
-                </button>
-              </div>
-
-              <div className="print-presets-row">
-                {[1, 2, 5, 10].map((preset) => (
+                <div className="print-stepper-box">
                   <button
-                    key={preset}
-                    className={`print-preset-pill ${copies === preset ? "active" : ""}`}
-                    onClick={() => setCopies(preset)}
+                    className="print-step-btn"
+                    onClick={() => setCopies((prev) => Math.max(1, (Number(prev) || 1) - 1))}
                   >
-                    {preset} {preset === 1 ? "Copy" : "Copies"}
+                    −
                   </button>
-                ))}
-              </div>
-              <div className="print-step-footer">
-                  <button type="button" className="print-step-btn-back" onClick={() => goToStep(2)}>← Back to Color</button>
-                  <button type="button" className="print-step-btn-next" style={{ background: "var(--hazard-gold)" }} onClick={handleAdd}>Add to Cart • ₹{total}</button>
+                  <div className="print-step-value">{copies || 1}</div>
+                  <button
+                    className="print-step-btn"
+                    onClick={() => setCopies((prev) => (Number(prev) || 1) + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div className="print-presets-row">
+                  {[1, 2, 5, 10].map((preset) => (
+                    <button
+                      key={preset}
+                      className={`print-preset-pill ${copies === preset ? "active" : ""}`}
+                      onClick={() => setCopies(preset)}
+                    >
+                      {preset} {preset === 1 ? "Copy" : "Copies"}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="print-step-footer">
+                  <button
+                    type="button"
+                    className="print-step-btn-back"
+                    onClick={() => goToStep(2)}
+                  >
+                    ← Back to Color
+                  </button>
+                  <button
+                    type="button"
+                    className="print-step-btn-next"
+                    style={{ background: "var(--hazard-gold)" }}
+                    onClick={handleAdd}
+                  >
+                    Add to Cart • ₹{total}
+                  </button>
                 </div>
               </div>
             )}
@@ -1014,15 +1217,11 @@ function Print() {
 
           {/* RIGHT: LIVE ESTIMATE & CHECKOUT */}
           <div className="print-col-summary">
-            <div>
-              <div className="print-summary-card">
-                <div className="print-summary-mascot-row">
-                  <div>
-                    <span style={{ fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: 0.5 }}>
-                      Live Estimate
-                    </span>
-                    <h3 className="print-summary-title">Order Breakdown</h3>
-                  </div>
+            <div className="print-summary-card">
+              <div className="print-summary-mascot-row">
+                <div>
+                  <h3 className="print-summary-title">Order Breakdown</h3>
+                </div>
 
                   {/* Retro comic mascot sticker icon */}
                   <div
@@ -1035,15 +1234,14 @@ function Print() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      fontSize: 22,
                       boxShadow: "2px 2px 0px var(--border-dark)",
                     }}
                   >
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-  <polyline points="6 9 6 2 18 2 18 9" />
-  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-  <rect x="6" y="14" width="12" height="8" />
-</svg>
+                      <polyline points="6 9 6 2 18 2 18 9" />
+                      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                      <rect x="6" y="14" width="12" height="8" />
+                    </svg>
                   </div>
                 </div>
 
@@ -1066,20 +1264,23 @@ function Print() {
                   <span className="print-total-label">Grand Total:</span>
                   <span className="print-total-price">₹{total}</span>
                 </div>
-
-                <div className="print-spec-tags">
-                  <span className="print-spec-pill">A4 75 GSM Bond</span>
-                  <span className="print-spec-pill">Crisp Laser</span>
-                  <span className="print-spec-pill">Library Desk</span>
-                </div>
               </div>
-            </div>
 
             {/* ACTION CTA */}
             <div>
-              <button className="print-action-cta" onClick={handleAdd}>
-                Add to Survival Loadout 
-              </button>
+              {currentStep < 3 ? (
+                <button
+                  className="print-action-cta"
+                  style={{ background: "var(--slime-green)", color: "var(--void-black)" }}
+                  onClick={() => goToStep(currentStep + 1)}
+                >
+                  {currentStep === 1 ? "Continue to Color Selection →" : "Continue to Review & Copies →"}
+                </button>
+              ) : (
+                <button className="print-action-cta" onClick={handleAdd}>
+                  Add to Survival Loadout
+                </button>
+              )}
             </div>
           </div>
         </main>
