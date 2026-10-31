@@ -919,6 +919,43 @@ const getDB = () =>
     req.onerror = () => resolve(null);
   });
 
+const saveActiveJob = async (fileObj, stateObj) => {
+  try {
+    const db = await getDB();
+    if (!db) return;
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    tx.objectStore(STORE_NAME).put({ file: fileObj, ...stateObj }, "current");
+  } catch (e) {
+    console.warn("IndexedDB save failed:", e);
+  }
+};
+
+const loadActiveJob = async () => {
+  try {
+    const db = await getDB();
+    if (!db) return null;
+    return new Promise((resolve) => {
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const req = tx.objectStore(STORE_NAME).get("current");
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => resolve(null);
+    });
+  } catch (e) {
+    return null;
+  }
+};
+
+const clearActiveJob = async () => {
+  try {
+    const db = await getDB();
+    if (!db) return;
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    tx.objectStore(STORE_NAME).delete("current");
+  } catch (e) {
+    console.warn("IndexedDB clear failed:", e);
+  }
+};
+
 function Print() {
   const navigate = useNavigate();
   const { addToCart, cartItems } = useCart();
