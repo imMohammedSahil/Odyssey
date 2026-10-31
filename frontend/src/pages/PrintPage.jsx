@@ -842,9 +842,10 @@ function Print() {
           {/* LEFT: DOCUMENT & PRINT SETTINGS */}
           <div className="print-col-config">
             {/* STEP 1: UPLOAD */}
-            <div>
-              <div className="print-sec-header">
-                <span className="print-sec-tag">Step 1</span>
+            {currentStep === 1 && (
+              <div>
+                <div className="print-sec-header">
+                  <span className="print-sec-tag">Step 1 of 3</span>
                 <h2 className="print-sec-title">Upload Manuscript</h2>
               </div>
 
@@ -913,6 +914,7 @@ function Print() {
                 </div>
               )}
             </div>
+            )}
 
             {/* STEP 2: COLOR MODE */}
             <div>
