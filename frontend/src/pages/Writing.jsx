@@ -423,6 +423,81 @@ const styles = `
     box-shadow: 1px 1px 0px var(--void-black);
   }
 
+  /* MODEL SELECTION GRID */
+  .writing-models-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    .writing-models-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .writing-model-btn {
+    background: #242A38;
+    border: 2.5px solid var(--void-black);
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    box-shadow: 2px 2px 0px var(--void-black);
+    transition: all 0.1s ease;
+    position: relative;
+  }
+
+  .writing-model-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--void-black);
+    background: #2E3648;
+  }
+
+  .writing-model-btn.active {
+    background: var(--hazard-gold-light);
+    border-color: var(--void-black);
+    transform: translate(1.5px, 1.5px);
+    box-shadow: 0px 0px 0px var(--void-black);
+  }
+
+  .writing-model-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    line-height: 1.2;
+  }
+
+  .writing-model-btn.active .writing-model-name {
+    color: var(--void-black);
+  }
+
+  .writing-model-tag {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #94A3B8;
+    line-height: 1.2;
+  }
+
+  .writing-model-btn.active .writing-model-tag {
+    color: #334155;
+  }
+
+  .writing-model-price {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: var(--slime-green);
+    margin-top: 2px;
+  }
+
+  .writing-model-btn.active .writing-model-price {
+    color: #B91C1C;
+  }
+
   /* SUB-OPTION SECTION */
   .writing-field-box {
     background: #1A1F2C;
@@ -707,49 +782,208 @@ const styles = `
 `;
 
 const CATALOG_ITEMS = [
+  // PENS
   {
-    id: "pen-gel",
+    id: "pen-hauser",
     category: "pen",
-    type: "Gel",
-    title: "NEO-GEL BIOHAZARD PEN",
-    protocol: "BIOHAZARD PROTOCOL // SEC-01",
-    badge: "GEL-01",
+    modelName: "Hauser XO",
+    subtitle: "0.6mm Ultra-Smooth Ball",
+    title: "HAUSER XO // ULTRA-SMOOTH",
+    protocol: "HAUSER PROTOCOL // XO-01",
     basePrice: 10,
-    lore1: "Zero-bleed tungsten carbide ball nib with acid-resistant dark pigment.",
-    lore2: "Combat-grade flow engineered for thesis defense and blackout exam blitzes.",
+    lore1: "Ultra-low viscosity German ink with 0.6mm tungsten carbide ball nib.",
+    lore2: "Minimal drag coefficient engineered for marathon exam writing with zero fatigue.",
   },
   {
-    id: "pen-ball",
+    id: "pen-pentonic",
     category: "pen",
-    type: "Ball",
-    title: "OUTPOST TACTICAL BALLPOINT",
-    protocol: "SURVIVAL DEPLOYMENT // SEC-02",
-    badge: "BALL-02",
+    modelName: "Linc Pentonic",
+    subtitle: "0.7mm Matte Black Gel/Ball",
+    title: "PENTONIC // MATTE STEALTH",
+    protocol: "PENTONIC PROTOCOL // PT-02",
     basePrice: 10,
-    lore1: "High-viscosity pressurized formula that glides across damp evidence logs.",
-    lore2: "Ergonomic knurled rubber shock grip eliminates wrist fatigue.",
+    lore1: "Sleek aerodynamic matte black casing with feather-light skip-free ink flow.",
+    lore2: "Smudge-resistant rapid-dry formulation ideal for high-speed answer sheets.",
   },
   {
-    id: "pencil-graphite",
+    id: "pen-rorito",
+    category: "pen",
+    modelName: "Rorito Flymax / Teramax",
+    subtitle: "Precision Liquid Fluid Ink",
+    title: "RORITO TERAMAX // FLUID INK",
+    protocol: "TERAMAX PROTOCOL // TM-03",
+    basePrice: 20,
+    lore1: "Advanced fluid ink regulator ensures continuous, uniform high-contrast lines.",
+    lore2: "High-capacity ink reservoir designed for uninterrupted long-form descriptive exams.",
+  },
+  {
+    id: "pen-pilot",
+    category: "pen",
+    modelName: "Pilot V5 / V7 Hi-Tecpoint",
+    subtitle: "Needle Tip Japanese Roller",
+    title: "PILOT HI-TECPOINT // V5-V7",
+    protocol: "PILOT PROTOCOL // PV-04",
+    basePrice: 60,
+    lore1: "Micro-fine stainless steel needle tip with multi-channel liquid ink feed system.",
+    lore2: "Surgical line precision calibrated for intricate diagrams and dense notations.",
+  },
+  {
+    id: "pen-butterflow",
+    category: "pen",
+    modelName: "Cello Butterflow",
+    subtitle: "Low-Viscosity Ergonomic Ball",
+    title: "CELLO BUTTERFLOW // HYBRID",
+    protocol: "BUTTERFLOW PROTOCOL // CB-05",
+    basePrice: 10,
+    lore1: "Lubriflow ink mechanism paired with textured comfort grip for zero-pressure writing.",
+    lore2: "Time-tested standard issue reliability across grueling 3-hour university exams.",
+  },
+  {
+    id: "pen-reynolds",
+    category: "pen",
+    modelName: "Reynolds 045 Carbure",
+    subtitle: "Classic Vintage Exam Staple",
+    title: "REYNOLDS 045 // CARBURE",
+    protocol: "REYNOLDS PROTOCOL // RC-06",
+    basePrice: 10,
+    lore1: "Laser-cut brass tip delivering legendary durability and crisp handwriting.",
+    lore2: "The undefeated vintage standard trusted by generations of exam survivors.",
+  },
+
+  // PENCILS
+  {
+    id: "pencil-apsara",
     category: "pencil",
-    type: "Graphite",
-    title: "SURVIVAL 2B GRAPHITE CORE",
-    protocol: "RECON LOGGING // SEC-03",
-    badge: "LEAD-03",
+    modelName: "Apsara Platinum Extra Dark",
+    subtitle: "Dark Lead Exam Shading",
+    title: "APSARA PLATINUM // EXTRA DARK",
+    protocol: "APSARA PROTOCOL // AP-01",
     basePrice: 10,
-    lore1: "Dense micro-carbon core engineered for break-resistant mathematical graphing.",
-    lore2: "Smooth dark lead deposit calibrated for architectural sketches and OMR sheets.",
+    lore1: "Micro-pulverized graphite core yielding deep, pitch-black high-contrast markings.",
+    lore2: "Specially formulated for machine-read OMR optical bubble sheets and bold diagrams.",
   },
   {
-    id: "pencil-mechanical",
+    id: "pencil-camlin",
+    category: "pencil",
+    modelName: "Camlin Kokuyo Flora",
+    subtitle: "Break-Resistant Velvet Lead",
+    title: "CAMLIN KOKUYO // VELVET CORE",
+    protocol: "KOKUYO PROTOCOL // CK-02",
+    basePrice: 10,
+    lore1: "Specially treated bonded wood casing with break-resistant smooth gliding graphite.",
+    lore2: "Exceptional erasability leaving zero ghostly impressions on delicate answer paper.",
+  },
+  {
+    id: "pencil-faber",
+    category: "pencil",
+    modelName: "Faber-Castell 2B Matt",
+    subtitle: "Non-Reflective Precision Lead",
+    title: "FABER-CASTELL // 2B MATT",
+    protocol: "CASTELL PROTOCOL // FC-03",
+    basePrice: 15,
+    lore1: "Anti-reflective deep matte graphite eliminating glare during overhead sheet scanning.",
+    lore2: "Finely graded German clay-graphite matrix for technical drafting and sketching.",
+  },
+  {
+    id: "pencil-nataraj",
+    category: "pencil",
+    modelName: "Nataraj 621 Bold",
+    subtitle: "Classic Red/Black Hexagonal",
+    title: "NATARAJ 621 // CLASSIC BOLD",
+    protocol: "NATARAJ PROTOCOL // NT-04",
+    basePrice: 5,
+    lore1: "Iconic red-and-black hexagonal cedar casing with bonded break-proof core.",
+    lore2: "The timeless academic workhorse proven across decades of school exams.",
+  },
+  {
+    id: "pencil-staedtler",
+    category: "pencil",
+    modelName: "Staedtler Noris 2B",
+    subtitle: "German Drafting Grade",
+    title: "STAEDTLER NORIS // 2B DRAFT",
+    protocol: "NORIS PROTOCOL // SN-05",
+    basePrice: 35,
+    lore1: "Upcycled wood WOPEX composite core offering extreme break resistance.",
+    lore2: "German engineering standard for engineering graphics and rapid diagramming.",
+  },
+  {
+    id: "pencil-doms",
+    category: "pencil",
+    modelName: "Doms Neon Dark",
+    subtitle: "High-Contrast Ergonomic Lead",
+    title: "DOMS NEON // SUPER DARK",
+    protocol: "DOMS PROTOCOL // DN-06",
+    basePrice: 10,
+    lore1: "Soft-touch tactile barrel finish with rich black pigment-infused lead.",
+    lore2: "Ergonomic triangular grip designed to relieve hand tension during timed tests.",
+  },
+
+  // MECHANICAL PENCILS
+  {
+    id: "mech-pentel",
     category: "mechanical",
-    type: "Mechanical",
-    title: "AERO-CLUTCH TITAN MECHANICAL",
-    protocol: "PRECISION ENG // SEC-04",
-    badge: "MECH-04",
-    basePrice: 50,
-    lore1: "Hardened three-jaw brass clutch prevents lead snaps under panic pressure.",
-    lore2: "Low center of gravity with knurled steel grip for tactical precision.",
+    modelName: "Pentel GraphGear 500",
+    subtitle: "Weighted Knurled Metal Grip",
+    title: "PENTEL GRAPHGEAR 500 // PRO",
+    protocol: "GRAPHGEAR PROTOCOL // PG-01",
+    basePrice: 350,
+    lore1: "Heavyweight knurled metal grip with 4mm fixed drafting sleeve for ruler work.",
+    lore2: "Precision low-center-of-gravity balance for millimeter-perfect engineering plans.",
+  },
+  {
+    id: "mech-camlin",
+    category: "mechanical",
+    modelName: "Camlin Trinity / Scholar",
+    subtitle: "Everyday Budget Drafting",
+    title: "CAMLIN TRINITY // DRAFT-05",
+    protocol: "TRINITY PROTOCOL // CT-02",
+    basePrice: 30,
+    lore1: "Shock-absorbing cushion tip with ribbed non-slip comfort barrel.",
+    lore2: "Dependable, economical everyday drafting tool for formulas and quick drafts.",
+  },
+  {
+    id: "mech-rotring",
+    category: "mechanical",
+    modelName: "Rotring Tikky",
+    subtitle: "German Engineering Rubber Grip",
+    title: "ROTRING TIKKY // PRECISION",
+    protocol: "ROTRING PROTOCOL // RT-03",
+    basePrice: 450,
+    lore1: "Dual-material ergonomic wave grip with high-tolerance brass clutch mechanism.",
+    lore2: "Zero lead wobble or slippage under high-torque rapid technical calculations.",
+  },
+  {
+    id: "mech-faber",
+    category: "mechanical",
+    modelName: "Faber-Castell Apollo",
+    subtitle: "Cushioned Lead Sleeve & Eraser",
+    title: "FABER-CASTELL // APOLLO",
+    protocol: "APOLLO PROTOCOL // FA-04",
+    basePrice: 90,
+    lore1: "Spring-loaded sliding lead sleeve that retracts to shield lead from snapping.",
+    lore2: "Integrated jumbo twist-out eraser barrel for rapid tactical corrections.",
+  },
+  {
+    id: "mech-kurutoga",
+    category: "mechanical",
+    modelName: "Uni Kuru Toga Engine",
+    subtitle: "Auto-Rotating Constant Sharp Tip",
+    title: "UNI KURU TOGA // ROTATING CORE",
+    protocol: "KURUTOGA PROTOCOL // UK-05",
+    basePrice: 420,
+    lore1: "Patented internal kinetic gear rotates lead 9 degrees with every paper lift.",
+    lore2: "Maintains a constant conical razor-sharp chisel point with zero flat spots.",
+  },
+  {
+    id: "mech-delguard",
+    category: "mechanical",
+    modelName: "Zebra DelGuard Unbreakable",
+    subtitle: "Dual-Spring Anti-Snap Shield",
+    title: "ZEBRA DELGUARD // SHIELD",
+    protocol: "DELGUARD PROTOCOL // ZD-06",
+    basePrice: 480,
+    lore1: "Patented double-spring shock absorption protects lead from any angle or pressure.",
+    lore2: "Indestructible tactical clutch engineered for heavy-handed panic exam writers.",
   },
 ];
 
@@ -764,16 +998,18 @@ function Writing() {
   const navigate = useNavigate();
   const { cartItems, addToCart } = useCart();
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const currentCatalog = CATALOG_ITEMS[activeIndex];
-
   const [category, setCategory] = useState("pen");
+  const [activeId, setActiveId] = useState("pen-hauser");
   const [penType, setPenType] = useState("Gel");
   const [color, setColor] = useState("Abyssal Black");
   const [pencilType, setPencilType] = useState("HB");
   const [mechSize, setMechSize] = useState("0.5 mm");
   const [qty, setQty] = useState(1);
   const [toast, setToast] = useState({ show: false, message: "" });
+
+  const categoryItems = CATALOG_ITEMS.filter((item) => item.category === category);
+  const currentCatalog = CATALOG_ITEMS.find((item) => item.id === activeId) || categoryItems[0] || CATALOG_ITEMS[0];
+  const currentCatIdx = Math.max(0, categoryItems.findIndex((item) => item.id === currentCatalog.id));
 
   // Scroll to top on fresh mount
   useEffect(() => {
@@ -797,39 +1033,34 @@ function Writing() {
   };
 
   const handlePrev = () => {
-    const nextIdx = activeIndex > 0 ? activeIndex - 1 : CATALOG_ITEMS.length - 1;
-    setActiveIndex(nextIdx);
-    setCategory(CATALOG_ITEMS[nextIdx].category);
+    const nextIdx = currentCatIdx > 0 ? currentCatIdx - 1 : categoryItems.length - 1;
+    setActiveId(categoryItems[nextIdx].id);
   };
 
   const handleNext = () => {
-    const nextIdx = activeIndex < CATALOG_ITEMS.length - 1 ? activeIndex + 1 : 0;
-    setActiveIndex(nextIdx);
-    setCategory(CATALOG_ITEMS[nextIdx].category);
+    const nextIdx = currentCatIdx < categoryItems.length - 1 ? currentCatIdx + 1 : 0;
+    setActiveId(categoryItems[nextIdx].id);
   };
 
   const handleCategoryChange = (newCat) => {
     setCategory(newCat);
-    const foundIdx = CATALOG_ITEMS.findIndex((item) => item.category === newCat);
-    if (foundIdx !== -1) setActiveIndex(foundIdx);
+    const firstItem = CATALOG_ITEMS.find((item) => item.category === newCat);
+    if (firstItem) setActiveId(firstItem.id);
   };
 
   // Compute product name & price
   let name = "";
-  let price = 0;
+  const basePrice = currentCatalog.basePrice;
 
   if (category === "pen") {
-    name = `${penType} Pen (${color})`;
-    price = 10;
+    name = `${currentCatalog.modelName} (${color}, ${penType})`;
   } else if (category === "pencil") {
-    name = `${pencilType} Graphite Pencil`;
-    price = 10;
+    name = `${currentCatalog.modelName} (${pencilType} Core)`;
   } else if (category === "mechanical") {
-    name = `Mechanical Pencil (${mechSize})`;
-    price = 50;
+    name = `${currentCatalog.modelName} (${mechSize})`;
   }
 
-  const grandTotal = price * (qty || 1);
+  const grandTotal = basePrice * (qty || 1);
 
   const handleAdd = () => {
     if (!name) return showToast("Complete tool selection first!");
@@ -916,7 +1147,7 @@ function Writing() {
                   <div
                     className="writing-track-fill"
                     style={{
-                      width: `${((activeIndex + 1) / CATALOG_ITEMS.length) * 100}%`,
+                      width: `${((currentCatIdx + 1) / categoryItems.length) * 100}%`,
                     }}
                   />
                 </div>
@@ -969,10 +1200,29 @@ function Writing() {
               </button>
             </div>
 
+            {/* 1. MODEL SELECTION GRID */}
+            <div className="writing-field-box">
+              <span className="writing-field-label">1. Standard Issue Model</span>
+              <div className="writing-models-grid">
+                {categoryItems.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`writing-model-btn ${currentCatalog.id === item.id ? "active" : ""}`}
+                    onClick={() => setActiveId(item.id)}
+                  >
+                    <span className="writing-model-name">{item.modelName}</span>
+                    <span className="writing-model-tag">{item.subtitle}</span>
+                    <span className="writing-model-price">₹{item.basePrice}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* DYNAMIC SUB-OPTION: PEN */}
             {category === "pen" && (
               <div className="writing-field-box">
-                <span className="writing-field-label">1. Nib & Ink Technology</span>
+                <span className="writing-field-label">2. Nib & Ink Technology</span>
                 <div className="writing-pill-options">
                   {["Gel", "Ball"].map((type) => (
                     <button
@@ -987,7 +1237,7 @@ function Writing() {
                 </div>
 
                 <span className="writing-field-label" style={{ marginTop: 8 }}>
-                  2. Pigment Spectrum
+                  3. Pigment Spectrum
                 </span>
                 <div className="writing-colors-grid">
                   {INK_COLORS.map((c) => (
@@ -1010,7 +1260,7 @@ function Writing() {
             {/* DYNAMIC SUB-OPTION: PENCIL */}
             {category === "pencil" && (
               <div className="writing-field-box">
-                <span className="writing-field-label">Graphite Density & Hardness</span>
+                <span className="writing-field-label">2. Graphite Density & Hardness</span>
                 <div className="writing-pill-options">
                   {["Normal", "HB", "2B"].map((g) => (
                     <button
@@ -1029,7 +1279,7 @@ function Writing() {
             {/* DYNAMIC SUB-OPTION: MECHANICAL */}
             {category === "mechanical" && (
               <div className="writing-field-box">
-                <span className="writing-field-label">Precision Lead Gauge</span>
+                <span className="writing-field-label">2. Precision Lead Gauge</span>
                 <div className="writing-pill-options">
                   {["0.5 mm", "0.7 mm"].map((size) => (
                     <button
