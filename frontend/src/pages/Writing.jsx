@@ -170,32 +170,35 @@ const styles = `
     background: #AEF37B;
   }
 
-  /* WRITING CONTAINER */
+  /* UNIFIED WRITING MASTER CARD */
   .writing-layout-container {
-    max-width: 1080px;
-    margin: 28px auto 0 auto;
+    max-width: 1120px;
+    margin: 28px auto 40px auto;
     padding: 0 18px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    align-items: stretch;
   }
 
-  /* LEFT HERO SHOWCASE CARD */
-  .writing-hero-card {
+  .writing-unified-card {
     background: #12151C;
     border: 4px solid var(--void-black);
     border-radius: 28px;
-    padding: 28px 24px 24px 24px;
     box-shadow: 6px 6px 0px var(--void-black);
-    position: relative;
-    overflow: visible;
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    overflow: hidden;
+    color: #F1F5F9;
+  }
+
+  /* LEFT HERO SHOWCASE PANEL */
+  .writing-hero-panel {
+    background: #12151C;
+    border-right: 3.5px solid var(--void-black);
+    padding: 28px 26px;
     display: flex;
     flex-direction: column;
     gap: 18px;
     color: #F1F5F9;
-    height: 100%;
     box-sizing: border-box;
+    justify-content: space-between;
   }
 
   /* SLIME GREEN COMIC CALLOUT BADGE */
@@ -304,67 +307,6 @@ const styles = `
     border-radius: 50%;
     background: var(--slime-green);
     box-shadow: 0 0 6px var(--slime-green);
-  }
-
-  /* TACTICAL SCHEMATIC BLUEPRINT HUD */
-  .writing-schematic-box {
-    background: #0E1117;
-    border: 3px solid var(--void-black);
-    border-radius: 18px;
-    padding: 14px 16px;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 3px 3px 0px var(--void-black);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .writing-schematic-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1.5px dashed rgba(168, 255, 0, 0.3);
-    padding-bottom: 6px;
-  }
-
-  .writing-schematic-tag {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    color: var(--slime-green);
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .writing-schematic-tag::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--slime-green);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--slime-green);
-  }
-
-  .writing-schematic-status {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 9.5px;
-    color: #94A3B8;
-    letter-spacing: 0.5px;
-  }
-
-  .writing-schematic-svg-wrap {
-    width: 100%;
-    height: 86px;
-    background: radial-gradient(circle at center, #161D2B 0%, #0A0D14 100%);
-    border: 2px solid #232B3E;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
   }
 
   /* 4-QUADRANT STATS MATRIX */
@@ -514,18 +456,14 @@ const styles = `
     transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  /* RIGHT: INTERACTIVE WORKBENCH CARD */
-  .writing-workbench-card {
+  /* RIGHT: INTERACTIVE WORKBENCH PANEL */
+  .writing-workbench-panel {
     background: #12151C;
-    border: 4px solid var(--void-black);
-    border-radius: 28px;
-    padding: 26px;
-    box-shadow: 6px 6px 0px var(--void-black);
+    padding: 28px 26px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     color: #F1F5F9;
-    height: 100%;
     box-sizing: border-box;
     justify-content: space-between;
   }
@@ -939,9 +877,13 @@ const styles = `
     z-index: 100;
   }
 
-  @media (max-width: 860px) {
-    .writing-layout-container {
+  @media (max-width: 920px) {
+    .writing-unified-card {
       grid-template-columns: 1fr;
+    }
+    .writing-hero-panel {
+      border-right: none;
+      border-bottom: 3.5px solid var(--void-black);
     }
   }
 
@@ -1278,149 +1220,100 @@ function Writing() {
 
         {/* MAIN STAGE CONTAINER */}
         <div className="writing-layout-container">
-          {/* LEFT: HERO SHOWCASE STAGE */}
-          <section className="writing-hero-card">
-            {/* TOP HEADER ROW: STARBURST BADGE & STATUS PILL */}
-            <div className="writing-hero-header-row">
-              <div className="writing-starburst-badge">
-                <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
-                <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
-              </div>
-              <div className="writing-hero-status-pill">
-                <span className="writing-status-dot" />
-                <span>SURVIVOR ISSUE // ₹{currentCatalog.basePrice}</span>
-              </div>
-            </div>
-
-            {/* TACTICAL SCHEMATIC BLUEPRINT HUD */}
-            <div className="writing-schematic-box">
-              <div className="writing-schematic-header">
-                <span className="writing-schematic-tag">TACTICAL SCHEMATIC // HUD-V4</span>
-                <span className="writing-schematic-status">CORE: {currentCatalog.modelName.toUpperCase()}</span>
-              </div>
-              <div className="writing-schematic-svg-wrap">
-                <svg viewBox="0 0 380 90" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="blueprint-grid" width="16" height="16" patternUnits="userSpaceOnUse">
-                      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#blueprint-grid)" />
-                  <line x1="30" y1="45" x2="350" y2="45" stroke="rgba(168,255,0,0.2)" strokeWidth="1" strokeDasharray="3 3" />
-                  
-                  {/* Tip */}
-                  <polygon points="35,45 65,37 65,53" fill="#A8FF00" stroke="#000" strokeWidth="2" />
-                  <line x1="35" y1="45" x2="25" y2="45" stroke="#A8FF00" strokeWidth="2.5" />
-                  
-                  {/* Grip with ribs */}
-                  <rect x="65" y="35" width="70" height="20" rx="3" fill="#242A38" stroke="#000" strokeWidth="2" />
-                  <line x1="78" y1="35" x2="78" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
-                  <line x1="90" y1="35" x2="90" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
-                  <line x1="102" y1="35" x2="102" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
-                  <line x1="114" y1="35" x2="114" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
-                  <line x1="126" y1="35" x2="126" y2="55" stroke="#A8FF00" strokeWidth="1.5" />
-                  
-                  {/* Main Chassis */}
-                  <rect x="135" y="37" width="155" height="16" rx="2" fill="#1A1F2C" stroke="#000" strokeWidth="2" />
-                  <rect x="145" y="41" width="115" height="8" rx="2" fill="#12151C" />
-                  <line x1="145" y1="45" x2="235" y2="45" stroke="#38BDF8" strokeWidth="3" strokeLinecap="round" />
-                  
-                  {/* Endcap & Mechanism */}
-                  <rect x="290" y="38" width="22" height="14" rx="2" fill="#334155" stroke="#000" strokeWidth="1.5" />
-                  <rect x="312" y="41" width="14" height="8" rx="1" fill="#FFC900" stroke="#000" strokeWidth="1.5" />
-                  <rect x="326" y="43" width="8" height="4" fill="#E2E8F0" />
-                  
-                  {/* Callouts */}
-                  <circle cx="35" cy="45" r="3" fill="#A8FF00" />
-                  <polyline points="35,45 45,20 105,20" fill="none" stroke="#A8FF00" strokeWidth="1.2" strokeDasharray="2 2" />
-                  <text x="110" y="23" fill="#A8FF00" fontSize="8" fontFamily="'Archivo Black', sans-serif">BALLISTIC POINT</text>
-                  
-                  <circle cx="200" cy="45" r="3" fill="#38BDF8" />
-                  <polyline points="200,45 210,70 260,70" fill="none" stroke="#38BDF8" strokeWidth="1.2" strokeDasharray="2 2" />
-                  <text x="265" y="73" fill="#38BDF8" fontSize="8" fontFamily="'Archivo Black', sans-serif">CORE RESERVOIR</text>
-                </svg>
-              </div>
-            </div>
-
-            {/* TWO-COLUMN LORE */}
-            <div className="writing-lore-grid">
-              <div className="writing-lore-item">
-                <strong>SPECIFICATION //</strong>
-                {currentCatalog.lore1}
-              </div>
-              <div className="writing-lore-item">
-                <strong>DEPLOYMENT //</strong>
-                {currentCatalog.lore2}
-              </div>
-            </div>
-
-            {/* 4-QUADRANT STATS MATRIX */}
-            <div className="writing-spec-matrix">
-              <div className="writing-spec-tile">
-                <span className="writing-spec-tile-label">FLOW VELOCITY</span>
-                <span className="writing-spec-tile-val accent-green">ZERO DRAG // FAST-DRY</span>
-              </div>
-              <div className="writing-spec-tile">
-                <span className="writing-spec-tile-label">OMR SCAN RATING</span>
-                <span className="writing-spec-tile-val accent-gold">100% OPTICAL READ PASS</span>
-              </div>
-              <div className="writing-spec-tile">
-                <span className="writing-spec-tile-label">BARREL CHASSIS</span>
-                <span className="writing-spec-tile-val">ANTI-FATIGUE ERGO</span>
-              </div>
-              <div className="writing-spec-tile">
-                <span className="writing-spec-tile-label">EXAM ENDURANCE</span>
-                <span className="writing-spec-tile-val">3-HOUR MARATHON RATED</span>
-              </div>
-            </div>
-
-            {/* SURVIVOR FIELD MEMO DISPATCH */}
-            <div className="writing-field-dispatch">
-              <span className="writing-dispatch-badge">DISPATCH</span>
-              <span>SURVIVOR MEMO: Calibrated for rapid answer-sheet penetration under timed examination siege.</span>
-            </div>
-
-            {/* RETRO ARCADE CONTROLLER */}
-            <div className="writing-arcade-controller">
-              <button
-                type="button"
-                className="writing-arcade-arrow-btn"
-                onClick={handlePrev}
-                aria-label="Previous item"
-              >
-                ←
-              </button>
-
-              <div className="writing-arcade-slider-track">
-                <div className="writing-track-dot" />
-                <div className="writing-track-bar">
-                  <div
-                    className="writing-track-fill"
-                    style={{
-                      width: `${((currentCatIdx + 1) / categoryItems.length) * 100}%`,
-                    }}
-                  />
+          <div className="writing-unified-card">
+            {/* LEFT: HERO SHOWCASE PANEL */}
+            <section className="writing-hero-panel">
+              {/* TOP HEADER ROW: STARBURST BADGE & STATUS PILL */}
+              <div className="writing-hero-header-row">
+                <div className="writing-starburst-badge">
+                  <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
+                  <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
                 </div>
-                <div className="writing-track-dot" />
+                <div className="writing-hero-status-pill">
+                  <span className="writing-status-dot" />
+                  <span>SURVIVOR ISSUE // ₹{currentCatalog.basePrice}</span>
+                </div>
               </div>
 
-              <span className="writing-arcade-counter">
-                {currentCatIdx + 1} / {categoryItems.length}
-              </span>
+              {/* TWO-COLUMN LORE */}
+              <div className="writing-lore-grid">
+                <div className="writing-lore-item">
+                  <strong>SPECIFICATION //</strong>
+                  {currentCatalog.lore1}
+                </div>
+                <div className="writing-lore-item">
+                  <strong>DEPLOYMENT //</strong>
+                  {currentCatalog.lore2}
+                </div>
+              </div>
 
-              <button
-                type="button"
-                className="writing-arcade-arrow-btn"
-                onClick={handleNext}
-                aria-label="Next item"
-              >
-                →
-              </button>
-            </div>
-          </section>
+              {/* 4-QUADRANT STATS MATRIX */}
+              <div className="writing-spec-matrix">
+                <div className="writing-spec-tile">
+                  <span className="writing-spec-tile-label">FLOW VELOCITY</span>
+                  <span className="writing-spec-tile-val accent-green">ZERO DRAG // FAST-DRY</span>
+                </div>
+                <div className="writing-spec-tile">
+                  <span className="writing-spec-tile-label">OMR SCAN RATING</span>
+                  <span className="writing-spec-tile-val accent-gold">100% OPTICAL READ PASS</span>
+                </div>
+                <div className="writing-spec-tile">
+                  <span className="writing-spec-tile-label">BARREL CHASSIS</span>
+                  <span className="writing-spec-tile-val">ANTI-FATIGUE ERGO</span>
+                </div>
+                <div className="writing-spec-tile">
+                  <span className="writing-spec-tile-label">EXAM ENDURANCE</span>
+                  <span className="writing-spec-tile-val">3-HOUR MARATHON RATED</span>
+                </div>
+              </div>
 
-          {/* RIGHT: INTERACTIVE WORKBENCH CONFIG */}
-          <main className="writing-workbench-card">
+              {/* SURVIVOR FIELD MEMO DISPATCH */}
+              <div className="writing-field-dispatch">
+                <span className="writing-dispatch-badge">DISPATCH</span>
+                <span>SURVIVOR MEMO: Calibrated for rapid answer-sheet penetration under timed examination siege.</span>
+              </div>
+
+              {/* RETRO ARCADE CONTROLLER */}
+              <div className="writing-arcade-controller">
+                <button
+                  type="button"
+                  className="writing-arcade-arrow-btn"
+                  onClick={handlePrev}
+                  aria-label="Previous item"
+                >
+                  ←
+                </button>
+
+                <div className="writing-arcade-slider-track">
+                  <div className="writing-track-dot" />
+                  <div className="writing-track-bar">
+                    <div
+                      className="writing-track-fill"
+                      style={{
+                        width: `${((currentCatIdx + 1) / categoryItems.length) * 100}%`,
+                      }}
+                    />
+                  </div>
+                  <div className="writing-track-dot" />
+                </div>
+
+                <span className="writing-arcade-counter">
+                  {currentCatIdx + 1} / {categoryItems.length}
+                </span>
+
+                <button
+                  type="button"
+                  className="writing-arcade-arrow-btn"
+                  onClick={handleNext}
+                  aria-label="Next item"
+                >
+                  →
+                </button>
+              </div>
+            </section>
+
+            {/* RIGHT: INTERACTIVE WORKBENCH PANEL */}
+            <main className="writing-workbench-panel">
             <div className="writing-sec-header">
               <h2 className="writing-sec-title">TOOL CONFIGURATION</h2>
               <span className="writing-sec-tag">SURVIVAL LOADOUT ARSENAL</span>
@@ -1601,6 +1494,7 @@ function Writing() {
               Add to Survival Loadout • ₹{grandTotal}
             </button>
           </main>
+          </div>
         </div>
 
         {/* TOAST POPUP */}
