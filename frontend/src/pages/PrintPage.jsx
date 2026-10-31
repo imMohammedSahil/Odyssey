@@ -412,8 +412,8 @@ const styles = `
     border: 3.5px dashed var(--slime-green);
     border-radius: 24px;
     background: var(--card-dark);
-    padding: 48px 28px;
-    min-height: 380px;
+    padding: 36px 24px;
+    min-height: 320px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -471,8 +471,8 @@ const styles = `
     color: var(--void-black);
     border: 3.5px solid #000000;
     border-radius: 24px;
-    padding: 36px 28px;
-    min-height: 380px;
+    padding: 30px 24px;
+    min-height: 320px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -689,16 +689,16 @@ const styles = `
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
-    gap: 16px;
-    margin-top: 36px;
+    gap: 12px;
+    margin-top: 0px;
   }
 
   .print-summary-card {
     background: var(--seafoam);
     color: var(--void-black);
     border: 3.5px solid #000000;
-    border-radius: 22px;
-    padding: 22px 20px;
+    border-radius: 20px;
+    padding: 16px 18px;
     box-shadow: 5px 5px 0px rgba(0,0,0,0.6);
     position: relative;
     flex: 1;
@@ -711,9 +711,9 @@ const styles = `
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-    border-bottom: 2.5px solid var(--border-dark);
-    padding-bottom: 12px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--border-dark);
+    padding-bottom: 8px;
   }
 
   .print-summary-title {
@@ -727,8 +727,8 @@ const styles = `
   .print-calc-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 8px;
+    margin-bottom: 10px;
   }
 
   .print-calc-row {
@@ -744,8 +744,8 @@ const styles = `
     background: var(--void-black);
     color: #FFFFFF;
     border: 3px solid #000000;
-    border-radius: 16px;
-    padding: 14px 18px;
+    border-radius: 14px;
+    padding: 10px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -761,7 +761,7 @@ const styles = `
 
   .print-total-price {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 32px;
+    font-size: 26px;
     color: var(--hazard-gold);
     letter-spacing: -0.5px;
   }
@@ -793,11 +793,11 @@ const styles = `
     width: 100%;
     background: var(--brain-pink);
     color: var(--void-black);
-    border: 4px solid var(--border-dark);
+    border: 3.5px solid var(--border-dark);
     border-radius: 9999px;
-    padding: 18px 24px;
+    padding: 13px 20px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 17px;
+    font-size: 15px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     cursor: pointer;
