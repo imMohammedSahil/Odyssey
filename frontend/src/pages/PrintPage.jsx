@@ -1007,7 +1007,7 @@ const styles = `
   /* PRIMARY ACTION CTA */
   .print-action-cta {
     width: 100%;
-    background: var(--brain-pink);
+    background: var(--slime-green);
     color: var(--void-black);
     border: 3.5px solid var(--border-dark);
     border-radius: 9999px;
@@ -1029,7 +1029,7 @@ const styles = `
   .print-action-cta:hover {
     transform: translate(-2px, -2px);
     box-shadow: 7px 7px 0px rgba(0,0,0,0.7);
-    background: #FF85B4;
+    background: #B4FF7B;
   }
 
   .print-action-cta:active {
@@ -1654,14 +1654,24 @@ function Print() {
               {currentStep < 3 ? (
                 <button
                   className="print-action-cta"
-                  style={{ background: "var(--slime-green)", color: "var(--void-black)" }}
+                  style={{
+                    background: "var(--slime-green)",
+                    color: "var(--void-black)",
+                  }}
                   onClick={() => goToStep(currentStep + 1)}
                 >
-                  {currentStep === 1 ? "Continue to Color Selection →" : "Continue to Review & Copies →"}
+                  {currentStep === 1 ? "Continue to Color Selection →" : "Continue to Copies & Review →"}
                 </button>
               ) : (
-                <button className="print-action-cta" onClick={handleAdd}>
-                  Add to Survival Loadout
+                <button
+                  className="print-action-cta"
+                  style={{
+                    background: "var(--slime-green)",
+                    color: "var(--void-black)",
+                  }}
+                  onClick={handleAdd}
+                >
+                  Add to Survival Loadout • ₹{total}
                 </button>
               )}
             </div>
