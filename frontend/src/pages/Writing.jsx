@@ -180,10 +180,10 @@ const styles = `
     background: var(--hazard-gold);
     border: 4px solid var(--void-black);
     border-radius: 28px;
-    padding: 24px;
+    padding: 28px 24px 24px 24px;
     box-shadow: 6px 6px 0px var(--void-black);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -205,92 +205,23 @@ const styles = `
     100% { transform: scale(1.15) rotate(15deg); opacity: 1; }
   }
 
-  /* 3D PURPLE ISOMETRIC PEDESTAL WITH ZOMBIE MASCOT */
-  .writing-pedestal-wrapper {
-    position: relative;
-    width: 100%;
-    height: 220px;
-    background: radial-gradient(circle at 50% 35%, rgba(157, 232, 105, 0.3) 0%, transparent 70%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 8px;
-  }
-
-  .writing-isometric-pedestal {
-    width: 250px;
-    height: 120px;
-    background: var(--toxic-purple-pedestal);
-    border: 3.5px solid var(--void-black);
-    border-radius: 24px;
-    transform: perspective(600px) rotateX(28deg) rotateZ(-3deg);
-    box-shadow: 
-      0 18px 0px var(--toxic-purple-dark),
-      0 22px 0px var(--void-black),
-      6px 28px 0px rgba(0, 0, 0, 0.4);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 12px;
-  }
-
-  .writing-pedestal-mascot-img {
+  /* ZOMBIE MASCOT CORNER EMBLEM */
+  .writing-hero-zombie-mascot {
     position: absolute;
-    top: -46px;
-    left: 8px;
-    width: 64px;
-    height: 64px;
+    top: -26px;
+    right: 24px;
+    width: 72px;
+    height: 72px;
     object-fit: contain;
     filter: drop-shadow(3px 3px 0px var(--void-black));
-    transform: rotate(-8deg);
+    transform: rotate(6deg);
     z-index: 10;
     transition: transform 0.2s ease;
-  }
-
-  .writing-pedestal-mascot-img:hover {
-    transform: rotate(0deg) scale(1.15);
-  }
-
-  .writing-pedestal-item {
-    font-size: 52px;
-    filter: drop-shadow(3px 4px 0px rgba(0, 0, 0, 0.5));
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform: rotateX(-20deg) translateY(-16px);
     cursor: pointer;
   }
 
-  .writing-pedestal-tool-graphic {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    transform: rotateX(-20deg) translateY(-12px);
-  }
-
-  .writing-pedestal-code {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
-    letter-spacing: 1px;
-    color: var(--slime-green);
-    background: var(--void-black);
-    padding: 3px 10px;
-    border-radius: 9999px;
-    border: 2px solid var(--slime-green);
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
-  }
-
-  .writing-pedestal-stylus {
-    width: 14px;
-    height: 72px;
-    background: linear-gradient(180deg, var(--pure-white) 0%, var(--slime-green) 70%, var(--void-black) 100%);
-    border: 3px solid var(--void-black);
-    border-radius: 6px 6px 2px 2px;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
-  }
-
-  .writing-pedestal-item:hover {
-    transform: rotateX(-20deg) translateY(-26px) scale(1.15);
+  .writing-hero-zombie-mascot:hover {
+    transform: rotate(0deg) scale(1.12);
   }
 
   /* JAGGED COMIC STARBURST BADGE */
@@ -955,20 +886,13 @@ function Writing() {
             <span className="writing-sparkle" style={{ top: 72, left: 24, fontSize: 14 }}>✧</span>
             <span className="writing-sparkle" style={{ bottom: 120, right: 18, fontSize: 16 }}>✦</span>
 
-            {/* 3D ISOMETRIC PEDESTAL WITH ZOMBIE MASCOT */}
-            <div className="writing-pedestal-wrapper">
-              <div className="writing-isometric-pedestal">
-                <img
-                  src="/zombie-head-transparent.png"
-                  alt="Zombie mascot peeking"
-                  className="writing-pedestal-mascot-img"
-                />
-                <div className="writing-pedestal-tool-graphic">
-                  <span className="writing-pedestal-code">{currentCatalog.badge}</span>
-                  <div className="writing-pedestal-stylus" />
-                </div>
-              </div>
-            </div>
+            {/* ZOMBIE MASCOT EMBLEM */}
+            <img
+              src="/zombie-head-transparent.png"
+              alt="Zombie mascot"
+              className="writing-hero-zombie-mascot"
+              title="Campus Outpost Survivor"
+            />
 
             {/* JAGGED COMIC STARBURST BADGE */}
             <div className="writing-starburst-badge">
