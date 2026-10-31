@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import * as pdfjsLib from "pdfjs-dist";
@@ -970,6 +970,27 @@ function Print() {
 
   const rate = color === "bw" ? 1 : 10;
   const total = (pages || 0) * rate * (copies || 1);
+
+  // Restore active job from IndexedDB on refresh
+  useEffect(() => {
+    loadActiveJob().then((saved) => {
+      if (saved && saved.file) {
+        setFile(saved.file);
+        if (saved.pages) setPages(saved.pages);
+        if (saved.color) setColor(saved.color);
+        if (saved.copies) setCopies(saved.copies);
+        if (saved.currentStep) setCurrentStep(saved.currentStep);
+      }
+    });
+  }, []);
+
+  // Save changes to IndexedDB so refresh never loses state
+  useEffect(() => {
+    if (file) {
+      saveActiveJob(file, { pages, color, copies, currentStep });
+    }
+  }, [file, pages, color, copies, currentStep]);
+
 
   const progressRatio = currentStep === 1 ? 0.35 : currentStep === 2 ? 0.68 : 0.98;
   const fillWidth = Math.round(668 * progressRatio);
