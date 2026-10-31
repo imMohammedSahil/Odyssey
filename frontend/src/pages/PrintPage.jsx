@@ -675,6 +675,7 @@ function Print() {
   const [pages, setPages] = useState(0);
   const [copies, setCopies] = useState(1);
   const [color, setColor] = useState("bw");
+  const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
@@ -686,6 +687,14 @@ function Print() {
     setTimeout(() => {
       setToast({ show: false, message: "", type: "success" });
     }, 2200);
+  };
+
+  const goToStep = (step) => {
+    if (step > 1 && !file) {
+      showToastMessage("Please upload a PDF document first", "error");
+      return;
+    }
+    setCurrentStep(step);
   };
 
   const handleFileUpload = async (e) => {
