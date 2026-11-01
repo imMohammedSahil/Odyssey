@@ -213,7 +213,7 @@ const styles = `
   .print-workbench {
     width: 100%;
     max-width: 1240px;
-    background: #019E70;
+    background: #010B10;
     color: #FFFFFF;
     border: 4px solid #000000;
     border-radius: 28px;
