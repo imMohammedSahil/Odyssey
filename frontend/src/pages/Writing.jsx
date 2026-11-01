@@ -6,28 +6,27 @@ const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@700&family=Playball&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
   :root {
-    --hazard-gold: #F7B919;
-    --hazard-gold-light: #FDE047;
-    --blood-red: #E63946;
-    --blood-red-dark: #C1121F;
-    --toxic-purple: #5A2BD8;
-    --toxic-purple-dark: #3F1999;
-    --toxic-purple-pedestal: #6830EC;
+    /* Core Odyssey Design System Tokens (THEME_SPEC.md) */
     --slime-green: #9DE869;
-    --slime-green-dark: #76C740;
-    --brain-pink: #FF70A6;
+    --slime-green-dark: #78D83F;
     --void-black: #0D0D0D;
+    --seafoam: #45B89E;
+    --hazard-gold: #F7B919;
+    --hazard-gold-light: #FFCE38;
+    --brain-pink: #FF70A6;
+    --parchment: #F9F9F3;
+    --grave-grey: #A8B3B8;
     --pure-white: #FFFFFF;
-    --card-cream: #FFFDF0;
+    --card-cream: #F9F9F3;
 
-    /* Inspiration Card Palette */
-    --frank-green: #48A85B;
-    --frank-dark-green: #1C3B24;
-    --frank-brain-pink: #F7A8B9;
-    --mummy-cream: #F5F1E8;
-    --mummy-cream-shade: #E6DFCF;
-    --mummy-yellow: #FFBD14;
-    --mummy-yellow-glow: #F59E0B;
+    /* Theme Tokens for Ticket Cards */
+    --frank-green: #14281E;
+    --frank-dark-green: #0C1A13;
+    --frank-brain-pink: #FF70A6;
+    --mummy-cream: #F9F9F3;
+    --mummy-cream-shade: #EBE5D8;
+    --mummy-yellow: #F7B919;
+    --mummy-yellow-glow: #FFDE59;
   }
 
   * {
@@ -38,30 +37,54 @@ const styles = `
 
   .writing-page-shell {
     min-height: 100vh;
-    background-color: var(--hazard-gold);
-    background-image: 
-      radial-gradient(var(--void-black) 1.2px, transparent 1.2px),
-      radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px);
-    background-size: 24px 24px, 12px 12px;
-    background-position: 0 0, 6px 6px;
+    background-color: #0D0D0D;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    color: var(--void-black);
-    padding-bottom: 60px;
+    color: #F9F9F3;
+    padding-bottom: 70px;
     position: relative;
     overflow-x: clip;
   }
 
-  /* TOP RETRO-COMIC APOCALYPSE BANNER */
+  /* 100% PURE VECTOR BACKDROP CANVAS */
+  .writing-bg-layer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: #0D0D0D;
+  }
+
+  .writing-bg-vector {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  .writing-bg-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 50%, rgba(13, 13, 13, 0.35) 80%, rgba(13, 13, 13, 0.85) 100%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+  }
+
+  /* TOP RETRO-COMIC HEADER BAR */
   .writing-header-bar {
     width: 100%;
     box-sizing: border-box;
-    background: var(--blood-red);
+    background: rgba(13, 13, 13, 0.95);
+    backdrop-filter: blur(10px);
     border-bottom: 4px solid var(--void-black);
-    padding: 14px 24px;
+    padding: 12px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -169,11 +192,78 @@ const styles = `
     background: #AEF37B;
   }
 
+  /* HERO HEADER BANNER */
+  .writing-hero-header-banner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 28px auto 6px auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+  }
+
+  .writing-hero-badge {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    border: 3px solid var(--void-black);
+    border-radius: 9999px;
+    padding: 6px 16px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 4px 4px 0px var(--void-black);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .writing-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--slime-green);
+    box-shadow: 0 0 8px var(--slime-green);
+    animation: pulseGlow 1.6s infinite ease-in-out;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.7; }
+  }
+
+  .writing-hero-h1 {
+    font-family: 'Titan One', 'Archivo Black', cursive;
+    font-size: clamp(30px, 4.2vw, 50px);
+    color: #FFFFFF;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.08;
+    text-shadow: 4px 4px 0px #000000, -2px -2px 0px #000000, 2px -2px 0px #000000, -2px 2px 0px #000000;
+    margin-bottom: 8px;
+  }
+
+  .writing-hero-p {
+    font-size: clamp(13px, 1.5vw, 15px);
+    font-weight: 700;
+    color: #E2E8F0;
+    max-width: 680px;
+    line-height: 1.45;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  }
+
   /* MAIN STAGE & DUAL-CARD GRID */
   .writing-layout-container {
     max-width: 1200px;
-    margin: 28px auto 40px auto;
+    margin: 22px auto 40px auto;
     padding: 0 16px;
+    position: relative;
+    z-index: 5;
   }
 
   .writing-cards-stage {
@@ -242,11 +332,7 @@ const styles = `
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: var(--hazard-gold);
-    background-image: 
-      radial-gradient(var(--void-black) 1.2px, transparent 1.2px),
-      radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px);
-    background-size: 24px 24px, 12px 12px;
+    background-color: var(--void-black);
     border: 4px solid var(--void-black);
     z-index: 12;
     top: 50%;
@@ -656,14 +742,15 @@ const styles = `
   }
 
   .writing-dispatch-badge {
-    background: var(--blood-red);
-    color: #FFFFFF;
+    background: var(--brain-pink);
+    color: var(--void-black);
     font-family: 'Archivo Black', sans-serif;
     font-size: 9px;
-    padding: 3px 6px;
+    padding: 3px 7px;
     border-radius: 6px;
     border: 1.5px solid var(--void-black);
     text-transform: uppercase;
+    font-weight: 800;
     flex-shrink: 0;
   }
 
@@ -898,10 +985,11 @@ const styles = `
   }
 
   .writing-sec-tag {
-    background: var(--blood-red);
-    color: var(--pure-white);
+    background: var(--brain-pink);
+    color: var(--void-black);
     font-family: 'Archivo Black', sans-serif;
     font-size: 10px;
+    font-weight: 800;
     padding: 4px 10px;
     border-radius: 9999px;
     border: 2px solid var(--void-black);
@@ -1018,7 +1106,7 @@ const styles = `
   .writing-model-price {
     font-family: 'Titan One', cursive;
     font-size: 13px;
-    color: var(--blood-red);
+    color: #B45309;
     margin-top: 2px;
   }
 
@@ -1215,20 +1303,22 @@ const styles = `
     color: var(--pure-white);
   }
 
-  /* PRIMARY ACTION CTA */
+  /* PRIMARY ACTION CTA - Neo-Brutalist Gummy Brain Pink */
   .writing-add-cta {
     width: 100%;
-    background: var(--slime-green);
+    background: var(--brain-pink);
     color: var(--void-black);
-    border: 4px solid var(--void-black);
-    border-radius: 18px;
+    border: 3.5px solid var(--void-black);
+    border-radius: 14px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 15px;
+    font-weight: 800;
     text-transform: uppercase;
-    padding: 13px 18px;
+    letter-spacing: 0.04em;
+    padding: 14px 20px;
     cursor: pointer;
     box-shadow: 4px 4px 0px var(--void-black);
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background 0.15s ease-in-out;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1236,14 +1326,14 @@ const styles = `
   }
 
   .writing-add-cta:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 6px 6px 0px var(--void-black);
-    background: #AEF37B;
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--void-black);
+    background: #FF85B2;
   }
 
   .writing-add-cta:active {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--void-black);
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--void-black);
   }
 
   /* TOAST POPUP */
@@ -1568,6 +1658,16 @@ function Writing() {
     <>
       <style>{styles}</style>
       <div className="writing-page-shell">
+        {/* 100% PURE VECTOR BACKDROP: MOONLIT HAUNTED MANSION */}
+        <div className="writing-bg-layer" aria-hidden="true">
+          <img
+            src="/writing-moonlit-mansion.svg?v=2"
+            alt=""
+            className="writing-bg-vector"
+          />
+          <div className="writing-bg-vignette" />
+        </div>
+
         {/* TOP COMIC HEADER BAR */}
         <header className="writing-header-bar">
           <div className="writing-brand-capsule">
@@ -1575,7 +1675,7 @@ function Writing() {
               <img src="/zombie-rip-pfp.jpg" alt="Zombie pfp" />
             </div>
             <div className="writing-brand-text-col">
-              <span className="writing-brand-title">ODYSSEY // <span>UNDEAD EXAM SURVIVAL</span></span>
+              <span className="writing-brand-title">ODYSSEY // <span>CAMPUS WRITING COMMAND</span></span>
             </div>
           </div>
 
@@ -1594,6 +1694,18 @@ function Writing() {
           </div>
         </header>
 
+        {/* HERO TITLE BANNER */}
+        <div className="writing-hero-header-banner">
+          <div className="writing-hero-badge">
+            <span className="writing-pulse-dot" />
+            <span>EXAM WEAPONRY // SURVIVAL LOADOUT</span>
+          </div>
+          <h1 className="writing-hero-h1">CAMPUS WRITING COMMAND</h1>
+          <p className="writing-hero-p">
+            Calibrated for rapid OMR penetration, skip-free marathon drafting & zero-drag hand endurance.
+          </p>
+        </div>
+
         {/* MAIN STAGE CONTAINER */}
         <div className="writing-layout-container">
           <div className="writing-cards-stage">
@@ -1606,7 +1718,7 @@ function Writing() {
                   {/* Pink Brain Dome - Arched & Fully Visible */}
                   <path
                     d="M 45,95 C 45,18 115,10 210,10 C 305,10 375,18 375,95 Z"
-                    fill="#F7A8B9"
+                    fill="#FF70A6"
                     stroke="#0D0D0D"
                     strokeWidth="4"
                   />
