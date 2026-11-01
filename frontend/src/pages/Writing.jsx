@@ -61,52 +61,11 @@ const styles = `
     width: 100%;
     padding: 16px 28px 8px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     position: relative;
     z-index: 50;
     flex-shrink: 0;
-  }
-
-  .writing-brand-capsule {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--void-black);
-    padding: 6px 16px 6px 14px;
-    border-radius: 9999px;
-    border: 3px solid var(--void-black);
-    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
-    text-decoration: none;
-    user-select: none;
-    white-space: nowrap;
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-  }
-
-  .writing-brand-capsule:hover {
-    transform: translate(-1.5px, -1.5px);
-    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.5);
-  }
-
-  .writing-brand-name {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 16px;
-    letter-spacing: 0.5px;
-    color: var(--pure-white);
-    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
-  }
-
-  .writing-brand-badge {
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 3px 10px;
-    border-radius: 9999px;
-    border: 2px solid var(--void-black);
-    box-shadow: 2px 2px 0px var(--void-black);
   }
 
   .writing-header-actions {
@@ -827,11 +786,6 @@ function Writing() {
 
         {/* TOP RETRO-COMIC HEADER BAR */}
         <header className="writing-header-bar">
-          <Link to="/student" className="writing-brand-capsule" title="Return to Campus Hub">
-            <span className="writing-brand-name">ODYSSEY</span>
-            <span className="writing-brand-badge">WRITING COMMAND</span>
-          </Link>
-
           <div className="writing-header-actions">
             <button
               type="button"
