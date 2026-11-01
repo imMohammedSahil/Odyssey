@@ -169,21 +169,31 @@ const styles = `
     margin-bottom: 22px;
     display: inline-block;
     text-align: center;
-    /* Melting lime ooze falling down into pumpkin orange inside the letters */
+    /* Subtle sculpted clay dripping & teardrop highlights inside the letterforms */
     background-image: 
-      radial-gradient(circle at 14% 34%, #D4F024 0%, #D4F024 12px, transparent 13px),
-      radial-gradient(circle at 36% 40%, #D4F024 0%, #D4F024 15px, transparent 16px),
-      radial-gradient(circle at 64% 36%, #D4F024 0%, #D4F024 13px, transparent 14px),
-      radial-gradient(circle at 84% 42%, #D4F024 0%, #D4F024 16px, transparent 17px),
-      linear-gradient(180deg, #D4F024 0%, #D8F428 24%, #FFA21C 32%, #FF6A13 42%, #FF5200 100%);
+      /* Soft clay specular sheen at top */
+      linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 16%),
+      /* Subtle elongated teardrop drip highlights running inside the letters */
+      radial-gradient(ellipse 6px 14px at 12% 38%, rgba(255, 255, 210, 0.55) 0%, rgba(212, 240, 36, 0.25) 55%, transparent 100%),
+      radial-gradient(ellipse 8px 18px at 28% 46%, rgba(255, 255, 210, 0.5) 0%, rgba(212, 240, 36, 0.2) 55%, transparent 100%),
+      radial-gradient(ellipse 5px 12px at 45% 36%, rgba(255, 255, 210, 0.45) 0%, rgba(212, 240, 36, 0.18) 55%, transparent 100%),
+      radial-gradient(ellipse 7px 16px at 62% 44%, rgba(255, 255, 210, 0.5) 0%, rgba(212, 240, 36, 0.2) 55%, transparent 100%),
+      radial-gradient(ellipse 6px 15px at 78% 39%, rgba(255, 255, 210, 0.45) 0%, rgba(212, 240, 36, 0.18) 55%, transparent 100%),
+      radial-gradient(ellipse 8px 18px at 91% 45%, rgba(255, 255, 210, 0.5) 0%, rgba(212, 240, 36, 0.2) 55%, transparent 100%),
+      /* Subtle inner clay dripping crevice shadows */
+      radial-gradient(ellipse 7px 12px at 28% 56%, rgba(180, 50, 0, 0.4) 0%, transparent 100%),
+      radial-gradient(ellipse 6px 10px at 62% 54%, rgba(180, 50, 0, 0.4) 0%, transparent 100%),
+      radial-gradient(ellipse 7px 12px at 91% 55%, rgba(180, 50, 0, 0.4) 0%, transparent 100%),
+      /* Molten clay base gradient: radioactive lime down to deep clay pumpkin */
+      linear-gradient(180deg, #D6F226 0%, #D8F428 22%, #FF9E1B 38%, #FF620E 58%, #E04800 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1.2px #0D0D0D;
+    -webkit-text-stroke: 1.5px #080808;
     paint-order: stroke fill;
     filter: 
       drop-shadow(0 2px 0 #000000)
-      drop-shadow(0 5px 0 #D4F024)
-      drop-shadow(0 8px 0 #000000)
+      drop-shadow(0 4.5px 0 #D4F024)
+      drop-shadow(0 7.5px 0 #000000)
       drop-shadow(3px 8px 0px #9DE869);
   }
 
@@ -221,7 +231,7 @@ const styles = `
     padding: 34px 36px 38px;
     display: grid;
     grid-template-columns: 1.25fr 0.95fr;
-    gap: 32px;
+    gap: 28px;
     position: relative;
     overflow: hidden;
   }
@@ -1293,7 +1303,7 @@ function Print() {
       const text = new TextDecoder("latin1").decode(uint8Array);
       // Strategy 1: Find root page count (/Type /Pages ... /Count N)
       const countMatch = text.match(/\/Type\s*\/Pages[^>]*?\/Count\s+(\d+)/i) ||
-                         text.match(/\/Count\s+(\d+)[^>]*?\/Type\s*\/Pages/i);
+        text.match(/\/Count\s+(\d+)[^>]*?\/Type\s*\/Pages/i);
       if (countMatch && countMatch[1]) {
         const c = parseInt(countMatch[1], 10);
         if (c > 0) return c;
