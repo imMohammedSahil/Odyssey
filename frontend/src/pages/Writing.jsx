@@ -618,7 +618,7 @@ const styles = `
     transform: translateY(-1px);
   }
 
-  /* TOAST (BOTTOM-RIGHT COMIC POPUP) */
+  /* TOAST (BOTTOM-RIGHT COMIC POPUP WITH SMOOTH FADE & SLIDE) */
   .writing-toast {
     position: fixed;
     bottom: 28px;
@@ -633,20 +633,18 @@ const styles = `
     letter-spacing: 0.4px;
     box-shadow: 5px 5px 0px var(--void-black);
     z-index: 1000;
-    animation: toastSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     max-width: 440px;
     line-height: 1.4;
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  @keyframes toastSlideUp {
-    from {
-      opacity: 0;
-      transform: translateY(24px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+  .writing-toast.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
   }
 
   @media (max-width: 768px) {
@@ -924,7 +922,7 @@ function Writing() {
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     setToast({ show: true, message });
     toastTimeoutRef.current = setTimeout(() => {
-      setToast({ show: false, message: "" });
+      setToast((prev) => ({ ...prev, show: false }));
     }, 4500);
   };
 
@@ -1175,12 +1173,13 @@ function Writing() {
           </div>
         </main>
 
-        {/* TOAST POPUP */}
-        {toast.show && (
-          <div className="writing-toast">
-            {toast.message}
-          </div>
-        )}
+        {/* TOAST POPUP (SMOOTH TRANSITION) */}
+        <div
+          className={`writing-toast ${toast.show ? "visible" : ""}`}
+          aria-live="polite"
+        >
+          {toast.message}
+        </div>
       </div>
     </>
   );
