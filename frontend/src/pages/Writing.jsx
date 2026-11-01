@@ -60,8 +60,8 @@ const styles = `
   .writing-bg-vector {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center top;
+    object-fit: cover;
+    object-position: center bottom;
     display: block;
   }
 
@@ -1654,10 +1654,10 @@ function Writing() {
     <>
       <style>{styles}</style>
       <div className="writing-page-shell">
-        {/* 100% PURE VECTOR BACKDROP: EXACT REFERENCE RECREATION */}
+        {/* 100% PURE VECTOR BACKDROP: LANDSCAPE REDESIGN */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/halloween-reference-exact.svg"
+            src="/halloween-reference-landscape.svg"
             alt=""
             className="writing-bg-vector"
           />
