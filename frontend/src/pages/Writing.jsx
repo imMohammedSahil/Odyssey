@@ -303,9 +303,9 @@ const styles = `
     text-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* TIER 2: AUTHENTIC COMIC PARCHMENT MEMO */
+  /* TIER 2: AUTHENTIC COMIC MEMO (LUMINOUS PALE MOON LIME) */
   .writing-card-dossier-box {
-    background: var(--parchment);
+    background: #CCFB9A;
     color: var(--void-black);
     border: 3.5px solid var(--void-black);
     border-radius: 10px;
@@ -324,8 +324,8 @@ const styles = `
   }
 
   .writing-dossier-memo-badge {
-    background: var(--hazard-gold);
-    color: var(--void-black);
+    background: var(--void-black);
+    color: var(--slime-green);
     border: 2px solid var(--void-black);
     border-radius: 4px;
     padding: 2px 8px;
@@ -333,7 +333,7 @@ const styles = `
     font-size: 10px;
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    box-shadow: 2px 2px 0px var(--void-black);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
   }
 
   .writing-dossier-lore {
@@ -349,7 +349,7 @@ const styles = `
     font-size: 11px;
     color: var(--void-black);
     letter-spacing: 0.4px;
-    background: #EBE5D8;
+    background: #B2F069;
     border: 2px solid var(--void-black);
     border-radius: 6px;
     padding: 5px 10px;
