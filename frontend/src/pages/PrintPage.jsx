@@ -625,19 +625,20 @@ const styles = `
     font-size: 13px;
     font-weight: 900;
     color: #FFFFFF;
-    background: var(--void-black);
-    border: 2.5px solid #000000;
+    background: rgba(1, 20, 16, 0.7);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     padding: 9px 22px;
     border-radius: 9999px;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
     transition: all 0.15s ease;
   }
 
   .print-reupload-label:hover {
     transform: translateY(-2px);
-    background: #1e222b;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+    background: rgba(1, 158, 112, 0.35);
+    border-color: rgba(163, 230, 53, 0.4);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
   }
 
   .print-cancel-order-btn {
@@ -646,20 +647,21 @@ const styles = `
     gap: 6px;
     font-size: 13px;
     font-weight: 900;
-    color: #FFFFFF;
-    background: #E63946;
-    border: 2.5px solid #000000;
+    color: #FFA8A8;
+    background: rgba(230, 57, 70, 0.25);
+    border: 1.5px solid rgba(230, 57, 70, 0.5);
     padding: 9px 20px;
     border-radius: 9999px;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
     transition: all 0.15s ease;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
   .print-cancel-order-btn:hover {
     transform: translateY(-2px);
-    background: #FF4D5E;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+    background: rgba(230, 57, 70, 0.45);
+    color: #FFFFFF;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5);
   }
 
   .print-cancel-pill {
@@ -692,10 +694,10 @@ const styles = `
   }
 
   .print-mode-btn {
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 24px;
     padding: 24px 22px;
-    background: rgba(3, 18, 14, 0.3);
+    background: rgba(3, 18, 14, 0.35);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     color: #FFFFFF;
@@ -710,22 +712,25 @@ const styles = `
   }
 
   .print-mode-btn:hover:not(.active) {
-    background: #272C38;
+    background: rgba(1, 158, 112, 0.2);
+    border-color: rgba(163, 230, 53, 0.35);
     transform: translateY(-2px);
-    box-shadow: 6px 6px 0px rgba(0,0,0,0.8);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.45), 0 0 16px rgba(1, 158, 112, 0.25);
   }
 
   .print-mode-btn.active {
-    background: var(--slime-green);
-    color: var(--void-black);
-    border-color: #000000;
+    background: rgba(163, 230, 53, 0.22);
+    color: #FFFFFF;
+    border: 2px solid #A3E635;
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px rgba(0,0,0,0.9);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 22px rgba(163, 230, 53, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   .print-mode-btn.active.color-active {
-    background: var(--brain-pink);
-    color: var(--void-black);
+    background: rgba(3, 194, 128, 0.25);
+    color: #FFFFFF;
+    border: 2px solid #03C280;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 22px rgba(3, 194, 128, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   }
 
   .print-mode-btn-top {
@@ -738,24 +743,29 @@ const styles = `
   .print-mode-icon-circle {
     width: 54px;
     height: 54px;
-    background: var(--void-black);
-    color: var(--slime-green);
+    background: rgba(1, 15, 12, 0.7);
+    color: #A3E635;
     border-radius: 16px;
-    border: 3px solid #000000;
+    border: 2px solid rgba(163, 230, 53, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: all 0.15s ease;
   }
 
   .print-mode-btn.active .print-mode-icon-circle {
-    background: var(--void-black);
-    color: var(--slime-green);
+    background: rgba(0, 0, 0, 0.6);
+    color: #A3E635;
+    border-color: #A3E635;
+    box-shadow: 0 0 14px rgba(163, 230, 53, 0.4);
   }
 
   .print-mode-btn.active.color-active .print-mode-icon-circle {
-    background: var(--void-black);
-    color: var(--brain-pink);
+    background: rgba(0, 0, 0, 0.6);
+    color: #03C280;
+    border-color: #03C280;
+    box-shadow: 0 0 14px rgba(3, 194, 128, 0.45);
   }
 
   .print-mode-rate-pill {
@@ -763,17 +773,26 @@ const styles = `
     border-radius: 9999px;
     font-size: 15px;
     font-weight: 900;
-    border: 2.5px solid #000000;
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+    border: 1.5px solid rgba(163, 230, 53, 0.4);
+    background: rgba(1, 25, 20, 0.7);
+    color: #CCFB9A;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     letter-spacing: -0.2px;
+    transition: all 0.15s ease;
   }
 
   .print-mode-btn.active .print-mode-rate-pill {
-    background: var(--void-black);
+    background: rgba(163, 230, 53, 0.28);
     color: #FFFFFF;
-    border-color: #000000;
+    border-color: #A3E635;
+    box-shadow: 0 0 12px rgba(163, 230, 53, 0.35);
+  }
+
+  .print-mode-btn.active.color-active .print-mode-rate-pill {
+    background: rgba(3, 194, 128, 0.32);
+    color: #FFFFFF;
+    border-color: #03C280;
+    box-shadow: 0 0 12px rgba(3, 194, 128, 0.4);
   }
 
   .print-mode-btn-bottom {
@@ -829,32 +848,37 @@ const styles = `
     width: 60px;
     height: 60px;
     border-radius: 18px;
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    border: 3px solid #000000;
+    background: rgba(1, 28, 22, 0.75);
+    color: #CCFB9A;
+    border: 1.5px solid rgba(163, 230, 53, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 28px;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.4);
     transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     user-select: none;
   }
 
   .print-step-btn.plus-btn {
-    background: var(--slime-green);
+    background: rgba(1, 158, 112, 0.3);
+    color: #A3E635;
+    border-color: #A3E635;
   }
 
   .print-step-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.8);
+    background: rgba(1, 158, 112, 0.45);
+    color: #FFFFFF;
+    border-color: #A3E635;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5), 0 0 14px rgba(163, 230, 53, 0.3);
   }
 
   .print-step-btn:active {
     transform: translate(2px, 2px);
-    box-shadow: 0px 0px 0px rgba(0,0,0,0.8);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
   }
 
   .print-step-value-col {
@@ -867,10 +891,10 @@ const styles = `
   .print-step-value {
     font-family: 'Archivo Black', sans-serif;
     font-size: 64px;
-    color: var(--slime-green);
+    color: #A3E635;
     line-height: 1;
     letter-spacing: -2px;
-    text-shadow: 3.5px 3.5px 0px #000000;
+    text-shadow: 0 0 18px rgba(163, 230, 53, 0.4), 2px 2px 0px #000000;
     user-select: none;
   }
 
@@ -879,7 +903,7 @@ const styles = `
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--text-muted);
+    color: #88C5A8;
     margin-top: 6px;
   }
 
@@ -889,37 +913,39 @@ const styles = `
     gap: 12px;
     width: 100%;
     margin-top: 20px;
-    border-top: 2px dashed rgba(255, 255, 255, 0.28);
+    border-top: 1.5px dashed rgba(255, 255, 255, 0.2);
     padding-top: 16px;
   }
 
   .print-preset-pill {
     text-align: center;
     padding: 12px 6px;
-    background: #14171E;
-    color: var(--text-muted);
-    border: 3px solid #000000;
+    background: rgba(1, 20, 16, 0.6);
+    color: #88C5A8;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 16px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 14px;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .print-preset-pill.active {
-    background: var(--hazard-gold);
-    color: var(--void-black);
+    background: rgba(163, 230, 53, 0.25);
+    color: #FFFFFF;
+    border: 2px solid #A3E635;
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.85);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.5), 0 0 16px rgba(163, 230, 53, 0.35);
   }
 
   .print-preset-pill:hover:not(.active) {
-    background: #272C38;
+    background: rgba(1, 158, 112, 0.25);
     color: #FFFFFF;
+    border-color: rgba(163, 230, 53, 0.35);
     transform: translateY(-2px);
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.7);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
   }
 
   /* RIGHT COLUMN: SUMMARY & CTA */
@@ -974,7 +1000,7 @@ const styles = `
 
   .print-summary-title-row {
     margin-bottom: 10px;
-    border-bottom: 2px solid var(--border-dark);
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.16);
     padding-bottom: 8px;
     text-align: center;
   }
@@ -984,9 +1010,9 @@ const styles = `
     font-size: 18px;
     text-transform: uppercase;
     letter-spacing: -0.3px;
-    color: var(--slime-green);
+    color: #A3E635;
     margin: 0;
-    text-shadow: 1px 1px 0px #000000;
+    text-shadow: 0 0 12px rgba(163, 230, 53, 0.3), 1px 1px 0px #000000;
   }
 
   .print-calc-list {
@@ -1007,15 +1033,15 @@ const styles = `
   }
 
   .print-calc-total-box {
-    background: var(--void-black);
+    background: rgba(1, 18, 14, 0.65);
     color: #FFFFFF;
-    border: 3px solid #000000;
+    border: 1.5px solid rgba(163, 230, 53, 0.4);
     border-radius: 14px;
     padding: 10px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 3px 3px 0px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
   .print-total-label {
@@ -1023,13 +1049,15 @@ const styles = `
     font-size: 15px;
     text-transform: uppercase;
     color: #FFFFFF;
+    letter-spacing: 0.5px;
   }
 
   .print-total-price {
     font-family: 'Archivo Black', sans-serif;
     font-size: 26px;
-    color: var(--hazard-gold);
+    color: #A3E635;
     letter-spacing: -0.5px;
+    text-shadow: 0 0 16px rgba(163, 230, 53, 0.45);
   }
 
   /* SPEC TAGS */
@@ -1041,9 +1069,9 @@ const styles = `
   }
 
   .print-spec-pill {
-    background: var(--void-black);
-    color: #FFFFFF;
-    border: 2px solid #000000;
+    background: rgba(1, 20, 16, 0.65);
+    color: #E2E8F0;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 9999px;
     padding: 4px 12px;
     font-size: 11px;
