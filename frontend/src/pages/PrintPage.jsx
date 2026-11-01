@@ -230,19 +230,7 @@ const styles = `
     content: '';
     position: absolute;
     inset: 0;
-    background: url('/moonlit-zombie-trio.svg') center top / cover no-repeat;
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .print-workbench::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse at 50% 25%, transparent 35%, rgba(0, 15, 12, 0.4) 70%, rgba(0, 5, 8, 0.88) 100%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.72) 100%);
-    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.95), inset 0 0 40px rgba(0, 0, 0, 0.85);
+    background: url('/moonlit-zombie-trio.svg') center center / cover no-repeat;
     z-index: 0;
     pointer-events: none;
   }
@@ -276,13 +264,13 @@ const styles = `
     display: flex;
     flex-direction: column;
     gap: 14px;
-    background: rgba(13, 22, 17, 0.26);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(4, 20, 15, 0.14);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     border: none;
     border-radius: 22px;
     padding: 18px 22px;
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), inset 0 0 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
     position: relative;
     overflow: hidden;
   }
@@ -478,9 +466,9 @@ const styles = `
   .print-dropzone {
     border: 3px dashed var(--slime-green);
     border-radius: 24px;
-    background: rgba(13, 22, 17, 0.24);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(4, 20, 15, 0.12);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
     padding: 36px 24px;
     min-height: 320px;
     flex: 1;
@@ -491,7 +479,7 @@ const styles = `
     text-align: center;
     position: relative;
     cursor: pointer;
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), inset 0 0 45px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16);
     transition: all 0.15s ease;
   }
 
@@ -536,9 +524,9 @@ const styles = `
 
   /* FILE DETECTED CARD (Glassmorphic) */
   .print-file-ready {
-    background: rgba(22, 48, 32, 0.32);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(4, 20, 15, 0.12);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
     color: #FFFFFF;
     border: none;
     border-radius: 24px;
@@ -551,7 +539,7 @@ const styles = `
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.8), inset 0 0 45px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   }
 
   .print-file-top-bar {
@@ -704,15 +692,15 @@ const styles = `
   }
 
   .print-mode-btn {
-    border: 2.5px solid rgba(255, 255, 255, 0.16);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     padding: 24px 22px;
-    background: rgba(13, 22, 17, 0.28);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(4, 20, 15, 0.14);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     color: #FFFFFF;
     cursor: pointer;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), inset 0 0 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16);
     transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     flex-direction: column;
@@ -817,15 +805,15 @@ const styles = `
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(13, 22, 17, 0.28);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 2.5px solid rgba(255, 255, 255, 0.16);
+    background: rgba(4, 20, 15, 0.14);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     padding: 28px 24px 22px;
     flex: 1;
     min-height: 200px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), inset 0 0 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16);
     margin: 6px 0 0;
   }
 
@@ -969,14 +957,14 @@ const styles = `
   }
 
   .print-summary-card {
-    background: rgba(16, 36, 26, 0.32);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background: rgba(4, 20, 15, 0.14);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
     color: #FFFFFF;
     border: none;
     border-radius: 20px;
     padding: 18px 20px;
-    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), inset 0 0 35px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
     position: relative;
     flex: 1;
     display: flex;
