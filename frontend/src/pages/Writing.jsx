@@ -305,34 +305,38 @@ const styles = `
     text-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* TIER 2: SUBTLE GLASS PRODUCT INFO BOX */
+  /* TIER 2: COMIC PUNCHY LIME PRODUCT INFO BOX */
   .writing-card-dossier-box {
-    background: rgba(10, 26, 19, 0.52);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 2px solid rgba(157, 232, 105, 0.35);
+    background: #CCFB9A;
+    color: var(--void-black);
+    border: 3.5px solid var(--void-black);
     border-radius: 10px;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
+    box-shadow: 4px 4px 0px var(--void-black);
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
+    min-height: 72px;
   }
 
   .writing-dossier-lore {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
-    font-weight: 600;
-    color: var(--parchment);
-    line-height: 1.5;
+    font-weight: 700;
+    color: var(--void-black);
+    line-height: 1.45;
   }
 
   .writing-dossier-tagline {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--slime-green);
-    letter-spacing: 0.2px;
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--void-black);
+    background: #B2F069;
+    border: 2px solid var(--void-black);
+    border-radius: 6px;
+    padding: 4px 10px;
+    display: inline-block;
     line-height: 1.4;
   }
 
