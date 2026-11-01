@@ -377,8 +377,10 @@ const styles = `
   .writing-config-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
+    justify-content: space-between;
+    gap: 12px;
+    max-width: 500px;
+    flex-wrap: wrap;
   }
 
   .writing-config-label {
@@ -387,8 +389,7 @@ const styles = `
     color: var(--void-black);
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    width: 135px;
-    flex-shrink: 0;
+    min-width: 110px;
   }
 
   .writing-pill-group {
