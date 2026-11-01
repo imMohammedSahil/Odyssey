@@ -169,9 +169,8 @@ const styles = `
     margin-bottom: 22px;
     display: inline-block;
     text-align: center;
-    /* Hand-drawn wobbly comic clay folds & pinched creases (matching MOON RAZE) */
-    background: url('/clay-drips-pattern.svg?v=4') repeat;
-    background-size: 300px 115px;
+    /* Clean pumpkin clay fill without internal linework */
+    background: linear-gradient(180deg, #FFA022 0%, #FF7614 38%, #F05A00 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
