@@ -1653,7 +1653,7 @@ function Writing() {
         {/* 100% PURE VECTOR BACKDROP: EXACT LANDSCAPE MAPPING */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/halloween-reference-landscape.svg?v=6"
+            src="/halloween-reference-landscape.svg?v=8"
             alt=""
             className="writing-bg-vector"
           />
