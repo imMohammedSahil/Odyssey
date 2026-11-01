@@ -264,9 +264,9 @@ const styles = `
     display: flex;
     flex-direction: column;
     gap: 14px;
-    background: rgba(4, 20, 15, 0.14);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(3, 18, 14, 0.42);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 22px;
     padding: 18px 22px;
@@ -466,9 +466,9 @@ const styles = `
   .print-dropzone {
     border: 3px dashed var(--slime-green);
     border-radius: 24px;
-    background: rgba(4, 20, 15, 0.12);
-    backdrop-filter: blur(2.5px);
-    -webkit-backdrop-filter: blur(2.5px);
+    background: rgba(3, 18, 14, 0.35);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     padding: 36px 24px;
     min-height: 320px;
     flex: 1;
@@ -524,9 +524,9 @@ const styles = `
 
   /* FILE DETECTED CARD (Glassmorphic) */
   .print-file-ready {
-    background: rgba(4, 20, 15, 0.12);
-    backdrop-filter: blur(2.5px);
-    -webkit-backdrop-filter: blur(2.5px);
+    background: rgba(3, 18, 14, 0.42);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     color: #FFFFFF;
     border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 24px;
@@ -695,9 +695,9 @@ const styles = `
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     padding: 24px 22px;
-    background: rgba(4, 20, 15, 0.14);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(3, 18, 14, 0.45);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     color: #FFFFFF;
     cursor: pointer;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.16);
@@ -805,9 +805,9 @@ const styles = `
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(4, 20, 15, 0.14);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
+    background: rgba(3, 18, 14, 0.45);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 24px;
     padding: 28px 24px 22px;
@@ -957,9 +957,9 @@ const styles = `
   }
 
   .print-summary-card {
-    background: rgba(4, 20, 15, 0.14);
-    backdrop-filter: blur(2.5px);
-    -webkit-backdrop-filter: blur(2.5px);
+    background: rgba(3, 18, 14, 0.45);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     color: #FFFFFF;
     border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
