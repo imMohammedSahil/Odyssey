@@ -230,9 +230,10 @@ const styles = `
     box-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* MAIN ACTIVE GLASSMORPHISM CARD (PROFOUND VISUAL HIERARCHY) */
+  /* MAIN ACTIVE GLASSMORPHISM CARD (LOCKED FIXED HEIGHT) */
   .writing-active-glass-card {
     width: 660px;
+    min-height: 450px;
     max-width: 92vw;
     background: rgba(10, 24, 18, 0.84);
     backdrop-filter: blur(20px);
@@ -243,7 +244,8 @@ const styles = `
     padding: 24px 28px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 14px;
     position: relative;
     flex-shrink: 0;
   }
@@ -334,15 +336,29 @@ const styles = `
     line-height: 1.4;
   }
 
-  /* TIER 3: STRUCTURED CONFIGURATIONS */
+  /* TIER 3: STRUCTURED CONFIGURATIONS (LOCKED HEIGHT FOR ZERO FLICKER) */
   .writing-config-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    justify-content: center;
+    gap: 10px;
+    min-height: 106px;
     background: rgba(5, 16, 12, 0.65);
     border: 2px solid rgba(69, 184, 158, 0.3);
     border-radius: 10px;
     padding: 12px 14px;
+  }
+
+  .writing-spec-chip {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--slime-green);
+    background: rgba(13, 13, 13, 0.65);
+    border: 1.5px solid rgba(157, 232, 105, 0.35);
+    border-radius: 6px;
+    padding: 4px 10px;
+    letter-spacing: 0.3px;
+    user-select: none;
   }
 
   .writing-config-row {
@@ -1029,39 +1045,57 @@ function Writing() {
                 )}
 
                 {category === "pencil" && (
-                  <div className="writing-config-row">
-                    <span className="writing-config-label">1. Graphite Grade</span>
-                    <div className="writing-pill-group">
-                      {["HB", "2B", "Normal"].map((g) => (
-                        <button
-                          key={g}
-                          type="button"
-                          className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
-                          onClick={() => setPencilType(g)}
-                        >
-                          {g === "2B" ? "2B • Extra Dark" : g === "HB" ? "HB • Exam Standard" : "Normal • Draft"}
-                        </button>
-                      ))}
+                  <>
+                    <div className="writing-config-row">
+                      <span className="writing-config-label">1. Graphite Grade</span>
+                      <div className="writing-pill-group">
+                        {["HB", "2B", "Normal"].map((g) => (
+                          <button
+                            key={g}
+                            type="button"
+                            className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
+                            onClick={() => setPencilType(g)}
+                          >
+                            {g === "2B" ? "2B • Extra Dark" : g === "HB" ? "HB • Exam Standard" : "Normal • Draft"}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                    <div className="writing-config-row">
+                      <span className="writing-config-label">2. Lead Matrix</span>
+                      <div className="writing-pill-group">
+                        <span className="writing-spec-chip">Micro-Pulverized Bonded Core</span>
+                        <span className="writing-spec-chip">OMR Optical Certified</span>
+                      </div>
+                    </div>
+                  </>
                 )}
 
                 {category === "mechanical" && (
-                  <div className="writing-config-row">
-                    <span className="writing-config-label">1. Precision Gauge</span>
-                    <div className="writing-pill-group">
-                      {["0.5 mm", "0.7 mm"].map((size) => (
-                        <button
-                          key={size}
-                          type="button"
-                          className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
-                          onClick={() => setMechSize(size)}
-                        >
-                          {size === "0.5 mm" ? "0.5 mm • Ultra Fine" : "0.7 mm • Balanced"}
-                        </button>
-                      ))}
+                  <>
+                    <div className="writing-config-row">
+                      <span className="writing-config-label">1. Precision Gauge</span>
+                      <div className="writing-pill-group">
+                        {["0.5 mm", "0.7 mm"].map((size) => (
+                          <button
+                            key={size}
+                            type="button"
+                            className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
+                            onClick={() => setMechSize(size)}
+                          >
+                            {size === "0.5 mm" ? "0.5 mm • Ultra Fine" : "0.7 mm • Balanced"}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                    <div className="writing-config-row">
+                      <span className="writing-config-label">2. Clutch System</span>
+                      <div className="writing-pill-group">
+                        <span className="writing-spec-chip">High-Tolerance Brass Clutch</span>
+                        <span className="writing-spec-chip">Zero-Wobble Sleeve</span>
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
 
