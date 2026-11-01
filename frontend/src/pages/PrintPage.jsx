@@ -230,7 +230,7 @@ const styles = `
     content: '';
     position: absolute;
     inset: 0;
-    background: url('/moonlit-zombie-trio.svg') center center / cover no-repeat;
+    background: url('/moonlit-zombie-trio.svg?v=3') center center / cover no-repeat;
     z-index: 0;
     pointer-events: none;
   }
