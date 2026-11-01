@@ -327,13 +327,13 @@ const styles = `
     border: 3.5px solid var(--void-black);
     border-radius: 10px;
     box-shadow: 4px 4px 0px var(--void-black);
-    padding: 12px 16px;
+    padding: 12px 18px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 8px;
-    height: 94px;
-    min-height: 94px;
+    height: 104px;
+    min-height: 104px;
     box-sizing: border-box;
   }
 
@@ -675,7 +675,7 @@ const CATALOG_ITEMS = [
     title: "HAUSER XO // ULTRA-SMOOTH",
     protocol: "HAUSER PROTOCOL // XO-01",
     basePrice: 10,
-    lore1: "Ultra-low viscosity German ink with 0.6mm tungsten carbide ball nib.",
+    lore1: "Ultra-low viscosity German ink paired with a precision 0.6mm tungsten carbide ball nib, engineered to deliver ultra-consistent, frictionless ink transfer across marathon tests without skipping.",
     lore2: "Minimal drag coefficient engineered for marathon exam writing with zero fatigue.",
   },
   {
@@ -686,7 +686,7 @@ const CATALOG_ITEMS = [
     title: "PENTONIC // MATTE STEALTH",
     protocol: "PENTONIC PROTOCOL // PT-02",
     basePrice: 10,
-    lore1: "Sleek aerodynamic matte black casing with feather-light skip-free ink flow.",
+    lore1: "Aerodynamic matte black stealth casing with advanced feather-light skip-free ink flow, formulated for lightning-fast note-taking and high-speed competitive exam papers with zero smudge.",
     lore2: "Smudge-resistant rapid-dry formulation ideal for high-speed answer sheets.",
   },
   {
@@ -697,7 +697,7 @@ const CATALOG_ITEMS = [
     title: "RORITO TERAMAX // FLUID INK",
     protocol: "TERAMAX PROTOCOL // TM-03",
     basePrice: 20,
-    lore1: "Advanced fluid ink regulator ensures continuous, uniform high-contrast lines.",
+    lore1: "Advanced fluid ink regulator delivering uniform, dark high-contrast lines from first stroke to last, backed by a massive ink reservoir built for endless long-form descriptive answer sheets.",
     lore2: "High-capacity ink reservoir designed for uninterrupted long-form descriptive exams.",
   },
   {
@@ -708,7 +708,7 @@ const CATALOG_ITEMS = [
     title: "PILOT HI-TECPOINT // V5-V7",
     protocol: "PILOT PROTOCOL // PV-04",
     basePrice: 60,
-    lore1: "Micro-fine stainless steel needle tip with multi-channel liquid ink feed system.",
+    lore1: "Micro-fine Japanese stainless steel needle tip with multi-vane liquid ink feed system, delivering surgical line consistency and pin-point accuracy tailored for intricate diagrams and dense notations.",
     lore2: "Surgical line precision calibrated for intricate diagrams and dense notations.",
   },
   {
@@ -719,7 +719,7 @@ const CATALOG_ITEMS = [
     title: "CELLO BUTTERFLOW // HYBRID",
     protocol: "BUTTERFLOW PROTOCOL // CB-05",
     basePrice: 10,
-    lore1: "Lubriflow ink mechanism paired with textured comfort grip for zero-pressure writing.",
+    lore1: "Lubriflow hybrid low-viscosity ink mechanism paired with a textured elastomeric comfort grip, engineered to drastically reduce write drag and eliminate hand fatigue during grueling 3-hour exam sessions.",
     lore2: "Time-tested standard issue reliability across grueling 3-hour university exams.",
   },
   {
@@ -730,7 +730,7 @@ const CATALOG_ITEMS = [
     title: "REYNOLDS 045 // CARBURE",
     protocol: "REYNOLDS PROTOCOL // RC-06",
     basePrice: 10,
-    lore1: "Laser-cut brass tip delivering legendary durability and crisp handwriting.",
+    lore1: "Classic laser-machined brass carbure tip providing unmatched structural durability and time-tested line clarity, remaining the legendary vintage baseline trusted by generations of academic test takers.",
     lore2: "The undefeated vintage standard trusted by generations of exam survivors.",
   },
 
@@ -743,7 +743,7 @@ const CATALOG_ITEMS = [
     title: "APSARA PLATINUM // EXTRA DARK",
     protocol: "APSARA PROTOCOL // AP-01",
     basePrice: 10,
-    lore1: "Micro-pulverized graphite core yielding deep, pitch-black high-contrast markings.",
+    lore1: "Micro-pulverized graphite core yielding deep, pitch-black high-contrast markings with zero smudge, specially reinforced with bond-protect casing to withstand aggressive pressure during rapid shading.",
     lore2: "Specially formulated for machine-read OMR optical bubble sheets and bold diagrams.",
   },
   {
@@ -754,7 +754,7 @@ const CATALOG_ITEMS = [
     title: "CAMLIN KOKUYO // VELVET CORE",
     protocol: "KOKUYO PROTOCOL // CK-02",
     basePrice: 10,
-    lore1: "Specially treated bonded wood casing with break-resistant smooth gliding graphite.",
+    lore1: "Specially treated bonded wood casing housing break-resistant velvet glide graphite, ensuring whisper-smooth paper contact and effortless erasability that leaves zero ghostly residue behind.",
     lore2: "Exceptional erasability leaving zero ghostly impressions on delicate answer paper.",
   },
   {
@@ -765,7 +765,7 @@ const CATALOG_ITEMS = [
     title: "FABER-CASTELL // 2B MATT",
     protocol: "CASTELL PROTOCOL // FC-03",
     basePrice: 15,
-    lore1: "Anti-reflective deep matte graphite eliminating glare during overhead sheet scanning.",
+    lore1: "Anti-reflective deep matte graphite core eliminating optical glare during high-resolution sheet scanning, precision-graded with German clay for ultra-consistent technical drafting and architectural sketchwork.",
     lore2: "Finely graded German clay-graphite matrix for technical drafting and sketching.",
   },
   {
@@ -776,7 +776,7 @@ const CATALOG_ITEMS = [
     title: "NATARAJ 621 // CLASSIC BOLD",
     protocol: "NATARAJ PROTOCOL // NT-04",
     basePrice: 5,
-    lore1: "Iconic red-and-black hexagonal cedar casing with bonded break-proof core.",
+    lore1: "Iconic red-and-black hexagonal seasoned cedar casing with a shock-bonded break-proof graphite spine, providing timeless, rugged reliability proven across decades of school exams and rapid geometry work.",
     lore2: "The timeless academic workhorse proven across decades of school exams.",
   },
   {
@@ -787,7 +787,7 @@ const CATALOG_ITEMS = [
     title: "STAEDTLER NORIS // 2B DRAFT",
     protocol: "NORIS PROTOCOL // SN-05",
     basePrice: 35,
-    lore1: "Upcycled wood WOPEX composite core offering extreme break resistance.",
+    lore1: "Upcycled wood WOPEX composite core offering superior break resistance and tactile grip, precision-engineered to German standards for rigorous engineering graphics and high-cadence diagrammatic problem solving.",
     lore2: "German engineering standard for engineering graphics and rapid diagramming.",
   },
   {
@@ -798,7 +798,7 @@ const CATALOG_ITEMS = [
     title: "DOMS NEON // SUPER DARK",
     protocol: "DOMS PROTOCOL // DN-06",
     basePrice: 10,
-    lore1: "Soft-touch tactile barrel finish with rich black pigment-infused lead.",
+    lore1: "Velvet soft-touch triangular casing packed with rich carbon pigment-infused lead, scientifically shaped to relieve finger tension and maintain razor-sharp contrast across demanding timed tests.",
     lore2: "Ergonomic triangular grip designed to relieve hand tension during timed tests.",
   },
 
@@ -811,7 +811,7 @@ const CATALOG_ITEMS = [
     title: "PENTEL GRAPHGEAR 500 // PRO",
     protocol: "GRAPHGEAR PROTOCOL // PG-01",
     basePrice: 350,
-    lore1: "Heavyweight knurled metal grip with 4mm fixed drafting sleeve for ruler work.",
+    lore1: "Heavyweight knurled metal grip combined with a 4mm fixed drafting sleeve, designed with a low center of gravity to offer millimeter-exact precision against straightedges and technical rulers.",
     lore2: "Precision low-center-of-gravity balance for millimeter-perfect engineering plans.",
   },
   {
@@ -822,7 +822,7 @@ const CATALOG_ITEMS = [
     title: "CAMLIN TRINITY // DRAFT-05",
     protocol: "TRINITY PROTOCOL // CT-02",
     basePrice: 30,
-    lore1: "Shock-absorbing cushion tip with ribbed non-slip comfort barrel.",
+    lore1: "Shock-absorbing spring-cushioned tip with a ribbed non-slip comfort barrel, delivering an economical and exceptionally durable everyday mechanical pencil for dense mathematical formulas and rapid draft work.",
     lore2: "Dependable, economical everyday drafting tool for formulas and quick drafts.",
   },
   {
@@ -833,7 +833,7 @@ const CATALOG_ITEMS = [
     title: "ROTRING TIKKY // PRECISION",
     protocol: "ROTRING PROTOCOL // RT-03",
     basePrice: 450,
-    lore1: "Dual-material ergonomic wave grip with high-tolerance brass clutch mechanism.",
+    lore1: "Dual-material ergonomic wave grip integrated with a high-tolerance German brass clutch mechanism, eliminating lead slippage and wobble under high-torque rapid technical calculations and drafting.",
     lore2: "Zero lead wobble or slippage under high-torque rapid technical calculations.",
   },
   {
@@ -844,7 +844,7 @@ const CATALOG_ITEMS = [
     title: "FABER-CASTELL // APOLLO",
     protocol: "APOLLO PROTOCOL // FA-04",
     basePrice: 90,
-    lore1: "Spring-loaded sliding lead sleeve that retracts to shield lead from snapping.",
+    lore1: "Spring-loaded sliding lead sleeve that automatically retracts to shield fragile lead from aggressive downward pressure, equipped with an extra-long twist-out eraser barrel for rapid tactical corrections.",
     lore2: "Integrated jumbo twist-out eraser barrel for rapid tactical corrections.",
   },
   {
@@ -855,7 +855,7 @@ const CATALOG_ITEMS = [
     title: "UNI KURU TOGA // ROTATING CORE",
     protocol: "KURUTOGA PROTOCOL // UK-05",
     basePrice: 420,
-    lore1: "Patented internal kinetic gear rotates lead 9 degrees with every paper lift.",
+    lore1: "Patented internal kinetic gear rotates the graphite lead 9 degrees with every stroke, continuously sharpening the core to maintain a uniform conical razor-sharp chisel point with zero flat spots.",
     lore2: "Maintains a constant conical razor-sharp chisel point with zero flat spots.",
   },
   {
@@ -866,7 +866,7 @@ const CATALOG_ITEMS = [
     title: "ZEBRA DELGUARD // SHIELD",
     protocol: "DELGUARD PROTOCOL // ZD-06",
     basePrice: 480,
-    lore1: "Patented double-spring shock absorption protects lead from any angle or pressure.",
+    lore1: "Double-spring active shock absorption mechanism that shields lead from blunt vertical and angled stress, engineered to make snapped leads physically impossible even under severe heavy-handed test panic.",
     lore2: "Indestructible tactical clutch engineered for heavy-handed panic exam writers.",
   },
 ];
