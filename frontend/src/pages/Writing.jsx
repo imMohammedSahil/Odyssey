@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
@@ -618,33 +618,34 @@ const styles = `
     transform: translateY(-1px);
   }
 
-  /* TOAST */
+  /* TOAST (BOTTOM-RIGHT COMIC POPUP) */
   .writing-toast {
     position: fixed;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 28px;
+    right: 28px;
     background: var(--slime-green);
     color: var(--void-black);
-    border: 3px solid var(--void-black);
-    border-radius: 9999px;
-    padding: 10px 26px;
+    border: 3.5px solid var(--void-black);
+    border-radius: 12px;
+    padding: 12px 22px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 13px;
-    box-shadow: 4px 4px 0px var(--void-black);
-    z-index: 100;
-    animation: toastSlide 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    white-space: nowrap;
+    letter-spacing: 0.4px;
+    box-shadow: 5px 5px 0px var(--void-black);
+    z-index: 1000;
+    animation: toastSlideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 440px;
+    line-height: 1.4;
   }
 
-  @keyframes toastSlide {
+  @keyframes toastSlideUp {
     from {
       opacity: 0;
-      transform: translate(-50%, -20px);
+      transform: translateY(24px) scale(0.95);
     }
     to {
       opacity: 1;
-      transform: translate(-50%, 0);
+      transform: translateY(0) scale(1);
     }
   }
 
@@ -890,6 +891,7 @@ function Writing() {
   const [mechSize, setMechSize] = useState("0.5 mm");
   const [qty, setQty] = useState(1);
   const [toast, setToast] = useState({ show: false, message: "" });
+  const toastTimeoutRef = useRef(null);
 
   const categoryItems = CATALOG_ITEMS.filter((item) => item.category === category);
   const currentCatalog = CATALOG_ITEMS.find((item) => item.id === activeId) || categoryItems[0] || CATALOG_ITEMS[0];
@@ -919,8 +921,11 @@ function Writing() {
   }, [navigate, prevItem, nextItem]);
 
   const showToast = (message) => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     setToast({ show: true, message });
-    setTimeout(() => setToast({ show: false, message: "" }), 2500);
+    toastTimeoutRef.current = setTimeout(() => {
+      setToast({ show: false, message: "" });
+    }, 4500);
   };
 
   const handleCategoryChange = (newCat) => {
