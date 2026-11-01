@@ -267,7 +267,7 @@ const styles = `
     background: rgba(4, 20, 15, 0.14);
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
-    border: none;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 22px;
     padding: 18px 22px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
@@ -528,7 +528,7 @@ const styles = `
     backdrop-filter: blur(2.5px);
     -webkit-backdrop-filter: blur(2.5px);
     color: #FFFFFF;
-    border: none;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 24px;
     padding: 26px 28px;
     min-height: 320px;
@@ -961,7 +961,7 @@ const styles = `
     backdrop-filter: blur(2.5px);
     -webkit-backdrop-filter: blur(2.5px);
     color: #FFFFFF;
-    border: none;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 20px;
     padding: 18px 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
