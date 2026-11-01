@@ -544,37 +544,29 @@ const styles = `
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0px var(--void-black);
   }
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px var(--void-black);
-  }
-
-  /* BOTTOM GAME NAVIGATION TABS (SITTING DIRECTLY ON MOUNTAIN RIDGE) */
-  .writing-bottom-tabs-dock {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  /* CENTER CATEGORY TABS */
+  .writing-center-category-tabs {
+    display: inline-flex;
     align-items: center;
-    gap: 14px;
-    padding: 0 20px 48px;
-    position: relative;
-    z-index: 50;
-    flex-shrink: 0;
-    transform: translateY(-44px);
+    justify-content: center;
+    gap: 10px;
+    margin-top: 6px;
+    user-select: none;
   }
 
   .writing-game-tab {
-    background: rgba(19, 24, 32, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(13, 13, 13, 0.72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     color: var(--parchment);
     border: 3px solid var(--void-black);
-    border-radius: 10px;
-    padding: 12px 32px;
+    border-radius: 9999px;
+    padding: 8px 22px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.8px;
     cursor: pointer;
-    box-shadow: 4px 4px 0px var(--void-black);
+    box-shadow: 3px 3px 0px var(--void-black);
     transition: all 0.12s ease;
     user-select: none;
   }
@@ -583,14 +575,15 @@ const styles = `
     transform: translateY(-2px);
     color: var(--pure-white);
     border-color: var(--slime-green);
+    box-shadow: 4px 4px 0px var(--void-black);
   }
 
   .writing-game-tab.active {
     background: var(--slime-green);
     color: var(--void-black);
     border-color: var(--void-black);
-    box-shadow: 4px 4px 0px var(--void-black);
-    transform: translateY(-2px);
+    box-shadow: 3px 3px 0px var(--void-black);
+    transform: translateY(-1px);
   }
 
   /* TOAST */
@@ -955,11 +948,31 @@ function Writing() {
 
         {/* HILL CLIMB RACING STYLE GAME CAROUSEL STAGE */}
         <main className="writing-game-stage">
-          {/* HERO HEADLINE */}
+          {/* HERO HEADLINE & CENTER CATEGORY SELECTOR */}
           <div className="writing-game-headline">
             <h1 className="writing-game-main-hero">WRITTEN IN STONE</h1>
-            <div className="writing-game-category-tag">
-              PENS • PENCILS • MECHANICAL PENCILS
+            <div className="writing-center-category-tabs" aria-label="Tool Categories">
+              <button
+                type="button"
+                className={`writing-game-tab ${category === "pen" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("pen")}
+              >
+                PENS
+              </button>
+              <button
+                type="button"
+                className={`writing-game-tab ${category === "pencil" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("pencil")}
+              >
+                PENCILS
+              </button>
+              <button
+                type="button"
+                className={`writing-game-tab ${category === "mechanical" ? "active" : ""}`}
+                onClick={() => handleCategoryChange("mechanical")}
+              >
+                MECHANICAL
+              </button>
             </div>
           </div>
 
@@ -1128,31 +1141,6 @@ function Writing() {
             </button>
           </div>
         </main>
-
-        {/* BOTTOM GAME NAVIGATION TABS (HILL CLIMB TABS) */}
-        <nav className="writing-bottom-tabs-dock" aria-label="Tool Categories">
-          <button
-            type="button"
-            className={`writing-game-tab ${category === "pen" ? "active" : ""}`}
-            onClick={() => handleCategoryChange("pen")}
-          >
-            PENS
-          </button>
-          <button
-            type="button"
-            className={`writing-game-tab ${category === "pencil" ? "active" : ""}`}
-            onClick={() => handleCategoryChange("pencil")}
-          >
-            PENCILS
-          </button>
-          <button
-            type="button"
-            className={`writing-game-tab ${category === "mechanical" ? "active" : ""}`}
-            onClick={() => handleCategoryChange("mechanical")}
-          >
-            MECHANICAL
-          </button>
-        </nav>
 
         {/* TOAST POPUP */}
         {toast.show && (
