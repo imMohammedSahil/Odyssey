@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@700&family=Playball&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
   :root {
     --hazard-gold: #F7B919;
@@ -19,6 +19,15 @@ const styles = `
     --void-black: #0D0D0D;
     --pure-white: #FFFFFF;
     --card-cream: #FFFDF0;
+
+    /* Inspiration Card Palette */
+    --frank-green: #48A85B;
+    --frank-dark-green: #1C3B24;
+    --frank-brain-pink: #F7A8B9;
+    --mummy-cream: #F5F1E8;
+    --mummy-cream-shade: #E6DFCF;
+    --mummy-yellow: #FFBD14;
+    --mummy-yellow-glow: #F59E0B;
   }
 
   * {
@@ -114,16 +123,6 @@ const styles = `
     color: var(--slime-green);
   }
 
-  .writing-brand-badge-tag {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 8.5px;
-    color: var(--hazard-gold);
-    letter-spacing: 0.8px;
-    margin-top: 3px;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
   .writing-header-actions {
     display: flex;
     align-items: center;
@@ -170,125 +169,386 @@ const styles = `
     background: #AEF37B;
   }
 
-  /* UNIFIED WRITING MASTER CARD */
+  /* MAIN STAGE & DUAL-CARD GRID */
   .writing-layout-container {
-    max-width: 1120px;
+    max-width: 1200px;
     margin: 28px auto 40px auto;
-    padding: 0 18px;
+    padding: 0 16px;
   }
 
-  .writing-unified-card {
-    background: #1B241C;
-    border: 4px solid var(--void-black);
-    border-radius: 28px;
-    box-shadow: 6px 6px 0px var(--void-black);
+  .writing-cards-stage {
     display: grid;
-    grid-template-columns: 1fr 1.05fr;
-    overflow: hidden;
-    color: #F1F5F9;
+    grid-template-columns: 1fr 1.08fr;
+    gap: 28px;
+    align-items: stretch;
   }
 
-  /* LEFT HERO SHOWCASE PANEL */
-  .writing-hero-panel {
-    background: #1B241C;
-    border-right: 3.5px solid var(--void-black);
-    padding: 28px 26px;
+  @media (max-width: 980px) {
+    .writing-cards-stage {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+  }
+
+  /* BASE TICKET CARD STYLING */
+  .writing-ticket-card {
+    border: 4px solid var(--void-black);
+    border-radius: 32px;
+    box-shadow: 7px 7px 0px var(--void-black);
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    color: #F1F5F9;
-    box-sizing: border-box;
     justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  /* SLIME GREEN COMIC CALLOUT BADGE */
-  .writing-starburst-badge {
-    align-self: flex-start;
-    background: var(--slime-green);
-    border: 3.5px solid var(--void-black);
-    border-radius: 16px;
-    box-shadow: 4px 4px 0px var(--void-black);
-    padding: 8px 18px 10px 18px;
+  .writing-ticket-card:hover {
+    box-shadow: 9px 9px 0px var(--void-black);
+  }
+
+  /* SCRIPT "Trick or treat" ACCENTS */
+  .writing-script-callout {
+    font-family: 'Playball', 'Caveat', cursive;
+    font-size: 28px;
+    line-height: 1.1;
+    color: var(--void-black);
+    letter-spacing: 0.5px;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* TICKET PERFORATION & NOTCHES */
+  .writing-ticket-perforation {
     position: relative;
-    transform: rotate(-1.5deg);
-    margin-top: 0;
-    margin-bottom: 2px;
-    display: inline-flex;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 18px 0 14px 0;
+    user-select: none;
+    z-index: 10;
+  }
+
+  .writing-ticket-dashed-line {
+    flex: 1;
+    border-top: 3.5px dashed var(--void-black);
+    height: 0;
+    margin: 0 14px;
+    opacity: 0.85;
+  }
+
+  .writing-ticket-notch {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--hazard-gold);
+    background-image: 
+      radial-gradient(var(--void-black) 1.2px, transparent 1.2px),
+      radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 1.2px);
+    background-size: 24px 24px, 12px 12px;
+    border: 4px solid var(--void-black);
+    z-index: 12;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .writing-ticket-notch-left {
+    left: -20px;
+    box-shadow: inset -2px 0 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .writing-ticket-notch-right {
+    right: -20px;
+    box-shadow: inset 2px 0 0 rgba(0, 0, 0, 0.15);
+  }
+
+  /* TICKET STUB HEADER IN BOTTOM ZONE */
+  .writing-stub-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    user-select: none;
+  }
+
+  .writing-stub-title-cursive {
+    font-family: 'Playball', 'Caveat', cursive;
+    font-size: 29px;
+    color: var(--void-black);
+    line-height: 1;
+  }
+
+  .writing-stub-meta-col {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .writing-stub-badge-date {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-  }
-
-  .writing-starburst-protocol {
+    line-height: 1;
     font-family: 'Archivo Black', sans-serif;
     font-size: 9px;
     color: var(--void-black);
-    background: rgba(0, 0, 0, 0.12);
-    padding: 2px 10px;
-    border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    display: block;
-    text-align: center;
+    background: rgba(0, 0, 0, 0.08);
+    padding: 3px 6px;
+    border-radius: 6px;
+    border: 1.5px solid var(--void-black);
   }
 
-  .writing-starburst-text {
+  .writing-stub-bold-party {
     font-family: 'Titan One', cursive;
-    font-size: 20px;
+    font-size: 19px;
     color: var(--void-black);
-    letter-spacing: 0.5px;
-    line-height: 1.1;
-    text-align: center;
-    margin: 0;
-  }
-
-  /* HERO PUNCHY TITLES & DUAL-COL LORE */
-  .writing-hero-title {
-    font-family: 'Titan One', cursive;
-    font-size: 24px;
-    color: #FFFFFF;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
-    line-height: 1.15;
-    letter-spacing: 0.4px;
   }
 
-  .writing-lore-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    border-top: 2px dashed rgba(13, 13, 13, 0.35);
-    padding-top: 14px;
+  /* ========================================================
+     CARD 1: FRANKENSTEIN / ZOMBIE THEMED TICKET
+     ======================================================== */
+  .writing-frankenstein-card {
+    background-color: var(--frank-green);
+    background-image: 
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.12'/%3E%3C/svg%3E"),
+      radial-gradient(rgba(255, 255, 255, 0.14) 1.5px, transparent 1.5px);
+    background-size: 160px 160px, 16px 16px;
+    color: #FFFFFF;
+    position: relative;
   }
 
-  .writing-lore-item {
-    font-size: 13px;
-    line-height: 1.4;
-    font-weight: 500;
-    color: #A5B89F;
+  /* Top Brain Header - Fully Framed Dome */
+  .writing-frank-brain-box {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    padding-top: 10px;
+    z-index: 2;
   }
 
-  .writing-lore-item strong {
-    color: var(--slime-green);
-    font-weight: 800;
+  .writing-frank-brain-svg {
+    width: 100%;
+    height: 120px;
     display: block;
-    margin-bottom: 2px;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.5px;
+    overflow: visible;
   }
 
-  /* REVAMPED HERO CARD STYLES */
+  /* Forehead & Face Area */
+  .writing-frank-face-zone {
+    padding: 4px 24px 10px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .writing-frank-forehead-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .writing-frank-stitches {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+
+  /* Additional Torso Stitch on Frankenstein Body */
+  .writing-frank-side-stitch {
+    position: absolute;
+    right: 12px;
+    top: 48%;
+    transform: translateY(-50%) rotate(12deg);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.75;
+  }
+
+  /* EYES CONTAINER */
+  .writing-frank-eyes-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 22px;
+    margin: 4px 0 10px 0;
+    cursor: pointer;
+  }
+
+  .writing-eye-socket {
+    position: relative;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 3.8px solid var(--void-black);
+    box-shadow: 2px 3px 0px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Frank Eye Socket Shape */
+  .frank-eye-socket {
+    width: 88px;
+    height: 98px;
+    border-radius: 46% 46% 48% 48%;
+  }
+
+  /* Droopy Green Eyelids */
+  .writing-frank-eyelid {
+    position: absolute;
+    top: 0;
+    left: -2px;
+    right: -2px;
+    height: 48%;
+    background-color: var(--frank-green);
+    border-bottom: 3.8px solid var(--void-black);
+    border-radius: 46% 46% 0 0;
+    z-index: 5;
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: top center;
+    pointer-events: none;
+  }
+
+  .frank-eyelid-left {
+    transform: rotate(-3deg);
+  }
+
+  .frank-eyelid-right {
+    transform: rotate(4deg);
+  }
+
+  .writing-frank-eyelid-crease {
+    position: absolute;
+    top: 30%;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background: rgba(13, 13, 13, 0.35);
+    border-radius: 999px;
+  }
+
+  /* Pupil */
+  .writing-pupil {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--void-black);
+    z-index: 3;
+    transition: transform 0.16s ease-out, filter 0.16s ease;
+  }
+
+  .frank-pupil {
+    width: 32px;
+    height: 32px;
+    top: 36px;
+    left: 28px;
+  }
+
+  .frank-pupil-left {
+    transform: translate(3px, 1px);
+  }
+
+  .frank-pupil-right {
+    transform: translate(6px, -4px);
+  }
+
+  .writing-pupil-shine {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #FFFFFF;
+  }
+
+  .frank-under-crease {
+    position: absolute;
+    bottom: 5px;
+    left: 20%;
+    right: 20%;
+    height: 2.5px;
+    background: rgba(13, 13, 13, 0.4);
+    border-radius: 999px;
+  }
+
+  /* Eye Hover Interactions (Frankenstein) */
+  .writing-frank-eyes-row:hover .writing-frank-eyelid {
+    transform: translateY(-8px) scaleY(0.85);
+  }
+
+  .writing-frank-eyes-row:hover .frank-pupil {
+    transform: scale(1.15) translate(4px, 0px);
+  }
+
+  /* Nostrils */
+  .writing-frank-nostrils {
+    margin-top: 2px;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+  }
+
+  /* Frankenstein Card Middle Content Area */
+  .writing-frank-body {
+    padding: 10px 24px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+  }
+
   .writing-hero-header-row {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
   }
 
+  .writing-starburst-badge {
+    align-self: flex-start;
+    background: var(--hazard-gold-light);
+    border: 3.5px solid var(--void-black);
+    border-radius: 16px;
+    box-shadow: 4px 4px 0px var(--void-black);
+    padding: 8px 16px;
+    position: relative;
+    transform: rotate(-1.5deg);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .writing-starburst-protocol {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 8.5px;
+    color: var(--void-black);
+    background: rgba(0, 0, 0, 0.12);
+    padding: 2px 8px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  .writing-starburst-text {
+    font-family: 'Titan One', cursive;
+    font-size: 19px;
+    color: var(--void-black);
+    letter-spacing: 0.5px;
+    line-height: 1.15;
+    margin: 0;
+  }
+
   .writing-hero-status-pill {
-    background: #232E24;
-    border: 2px solid var(--void-black);
+    background: var(--void-black);
+    border: 2.5px solid var(--void-black);
     border-radius: 9999px;
     padding: 6px 12px;
     display: flex;
@@ -298,7 +558,7 @@ const styles = `
     font-size: 10px;
     color: var(--slime-green);
     letter-spacing: 0.5px;
-    box-shadow: 2px 2px 0px var(--void-black);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
   }
 
   .writing-status-dot {
@@ -309,6 +569,35 @@ const styles = `
     box-shadow: 0 0 6px var(--slime-green);
   }
 
+  .writing-lore-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .writing-lore-item {
+    background: rgba(28, 59, 36, 0.9);
+    backdrop-filter: blur(4px);
+    border: 2.5px solid var(--void-black);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 3px 3px 0px var(--void-black);
+    font-size: 12.5px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: #E2E8F0;
+  }
+
+  .writing-lore-item strong {
+    color: var(--hazard-gold-light);
+    font-weight: 800;
+    display: block;
+    margin-bottom: 3px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+
   /* 4-QUADRANT STATS MATRIX */
   .writing-spec-matrix {
     display: grid;
@@ -317,11 +606,12 @@ const styles = `
   }
 
   .writing-spec-tile {
-    background: #232E24;
+    background: rgba(28, 59, 36, 0.9);
+    backdrop-filter: blur(4px);
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
     padding: 8px 10px;
-    box-shadow: 2px 2px 0px var(--void-black);
+    box-shadow: 2.5px 2.5px 0px var(--void-black);
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -329,15 +619,15 @@ const styles = `
 
   .writing-spec-tile-label {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 9px;
-    color: #A5B89F;
+    font-size: 8.5px;
+    color: #94A3B8;
     text-transform: uppercase;
     letter-spacing: 0.4px;
   }
 
   .writing-spec-tile-val {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
+    font-size: 10.5px;
     color: #FFFFFF;
     text-transform: uppercase;
   }
@@ -352,56 +642,55 @@ const styles = `
 
   /* SURVIVOR FIELD MEMO DISPATCH */
   .writing-field-dispatch {
-    background: rgba(255, 201, 0, 0.08);
-    border: 2px dashed #FFC900;
-    border-radius: 12px;
+    background: #FFFBEB;
+    border: 2.5px solid var(--void-black);
+    border-radius: 14px;
     padding: 8px 12px;
     font-size: 11px;
-    line-height: 1.4;
-    color: #CBD5E1;
+    line-height: 1.35;
+    color: var(--void-black);
     display: flex;
     gap: 10px;
     align-items: center;
+    box-shadow: 3px 3px 0px var(--void-black);
   }
 
   .writing-dispatch-badge {
-    background: #FFC900;
-    color: var(--void-black);
+    background: var(--blood-red);
+    color: #FFFFFF;
     font-family: 'Archivo Black', sans-serif;
     font-size: 9px;
     padding: 3px 6px;
     border-radius: 6px;
+    border: 1.5px solid var(--void-black);
     text-transform: uppercase;
     flex-shrink: 0;
   }
 
-  .writing-arcade-counter {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    color: var(--slime-green);
-    white-space: nowrap;
-    padding: 0 4px;
+  /* Frankenstein Card Bottom Stub */
+  .writing-frank-bottom-stub {
+    padding: 0 24px 22px 24px;
+    position: relative;
+    z-index: 2;
   }
 
-  /* RETRO ARCADE CONTROLLER */
   .writing-arcade-controller {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    background: #232E24;
-    border: 3px solid var(--void-black);
-    border-radius: 16px;
-    padding: 8px 12px;
-    box-shadow: 3px 3px 0px var(--void-black);
-    margin-top: auto;
+    background: var(--void-black);
+    border: 3.5px solid var(--void-black);
+    border-radius: 18px;
+    padding: 8px 14px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
   }
 
   .writing-arcade-arrow-btn {
     width: 44px;
     height: 40px;
-    background: #2E3B30;
-    border: 3px solid var(--void-black);
+    background: #233426;
+    border: 2.5px solid var(--void-black);
     border-radius: 10px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 16px;
@@ -417,7 +706,7 @@ const styles = `
   .writing-arcade-arrow-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #394A3C;
+    background: #2E4733;
   }
 
   .writing-arcade-arrow-btn:active {
@@ -442,7 +731,7 @@ const styles = `
   .writing-track-bar {
     flex: 1;
     height: 10px;
-    background: rgba(0, 0, 0, 0.45);
+    background: rgba(255, 255, 255, 0.15);
     border: 2px solid var(--void-black);
     border-radius: 9999px;
     overflow: hidden;
@@ -456,21 +745,143 @@ const styles = `
     transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   }
 
-  /* RIGHT: INTERACTIVE WORKBENCH PANEL */
-  .writing-workbench-panel {
-    background: #1B241C;
-    padding: 28px 26px;
+  .writing-arcade-counter {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: var(--slime-green);
+    white-space: nowrap;
+    padding: 0 4px;
+  }
+
+  /* ========================================================
+     CARD 2: MUMMY THEMED TICKET (WORKBENCH)
+     ======================================================== */
+  .writing-mummy-card {
+    background-color: var(--mummy-cream);
+    background-image: 
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    color: var(--void-black);
+    position: relative;
+  }
+
+  /* FULL-BODY MUMMY BANDAGES VECTOR BACKDROP */
+  .writing-mummy-bandages-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Top Mummy Bandage Header */
+  .writing-mummy-top-wrap {
+    position: relative;
+    width: 100%;
+    padding: 22px 24px 8px 24px;
+    z-index: 2;
+  }
+
+  /* Slit Aperture Revealing Mummy Eyes */
+  .writing-mummy-eye-aperture {
+    position: relative;
+    padding: 10px 24px 18px 24px;
+    z-index: 2;
+  }
+
+  .writing-mummy-slit-frame {
+    position: relative;
+    display: inline-block;
+    padding: 10px 24px 14px 24px;
+    background: #231F19;
+    border: 3.5px solid var(--void-black);
+    border-radius: 9999px;
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+  }
+
+  .writing-mummy-eyes-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  /* Mummy Yellow Eye Socket Shape */
+  .mummy-eye-socket {
+    width: 92px;
+    height: 84px;
+    border-radius: 50% 50% 48% 48%;
+    background: radial-gradient(circle at 35% 35%, #FFE169 0%, #FFB703 60%, #FB8500 100%);
+    box-shadow: 0 0 10px rgba(255, 183, 3, 0.45);
+    transition: box-shadow 0.2s ease, filter 0.2s ease;
+    border: 3.8px solid var(--void-black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mummy-pupil {
+    width: 28px;
+    height: 28px;
+    top: 30px;
+    left: 28px;
+  }
+
+  .mummy-pupil-left {
+    transform: translate(-3px, 2px);
+  }
+
+  .mummy-pupil-right {
+    transform: translate(-2px, 2px);
+  }
+
+  /* Mummy Eye Crease Folds */
+  .mummy-crease-top {
+    position: absolute;
+    top: 4px;
+    left: 15%;
+    right: 15%;
+    height: 2.5px;
+    background: rgba(13, 13, 13, 0.4);
+    border-radius: 999px;
+  }
+
+  .mummy-crease-bottom {
+    position: absolute;
+    bottom: 6px;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: rgba(13, 13, 13, 0.35);
+    border-radius: 999px;
+  }
+
+  /* Eye Hover Interactions (Mummy) */
+  .writing-mummy-eyes-row:hover .mummy-eye-socket {
+    box-shadow: 0 0 18px rgba(255, 183, 3, 0.85);
+    filter: brightness(1.06);
+  }
+
+  .writing-mummy-eyes-row:hover .mummy-pupil {
+    transform: scale(1.15) translate(-4px, -2px);
+  }
+
+  /* Mummy Card Middle Content Area */
+  .writing-mummy-body {
+    padding: 10px 24px 12px 24px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    color: #F1F5F9;
-    box-sizing: border-box;
-    justify-content: space-between;
+    gap: 16px;
+    flex: 1;
+    position: relative;
+    z-index: 2;
   }
 
   .writing-sec-header {
-    border-bottom: 3px solid var(--void-black);
-    padding-bottom: 12px;
+    border-bottom: 3.5px solid var(--void-black);
+    padding-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -481,7 +892,7 @@ const styles = `
   .writing-sec-title {
     font-family: 'Titan One', cursive;
     font-size: 20px;
-    color: #FFFFFF;
+    color: var(--void-black);
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
@@ -495,6 +906,7 @@ const styles = `
     border-radius: 9999px;
     border: 2px solid var(--void-black);
     text-transform: uppercase;
+    box-shadow: 2px 2px 0px var(--void-black);
   }
 
   /* CATEGORY TABS */
@@ -505,13 +917,13 @@ const styles = `
 
   .writing-cat-btn {
     flex: 1;
-    background: #232E24;
+    background: rgba(255, 255, 255, 0.95);
     border: 3px solid var(--void-black);
     border-radius: 14px;
     padding: 10px 6px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 12px;
-    color: #FFFFFF;
+    color: var(--void-black);
     text-align: center;
     cursor: pointer;
     box-shadow: 3px 3px 0px var(--void-black);
@@ -525,7 +937,7 @@ const styles = `
   .writing-cat-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 4px 4px 0px var(--void-black);
-    background: #2E3B30;
+    background: #FFF9D2;
   }
 
   .writing-cat-btn.active {
@@ -535,8 +947,19 @@ const styles = `
     box-shadow: 1px 1px 0px var(--void-black);
   }
 
-  .writing-cat-btn.active span {
+  /* FIELD BOXES & LABELS */
+  .writing-field-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .writing-field-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
     color: var(--void-black);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   /* MODEL SELECTION GRID */
@@ -553,7 +976,7 @@ const styles = `
   }
 
   .writing-model-btn {
-    background: #2E3B30;
+    background: rgba(255, 255, 255, 0.95);
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
     padding: 10px 12px;
@@ -570,7 +993,7 @@ const styles = `
   .writing-model-btn:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #394A3C;
+    background: #FFFBE6;
   }
 
   .writing-model-btn.active {
@@ -582,61 +1005,24 @@ const styles = `
 
   .writing-model-name {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    color: #FFFFFF;
-    line-height: 1.2;
-  }
-
-  .writing-model-btn.active .writing-model-name {
+    font-size: 12px;
     color: var(--void-black);
   }
 
   .writing-model-tag {
-    font-size: 9.5px;
+    font-size: 10px;
+    color: #4B5563;
     font-weight: 600;
-    color: #A5B89F;
-    line-height: 1.2;
-  }
-
-  .writing-model-btn.active .writing-model-tag {
-    color: #334155;
   }
 
   .writing-model-price {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    color: var(--slime-green);
+    font-family: 'Titan One', cursive;
+    font-size: 13px;
+    color: var(--blood-red);
     margin-top: 2px;
   }
 
-  .writing-model-btn.active .writing-model-price {
-    color: #B91C1C;
-  }
-
-  /* SUB-OPTION SECTION */
-  .writing-field-box {
-    background: #232E24;
-    border: 3px solid var(--void-black);
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 3px 3px 0px var(--void-black);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .writing-field-label {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    color: var(--slime-green);
-    letter-spacing: 0.5px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
+  /* PILL OPTIONS (TYPE, GRADES) */
   .writing-pill-options {
     display: flex;
     gap: 8px;
@@ -644,90 +1030,95 @@ const styles = `
   }
 
   .writing-pill-btn {
-    background: #2E3B30;
+    flex: 1;
+    min-width: 100px;
+    background: rgba(255, 255, 255, 0.95);
     border: 2.5px solid var(--void-black);
     border-radius: 9999px;
-    padding: 6px 14px;
+    padding: 8px 14px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
-    color: #FFFFFF;
+    color: var(--void-black);
     cursor: pointer;
+    text-align: center;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
   }
 
   .writing-pill-btn:hover {
+    background: #FFFBE6;
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #394A3C;
   }
 
   .writing-pill-btn.active {
-    background: var(--blood-red);
-    color: var(--pure-white);
-    transform: translate(1.5px, 1.5px);
+    background: var(--slime-green);
+    color: var(--void-black);
+    transform: translate(1px, 1px);
     box-shadow: 0px 0px 0px var(--void-black);
   }
 
-  /* INK COLOR SELECTOR SWATCHES */
+  /* COLOR SWATCHES */
   .writing-colors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
   }
 
   .writing-color-card {
-    background: #2E3B30;
+    background: rgba(255, 255, 255, 0.95);
     border: 2.5px solid var(--void-black);
     border-radius: 12px;
-    padding: 8px;
+    padding: 8px 6px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
-    color: #FFFFFF;
   }
 
   .writing-color-card:hover {
     transform: translate(-1px, -1px);
     box-shadow: 3px 3px 0px var(--void-black);
-    background: #394A3C;
   }
 
   .writing-color-card.active {
     background: var(--hazard-gold-light);
-    border-color: var(--void-black);
-    transform: translate(1.5px, 1.5px);
+    transform: translate(1px, 1px);
     box-shadow: 0px 0px 0px var(--void-black);
   }
 
   .writing-color-swatch {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     border: 2px solid var(--void-black);
-    flex-shrink: 0;
   }
 
   .writing-color-text {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    color: #FFFFFF;
-    text-transform: uppercase;
-    transition: color 0.1s ease;
-  }
-
-  .writing-color-card.active .writing-color-text {
+    font-size: 8.5px;
     color: var(--void-black);
+    text-align: center;
+    line-height: 1.1;
   }
 
-  /* STEPPER AND PRESETS ROW */
+  /* Mummy Card Bottom Stub */
+  .writing-mummy-bottom-stub {
+    padding: 0 24px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
   .writing-stepper-row {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     gap: 12px;
   }
@@ -735,21 +1126,21 @@ const styles = `
   .writing-stepper-ctrl {
     display: flex;
     align-items: center;
-    background: #232E24;
+    background: #FFFFFF;
     border: 3px solid var(--void-black);
-    border-radius: 9999px;
+    border-radius: 12px;
     box-shadow: 3px 3px 0px var(--void-black);
     overflow: hidden;
   }
 
   .writing-step-btn {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     background: transparent;
     border: none;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 18px;
-    color: #FFFFFF;
+    font-size: 16px;
+    color: var(--void-black);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -758,43 +1149,38 @@ const styles = `
   }
 
   .writing-step-btn:hover {
-    background: var(--slime-green);
+    background: var(--hazard-gold-light);
   }
 
   .writing-step-val {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 15px;
-    color: #FFFFFF;
-    padding: 0 14px;
-    min-width: 44px;
+    width: 40px;
     text-align: center;
-    border-left: 2px solid var(--void-black);
-    border-right: 2px solid var(--void-black);
+    font-family: 'Titan One', cursive;
+    font-size: 16px;
+    color: var(--void-black);
   }
 
   .writing-presets-row {
     display: flex;
     gap: 6px;
-    align-items: center;
   }
 
   .writing-preset-btn {
-    background: #2E3B30;
+    width: 32px;
+    height: 32px;
+    background: #FFFFFF;
     border: 2px solid var(--void-black);
-    border-radius: 9999px;
-    padding: 4px 10px;
+    border-radius: 8px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
-    color: #FFFFFF;
+    color: var(--void-black);
     cursor: pointer;
-    box-shadow: 2px 2px 0px var(--void-black);
+    box-shadow: 1.5px 1.5px 0px var(--void-black);
     transition: all 0.1s ease;
   }
 
   .writing-preset-btn:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0px var(--void-black);
-    background: #394A3C;
+    background: #FFFBE6;
   }
 
   .writing-preset-btn.active {
@@ -808,16 +1194,16 @@ const styles = `
     color: var(--pure-white);
     border: 3px solid var(--void-black);
     border-radius: 14px;
-    padding: 8px 16px;
+    padding: 6px 14px;
     display: flex;
     align-items: baseline;
     gap: 6px;
-    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.25);
   }
 
   .writing-total-label {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
+    font-size: 9.5px;
     color: var(--slime-green);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -825,7 +1211,7 @@ const styles = `
 
   .writing-total-price {
     font-family: 'Titan One', cursive;
-    font-size: 22px;
+    font-size: 21px;
     color: var(--pure-white);
   }
 
@@ -837,9 +1223,9 @@ const styles = `
     border: 4px solid var(--void-black);
     border-radius: 18px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     text-transform: uppercase;
-    padding: 14px 20px;
+    padding: 13px 18px;
     cursor: pointer;
     box-shadow: 4px 4px 0px var(--void-black);
     transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
@@ -875,16 +1261,6 @@ const styles = `
     font-size: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     z-index: 100;
-  }
-
-  @media (max-width: 920px) {
-    .writing-unified-card {
-      grid-template-columns: 1fr;
-    }
-    .writing-hero-panel {
-      border-right: none;
-      border-bottom: 3.5px solid var(--void-black);
-    }
   }
 
   @media (max-width: 600px) {
@@ -1220,280 +1596,545 @@ function Writing() {
 
         {/* MAIN STAGE CONTAINER */}
         <div className="writing-layout-container">
-          <div className="writing-unified-card">
-            {/* LEFT: HERO SHOWCASE PANEL */}
-            <section className="writing-hero-panel">
-              {/* TOP HEADER ROW: STARBURST BADGE & STATUS PILL */}
-              <div className="writing-hero-header-row">
-                <div className="writing-starburst-badge">
-                  <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
-                  <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
-                </div>
-                <div className="writing-hero-status-pill">
-                  <span className="writing-status-dot" />
-                  <span>SURVIVOR ISSUE // ₹{currentCatalog.basePrice}</span>
-                </div>
+          <div className="writing-cards-stage">
+
+            {/* CARD 1: FRANKENSTEIN / ZOMBIE TICKET CARD (Hero Showcase) */}
+            <section className="writing-ticket-card writing-frankenstein-card">
+              {/* TOP: EXPOSED PINK BRAIN WITH JAGGED ZIGZAG HAIR */}
+              <div className="writing-frank-brain-box">
+                <svg viewBox="0 0 420 115" className="writing-frank-brain-svg" preserveAspectRatio="none">
+                  {/* Pink Brain Dome - Arched & Fully Visible */}
+                  <path
+                    d="M 45,95 C 45,18 115,10 210,10 C 305,10 375,18 375,95 Z"
+                    fill="#F7A8B9"
+                    stroke="#0D0D0D"
+                    strokeWidth="4"
+                  />
+                  {/* Brain Sulcus / Fold Lines */}
+                  <path
+                    d="M 125,58 C 135,38 160,40 155,60 C 150,75 175,72 180,52 C 185,36 215,36 220,54 C 225,70 250,66 250,48 C 250,34 275,38 285,58"
+                    fill="none"
+                    stroke="#0D0D0D"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M 140,80 C 150,68 170,70 175,84 M 195,76 C 210,64 230,66 235,82 M 260,72 C 270,62 285,68 295,80"
+                    fill="none"
+                    stroke="#0D0D0D"
+                    strokeWidth="3.2"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M 165,34 C 180,24 200,26 205,38 M 225,28 C 240,24 255,30 260,40"
+                    fill="none"
+                    stroke="#0D0D0D"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                  {/* Jagged Black Zigzag Hair Edge */}
+                  <path
+                    d="M 0,115 L 0,82 L 28,108 L 56,82 L 84,108 L 112,82 L 140,108 L 168,82 L 196,108 L 224,82 L 252,108 L 280,82 L 308,108 L 336,82 L 364,108 L 392,82 L 420,90 L 420,115 Z"
+                    fill="#0D0D0D"
+                  />
+                </svg>
               </div>
 
-              {/* TWO-COLUMN LORE */}
-              <div className="writing-lore-grid">
-                <div className="writing-lore-item">
-                  <strong>SPECIFICATION //</strong>
-                  {currentCatalog.lore1}
-                </div>
-                <div className="writing-lore-item">
-                  <strong>DEPLOYMENT //</strong>
-                  {currentCatalog.lore2}
-                </div>
-              </div>
-
-              {/* 4-QUADRANT STATS MATRIX */}
-              <div className="writing-spec-matrix">
-                <div className="writing-spec-tile">
-                  <span className="writing-spec-tile-label">FLOW VELOCITY</span>
-                  <span className="writing-spec-tile-val accent-green">ZERO DRAG // FAST-DRY</span>
-                </div>
-                <div className="writing-spec-tile">
-                  <span className="writing-spec-tile-label">OMR SCAN RATING</span>
-                  <span className="writing-spec-tile-val accent-gold">100% OPTICAL READ PASS</span>
-                </div>
-                <div className="writing-spec-tile">
-                  <span className="writing-spec-tile-label">BARREL CHASSIS</span>
-                  <span className="writing-spec-tile-val">ANTI-FATIGUE ERGO</span>
-                </div>
-                <div className="writing-spec-tile">
-                  <span className="writing-spec-tile-label">EXAM ENDURANCE</span>
-                  <span className="writing-spec-tile-val">3-HOUR MARATHON RATED</span>
-                </div>
-              </div>
-
-              {/* SURVIVOR FIELD MEMO DISPATCH */}
-              <div className="writing-field-dispatch">
-                <span className="writing-dispatch-badge">DISPATCH</span>
-                <span>SURVIVOR MEMO: Calibrated for rapid answer-sheet penetration under timed examination siege.</span>
-              </div>
-
-              {/* RETRO ARCADE CONTROLLER */}
-              <div className="writing-arcade-controller">
-                <button
-                  type="button"
-                  className="writing-arcade-arrow-btn"
-                  onClick={handlePrev}
-                  aria-label="Previous item"
-                >
-                  ←
-                </button>
-
-                <div className="writing-arcade-slider-track">
-                  <div className="writing-track-dot" />
-                  <div className="writing-track-bar">
-                    <div
-                      className="writing-track-fill"
-                      style={{
-                        width: `${((currentCatIdx + 1) / categoryItems.length) * 100}%`,
-                      }}
-                    />
+              {/* FOREHEAD & CHARACTER FACE ZONE */}
+              <div className="writing-frank-face-zone">
+                {/* Cross-stitch scar & "Trick or treat" script */}
+                <div className="writing-frank-forehead-row">
+                  <div className="writing-frank-stitches" title="Surgical Exam Scar">
+                    <svg width="74" height="32" viewBox="0 0 74 32">
+                      <line x1="6" y1="24" x2="68" y2="10" stroke="#0D0D0D" strokeWidth="3.2" strokeLinecap="round" />
+                      <line x1="16" y1="12" x2="22" y2="26" stroke="#0D0D0D" strokeWidth="3.2" strokeLinecap="round" />
+                      <line x1="35" y1="10" x2="41" y2="24" stroke="#0D0D0D" strokeWidth="3.2" strokeLinecap="round" />
+                      <line x1="54" y1="8" x2="60" y2="22" stroke="#0D0D0D" strokeWidth="3.2" strokeLinecap="round" />
+                    </svg>
                   </div>
-                  <div className="writing-track-dot" />
+                  <div className="writing-script-callout">Trick or treat</div>
+                  <div style={{ width: 44 }} />
                 </div>
 
-                <span className="writing-arcade-counter">
-                  {currentCatIdx + 1} / {categoryItems.length}
-                </span>
+                {/* EYES ROW */}
+                <div className="writing-frank-eyes-row" title="Frankenstein Eyes (hover to react)">
+                  {/* Left Eye */}
+                  <div className="writing-eye-socket frank-eye-socket" id="frank-eye-left" data-eye="frank-left">
+                    <div className="writing-frank-eyelid frank-eyelid-left">
+                      <div className="writing-frank-eyelid-crease" />
+                    </div>
+                    <div className="writing-pupil frank-pupil frank-pupil-left" id="frank-pupil-left">
+                      <span className="writing-pupil-shine" />
+                    </div>
+                    <div className="frank-under-crease" />
+                  </div>
 
-                <button
-                  type="button"
-                  className="writing-arcade-arrow-btn"
-                  onClick={handleNext}
-                  aria-label="Next item"
-                >
-                  →
-                </button>
+                  {/* Right Eye */}
+                  <div className="writing-eye-socket frank-eye-socket" id="frank-eye-right" data-eye="frank-right">
+                    <div className="writing-frank-eyelid frank-eyelid-right">
+                      <div className="writing-frank-eyelid-crease" />
+                    </div>
+                    <div className="writing-pupil frank-pupil frank-pupil-right" id="frank-pupil-right">
+                      <span className="writing-pupil-shine" />
+                    </div>
+                    <div className="frank-under-crease" />
+                  </div>
+                </div>
+
+                {/* NOSTRILS */}
+                <div className="writing-frank-nostrils">
+                  <svg width="52" height="18" viewBox="0 0 52 18">
+                    <path d="M 8,14 C 12,4 18,4 21,14" fill="none" stroke="#0D0D0D" strokeWidth="3.8" strokeLinecap="round" />
+                    <path d="M 31,14 C 34,4 40,4 44,14" fill="none" stroke="#0D0D0D" strokeWidth="3.8" strokeLinecap="round" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* SIDE TORSO STITCH SCAR (Extends body character detail) */}
+              <div className="writing-frank-side-stitch">
+                <svg width="26" height="90" viewBox="0 0 26 90">
+                  <line x1="13" y1="4" x2="13" y2="86" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="4" y1="18" x2="22" y2="24" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="4" y1="44" x2="22" y2="50" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" />
+                  <line x1="4" y1="70" x2="22" y2="76" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" />
+                </svg>
+              </div>
+
+              {/* MIDDLE CONTENT: HERO SHOWCASE DATA */}
+              <div className="writing-frank-body">
+                {/* STARBURST PROTOCOL BADGE & STATUS */}
+                <div className="writing-hero-header-row">
+                  <div className="writing-starburst-badge">
+                    <span className="writing-starburst-protocol">{currentCatalog.protocol}</span>
+                    <h2 className="writing-starburst-text">{currentCatalog.title}</h2>
+                  </div>
+                  <div className="writing-hero-status-pill">
+                    <span className="writing-status-dot" />
+                    <span>SURVIVOR ISSUE // ₹{currentCatalog.basePrice}</span>
+                  </div>
+                </div>
+
+                {/* TWO-COLUMN LORE */}
+                <div className="writing-lore-grid">
+                  <div className="writing-lore-item">
+                    <strong>SPECIFICATION //</strong>
+                    {currentCatalog.lore1}
+                  </div>
+                  <div className="writing-lore-item">
+                    <strong>DEPLOYMENT //</strong>
+                    {currentCatalog.lore2}
+                  </div>
+                </div>
+
+                {/* 4-QUADRANT STATS MATRIX */}
+                <div className="writing-spec-matrix">
+                  <div className="writing-spec-tile">
+                    <span className="writing-spec-tile-label">FLOW VELOCITY</span>
+                    <span className="writing-spec-tile-val accent-green">ZERO DRAG // FAST-DRY</span>
+                  </div>
+                  <div className="writing-spec-tile">
+                    <span className="writing-spec-tile-label">OMR SCAN RATING</span>
+                    <span className="writing-spec-tile-val accent-gold">100% OPTICAL READ PASS</span>
+                  </div>
+                  <div className="writing-spec-tile">
+                    <span className="writing-spec-tile-label">BARREL CHASSIS</span>
+                    <span className="writing-spec-tile-val">ANTI-FATIGUE ERGO</span>
+                  </div>
+                  <div className="writing-spec-tile">
+                    <span className="writing-spec-tile-label">EXAM ENDURANCE</span>
+                    <span className="writing-spec-tile-val">3-HOUR MARATHON RATED</span>
+                  </div>
+                </div>
+
+                {/* SURVIVOR FIELD MEMO DISPATCH */}
+                <div className="writing-field-dispatch">
+                  <span className="writing-dispatch-badge">DISPATCH</span>
+                  <span>SURVIVOR MEMO: Calibrated for rapid answer-sheet penetration under timed examination siege.</span>
+                </div>
+              </div>
+
+              {/* TICKET PERFORATION DIVIDER & NOTCHES */}
+              <div className="writing-ticket-perforation">
+                <span className="writing-ticket-notch writing-ticket-notch-left" />
+                <div className="writing-ticket-dashed-line" />
+                <span className="writing-ticket-notch writing-ticket-notch-right" />
+              </div>
+
+              {/* BOTTOM TICKET STUB */}
+              <div className="writing-frank-bottom-stub">
+                <div className="writing-stub-meta-row">
+                  <span className="writing-stub-title-cursive">31stlloween</span>
+                  <div className="writing-stub-meta-col">
+                    <span className="writing-stub-badge-date">31 ST<br />OCT</span>
+                    <span className="writing-stub-bold-party">PARTY</span>
+                  </div>
+                </div>
+
+                {/* RETRO ARCADE CONTROLLER */}
+                <div className="writing-arcade-controller">
+                  <button
+                    type="button"
+                    className="writing-arcade-arrow-btn"
+                    onClick={handlePrev}
+                    aria-label="Previous item"
+                  >
+                    ←
+                  </button>
+
+                  <div className="writing-arcade-slider-track">
+                    <div className="writing-track-dot" />
+                    <div className="writing-track-bar">
+                      <div
+                        className="writing-track-fill"
+                        style={{
+                          width: `${((currentCatIdx + 1) / categoryItems.length) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    <div className="writing-track-dot" />
+                  </div>
+
+                  <span className="writing-arcade-counter">
+                    {currentCatIdx + 1} / {categoryItems.length}
+                  </span>
+
+                  <button
+                    type="button"
+                    className="writing-arcade-arrow-btn"
+                    onClick={handleNext}
+                    aria-label="Next item"
+                  >
+                    →
+                  </button>
+                </div>
               </div>
             </section>
 
-            {/* RIGHT: INTERACTIVE WORKBENCH PANEL */}
-            <main className="writing-workbench-panel">
-            <div className="writing-sec-header">
-              <h2 className="writing-sec-title">TOOL CONFIGURATION</h2>
-              <span className="writing-sec-tag">SURVIVAL LOADOUT ARSENAL</span>
-            </div>
+            {/* CARD 2: MUMMY TICKET CARD (Interactive Workbench) */}
+            <main className="writing-ticket-card writing-mummy-card">
+              {/* FULL-BODY MUMMY BANDAGES VECTOR BACKDROP */}
+              <svg
+                className="writing-mummy-bandages-svg"
+                viewBox="0 0 500 1000"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <defs>
+                  <filter id="mummy-fold-shadow" x="-5%" y="-5%" width="110%" height="110%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="2.5" floodColor="#0D0D0D" floodOpacity="0.12" />
+                  </filter>
+                </defs>
 
-            {/* CATEGORY SWITCHER */}
-            <div className="writing-cat-row">
-              <button
-                type="button"
-                className={`writing-cat-btn ${category === "pen" ? "active" : ""}`}
-                onClick={() => handleCategoryChange("pen")}
-              >
-                
-                <span>PENS</span>
-              </button>
-              <button
-                type="button"
-                className={`writing-cat-btn ${category === "pencil" ? "active" : ""}`}
-                onClick={() => handleCategoryChange("pencil")}
-              >
-                
-                <span>PENCILS</span>
-              </button>
-              <button
-                type="button"
-                className={`writing-cat-btn ${category === "mechanical" ? "active" : ""}`}
-                onClick={() => handleCategoryChange("mechanical")}
-              >
-                
-                <span>MECHANICAL</span>
-              </button>
-            </div>
+                {/* Bandage 1 (Top wrap) */}
+                <path
+                  d="M -10,-10 L 510,-10 L 510,80 Q 250,110 -10,70 Z"
+                  fill="#FAF7F0"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
 
-            {/* 1. MODEL SELECTION GRID */}
-            <div className="writing-field-box">
-              <span className="writing-field-label">1. Standard Issue Model</span>
-              <div className="writing-models-grid">
-                {categoryItems.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`writing-model-btn ${currentCatalog.id === item.id ? "active" : ""}`}
-                    onClick={() => setActiveId(item.id)}
-                  >
-                    <span className="writing-model-name">{item.modelName}</span>
-                    <span className="writing-model-tag">{item.subtitle}</span>
-                    <span className="writing-model-price">₹{item.basePrice}</span>
-                  </button>
-                ))}
+                {/* Bandage 2 (Forehead slant) */}
+                <path
+                  d="M -10,65 Q 250,105 510,75 L 510,165 Q 240,195 -10,140 Z"
+                  fill="#EFE9DC"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 3 (Upper eye cover / brow overlap) */}
+                <path
+                  d="M -10,135 Q 240,190 510,160 L 510,240 Q 380,255 250,245 Q 120,255 -10,225 Z"
+                  fill="#FAF7F0"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 4 (Cheek wrap under eye slit) */}
+                <path
+                  d="M -10,325 Q 130,295 250,310 Q 370,300 510,335 L 510,435 Q 260,470 -10,405 Z"
+                  fill="#F3EEE3"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 5 (Chest wrap diagonal 1) */}
+                <path
+                  d="M -10,400 Q 260,465 510,430 L 510,555 Q 240,580 -10,515 Z"
+                  fill="#E8E1D0"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 6 (Mid-torso wrap diagonal 2) */}
+                <path
+                  d="M -10,510 Q 240,575 510,550 L 510,685 Q 260,720 -10,640 Z"
+                  fill="#FAF7F0"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 7 (Lower torso wrap diagonal 3) */}
+                <path
+                  d="M -10,635 Q 260,715 510,680 L 510,805 Q 250,835 -10,760 Z"
+                  fill="#EFE9DC"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 8 (Perforation / hip wrap) */}
+                <path
+                  d="M -10,755 Q 250,830 510,800 L 510,905 Q 260,925 -10,885 Z"
+                  fill="#F4EEE4"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                  filter="url(#mummy-fold-shadow)"
+                />
+
+                {/* Bandage 9 (Bottom stub wrap) */}
+                <path
+                  d="M -10,880 Q 260,920 510,900 L 510,1010 L -10,1010 Z"
+                  fill="#EAE3D4"
+                  stroke="#0D0D0D"
+                  strokeWidth="3.8"
+                />
+              </svg>
+
+              {/* TOP: BANDAGE WRAP WITH SCRIPT TEXT */}
+              <div className="writing-mummy-top-wrap">
+                <div className="writing-script-callout">Trick or treat</div>
               </div>
-            </div>
 
-            {/* DYNAMIC SUB-OPTION: PEN */}
-            {category === "pen" && (
-              <div className="writing-field-box">
-                <span className="writing-field-label">2. Nib & Ink Technology</span>
-                <div className="writing-pill-options">
-                  {["Gel", "Ball"].map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      className={`writing-pill-btn ${penType === type ? "active" : ""}`}
-                      onClick={() => setPenType(type)}
-                    >
-                      {type === "Gel" ? "Quick-Dry Gel" : "Durable Ballpoint"}
-                    </button>
-                  ))}
-                </div>
-
-                <span className="writing-field-label" style={{ marginTop: 8 }}>
-                  3. Pigment Spectrum
-                </span>
-                <div className="writing-colors-grid">
-                  {INK_COLORS.map((c) => (
-                    <div
-                      key={c.name}
-                      className={`writing-color-card ${color === c.name ? "active" : ""}`}
-                      onClick={() => setColor(c.name)}
-                    >
-                      <div
-                        className="writing-color-swatch"
-                        style={{ backgroundColor: c.hex }}
-                      />
-                      <span className="writing-color-text">{c.name}</span>
+              {/* BANDAGE SLIT APERTURE REVEALING MUMMY EYES */}
+              <div className="writing-mummy-eye-aperture">
+                <div className="writing-mummy-slit-frame">
+                  <div className="writing-mummy-eyes-row" title="Mummy Eyes (hover to react)">
+                    {/* Left Mummy Eye */}
+                    <div className="writing-eye-socket mummy-eye-socket" id="mummy-eye-left" data-eye="mummy-left">
+                      <div className="mummy-crease-top" />
+                      <div className="writing-pupil mummy-pupil mummy-pupil-left" id="mummy-pupil-left">
+                        <span className="writing-pupil-shine" />
+                      </div>
+                      <div className="mummy-crease-bottom" />
                     </div>
-                  ))}
+
+                    {/* Right Mummy Eye */}
+                    <div className="writing-eye-socket mummy-eye-socket" id="mummy-eye-right" data-eye="mummy-right">
+                      <div className="mummy-crease-top" />
+                      <div className="writing-pupil mummy-pupil mummy-pupil-right" id="mummy-pupil-right">
+                        <span className="writing-pupil-shine" />
+                      </div>
+                      <div className="mummy-crease-bottom" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
 
-            {/* DYNAMIC SUB-OPTION: PENCIL */}
-            {category === "pencil" && (
-              <div className="writing-field-box">
-                <span className="writing-field-label">2. Graphite Density & Hardness</span>
-                <div className="writing-pill-options">
-                  {["Normal", "HB", "2B"].map((g) => (
-                    <button
-                      key={g}
-                      type="button"
-                      className={`writing-pill-btn ${pencilType === g ? "active" : ""}`}
-                      onClick={() => setPencilType(g)}
-                    >
-                      {g} {g === "2B" ? "• Dark & Soft" : g === "HB" ? "• Standard Core" : "• Light Draft"}
-                    </button>
-                  ))}
+              {/* MIDDLE CONTENT: INTERACTIVE WORKBENCH OVER BANDAGES */}
+              <div className="writing-mummy-body">
+                <div className="writing-sec-header">
+                  <h2 className="writing-sec-title">TOOL CONFIGURATION</h2>
+                  <span className="writing-sec-tag">SURVIVAL LOADOUT ARSENAL</span>
                 </div>
-              </div>
-            )}
 
-            {/* DYNAMIC SUB-OPTION: MECHANICAL */}
-            {category === "mechanical" && (
-              <div className="writing-field-box">
-                <span className="writing-field-label">2. Precision Lead Gauge</span>
-                <div className="writing-pill-options">
-                  {["0.5 mm", "0.7 mm"].map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      className={`writing-pill-btn ${mechSize === size ? "active" : ""}`}
-                      onClick={() => setMechSize(size)}
-                    >
-                      {size} {size === "0.5 mm" ? "• Ultra Fine Drafting" : "• Balanced Note-Taking"}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* QUANTITY & RAPID PRESETS */}
-            <div className="writing-stepper-row">
-              <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-                <div className="writing-stepper-ctrl">
+                {/* CATEGORY SWITCHER */}
+                <div className="writing-cat-row">
                   <button
                     type="button"
-                    className="writing-step-btn"
-                    onClick={() => setQty((prev) => Math.max(1, prev - 1))}
-                    aria-label="Decrease quantity"
+                    className={`writing-cat-btn ${category === "pen" ? "active" : ""}`}
+                    onClick={() => handleCategoryChange("pen")}
                   >
-                    −
+                    <span>PENS</span>
                   </button>
-                  <span className="writing-step-val">{qty}</span>
                   <button
                     type="button"
-                    className="writing-step-btn"
-                    onClick={() => setQty((prev) => prev + 1)}
-                    aria-label="Increase quantity"
+                    className={`writing-cat-btn ${category === "pencil" ? "active" : ""}`}
+                    onClick={() => handleCategoryChange("pencil")}
                   >
-                    +
+                    <span>PENCILS</span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`writing-cat-btn ${category === "mechanical" ? "active" : ""}`}
+                    onClick={() => handleCategoryChange("mechanical")}
+                  >
+                    <span>MECHANICAL</span>
                   </button>
                 </div>
 
-                <div className="writing-presets-row">
-                  {[1, 2, 5, 10].map((preset) => (
-                    <button
-                      key={preset}
-                      type="button"
-                      className={`writing-preset-btn ${qty === preset ? "active" : ""}`}
-                      onClick={() => setQty(preset)}
-                    >
-                      {preset}
-                    </button>
-                  ))}
+                {/* 1. MODEL SELECTION GRID */}
+                <div className="writing-field-box">
+                  <span className="writing-field-label">1. Standard Issue Model</span>
+                  <div className="writing-models-grid">
+                    {categoryItems.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        className={`writing-model-btn ${currentCatalog.id === item.id ? "active" : ""}`}
+                        onClick={() => setActiveId(item.id)}
+                      >
+                        <span className="writing-model-name">{item.modelName}</span>
+                        <span className="writing-model-tag">{item.subtitle}</span>
+                        <span className="writing-model-price">₹{item.basePrice}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
+
+                {/* DYNAMIC SUB-OPTION: PEN */}
+                {category === "pen" && (
+                  <div className="writing-field-box">
+                    <span className="writing-field-label">2. Nib & Ink Technology</span>
+                    <div className="writing-pill-options">
+                      {["Gel", "Ball"].map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          className={`writing-pill-btn ${penType === type ? "active" : ""}`}
+                          onClick={() => setPenType(type)}
+                        >
+                          {type === "Gel" ? "Quick-Dry Gel" : "Durable Ballpoint"}
+                        </button>
+                      ))}
+                    </div>
+
+                    <span className="writing-field-label" style={{ marginTop: 8 }}>
+                      3. Pigment Spectrum
+                    </span>
+                    <div className="writing-colors-grid">
+                      {INK_COLORS.map((c) => (
+                        <div
+                          key={c.name}
+                          className={`writing-color-card ${color === c.name ? "active" : ""}`}
+                          onClick={() => setColor(c.name)}
+                        >
+                          <div
+                            className="writing-color-swatch"
+                            style={{ backgroundColor: c.hex }}
+                          />
+                          <span className="writing-color-text">{c.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* DYNAMIC SUB-OPTION: PENCIL */}
+                {category === "pencil" && (
+                  <div className="writing-field-box">
+                    <span className="writing-field-label">2. Graphite Density & Hardness</span>
+                    <div className="writing-pill-options">
+                      {["Normal", "HB", "2B"].map((g) => (
+                        <button
+                          key={g}
+                          type="button"
+                          className={`writing-pill-btn ${pencilType === g ? "active" : ""}`}
+                          onClick={() => setPencilType(g)}
+                        >
+                          {g} {g === "2B" ? "• Dark & Soft" : g === "HB" ? "• Standard Core" : "• Light Draft"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* DYNAMIC SUB-OPTION: MECHANICAL */}
+                {category === "mechanical" && (
+                  <div className="writing-field-box">
+                    <span className="writing-field-label">2. Precision Lead Gauge</span>
+                    <div className="writing-pill-options">
+                      {["0.5 mm", "0.7 mm"].map((size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          className={`writing-pill-btn ${mechSize === size ? "active" : ""}`}
+                          onClick={() => setMechSize(size)}
+                        >
+                          {size} {size === "0.5 mm" ? "• Ultra Fine Drafting" : "• Balanced Note-Taking"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="writing-total-banner">
-                <span className="writing-total-label">Loadout Cost:</span>
-                <span className="writing-total-price">₹{grandTotal}</span>
+              {/* TICKET PERFORATION DIVIDER & NOTCHES */}
+              <div className="writing-ticket-perforation">
+                <span className="writing-ticket-notch writing-ticket-notch-left" />
+                <div className="writing-ticket-dashed-line" />
+                <span className="writing-ticket-notch writing-ticket-notch-right" />
               </div>
-            </div>
 
-            {/* PRIMARY ACTION CTA */}
-            <button
-              type="button"
-              className="writing-add-cta"
-              onClick={handleAdd}
-            >
-              Add to Survival Loadout • ₹{grandTotal}
-            </button>
-          </main>
+              {/* BOTTOM TICKET STUB */}
+              <div className="writing-mummy-bottom-stub">
+                <div className="writing-stub-meta-row">
+                  <span className="writing-stub-title-cursive">Halloween</span>
+                  <div className="writing-stub-meta-col">
+                    <span className="writing-stub-badge-date">31 ST<br />OCT</span>
+                    <span className="writing-stub-bold-party">PARTY</span>
+                  </div>
+                </div>
+
+                {/* QUANTITY & RAPID PRESETS */}
+                <div className="writing-stepper-row">
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                    <div className="writing-stepper-ctrl">
+                      <button
+                        type="button"
+                        className="writing-step-btn"
+                        onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                        aria-label="Decrease quantity"
+                      >
+                        −
+                      </button>
+                      <span className="writing-step-val">{qty}</span>
+                      <button
+                        type="button"
+                        className="writing-step-btn"
+                        onClick={() => setQty((prev) => prev + 1)}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <div className="writing-presets-row">
+                      {[1, 2, 5, 10].map((preset) => (
+                        <button
+                          key={preset}
+                          type="button"
+                          className={`writing-preset-btn ${qty === preset ? "active" : ""}`}
+                          onClick={() => setQty(preset)}
+                        >
+                          {preset}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="writing-total-banner">
+                    <span className="writing-total-label">Loadout Cost:</span>
+                    <span className="writing-total-price">₹{grandTotal}</span>
+                  </div>
+                </div>
+
+                {/* PRIMARY ACTION CTA */}
+                <button
+                  type="button"
+                  className="writing-add-cta"
+                  onClick={handleAdd}
+                >
+                  Add to Survival Loadout • ₹{grandTotal}
+                </button>
+              </div>
+            </main>
+
           </div>
         </div>
 
