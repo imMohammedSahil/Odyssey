@@ -41,14 +41,14 @@ const styles = `
 
   .print-page-wrapper {
     min-height: 100vh;
-    background-color: var(--slime-green);
+    background-color: #019E70;
     background-image: 
-      radial-gradient(#85d44d 18%, transparent 19%),
-      radial-gradient(#85d44d 18%, transparent 19%);
-    background-size: 26px 26px;
-    background-position: 0 0, 13px 13px;
+      radial-gradient(ellipse at 50% 25%, #01B581 0%, #019E70 50%, #001F2E 100%),
+      radial-gradient(rgba(0, 31, 46, 0.28) 1.5px, transparent 1.5px);
+    background-size: 100% 100%, 22px 22px;
+    background-position: 0 0, 0 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    color: var(--void-black);
+    color: #FFFFFF;
     padding: 16px 24px 60px;
     display: flex;
     flex-direction: column;
@@ -80,7 +80,8 @@ const styles = `
     font-family: 'Archivo Black', sans-serif;
     font-size: 20px;
     text-transform: uppercase;
-    color: var(--void-black);
+    color: #FFFFFF;
+    text-shadow: 2px 2px 0px #000000;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -167,10 +168,11 @@ const styles = `
     -webkit-text-fill-color: transparent;
     -webkit-text-stroke: 1.2px #0D0D0D;
     paint-order: stroke fill;
-    filter: drop-shadow(0 2px 0 #0D0D0D)
-            drop-shadow(0 5px 0 #D4F024)
-            drop-shadow(0 8px 0 #0D0D0D)
-            drop-shadow(4px 13px 0px rgba(0, 0, 0, 0.85));
+    filter: 
+      drop-shadow(0 2px 0 #000000)
+      drop-shadow(0 5px 0 #D4F024)
+      drop-shadow(0 8px 0 #000000)
+      drop-shadow(3px 8px 0px #9DE869);
   }
 
   .print-title-star {
@@ -187,27 +189,43 @@ const styles = `
 
   .print-subtitle {
     font-size: 15px;
-    font-weight: 700;
-    color: var(--void-black);
+    font-weight: 800;
+    color: #E2E8F0;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     opacity: 0.95;
     line-height: 1.5;
     margin-top: 6px;
   }
 
-  /* MAIN WORKBENCH CARD (VOid Black Chassis) */
+  /* MAIN WORKBENCH CARD (Moonlit Zombie Trio 100% Pure Vector SVG Backdrop) */
   .print-workbench {
     width: 100%;
     max-width: 1240px;
-    background: var(--void-black);
+    background: #019E70;
     color: #FFFFFF;
     border: 4px solid #000000;
     border-radius: 28px;
-    box-shadow: var(--shadow-solid-lg);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), 6px 6px 0px #000000;
     padding: 34px 36px 38px;
     display: grid;
     grid-template-columns: 1.25fr 0.95fr;
     gap: 32px;
     position: relative;
+    overflow: hidden;
+  }
+
+  .print-workbench::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url('/moonlit-zombie-trio.svg') center top / cover no-repeat;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .print-workbench > * {
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 860px) {
@@ -227,13 +245,22 @@ const styles = `
     margin-bottom: 12px;
   }
 
-  /* SKETCHED HAND-DRAWN PROGRESS BAR (Matches uploaded comic image) */
+  /* SKETCHED HAND-DRAWN PROGRESS BAR (Pure Glassmorphism) */
   .print-progress-wrapper {
     grid-column: 1 / -1;
     margin-bottom: 26px;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    background: rgba(13, 22, 17, 0.26);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: none;
+    border-radius: 22px;
+    padding: 18px 22px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    position: relative;
+    overflow: hidden;
   }
 
   .print-progress-header {
@@ -261,16 +288,18 @@ const styles = `
   }
 
   .print-progress-tab {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
+    background: rgba(13, 13, 13, 0.75);
+    backdrop-filter: blur(4px);
+    border: 2px solid var(--border-dark);
+    color: #E2E8F0;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
     text-transform: uppercase;
     cursor: pointer;
-    padding: 4px 10px;
+    padding: 5px 12px;
     border-radius: 9999px;
     transition: all 0.15s ease;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
   }
 
   .print-progress-tab:hover {
@@ -421,11 +450,13 @@ const styles = `
     flex: 1;
   }
 
-  /* DROPZONE (Dark Neon Brutal) */
+  /* DROPZONE (Pure Glassmorphism) */
   .print-dropzone {
-    border: 3.5px dashed var(--slime-green);
+    border: 3px dashed var(--slime-green);
     border-radius: 24px;
-    background: var(--card-dark);
+    background: rgba(13, 22, 17, 0.24);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     padding: 36px 24px;
     min-height: 320px;
     flex: 1;
@@ -436,7 +467,7 @@ const styles = `
     text-align: center;
     position: relative;
     cursor: pointer;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     transition: all 0.15s ease;
   }
 
@@ -479,11 +510,13 @@ const styles = `
     color: var(--text-muted);
   }
 
-  /* FILE DETECTED CARD - FILLS CONTAINER & CENTERED */
+  /* FILE DETECTED CARD (Glassmorphic) */
   .print-file-ready {
-    background: var(--slime-green);
-    color: var(--void-black);
-    border: 3.5px solid #000000;
+    background: rgba(22, 48, 32, 0.32);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    color: #FFFFFF;
+    border: none;
     border-radius: 24px;
     padding: 26px 28px;
     min-height: 320px;
@@ -494,7 +527,7 @@ const styles = `
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    box-shadow: 4px 4px 0px rgba(0,0,0,0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
   .print-file-top-bar {
@@ -516,7 +549,7 @@ const styles = `
     border-radius: 9999px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border: 2px solid #000000;
+    border: none;
   }
 
   .print-file-status-text {
@@ -524,7 +557,8 @@ const styles = `
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.4px;
-    color: var(--void-black);
+    color: #A3E635;
+    text-shadow: 1px 1px 0px #000000;
   }
 
   .print-file-center-body {
@@ -554,21 +588,22 @@ const styles = `
   .print-file-name {
     font-family: 'Archivo Black', sans-serif;
     font-size: 21px;
-    color: var(--void-black);
+    color: #FFFFFF;
     word-break: break-word;
     line-height: 1.25;
     margin: 0;
+    text-shadow: 1px 1px 0px #000000;
   }
 
   .print-file-pages-box {
     display: inline-block;
-    background: rgba(0, 0, 0, 0.12);
-    border: 2px solid var(--void-black);
+    background: rgba(0, 0, 0, 0.45);
+    border: 2px solid rgba(163, 230, 53, 0.4);
     padding: 6px 18px;
     border-radius: 9999px;
     font-size: 14px;
     font-weight: 900;
-    color: var(--void-black);
+    color: #A3E635;
   }
 
   .print-reupload-label {
@@ -645,13 +680,15 @@ const styles = `
   }
 
   .print-mode-btn {
-    border: 3.5px solid #000000;
+    border: 2.5px solid rgba(255, 255, 255, 0.16);
     border-radius: 24px;
     padding: 24px 22px;
-    background: var(--card-surface);
+    background: rgba(13, 22, 17, 0.28);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     color: #FFFFFF;
     cursor: pointer;
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.7);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     flex-direction: column;
@@ -750,19 +787,21 @@ const styles = `
     letter-spacing: 0.5px;
   }
 
-  /* COPIES STEPPER & PRESETS (BIGGER & FULL CONTAINER) */
+  /* COPIES STEPPER & PRESETS (Glassmorphic) */
   .print-stepper-hero-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: var(--card-surface);
-    border: 3.5px solid #000000;
+    background: rgba(13, 22, 17, 0.28);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2.5px solid rgba(255, 255, 255, 0.16);
     border-radius: 24px;
     padding: 28px 24px 22px;
     flex: 1;
     min-height: 200px;
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.7);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     margin: 6px 0 0;
   }
 
@@ -906,12 +945,14 @@ const styles = `
   }
 
   .print-summary-card {
-    background: var(--seafoam);
-    color: var(--void-black);
-    border: 3.5px solid #000000;
+    background: rgba(16, 36, 26, 0.32);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: #FFFFFF;
+    border: none;
     border-radius: 20px;
-    padding: 16px 18px;
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.6);
+    padding: 18px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     position: relative;
     flex: 1;
     display: flex;
@@ -931,8 +972,9 @@ const styles = `
     font-size: 18px;
     text-transform: uppercase;
     letter-spacing: -0.3px;
-    color: var(--void-black);
+    color: var(--slime-green);
     margin: 0;
+    text-shadow: 1px 1px 0px #000000;
   }
 
   .print-calc-list {
@@ -948,7 +990,8 @@ const styles = `
     align-items: center;
     font-size: 13.5px;
     font-weight: 700;
-    color: var(--void-black);
+    color: #F1F5F9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .print-calc-total-box {
