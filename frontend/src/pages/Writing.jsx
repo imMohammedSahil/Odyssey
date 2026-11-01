@@ -486,7 +486,7 @@ const styles = `
     box-sizing: border-box;
   }
 
-  .writing-ink-chip-btn.active .writing-ink-chip-dot {
+  .writing-ink-chip-btn.active .writing-ink-chip-dot.is-black {
     border: 2px solid var(--slime-green);
   }
 
@@ -1074,7 +1074,7 @@ function Writing() {
                             onClick={() => setColor(c.name)}
                           >
                             <span
-                              className="writing-ink-chip-dot"
+                              className={`writing-ink-chip-dot ${c.name === "Abyssal Black" ? "is-black" : ""}`}
                               style={{ backgroundColor: c.hex }}
                             />
                             <span>{c.name}</span>
