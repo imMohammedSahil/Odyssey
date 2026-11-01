@@ -271,6 +271,19 @@ const styles = `
     letter-spacing: 0.8px;
   }
 
+  .writing-counter-badge {
+    background: rgba(13, 13, 13, 0.85);
+    color: var(--slime-green);
+    border: 2px solid rgba(157, 232, 105, 0.5);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    box-shadow: 2px 2px 0px var(--void-black);
+    user-select: none;
+  }
+
   .writing-unit-price-badge {
     background: var(--slime-green);
     color: var(--void-black);
@@ -992,7 +1005,10 @@ function Writing() {
               <div className="writing-card-title-block">
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
                   <h2 className="writing-card-model-name">{currentCatalog.modelName}</h2>
-                  <span className="writing-unit-price-badge">₹{currentCatalog.basePrice} / UNIT</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+                    <span className="writing-counter-badge">{currentIndex + 1} / {categoryItems.length}</span>
+                    <span className="writing-unit-price-badge">₹{currentCatalog.basePrice} / UNIT</span>
+                  </div>
                 </div>
                 <span className="writing-card-subtitle">{currentCatalog.subtitle}</span>
               </div>
