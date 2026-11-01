@@ -230,17 +230,17 @@ const styles = `
     box-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* MAIN ACTIVE GLASSMORPHISM CARD (HARMONIZED WITH SEAFOAM & COMIC LIME BG) */
+  /* MAIN ACTIVE GLASSMORPHISM CARD (PROFOUND VISUAL HIERARCHY) */
   .writing-active-glass-card {
-    width: 650px;
+    width: 660px;
     max-width: 92vw;
-    background: rgba(10, 24, 18, 0.82);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background: rgba(10, 24, 18, 0.84);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 4px solid var(--void-black);
-    border-radius: 18px;
+    border-radius: 20px;
     box-shadow: 6px 6px 0px var(--void-black);
-    padding: 26px 30px;
+    padding: 24px 28px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -248,78 +248,129 @@ const styles = `
     flex-shrink: 0;
   }
 
-  /* TELEMETRY TAGS */
-  .writing-card-badge-row {
+  /* TIER 1: DOSSIER HEADER */
+  .writing-card-meta-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
   }
 
-  .writing-protocol-pill {
+  .writing-protocol-tag {
+    background: rgba(13, 13, 13, 0.7);
+    color: var(--slime-green);
+    border: 2px solid rgba(157, 232, 105, 0.4);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+  }
+
+  .writing-unit-price-badge {
     background: var(--slime-green);
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 5px 12px;
+    padding: 4px 12px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
+    font-size: 13px;
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  .writing-card-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-bottom: 2px solid rgba(157, 232, 105, 0.25);
+    padding-bottom: 10px;
+  }
+
+  .writing-card-model-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 26px;
+    color: var(--pure-white);
     letter-spacing: 0.5px;
-    box-shadow: 2px 2px 0px var(--void-black);
+    line-height: 1.1;
+    text-shadow: 2px 2px 0px var(--void-black);
   }
 
-  .writing-base-price-pill {
-    background: #CCFB9A;
-    color: var(--void-black);
-    border: 2px solid var(--void-black);
-    border-radius: 6px;
-    padding: 5px 14px;
-    font-family: 'Archivo Black', sans-serif;
+  .writing-card-subtitle {
     font-size: 13px;
-    box-shadow: 2px 2px 0px var(--void-black);
+    font-weight: 800;
+    color: var(--slime-green);
+    letter-spacing: 0.4px;
+    text-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* SPECIFICATION LORE */
-  .writing-spec-lore {
-    font-size: 13px;
-    color: var(--parchment);
-    line-height: 1.5;
-    background: rgba(1, 158, 112, 0.18);
-    padding: 12px 16px;
-    border-radius: 8px;
+  /* TIER 2: TACTICAL LORE DOSSIER */
+  .writing-card-dossier-box {
+    background: rgba(5, 16, 12, 0.75);
+    border: 2px solid rgba(157, 232, 105, 0.22);
     border-left: 4px solid var(--slime-green);
-    border-top: 1px solid rgba(157, 232, 105, 0.2);
-    border-right: 1px solid rgba(157, 232, 105, 0.2);
-    border-bottom: 1px solid rgba(157, 232, 105, 0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
-  /* OPTIONS ROW (NIBS, INK COLORS, LEAD GRADES) */
-  .writing-options-box {
+  .writing-dossier-lore {
+    font-size: 12.5px;
+    color: var(--parchment);
+    line-height: 1.45;
+  }
+
+  .writing-dossier-tagline {
+    font-size: 11px;
+    font-weight: 700;
+    color: #45B89E;
+    letter-spacing: 0.3px;
+  }
+
+  /* TIER 3: STRUCTURED CONFIGURATIONS */
+  .writing-config-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(5, 16, 12, 0.65);
+    border: 2px solid rgba(69, 184, 158, 0.3);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .writing-config-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    background: rgba(6, 17, 13, 0.65);
-    padding: 10px 16px;
-    border-radius: 10px;
-    border: 2px solid rgba(69, 184, 158, 0.35);
+  }
+
+  .writing-config-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    color: #A8B3B8;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    min-width: 110px;
   }
 
   .writing-pill-group {
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
   }
 
   .writing-option-pill-btn {
     background: rgba(13, 13, 13, 0.6);
     color: var(--parchment);
-    border: 2px solid rgba(69, 184, 158, 0.3);
+    border: 2px solid rgba(69, 184, 158, 0.35);
     border-radius: 6px;
-    padding: 7px 14px;
+    padding: 6px 12px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
+    font-size: 10.5px;
     cursor: pointer;
     transition: all 0.1s ease;
   }
@@ -336,38 +387,68 @@ const styles = `
     box-shadow: 2px 2px 0px var(--void-black);
   }
 
-  /* INK COLOR SWATCHES */
-  .writing-ink-swatches {
+  /* INK COLOR CHIPS WITH LABELS */
+  .writing-ink-chips-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .writing-ink-chip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(13, 13, 13, 0.6);
+    border: 2px solid rgba(69, 184, 158, 0.35);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--parchment);
+    cursor: pointer;
+    transition: all 0.1s ease;
+  }
+
+  .writing-ink-chip-btn:hover {
+    border-color: var(--slime-green);
+    color: var(--pure-white);
+  }
+
+  .writing-ink-chip-btn.active {
+    border-color: var(--slime-green);
+    background: rgba(157, 232, 105, 0.18);
+    color: var(--slime-green);
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  .writing-ink-chip-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--void-black);
+    flex-shrink: 0;
+  }
+
+  /* TIER 4: DISPATCH COMMAND BAR */
+  .writing-action-dispatch-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 2px;
+  }
+
+  .writing-stepper-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
-  .writing-ink-dot {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid rgba(69, 184, 158, 0.4);
-    transition: transform 0.1s ease;
-  }
-
-  .writing-ink-dot:hover {
-    transform: scale(1.15);
-  }
-
-  .writing-ink-dot.active {
-    border: 2px solid var(--pure-white);
-    transform: scale(1.15);
-    box-shadow: 0 0 0 2px var(--void-black);
-  }
-
-  /* ACTION DISPATCH ROW (STEPPER + CTA) */
-  .writing-action-dispatch-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 4px;
+  .writing-stepper-label {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10.5px;
+    color: #A8B3B8;
+    letter-spacing: 0.5px;
   }
 
   .writing-stepper-ctrl {
@@ -384,8 +465,8 @@ const styles = `
     background: #14281E;
     color: var(--slime-green);
     border: none;
-    width: 38px;
-    height: 44px;
+    width: 36px;
+    height: 42px;
     font-size: 18px;
     font-weight: 800;
     cursor: pointer;
@@ -401,10 +482,10 @@ const styles = `
   }
 
   .writing-step-val {
-    min-width: 38px;
+    min-width: 34px;
     text-align: center;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--pure-white);
   }
 
@@ -414,7 +495,7 @@ const styles = `
     color: var(--void-black);
     border: 3px solid var(--void-black);
     border-radius: 8px;
-    padding: 13px 20px;
+    padding: 12px 18px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 14px;
     text-transform: uppercase;
@@ -869,103 +950,127 @@ function Writing() {
 
             {/* CENTER ACTIVE GLASSMORPHISM SHOWCASE */}
             <div className="writing-active-glass-card">
-              {/* MODEL TITLE & SUBTITLE */}
-              <div className="writing-card-header-title">
+              {/* TIER 1: DOSSIER META & TITLE */}
+              <div className="writing-card-meta-top">
+                <span className="writing-protocol-tag">{currentCatalog.protocol}</span>
+                <span className="writing-unit-price-badge">₹{currentCatalog.basePrice} / UNIT</span>
+              </div>
+
+              <div className="writing-card-title-block">
                 <h2 className="writing-card-model-name">{currentCatalog.modelName}</h2>
                 <span className="writing-card-subtitle">{currentCatalog.subtitle}</span>
               </div>
 
-              {/* TELEMETRY ROW */}
-              <div className="writing-card-badge-row">
-                <span className="writing-protocol-pill">{currentCatalog.protocol}</span>
-                <span className="writing-base-price-pill">BASE UNIT: ₹{currentCatalog.basePrice}</span>
+              {/* TIER 2: TACTICAL SPECIFICATION BRIEF */}
+              <div className="writing-card-dossier-box">
+                <p className="writing-dossier-lore">{currentCatalog.lore1}</p>
+                {currentCatalog.lore2 && (
+                  <span className="writing-dossier-tagline">DEPLOYMENT // {currentCatalog.lore2}</span>
+                )}
               </div>
 
-              {/* SPECIFICATION LORE */}
-              <p className="writing-spec-lore">{currentCatalog.lore1}</p>
-
-              {/* DYNAMIC SUB-OPTIONS */}
-              <div className="writing-options-box">
+              {/* TIER 3: STRUCTURED CONFIGURATIONS */}
+              <div className="writing-config-section">
                 {category === "pen" && (
                   <>
-                    <div className="writing-pill-group">
-                      {["Gel", "Ball"].map((type) => (
-                        <button
-                          key={type}
-                          type="button"
-                          className={`writing-option-pill-btn ${penType === type ? "active" : ""}`}
-                          onClick={() => setPenType(type)}
-                        >
-                          {type.toUpperCase()}
-                        </button>
-                      ))}
+                    <div className="writing-config-row">
+                      <span className="writing-config-label">1. Nib Technology</span>
+                      <div className="writing-pill-group">
+                        {["Gel", "Ball"].map((type) => (
+                          <button
+                            key={type}
+                            type="button"
+                            className={`writing-option-pill-btn ${penType === type ? "active" : ""}`}
+                            onClick={() => setPenType(type)}
+                          >
+                            {type === "Gel" ? "Quick-Dry Gel" : "Durable Ballpoint"}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
-                    <div className="writing-ink-swatches">
-                      {INK_COLORS.map((c) => (
-                        <div
-                          key={c.name}
-                          title={c.name}
-                          className={`writing-ink-dot ${color === c.name ? "active" : ""}`}
-                          style={{ backgroundColor: c.hex }}
-                          onClick={() => setColor(c.name)}
-                        />
-                      ))}
+                    <div className="writing-config-row">
+                      <span className="writing-config-label">2. Ink Spectrum</span>
+                      <div className="writing-ink-chips-row">
+                        {INK_COLORS.map((c) => (
+                          <button
+                            key={c.name}
+                            type="button"
+                            className={`writing-ink-chip-btn ${color === c.name ? "active" : ""}`}
+                            onClick={() => setColor(c.name)}
+                          >
+                            <span
+                              className="writing-ink-chip-dot"
+                              style={{ backgroundColor: c.hex }}
+                            />
+                            <span>{c.name}</span>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </>
                 )}
 
                 {category === "pencil" && (
-                  <div className="writing-pill-group">
-                    {["HB", "2B", "Normal"].map((g) => (
-                      <button
-                        key={g}
-                        type="button"
-                        className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
-                        onClick={() => setPencilType(g)}
-                      >
-                        {g.toUpperCase()}
-                      </button>
-                    ))}
+                  <div className="writing-config-row">
+                    <span className="writing-config-label">1. Graphite Grade</span>
+                    <div className="writing-pill-group">
+                      {["HB", "2B", "Normal"].map((g) => (
+                        <button
+                          key={g}
+                          type="button"
+                          className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
+                          onClick={() => setPencilType(g)}
+                        >
+                          {g === "2B" ? "2B • Extra Dark" : g === "HB" ? "HB • Exam Standard" : "Normal • Draft"}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
 
                 {category === "mechanical" && (
-                  <div className="writing-pill-group">
-                    {["0.5 mm", "0.7 mm"].map((size) => (
-                      <button
-                        key={size}
-                        type="button"
-                        className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
-                        onClick={() => setMechSize(size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                  <div className="writing-config-row">
+                    <span className="writing-config-label">1. Precision Gauge</span>
+                    <div className="writing-pill-group">
+                      {["0.5 mm", "0.7 mm"].map((size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
+                          onClick={() => setMechSize(size)}
+                        >
+                          {size === "0.5 mm" ? "0.5 mm • Ultra Fine" : "0.7 mm • Balanced"}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* DISPATCH ACTION BAR */}
+              {/* TIER 4: DISPATCH COMMAND BAR */}
               <div className="writing-action-dispatch-row">
-                <div className="writing-stepper-ctrl">
-                  <button
-                    type="button"
-                    className="writing-step-btn"
-                    onClick={() => setQty((prev) => Math.max(1, prev - 1))}
-                    aria-label="Decrease quantity"
-                  >
-                    −
-                  </button>
-                  <span className="writing-step-val">{qty}</span>
-                  <button
-                    type="button"
-                    className="writing-step-btn"
-                    onClick={() => setQty((prev) => prev + 1)}
-                    aria-label="Increase quantity"
-                  >
-                    +
-                  </button>
+                <div className="writing-stepper-wrapper">
+                  <span className="writing-stepper-label">QTY:</span>
+                  <div className="writing-stepper-ctrl">
+                    <button
+                      type="button"
+                      className="writing-step-btn"
+                      onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                      aria-label="Decrease quantity"
+                    >
+                      −
+                    </button>
+                    <span className="writing-step-val">{qty}</span>
+                    <button
+                      type="button"
+                      className="writing-step-btn"
+                      onClick={() => setQty((prev) => prev + 1)}
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
 
                 <button
