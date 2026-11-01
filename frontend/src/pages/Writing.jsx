@@ -1654,10 +1654,10 @@ function Writing() {
     <>
       <style>{styles}</style>
       <div className="writing-page-shell">
-        {/* 100% PURE VECTOR BACKDROP: LANDSCAPE REDESIGN */}
+        {/* 100% PURE VECTOR BACKDROP: EXACT LANDSCAPE MAPPING */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/halloween-reference-landscape.svg"
+            src="/halloween-reference-landscape.svg?v=3"
             alt=""
             className="writing-bg-vector"
           />
