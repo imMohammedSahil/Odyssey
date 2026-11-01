@@ -10,6 +10,7 @@ import PaymentPage from "./pages/PaymentPage";
 
 import PrintPage from "./pages/PrintPage";
 import Writing from "./pages/Writing";
+import Correction from "./pages/Correction";
 import StationeryPage from "./pages/StationeryPage";
 import ReceiptPage from "./pages/ReceiptPage";
 import AdminIntroPage from "./pages/AdminIntroPage";
@@ -47,6 +48,15 @@ function App() {
         element={
           <ProtectedRoute allowedRole="student">
             <Writing />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/stationery/correction"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Correction />
           </ProtectedRoute>
         }
       />
