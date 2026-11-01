@@ -237,17 +237,18 @@ const styles = `
 
   /* MAIN ACTIVE GLASSMORPHISM CARD */
   .writing-active-glass-card {
-    width: 540px;
-    background: rgba(13, 13, 13, 0.72);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    width: 650px;
+    max-width: 92vw;
+    background: rgba(13, 13, 13, 0.74);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
     border: 4px solid var(--void-black);
-    border-radius: 16px;
+    border-radius: 18px;
     box-shadow: 6px 6px 0px var(--void-black);
-    padding: 22px 24px;
+    padding: 26px 30px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 16px;
     position: relative;
     flex-shrink: 0;
   }
@@ -436,17 +437,18 @@ const styles = `
     box-shadow: 2px 2px 0px var(--void-black);
   }
 
-  /* BOTTOM GAME NAVIGATION TABS (HILL CLIMB STYLE) */
+  /* BOTTOM GAME NAVIGATION TABS (SITTING DIRECTLY ON MOUNTAIN RIDGE) */
   .writing-bottom-tabs-dock {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
-    padding: 16px 20px 24px;
+    gap: 14px;
+    padding: 0 20px 48px;
     position: relative;
     z-index: 50;
     flex-shrink: 0;
+    transform: translateY(-26px);
   }
 
   .writing-game-tab {
