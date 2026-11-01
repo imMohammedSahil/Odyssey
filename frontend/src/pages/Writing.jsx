@@ -69,22 +69,18 @@ const styles = `
     display: none;
   }
 
-  /* TOP RETRO-COMIC HEADER BAR */
+  /* TOP RETRO-COMIC HEADER BAR (Floating & Transparent to reveal top art) */
   .writing-header-bar {
     width: 100%;
     box-sizing: border-box;
-    background: rgba(13, 13, 13, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 4px solid var(--void-black);
-    padding: 12px 24px;
+    background: transparent;
+    border-bottom: none;
+    padding: 16px 24px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 50;
-    contain: layout paint;
   }
 
   .writing-brand-capsule {
