@@ -54,23 +54,19 @@ const styles = `
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
-    background-color: #0D0D0D;
+    background-color: #AE520F;
   }
 
   .writing-bg-vector {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center;
+    object-position: center bottom;
     display: block;
   }
 
   .writing-bg-vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 50%, transparent 50%, rgba(13, 13, 13, 0.35) 80%, rgba(13, 13, 13, 0.85) 100%);
-    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
-    pointer-events: none;
+    display: none;
   }
 
   /* TOP RETRO-COMIC HEADER BAR */
@@ -1658,14 +1654,13 @@ function Writing() {
     <>
       <style>{styles}</style>
       <div className="writing-page-shell">
-        {/* 100% PURE VECTOR BACKDROP: MOONLIT HAUNTED MANSION */}
+        {/* 100% PURE VECTOR BACKDROP: EXACT REFERENCE RECREATION */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/writing-moonlit-mansion.svg?v=2"
+            src="/halloween-reference-exact.svg"
             alt=""
             className="writing-bg-vector"
           />
-          <div className="writing-bg-vignette" />
         </div>
 
         {/* TOP COMIC HEADER BAR */}
