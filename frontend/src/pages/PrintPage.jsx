@@ -105,6 +105,8 @@ const styles = `
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
     text-transform: uppercase;
+    text-shadow: none;
+    letter-spacing: 0.3px;
     padding: 3px 10px;
     border-radius: 9999px;
     border: 2px solid var(--border-dark);
