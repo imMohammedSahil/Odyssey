@@ -128,26 +128,60 @@ const styles = `
   /* GAME HEADLINE */
   .writing-game-headline {
     text-align: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
   }
 
-  .writing-game-category-tag {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    color: var(--slime-green);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 0px var(--void-black);
-  }
-
-  .writing-game-model-title {
+  .writing-game-main-hero {
     font-family: 'Titan One', cursive;
     font-size: 34px;
     color: var(--pure-white);
     letter-spacing: 1px;
     line-height: 1.1;
     text-shadow: 4px 4px 0px var(--void-black), -2px -2px 0px var(--void-black), 2px -2px 0px var(--void-black), -2px 2px 0px var(--void-black);
+  }
+
+  .writing-game-category-tag {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: var(--slime-green);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px var(--void-black);
+    background: rgba(13, 13, 13, 0.7);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--void-black);
+    border-radius: 9999px;
+    padding: 3px 14px;
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  /* INSIDE CARD MODEL TITLE */
+  .writing-card-header-title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 6px;
+  }
+
+  .writing-card-model-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 20px;
+    color: var(--pure-white);
+    letter-spacing: 0.5px;
+  }
+
+  .writing-card-subtitle {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--hazard-gold);
+    letter-spacing: 0.3px;
   }
 
   /* CAROUSEL CONTAINER (PREV, ACTIVE, NEXT) */
@@ -803,12 +837,12 @@ function Writing() {
 
         {/* HILL CLIMB RACING STYLE GAME CAROUSEL STAGE */}
         <main className="writing-game-stage">
-          {/* HEADLINE */}
+          {/* HERO HEADLINE */}
           <div className="writing-game-headline">
+            <h1 className="writing-game-main-hero">WRITTEN IN STONE</h1>
             <div className="writing-game-category-tag">
-              {category.toUpperCase()} // ARSENAL SELECTION
+              PENS • PENCILS • MECHANICAL PENCILS
             </div>
-            <h1 className="writing-game-model-title">{currentCatalog.modelName}</h1>
           </div>
 
           {/* 3-PIECE CAROUSEL ROW (ARROW - GLASS CARD - ARROW) */}
@@ -826,6 +860,12 @@ function Writing() {
 
             {/* CENTER ACTIVE GLASSMORPHISM SHOWCASE */}
             <div className="writing-active-glass-card">
+              {/* MODEL TITLE & SUBTITLE */}
+              <div className="writing-card-header-title">
+                <h2 className="writing-card-model-name">{currentCatalog.modelName}</h2>
+                <span className="writing-card-subtitle">{currentCatalog.subtitle}</span>
+              </div>
+
               {/* TELEMETRY ROW */}
               <div className="writing-card-badge-row">
                 <span className="writing-protocol-pill">{currentCatalog.protocol}</span>
