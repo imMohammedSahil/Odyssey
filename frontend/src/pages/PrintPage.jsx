@@ -169,32 +169,19 @@ const styles = `
     margin-bottom: 22px;
     display: inline-block;
     text-align: center;
-    /* Subtle sculpted clay dripping & teardrop highlights inside the letterforms */
-    background-image: 
-      /* Soft clay specular sheen at top */
-      linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, transparent 16%),
-      /* Subtle elongated teardrop drip highlights running inside the letters */
-      radial-gradient(ellipse 6px 14px at 12% 38%, rgba(255, 255, 210, 0.55) 0%, rgba(212, 240, 36, 0.25) 55%, transparent 100%),
-      radial-gradient(ellipse 8px 18px at 28% 46%, rgba(255, 255, 210, 0.5) 0%, rgba(212, 240, 36, 0.2) 55%, transparent 100%),
-      radial-gradient(ellipse 5px 12px at 45% 36%, rgba(255, 255, 210, 0.45) 0%, rgba(212, 240, 36, 0.18) 55%, transparent 100%),
-      radial-gradient(ellipse 7px 16px at 62% 44%, rgba(255, 255, 210, 0.5) 0%, rgba(212, 240, 36, 0.2) 55%, transparent 100%),
-      radial-gradient(ellipse 6px 15px at 78% 39%, rgba(255, 255, 210, 0.45) 0%, rgba(212, 240, 36, 0.18) 55%, transparent 100%),
-      radial-gradient(ellipse 8px 18px at 91% 45%, rgba(255, 255, 210, 0.5) 0%, rgba(212, 240, 36, 0.2) 55%, transparent 100%),
-      /* Subtle inner clay dripping crevice shadows */
-      radial-gradient(ellipse 7px 12px at 28% 56%, rgba(180, 50, 0, 0.4) 0%, transparent 100%),
-      radial-gradient(ellipse 6px 10px at 62% 54%, rgba(180, 50, 0, 0.4) 0%, transparent 100%),
-      radial-gradient(ellipse 7px 12px at 91% 55%, rgba(180, 50, 0, 0.4) 0%, transparent 100%),
-      /* Molten clay base gradient: radioactive lime down to deep clay pumpkin */
-      linear-gradient(180deg, #D6F226 0%, #D8F428 22%, #FF9E1B 38%, #FF620E 58%, #E04800 100%);
+    /* Hand-sculpted melting clay drip linework inside the letters (matching MOON RAZE reference) */
+    background: url('/clay-drips-pattern.svg?v=1') repeat;
+    background-size: 150px 95px;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1.5px #080808;
+    -webkit-text-stroke: 1.6px #0A0A0A;
     paint-order: stroke fill;
     filter: 
       drop-shadow(0 2px 0 #000000)
-      drop-shadow(0 4.5px 0 #D4F024)
-      drop-shadow(0 7.5px 0 #000000)
-      drop-shadow(3px 8px 0px #9DE869);
+      drop-shadow(0 5px 0 #E2F336)
+      drop-shadow(0 8.5px 0 #000000)
+      drop-shadow(3px 8.5px 0px rgba(0, 0, 0, 0.7));
   }
 
   .print-title-star {

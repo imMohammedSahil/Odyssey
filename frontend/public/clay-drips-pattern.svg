@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="95" viewBox="0 0 150 95">
+  <defs>
+    <linearGradient id="clayBase" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FF9E24"/>
+      <stop offset="25%" stop-color="#FF7B18"/>
+      <stop offset="75%" stop-color="#F25E0A"/>
+      <stop offset="100%" stop-color="#D94B00"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Solid clay base fill -->
+  <rect width="150" height="95" fill="url(#clayBase)"/>
+
+  <!-- Subtle clay highlight gloss ribbons -->
+  <path d="M 8,10 Q 22,24 35,9" fill="none" stroke="rgba(255,255,255,0.38)" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 72,12 Q 90,26 104,10" fill="none" stroke="rgba(255,255,255,0.38)" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M 40,54 Q 52,68 64,52" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 112,50 Q 124,66 138,48" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Organic sculpted clay drip lines & folds (matching MOON RAZE reference) -->
+  <g stroke="#180700" stroke-linecap="round" stroke-linejoin="round" opacity="0.88">
+    <!-- Top Row Drips & Folds -->
+    <!-- Drip loop 1 with droplet tip -->
+    <path d="M 6,12 C 14,36 28,36 36,11" fill="none" stroke-width="2.2"/>
+    <path d="M 20,33 C 21,46 25,46 26,33" fill="none" stroke-width="2"/>
+
+    <!-- Small V-shaped clay fold 1 -->
+    <path d="M 48,18 L 54,32 L 60,16" fill="none" stroke-width="2.2"/>
+
+    <!-- Drip loop 2 with hanging teardrop -->
+    <path d="M 70,14 C 78,42 96,42 104,12" fill="none" stroke-width="2.2"/>
+    <path d="M 84,39 C 85,54 90,54 92,37" fill="none" stroke-width="2"/>
+
+    <!-- Small V-shaped clay fold 2 -->
+    <path d="M 116,22 L 122,35 L 128,19" fill="none" stroke-width="2.2"/>
+
+    <!-- Lower Row Drips & Creases -->
+    <!-- Curved melting clay ridge -->
+    <path d="M 0,62 C 10,78 20,78 28,60" fill="none" stroke-width="2.2"/>
+    
+    <!-- Deep drip loop 3 -->
+    <path d="M 36,56 C 45,82 58,82 66,54" fill="none" stroke-width="2.2"/>
+    <path d="M 49,79 C 50,90 53,90 54,77" fill="none" stroke-width="1.8"/>
+
+    <!-- Crease and small V-fold -->
+    <path d="M 78,64 L 84,77 L 90,62" fill="none" stroke-width="2"/>
+    
+    <!-- Drip loop 4 -->
+    <path d="M 108,52 C 118,78 132,78 142,50" fill="none" stroke-width="2.2"/>
+    <path d="M 123,75 C 124,88 127,88 128,73" fill="none" stroke-width="1.8"/>
+  </g>
+</svg>
