@@ -303,29 +303,57 @@ const styles = `
     text-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* TIER 2: TACTICAL LORE DOSSIER */
+  /* TIER 2: AUTHENTIC COMIC PARCHMENT MEMO */
   .writing-card-dossier-box {
-    background: rgba(5, 16, 12, 0.75);
-    border: 2px solid rgba(157, 232, 105, 0.22);
-    border-left: 4px solid var(--slime-green);
-    border-radius: 8px;
-    padding: 10px 14px;
+    background: var(--parchment);
+    color: var(--void-black);
+    border: 3.5px solid var(--void-black);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0px var(--void-black);
+    padding: 12px 16px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
+    position: relative;
+  }
+
+  .writing-dossier-tag-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .writing-dossier-memo-badge {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    border: 2px solid var(--void-black);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0px var(--void-black);
   }
 
   .writing-dossier-lore {
-    font-size: 12.5px;
-    color: var(--parchment);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--void-black);
     line-height: 1.45;
   }
 
   .writing-dossier-tagline {
+    font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
-    font-weight: 700;
-    color: #45B89E;
-    letter-spacing: 0.3px;
+    color: var(--void-black);
+    letter-spacing: 0.4px;
+    background: #EBE5D8;
+    border: 2px solid var(--void-black);
+    border-radius: 6px;
+    padding: 5px 10px;
+    display: inline-block;
   }
 
   /* TIER 3: STRUCTURED CONFIGURATIONS */
@@ -961,11 +989,16 @@ function Writing() {
                 <span className="writing-card-subtitle">{currentCatalog.subtitle}</span>
               </div>
 
-              {/* TIER 2: TACTICAL SPECIFICATION BRIEF */}
+              {/* TIER 2: TACTICAL SPECIFICATION BRIEF (NEO-BRUTALIST COMIC MEMO) */}
               <div className="writing-card-dossier-box">
+                <div className="writing-dossier-tag-row">
+                  <span className="writing-dossier-memo-badge">SURVIVOR MEMO // CLASSIFIED</span>
+                </div>
                 <p className="writing-dossier-lore">{currentCatalog.lore1}</p>
                 {currentCatalog.lore2 && (
-                  <span className="writing-dossier-tagline">DEPLOYMENT // {currentCatalog.lore2}</span>
+                  <div className="writing-dossier-tagline">
+                    DEPLOYMENT // {currentCatalog.lore2}
+                  </div>
                 )}
               </div>
 
