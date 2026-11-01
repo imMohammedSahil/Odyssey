@@ -358,7 +358,7 @@ const styles = `
     line-height: 1.4;
   }
 
-  /* TIER 3: STRUCTURED CONFIGURATIONS (COMIC LIME MATCH + FIXED 126PX HEIGHT) */
+  /* TIER 3: STRUCTURED CONFIGURATIONS (COMIC LIME MATCH + FIXED HEIGHT) */
   .writing-config-section {
     display: flex;
     flex-direction: column;
@@ -372,6 +372,13 @@ const styles = `
     border-radius: 10px;
     box-shadow: 4px 4px 0px var(--void-black);
     padding: 14px 18px;
+  }
+
+  .writing-config-section.compact {
+    height: 94px;
+    min-height: 94px;
+    gap: 8px;
+    padding: 10px 18px;
   }
 
   .writing-config-row {
@@ -1037,7 +1044,7 @@ function Writing() {
               </div>
 
               {/* TIER 3: STRUCTURED CONFIGURATIONS */}
-              <div className="writing-config-section">
+              <div className={`writing-config-section ${category !== "pen" ? "compact" : ""}`}>
                 {category === "pen" && (
                   <>
                     <div className="writing-config-row">
