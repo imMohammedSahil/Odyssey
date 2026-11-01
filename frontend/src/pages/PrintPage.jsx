@@ -169,19 +169,19 @@ const styles = `
     margin-bottom: 22px;
     display: inline-block;
     text-align: center;
-    /* Hand-sculpted melting clay drip linework inside the letters (matching MOON RAZE reference) */
-    background: url('/clay-drips-pattern.svg?v=1') repeat;
-    background-size: 150px 95px;
+    /* Hand-sculpted flowy, melting clay drips & teardrop linework inside the letters */
+    background: url('/clay-drips-pattern.svg?v=2') repeat;
+    background-size: 320px 105px;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1.6px #0A0A0A;
+    -webkit-text-stroke: 1.8px #000000;
     paint-order: stroke fill;
     filter: 
       drop-shadow(0 2px 0 #000000)
-      drop-shadow(0 5px 0 #E2F336)
-      drop-shadow(0 8.5px 0 #000000)
-      drop-shadow(3px 8.5px 0px rgba(0, 0, 0, 0.7));
+      drop-shadow(0 5.5px 0 #E2EE25)
+      drop-shadow(0 9px 0 #000000)
+      drop-shadow(3px 9px 0px rgba(0, 0, 0, 0.75));
   }
 
   .print-title-star {
