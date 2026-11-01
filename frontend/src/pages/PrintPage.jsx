@@ -43,8 +43,8 @@ const styles = `
     min-height: 100vh;
     background-color: #019E70;
     background-image: 
-      radial-gradient(ellipse at 50% 25%, #01B581 0%, #019E70 50%, #001F2E 100%),
-      radial-gradient(rgba(0, 31, 46, 0.28) 1.5px, transparent 1.5px);
+      radial-gradient(ellipse at 50% 25%, #01B581 0%, #01855E 35%, #002E24 65%, #00121A 90%, #000609 100%),
+      radial-gradient(rgba(0, 31, 46, 0.35) 1.5px, transparent 1.5px);
     background-size: 100% 100%, 22px 22px;
     background-position: 0 0, 0 0;
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -55,6 +55,16 @@ const styles = `
     align-items: center;
     position: relative;
     overflow-x: hidden;
+  }
+
+  .print-page-wrapper::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 45%, transparent 40%, rgba(0, 15, 20, 0.45) 75%, rgba(0, 5, 8, 0.88) 100%);
+    box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.95), inset 0 0 60px rgba(0, 0, 0, 0.85);
+    pointer-events: none;
+    z-index: 99;
   }
 
   /* TOP NAVBAR */
@@ -205,7 +215,7 @@ const styles = `
     color: #FFFFFF;
     border: 4px solid #000000;
     border-radius: 28px;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), 6px 6px 0px #000000;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 8px 8px 0px #000000;
     padding: 34px 36px 38px;
     display: grid;
     grid-template-columns: 1.25fr 0.95fr;
@@ -219,6 +229,18 @@ const styles = `
     position: absolute;
     inset: 0;
     background: url('/moonlit-zombie-trio.svg') center top / cover no-repeat;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .print-workbench::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 50% 25%, transparent 35%, rgba(0, 15, 12, 0.4) 70%, rgba(0, 5, 8, 0.88) 100%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 55%, rgba(0, 0, 0, 0.72) 100%);
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.95), inset 0 0 40px rgba(0, 0, 0, 0.85);
     z-index: 0;
     pointer-events: none;
   }
@@ -258,7 +280,7 @@ const styles = `
     border: none;
     border-radius: 22px;
     padding: 18px 22px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), inset 0 0 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
     position: relative;
     overflow: hidden;
   }
@@ -467,7 +489,7 @@ const styles = `
     text-align: center;
     position: relative;
     cursor: pointer;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7), inset 0 0 45px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     transition: all 0.15s ease;
   }
 
@@ -527,7 +549,7 @@ const styles = `
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.8), inset 0 0 45px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
   .print-file-top-bar {
@@ -688,7 +710,7 @@ const styles = `
     -webkit-backdrop-filter: blur(16px);
     color: #FFFFFF;
     cursor: pointer;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), inset 0 0 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: flex;
     flex-direction: column;
@@ -801,7 +823,7 @@ const styles = `
     padding: 28px 24px 22px;
     flex: 1;
     min-height: 200px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), inset 0 0 30px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
     margin: 6px 0 0;
   }
 
@@ -952,7 +974,7 @@ const styles = `
     border: none;
     border-radius: 20px;
     padding: 18px 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), inset 0 0 35px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     position: relative;
     flex: 1;
     display: flex;
