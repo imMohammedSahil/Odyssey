@@ -377,9 +377,8 @@ const styles = `
   .writing-config-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    max-width: 500px;
+    justify-content: flex-start;
+    gap: 16px;
     flex-wrap: wrap;
   }
 
@@ -389,7 +388,8 @@ const styles = `
     color: var(--void-black);
     letter-spacing: 0.6px;
     text-transform: uppercase;
-    min-width: 110px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .writing-pill-group {
