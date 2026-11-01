@@ -382,6 +382,15 @@ const styles = `
     flex-wrap: wrap;
   }
 
+  .writing-config-stacked {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+
   .writing-config-label {
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
@@ -1065,7 +1074,7 @@ function Writing() {
                 )}
 
                 {category === "pencil" && (
-                  <div className="writing-config-row">
+                  <div className="writing-config-stacked">
                     <span className="writing-config-label">1. Graphite Grade</span>
                     <div className="writing-pill-group">
                       {["HB", "2B", "Normal"].map((g) => (
@@ -1075,7 +1084,7 @@ function Writing() {
                           className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
                           onClick={() => setPencilType(g)}
                         >
-                          {g === "2B" ? "2B • Extra Dark" : g === "HB" ? "HB • Exam Standard" : "Normal • Draft"}
+                          {g === "HB" ? "HB • Exam Standard" : g === "2B" ? "2B • Extra Dark" : "Normal • Draft"}
                         </button>
                       ))}
                     </div>
@@ -1083,7 +1092,7 @@ function Writing() {
                 )}
 
                 {category === "mechanical" && (
-                  <div className="writing-config-row">
+                  <div className="writing-config-stacked">
                     <span className="writing-config-label">1. Precision Gauge</span>
                     <div className="writing-pill-group">
                       {["0.5 mm", "0.7 mm"].map((size) => (
