@@ -233,7 +233,9 @@ const styles = `
   /* MAIN ACTIVE GLASSMORPHISM CARD (LOCKED FIXED HEIGHT) */
   .writing-active-glass-card {
     width: 660px;
-    min-height: 450px;
+    height: 460px;
+    min-height: 460px;
+    max-height: 460px;
     max-width: 92vw;
     background: rgba(10, 24, 18, 0.84);
     backdrop-filter: blur(20px);
@@ -241,13 +243,13 @@ const styles = `
     border: 4px solid var(--void-black);
     border-radius: 20px;
     box-shadow: 6px 6px 0px var(--void-black);
-    padding: 24px 28px;
+    padding: 22px 26px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 14px;
     position: relative;
     flex-shrink: 0;
+    box-sizing: border-box;
   }
 
   /* TIER 1: DOSSIER HEADER */
@@ -315,8 +317,11 @@ const styles = `
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 8px;
-    min-height: 72px;
+    height: 94px;
+    min-height: 94px;
+    box-sizing: border-box;
   }
 
   .writing-dossier-lore {
@@ -340,29 +345,20 @@ const styles = `
     line-height: 1.4;
   }
 
-  /* TIER 3: STRUCTURED CONFIGURATIONS (LOCKED HEIGHT FOR ZERO FLICKER) */
+  /* TIER 3: STRUCTURED CONFIGURATIONS (COMIC LIME MATCH + FIXED 114PX HEIGHT) */
   .writing-config-section {
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 10px;
-    min-height: 106px;
-    background: rgba(5, 16, 12, 0.65);
-    border: 2px solid rgba(69, 184, 158, 0.3);
+    height: 114px;
+    min-height: 114px;
+    box-sizing: border-box;
+    background: #CCFB9A;
+    border: 3.5px solid var(--void-black);
     border-radius: 10px;
-    padding: 12px 14px;
-  }
-
-  .writing-spec-chip {
-    font-size: 10.5px;
-    font-weight: 700;
-    color: var(--slime-green);
-    background: rgba(13, 13, 13, 0.65);
-    border: 1.5px solid rgba(157, 232, 105, 0.35);
-    border-radius: 6px;
-    padding: 4px 10px;
-    letter-spacing: 0.3px;
-    user-select: none;
+    box-shadow: 4px 4px 0px var(--void-black);
+    padding: 12px 16px;
   }
 
   .writing-config-row {
@@ -375,8 +371,8 @@ const styles = `
 
   .writing-config-label {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    color: #A8B3B8;
+    font-size: 11px;
+    color: var(--void-black);
     letter-spacing: 0.6px;
     text-transform: uppercase;
     min-width: 110px;
@@ -385,30 +381,32 @@ const styles = `
   .writing-pill-group {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     flex-wrap: wrap;
   }
 
   .writing-option-pill-btn {
-    background: rgba(13, 13, 13, 0.6);
-    color: var(--parchment);
-    border: 2px solid rgba(69, 184, 158, 0.35);
+    background: #B2F069;
+    color: var(--void-black);
+    border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 6px 12px;
+    padding: 7px 14px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 10.5px;
+    font-size: 11px;
     cursor: pointer;
+    box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
   }
 
   .writing-option-pill-btn:hover {
-    border-color: var(--slime-green);
-    color: var(--pure-white);
+    background: #9DE869;
+    transform: translateY(-1px);
+    box-shadow: 3px 3px 0px var(--void-black);
   }
 
   .writing-option-pill-btn.active {
-    background: var(--slime-green);
-    color: var(--void-black);
+    background: var(--void-black);
+    color: var(--slime-green);
     border-color: var(--void-black);
     box-shadow: 2px 2px 0px var(--void-black);
   }
@@ -425,25 +423,26 @@ const styles = `
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(13, 13, 13, 0.6);
-    border: 2px solid rgba(69, 184, 158, 0.35);
+    background: #B2F069;
+    border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 4px 8px;
-    font-size: 10.5px;
-    font-weight: 700;
-    color: var(--parchment);
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--void-black);
     cursor: pointer;
+    box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
   }
 
   .writing-ink-chip-btn:hover {
-    border-color: var(--slime-green);
-    color: var(--pure-white);
+    background: #9DE869;
+    transform: translateY(-1px);
   }
 
   .writing-ink-chip-btn.active {
-    border-color: var(--slime-green);
-    background: rgba(157, 232, 105, 0.18);
+    border-color: var(--void-black);
+    background: var(--void-black);
     color: var(--slime-green);
     box-shadow: 2px 2px 0px var(--void-black);
   }
@@ -1049,57 +1048,39 @@ function Writing() {
                 )}
 
                 {category === "pencil" && (
-                  <>
-                    <div className="writing-config-row">
-                      <span className="writing-config-label">1. Graphite Grade</span>
-                      <div className="writing-pill-group">
-                        {["HB", "2B", "Normal"].map((g) => (
-                          <button
-                            key={g}
-                            type="button"
-                            className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
-                            onClick={() => setPencilType(g)}
-                          >
-                            {g === "2B" ? "2B • Extra Dark" : g === "HB" ? "HB • Exam Standard" : "Normal • Draft"}
-                          </button>
-                        ))}
-                      </div>
+                  <div className="writing-config-row">
+                    <span className="writing-config-label">1. Graphite Grade</span>
+                    <div className="writing-pill-group">
+                      {["HB", "2B", "Normal"].map((g) => (
+                        <button
+                          key={g}
+                          type="button"
+                          className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
+                          onClick={() => setPencilType(g)}
+                        >
+                          {g === "2B" ? "2B • Extra Dark" : g === "HB" ? "HB • Exam Standard" : "Normal • Draft"}
+                        </button>
+                      ))}
                     </div>
-                    <div className="writing-config-row">
-                      <span className="writing-config-label">2. Lead Matrix</span>
-                      <div className="writing-pill-group">
-                        <span className="writing-spec-chip">Micro-Pulverized Bonded Core</span>
-                        <span className="writing-spec-chip">OMR Optical Certified</span>
-                      </div>
-                    </div>
-                  </>
+                  </div>
                 )}
 
                 {category === "mechanical" && (
-                  <>
-                    <div className="writing-config-row">
-                      <span className="writing-config-label">1. Precision Gauge</span>
-                      <div className="writing-pill-group">
-                        {["0.5 mm", "0.7 mm"].map((size) => (
-                          <button
-                            key={size}
-                            type="button"
-                            className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
-                            onClick={() => setMechSize(size)}
-                          >
-                            {size === "0.5 mm" ? "0.5 mm • Ultra Fine" : "0.7 mm • Balanced"}
-                          </button>
-                        ))}
-                      </div>
+                  <div className="writing-config-row">
+                    <span className="writing-config-label">1. Precision Gauge</span>
+                    <div className="writing-pill-group">
+                      {["0.5 mm", "0.7 mm"].map((size) => (
+                        <button
+                          key={size}
+                          type="button"
+                          className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
+                          onClick={() => setMechSize(size)}
+                        >
+                          {size === "0.5 mm" ? "0.5 mm • Ultra Fine" : "0.7 mm • Balanced"}
+                        </button>
+                      ))}
                     </div>
-                    <div className="writing-config-row">
-                      <span className="writing-config-label">2. Clutch System</span>
-                      <div className="writing-pill-group">
-                        <span className="writing-spec-chip">High-Tolerance Brass Clutch</span>
-                        <span className="writing-spec-chip">Zero-Wobble Sleeve</span>
-                      </div>
-                    </div>
-                  </>
+                  </div>
                 )}
               </div>
 
