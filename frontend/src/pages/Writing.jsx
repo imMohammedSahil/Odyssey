@@ -407,7 +407,7 @@ const styles = `
     position: relative;
     z-index: 50;
     flex-shrink: 0;
-    transform: translateY(-26px);
+    transform: translateY(-44px);
   }
 
   .writing-game-tab {
