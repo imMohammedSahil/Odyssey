@@ -206,66 +206,38 @@ const styles = `
     max-width: 1100px;
   }
 
-  /* PREV / NEXT PEEK BOXES (HILL CLIMB STYLE) */
-  .writing-peek-box {
-    width: 180px;
-    height: 240px;
-    background: rgba(13, 13, 13, 0.55);
+  /* CAROUSEL NAV ARROW BUTTONS */
+  .writing-nav-arrow-btn {
+    width: 58px;
+    height: 58px;
+    background: rgba(13, 13, 13, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 3px solid var(--void-black);
-    border-radius: 12px;
-    box-shadow: 4px 4px 0px var(--void-black);
+    color: var(--slime-green);
+    border: 3.5px solid var(--void-black);
+    border-radius: 50%;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 26px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 16px 12px;
+    justify-content: center;
+    box-shadow: 4px 4px 0px var(--void-black);
     cursor: pointer;
-    opacity: 0.75;
-    transition: all 0.15s ease;
+    transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease, box-shadow 0.12s ease;
     user-select: none;
     flex-shrink: 0;
   }
 
-  .writing-peek-box:hover {
-    opacity: 1;
-    transform: translateY(-2px);
-    border-color: var(--slime-green);
-  }
-
-  .writing-peek-nav-arrow {
+  .writing-nav-arrow-btn:hover {
     background: var(--slime-green);
     color: var(--void-black);
-    border: 2px solid var(--void-black);
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 14px;
-    box-shadow: 2px 2px 0px var(--void-black);
+    transform: scale(1.08) translate(-1px, -1px);
+    box-shadow: 5px 5px 0px var(--void-black);
   }
 
-  .writing-peek-name {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
-    color: var(--parchment);
-    text-align: center;
-    line-height: 1.2;
-  }
-
-  .writing-peek-price {
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    border: 2px solid var(--void-black);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 12px;
-    box-shadow: 2px 2px 0px var(--void-black);
+  .writing-nav-arrow-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--void-black);
   }
 
   /* MAIN ACTIVE GLASSMORPHISM CARD */
@@ -543,16 +515,19 @@ const styles = `
     }
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 768px) {
     .writing-carousel-row {
-      flex-direction: column;
+      gap: 8px;
     }
-    .writing-peek-box {
-      display: none;
+    .writing-nav-arrow-btn {
+      width: 44px;
+      height: 44px;
+      font-size: 20px;
     }
     .writing-active-glass-card {
       width: 100%;
-      max-width: 480px;
+      max-width: 420px;
+      padding: 16px;
     }
   }
 `;
@@ -889,18 +864,18 @@ function Writing() {
             <h1 className="writing-game-model-title">{currentCatalog.modelName}</h1>
           </div>
 
-          {/* 3-BOX CAROUSEL ROW */}
+          {/* 3-PIECE CAROUSEL ROW (ARROW - GLASS CARD - ARROW) */}
           <div className="writing-carousel-row">
-            {/* LEFT PREVIEW BOX */}
-            <div
-              className="writing-peek-box"
+            {/* LEFT ARROW */}
+            <button
+              type="button"
+              className="writing-nav-arrow-btn"
               onClick={() => setActiveId(prevItem.id)}
-              title={`Previous: ${prevItem.modelName}`}
+              aria-label={`Previous: ${prevItem.modelName}`}
+              title={`Previous: ${prevItem.modelName} (← key)`}
             >
-              <div className="writing-peek-nav-arrow">←</div>
-              <div className="writing-peek-name">{prevItem.modelName}</div>
-              <div className="writing-peek-price">₹{prevItem.basePrice}</div>
-            </div>
+              ←
+            </button>
 
             {/* CENTER ACTIVE GLASSMORPHISM SHOWCASE */}
             <div className="writing-active-glass-card">
@@ -1007,16 +982,16 @@ function Writing() {
               </div>
             </div>
 
-            {/* RIGHT PREVIEW BOX */}
-            <div
-              className="writing-peek-box"
+            {/* RIGHT ARROW */}
+            <button
+              type="button"
+              className="writing-nav-arrow-btn"
               onClick={() => setActiveId(nextItem.id)}
-              title={`Next: ${nextItem.modelName}`}
+              aria-label={`Next: ${nextItem.modelName}`}
+              title={`Next: ${nextItem.modelName} (→ key)`}
             >
-              <div className="writing-peek-nav-arrow">→</div>
-              <div className="writing-peek-name">{nextItem.modelName}</div>
-              <div className="writing-peek-price">₹{nextItem.basePrice}</div>
-            </div>
+              →
+            </button>
           </div>
         </main>
 
