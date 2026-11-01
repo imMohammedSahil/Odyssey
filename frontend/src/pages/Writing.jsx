@@ -476,6 +476,11 @@ const styles = `
     border-radius: 50%;
     border: 1.5px solid var(--void-black);
     flex-shrink: 0;
+    box-sizing: border-box;
+  }
+
+  .writing-ink-chip-btn.active .writing-ink-chip-dot {
+    border: 2px solid var(--slime-green);
   }
 
   /* TIER 4: DISPATCH COMMAND BAR */
