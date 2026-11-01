@@ -1,68 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="360" height="120" viewBox="0 0 360 120">
-  <defs>
-    <linearGradient id="clayMeltingGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#FFA126"/>
-      <stop offset="28%" stop-color="#FF7D0E"/>
-      <stop offset="70%" stop-color="#FF5B00"/>
-      <stop offset="100%" stop-color="#D94300"/>
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="110" viewBox="0 0 280 110">
+  <!-- Matte pumpkin clay fill (solid cartoon style like MOON RAZE) -->
+  <rect width="280" height="110" fill="#F47424"/>
 
-  <!-- Base Melting Clay Orange -->
-  <rect width="360" height="120" fill="url(#clayMeltingGrad)"/>
+  <!-- Organic hand-drawn comic clay creases & drip folds -->
+  <g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Floating 'v' crease 1 (like in O and M of MOON RAZE) -->
+    <path d="M 28,26 L 33,37 L 38,28"/>
 
-  <!-- Flowing Glossy Clay Highlights (soft 3D sheen on left shoulders of drips) -->
-  <g fill="none" stroke="rgba(255, 255, 255, 0.45)" stroke-width="2.2" stroke-linecap="round">
-    <path d="M 22,12 C 23,38 19,65 24,78"/>
-    <path d="M 76,8 C 77,28 72,48 76,58"/>
-    <path d="M 132,15 C 133,45 128,72 134,86"/>
-    <path d="M 194,10 C 195,32 191,52 195,64"/>
-    <path d="M 252,14 C 253,42 248,70 254,84"/>
-    <path d="M 312,12 C 313,35 308,58 313,72"/>
-  </g>
+    <!-- Gentle wavy clay drip loop 1 (curving smoothly, NOT a vertical bar) -->
+    <path d="M 52,18 C 64,36 82,34 94,16"/>
+    <!-- Small drip tongue hanging from fold -->
+    <path d="M 70,35 C 72,48 76,48 78,35"/>
 
-  <!-- Flowy, Sculpted Comic Clay Drips & Crevices (Matching MOON RAZE) -->
-  <g fill="none" stroke="#000000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Drip Tongue 1: Long flowing melting tongue -->
-    <path d="M 16,10 C 18,45 12,78 26,84 C 38,78 32,45 34,10"/>
-    <!-- Suspended droplet bead below tongue 1 -->
-    <path d="M 26,96 C 22,100 22,106 26,108 C 30,106 30,100 26,96 Z" fill="#000000"/>
+    <!-- Floating 'v' crease 2 -->
+    <path d="M 124,32 L 129,43 L 135,34"/>
 
-    <!-- V-fold 1: Sharp organic crease pulling clay -->
-    <path d="M 48,16 L 54,34 L 62,18"/>
+    <!-- Slanted wavy fold 2 (like in N and R) -->
+    <path d="M 152,18 C 160,32 174,38 186,24"/>
 
-    <!-- Drip Tongue 2: Medium teardrop lobe -->
-    <path d="M 70,6 C 72,30 66,56 78,62 C 88,56 84,30 86,6"/>
+    <!-- Subtle teardrop lobe 3 -->
+    <path d="M 208,22 C 218,44 232,42 242,20"/>
+    <path d="M 223,43 C 224,53 227,53 228,42"/>
 
-    <!-- Internal drip fold 2 -->
-    <path d="M 98,22 C 104,36 108,36 114,20"/>
+    <!-- Floating 'v' crease 3 -->
+    <path d="M 262,28 L 267,39 L 273,30"/>
 
-    <!-- Drip Tongue 3: Deep hanging slime drip -->
-    <path d="M 126,12 C 128,52 122,86 136,92 C 148,86 142,52 144,12"/>
-    <!-- Suspended droplet bead below tongue 3 -->
-    <path d="M 136,104 C 132,107 132,112 136,114 C 140,112 140,107 136,104 Z" fill="#000000"/>
+    <!-- Bottom Row (staggered & sparse) -->
+    <!-- Wavy melting contour (like in Z and E) -->
+    <path d="M 14,72 C 28,86 44,78 58,84"/>
 
-    <!-- V-fold 3 -->
-    <path d="M 162,18 L 168,36 L 176,20"/>
+    <!-- Floating 'v' crease 4 -->
+    <path d="M 86,75 L 91,86 L 96,77"/>
 
-    <!-- Drip Tongue 4: Smooth wide scoop and drip -->
-    <path d="M 188,8 C 190,34 184,62 196,68 C 206,62 202,34 204,8"/>
+    <!-- Flowy curved clay crease -->
+    <path d="M 118,68 C 130,86 148,84 160,66"/>
+    <path d="M 136,85 C 138,96 142,96 144,84"/>
 
-    <!-- Crease fold 4 -->
-    <path d="M 218,24 C 224,38 230,38 236,22"/>
+    <!-- Wavy horizontal clay crease (like in Z of MOON RAZE) -->
+    <path d="M 188,76 C 200,68 214,88 228,78"/>
 
-    <!-- Drip Tongue 5: Long oozing drip -->
-    <path d="M 246,11 C 248,50 242,84 256,90 C 268,84 262,50 264,11"/>
-    <!-- Small droplet below tongue 5 -->
-    <path d="M 256,102 C 253,105 253,109 256,111 C 259,109 259,105 256,102 Z" fill="#000000"/>
-
-    <!-- V-fold 5 -->
-    <path d="M 280,18 L 286,34 L 294,19"/>
-
-    <!-- Drip Tongue 6: Melting teardrop lobe -->
-    <path d="M 306,10 C 308,38 302,68 315,74 C 326,68 322,38 324,10"/>
-
-    <!-- Edge looping wave connection -->
-    <path d="M 342,20 C 348,35 354,35 360,20"/>
+    <!-- Floating 'v' crease 5 -->
+    <path d="M 248,70 L 253,81 L 259,72"/>
   </g>
 </svg>

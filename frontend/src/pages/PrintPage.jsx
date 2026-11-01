@@ -169,9 +169,9 @@ const styles = `
     margin-bottom: 22px;
     display: inline-block;
     text-align: center;
-    /* Hand-sculpted flowy, melting clay drips & teardrop linework inside the letters */
-    background: url('/clay-drips-pattern.svg?v=2') repeat;
-    background-size: 320px 105px;
+    /* Matte cartoon clay with organic 'v' creases & wavy drip folds (matching MOON RAZE) */
+    background: url('/clay-drips-pattern.svg?v=3') repeat;
+    background-size: 280px 110px;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
