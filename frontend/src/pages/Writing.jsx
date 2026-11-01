@@ -69,49 +69,44 @@ const styles = `
   }
 
   .writing-brand-capsule {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     background: var(--void-black);
-    padding: 6px 16px 6px 8px;
+    padding: 6px 16px 6px 14px;
     border-radius: 9999px;
     border: 3px solid var(--void-black);
     box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+    text-decoration: none;
     user-select: none;
     white-space: nowrap;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
 
-  .writing-brand-icon-circle {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--slime-green);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--void-black);
-    overflow: hidden;
-    flex-shrink: 0;
+  .writing-brand-capsule:hover {
+    transform: translate(-1.5px, -1.5px);
+    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.5);
   }
 
-  .writing-brand-icon-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .writing-brand-title {
-    font-family: 'Titan One', cursive;
+  .writing-brand-name {
+    font-family: 'Archivo Black', sans-serif;
     font-size: 16px;
     letter-spacing: 0.5px;
     color: var(--pure-white);
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
   }
 
-  .writing-brand-title span {
-    color: var(--slime-green);
+  .writing-brand-badge {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    border: 2px solid var(--void-black);
+    box-shadow: 2px 2px 0px var(--void-black);
   }
 
   .writing-header-actions {
@@ -830,14 +825,10 @@ function Writing() {
 
         {/* TOP RETRO-COMIC HEADER BAR */}
         <header className="writing-header-bar">
-          <div className="writing-brand-capsule">
-            <div className="writing-brand-icon-circle">
-              <img src="/zombie-rip-pfp.jpg" alt="Zombie pfp" />
-            </div>
-            <span className="writing-brand-title">
-              ODYSSEY // <span>CAMPUS WRITING COMMAND</span>
-            </span>
-          </div>
+          <Link to="/student" className="writing-brand-capsule" title="Return to Campus Hub">
+            <span className="writing-brand-name">ODYSSEY</span>
+            <span className="writing-brand-badge">WRITING COMMAND</span>
+          </Link>
 
           <div className="writing-header-actions">
             <button
