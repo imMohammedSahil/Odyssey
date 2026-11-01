@@ -15,9 +15,6 @@ const styles = `
     --parchment: #F9F9F3;
     --grave-grey: #A8B3B8;
     --pure-white: #FFFFFF;
-    --dock-bg: #0D0D0D;
-    --chip-bg: #1A1F26;
-    --chip-border: #2B323D;
   }
 
   * {
@@ -39,7 +36,7 @@ const styles = `
     justify-content: space-between;
   }
 
-  /* 100% PURE VECTOR BACKDROP CANVAS */
+  /* 100% PURE VECTOR BACKDROP */
   .writing-bg-layer {
     position: fixed;
     inset: 0;
@@ -59,7 +56,7 @@ const styles = `
     display: block;
   }
 
-  /* TOP RETRO-COMIC HEADER BAR */
+  /* TOP HEADER BAR */
   .writing-header-bar {
     width: 100%;
     padding: 16px 28px 8px;
@@ -79,7 +76,7 @@ const styles = `
     padding: 6px 16px 6px 8px;
     border-radius: 9999px;
     border: 3px solid var(--void-black);
-    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.35);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
     user-select: none;
     white-space: nowrap;
   }
@@ -161,242 +158,232 @@ const styles = `
     background: #AEF37B;
   }
 
-  /* TOP SUB-HERO CALLOUT BANNER */
-  .writing-top-headline {
-    width: 100%;
+  /* GAME CENTER STAGE (HILL CLIMB RACING CAROUSEL STYLE) */
+  .writing-game-stage {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    justify-content: center;
     position: relative;
     z-index: 20;
-    pointer-events: none;
-    margin-top: 2px;
+    padding: 0 20px;
+    margin-top: -10px;
   }
 
-  .writing-badge-tag {
+  /* GAME HEADLINE */
+  .writing-game-headline {
+    text-align: center;
+    margin-bottom: 14px;
+    user-select: none;
+  }
+
+  .writing-game-category-tag {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
+    color: var(--slime-green);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  .writing-game-model-title {
+    font-family: 'Titan One', cursive;
+    font-size: 34px;
+    color: var(--pure-white);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    text-shadow: 4px 4px 0px var(--void-black), -2px -2px 0px var(--void-black), 2px -2px 0px var(--void-black), -2px 2px 0px var(--void-black);
+  }
+
+  /* CAROUSEL CONTAINER (PREV, ACTIVE, NEXT) */
+  .writing-carousel-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 1100px;
+  }
+
+  /* PREV / NEXT PEEK BOXES (HILL CLIMB STYLE) */
+  .writing-peek-box {
+    width: 180px;
+    height: 240px;
+    background: rgba(13, 13, 13, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 3px solid var(--void-black);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px var(--void-black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 12px;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: all 0.15s ease;
+    user-select: none;
+    flex-shrink: 0;
+  }
+
+  .writing-peek-box:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+    border-color: var(--slime-green);
+  }
+
+  .writing-peek-nav-arrow {
+    background: var(--slime-green);
+    color: var(--void-black);
+    border: 2px solid var(--void-black);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  .writing-peek-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    color: var(--parchment);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .writing-peek-price {
     background: var(--hazard-gold);
     color: var(--void-black);
     border: 2px solid var(--void-black);
-    border-radius: 9999px;
-    padding: 4px 14px;
+    border-radius: 6px;
+    padding: 4px 10px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.8px;
-    box-shadow: 3px 3px 0px var(--void-black);
-    margin-bottom: 4px;
+    font-size: 12px;
+    box-shadow: 2px 2px 0px var(--void-black);
   }
 
-  .writing-headline-h1 {
-    font-family: 'Titan One', cursive;
-    font-size: 28px;
-    color: var(--pure-white);
-    letter-spacing: 0.5px;
-    text-shadow: 3px 3px 0px var(--void-black), -1px -1px 0px var(--void-black), 1px -1px 0px var(--void-black), -1px 1px 0px var(--void-black);
-    line-height: 1.1;
-  }
-
-  /* UNOBSTRUCTED CENTER VIEWPORT */
-  .writing-center-stage {
-    flex: 1;
-    position: relative;
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  /* FLOATING BOTTOM WEAPON DOCK / TOOL BELT */
-  .writing-dock-container {
-    width: 100%;
-    position: relative;
-    z-index: 60;
-    background: var(--dock-bg);
-    border-top: 4px solid var(--slime-green);
-    box-shadow: 0px -8px 24px rgba(0, 0, 0, 0.6);
+  /* MAIN ACTIVE GLASSMORPHISM CARD */
+  .writing-active-glass-card {
+    width: 540px;
+    background: rgba(13, 13, 13, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 4px solid var(--void-black);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0px var(--void-black);
+    padding: 22px 24px;
     display: flex;
     flex-direction: column;
-  }
-
-  /* TELEMETRY TELE-STRIP */
-  .writing-dock-telemetry {
-    background: #14181F;
-    border-bottom: 2px solid #232A35;
-    padding: 6px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--grave-grey);
-    letter-spacing: 0.5px;
-    overflow-x: auto;
-    white-space: nowrap;
-    gap: 16px;
-  }
-
-  .writing-tele-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .writing-tele-tag {
-    color: var(--slime-green);
-    font-family: 'Archivo Black', sans-serif;
-  }
-
-  .writing-tele-val {
-    color: var(--parchment);
-  }
-
-  /* TOOL BELT ACTION BAR */
-  .writing-dock-main {
-    padding: 14px 28px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  /* ZONE 1: CLASSIFICATION TOGGLES */
-  .writing-dock-zone-cats {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    gap: 14px;
+    position: relative;
     flex-shrink: 0;
   }
 
-  .writing-dock-cat-btn {
-    background: #191E26;
-    color: var(--parchment);
-    border: 3px solid #2C3542;
-    border-radius: 8px;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    padding: 9px 14px;
-    cursor: pointer;
-    box-shadow: 3px 3px 0px var(--void-black);
-    transition: all 0.12s ease;
+  /* TELEMETRY TAG */
+  .writing-card-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
   }
 
-  .writing-dock-cat-btn:hover {
-    border-color: var(--slime-green);
-    color: var(--pure-white);
-    transform: translateY(-1px);
-  }
-
-  .writing-dock-cat-btn.active {
+  .writing-protocol-pill {
     background: var(--slime-green);
     color: var(--void-black);
-    border-color: var(--void-black);
-    box-shadow: 3px 3px 0px var(--void-black);
-  }
-
-  /* ZONE 2: WEAPON MODEL CAROUSEL CHIPS */
-  .writing-dock-zone-models {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    overflow-x: auto;
-    max-width: 520px;
-    padding-bottom: 2px;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .writing-dock-zone-models::-webkit-scrollbar {
-    display: none;
-  }
-
-  .writing-dock-model-chip {
-    background: #191E26;
-    color: var(--parchment);
-    border: 3px solid #2C3542;
-    border-radius: 8px;
-    padding: 7px 12px;
-    font-size: 11px;
-    font-weight: 800;
-    cursor: pointer;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    border: 2px solid var(--void-black);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.5px;
     box-shadow: 2px 2px 0px var(--void-black);
-    transition: all 0.12s ease;
-    flex-shrink: 0;
   }
 
-  .writing-dock-model-chip:hover {
-    border-color: var(--hazard-gold);
-    color: var(--pure-white);
-  }
-
-  .writing-dock-model-chip.active {
+  .writing-base-price-pill {
     background: var(--hazard-gold);
     color: var(--void-black);
-    border-color: var(--void-black);
-    box-shadow: 3px 3px 0px var(--void-black);
-  }
-
-  .writing-chip-price {
-    background: rgba(0, 0, 0, 0.35);
-    color: inherit;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 10px;
+    border: 2px solid var(--void-black);
+    border-radius: 6px;
+    padding: 4px 12px;
     font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    box-shadow: 2px 2px 0px var(--void-black);
   }
 
-  /* ZONE 3: SUB-CONFIGS (NIBS, INKS, GRADES) */
-  .writing-dock-zone-configs {
+  /* SPECIFICATION LORE */
+  .writing-spec-lore {
+    font-size: 13px;
+    color: var(--parchment);
+    line-height: 1.4;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-left: 3px solid var(--slime-green);
+  }
+
+  /* OPTIONS ROW (NIBS, INK COLORS, LEAD GRADES) */
+  .writing-options-box {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    flex-shrink: 0;
+    flex-wrap: wrap;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #232A35;
   }
 
-  .writing-sub-pill-group {
+  .writing-pill-group {
     display: flex;
     align-items: center;
-    background: #14181F;
+    gap: 4px;
+  }
+
+  .writing-option-pill-btn {
+    background: #191E26;
+    color: var(--parchment);
     border: 2px solid #2C3542;
     border-radius: 6px;
-    padding: 2px;
-    gap: 2px;
-  }
-
-  .writing-sub-pill-btn {
-    background: transparent;
-    color: var(--grave-grey);
-    border: none;
-    border-radius: 4px;
-    padding: 6px 10px;
-    font-size: 10px;
+    padding: 6px 12px;
     font-family: 'Archivo Black', sans-serif;
+    font-size: 11px;
     cursor: pointer;
     transition: all 0.1s ease;
   }
 
-  .writing-sub-pill-btn.active {
-    background: var(--seafoam);
-    color: var(--void-black);
+  .writing-option-pill-btn:hover {
+    border-color: var(--seafoam);
+    color: var(--pure-white);
   }
 
-  /* COLOR SWATCHES */
+  .writing-option-pill-btn.active {
+    background: var(--seafoam);
+    color: var(--void-black);
+    border-color: var(--void-black);
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
+
+  /* INK COLOR SWATCHES */
   .writing-ink-swatches {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
   }
 
   .writing-ink-dot {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #2C3542;
-    transition: transform 0.1s ease, border-color 0.1s ease;
-    position: relative;
+    border: 2px solid #333D4B;
+    transition: transform 0.1s ease;
   }
 
   .writing-ink-dot:hover {
@@ -409,16 +396,15 @@ const styles = `
     box-shadow: 0 0 0 2px var(--void-black);
   }
 
-  /* ZONE 4: COUNTER & ADD CTA */
-  .writing-dock-zone-actions {
+  /* ACTION DISPATCH ROW (STEPPER + CTA) */
+  .writing-action-dispatch-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-left: auto;
-    flex-shrink: 0;
+    gap: 14px;
+    margin-top: 2px;
   }
 
-  .writing-dock-stepper {
+  .writing-stepper-ctrl {
     display: flex;
     align-items: center;
     background: #14181F;
@@ -428,13 +414,13 @@ const styles = `
     box-shadow: 3px 3px 0px var(--void-black);
   }
 
-  .writing-dock-step-btn {
+  .writing-step-btn {
     background: #1F2530;
     color: var(--parchment);
     border: none;
-    width: 32px;
-    height: 38px;
-    font-size: 16px;
+    width: 36px;
+    height: 42px;
+    font-size: 18px;
     font-weight: 800;
     cursor: pointer;
     display: flex;
@@ -443,47 +429,91 @@ const styles = `
     transition: background 0.1s ease;
   }
 
-  .writing-dock-step-btn:hover {
+  .writing-step-btn:hover {
     background: #2C3545;
   }
 
-  .writing-dock-step-val {
-    min-width: 32px;
+  .writing-step-val {
+    min-width: 36px;
     text-align: center;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
+    font-size: 15px;
     color: var(--pure-white);
-    padding: 0 4px;
   }
 
-  .writing-dock-cta-btn {
+  .writing-game-cta-btn {
+    flex: 1;
     background: var(--brain-pink);
     color: var(--void-black);
     border: 3px solid var(--void-black);
     border-radius: 8px;
-    padding: 10px 22px;
+    padding: 12px 20px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     cursor: pointer;
     box-shadow: 4px 4px 0px var(--void-black);
     transition: transform 0.12s ease, box-shadow 0.12s ease;
-    white-space: nowrap;
+    text-align: center;
   }
 
-  .writing-dock-cta-btn:hover {
+  .writing-game-cta-btn:hover {
     transform: translate(-1.5px, -1.5px);
     box-shadow: 5px 5px 0px var(--void-black);
     background: #FF85B3;
   }
 
-  .writing-dock-cta-btn:active {
+  .writing-game-cta-btn:active {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0px var(--void-black);
   }
 
-  /* TOAST NOTIFICATION */
+  /* BOTTOM GAME NAVIGATION TABS (HILL CLIMB STYLE) */
+  .writing-bottom-tabs-dock {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px 24px;
+    position: relative;
+    z-index: 50;
+    flex-shrink: 0;
+  }
+
+  .writing-game-tab {
+    background: rgba(19, 24, 32, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--parchment);
+    border: 3px solid var(--void-black);
+    border-radius: 10px;
+    padding: 12px 32px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px var(--void-black);
+    transition: all 0.12s ease;
+    user-select: none;
+  }
+
+  .writing-game-tab:hover {
+    transform: translateY(-2px);
+    color: var(--pure-white);
+    border-color: var(--slime-green);
+  }
+
+  .writing-game-tab.active {
+    background: var(--slime-green);
+    color: var(--void-black);
+    border-color: var(--void-black);
+    box-shadow: 4px 4px 0px var(--void-black);
+    transform: translateY(-2px);
+  }
+
+  /* TOAST */
   .writing-toast {
     position: fixed;
     top: 24px;
@@ -513,12 +543,16 @@ const styles = `
     }
   }
 
-  @media (max-width: 1024px) {
-    .writing-dock-zone-models {
-      max-width: 100%;
+  @media (max-width: 960px) {
+    .writing-carousel-row {
+      flex-direction: column;
     }
-    .writing-dock-main {
-      gap: 12px;
+    .writing-peek-box {
+      display: none;
+    }
+    .writing-active-glass-card {
+      width: 100%;
+      max-width: 480px;
     }
   }
 `;
@@ -751,6 +785,12 @@ function Writing() {
 
   const categoryItems = CATALOG_ITEMS.filter((item) => item.category === category);
   const currentCatalog = CATALOG_ITEMS.find((item) => item.id === activeId) || categoryItems[0] || CATALOG_ITEMS[0];
+  const currentIndex = categoryItems.findIndex((item) => item.id === currentCatalog.id);
+
+  const prevIndex = (currentIndex - 1 + categoryItems.length) % categoryItems.length;
+  const nextIndex = (currentIndex + 1) % categoryItems.length;
+  const prevItem = categoryItems[prevIndex];
+  const nextItem = categoryItems[nextIndex];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -760,11 +800,15 @@ function Writing() {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         navigate(-1);
+      } else if (e.key === "ArrowLeft") {
+        setActiveId(prevItem.id);
+      } else if (e.key === "ArrowRight") {
+        setActiveId(nextItem.id);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [navigate]);
+  }, [navigate, prevItem, nextItem]);
 
   const showToast = (message) => {
     setToast({ show: true, message });
@@ -800,7 +844,7 @@ function Writing() {
     <>
       <style>{styles}</style>
       <div className="writing-page-shell">
-        {/* 100% PURE VECTOR BACKDROP CANVAS */}
+        {/* 100% PURE VECTOR BACKDROP */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
             src="/halloween-reference-landscape.svg?v=10"
@@ -809,7 +853,7 @@ function Writing() {
           />
         </div>
 
-        {/* TOP COMIC HEADER BAR */}
+        {/* TOP RETRO-COMIC HEADER BAR */}
         <header className="writing-header-bar">
           <div className="writing-brand-capsule">
             <div className="writing-brand-icon-circle">
@@ -835,169 +879,171 @@ function Writing() {
           </div>
         </header>
 
-        {/* SUB-HERO BANNER (COMPACT, NON-BLOCKING) */}
-        <div className="writing-top-headline">
-          <div className="writing-badge-tag">EXAM WEAPONRY // SURVIVAL LOADOUT</div>
-          <h1 className="writing-headline-h1">CAMPUS WRITING COMMAND</h1>
-        </div>
-
-        {/* UNOBSTRUCTED CENTER VIEWPORT */}
-        <div className="writing-center-stage" />
-
-        {/* FLOATING BOTTOM WEAPON DOCK / TOOL BELT */}
-        <footer className="writing-dock-container">
-          {/* TELEMETRY STRIP */}
-          <div className="writing-dock-telemetry">
-            <div className="writing-tele-item">
-              <span className="writing-tele-tag">DEPLOYMENT:</span>
-              <span className="writing-tele-val">{currentCatalog.protocol}</span>
+        {/* HILL CLIMB RACING STYLE GAME CAROUSEL STAGE */}
+        <main className="writing-game-stage">
+          {/* HEADLINE */}
+          <div className="writing-game-headline">
+            <div className="writing-game-category-tag">
+              {category.toUpperCase()} // ARSENAL SELECTION
             </div>
-            <div className="writing-tele-item">
-              <span className="writing-tele-tag">SPECIFICATION:</span>
-              <span className="writing-tele-val">{currentCatalog.lore1}</span>
-            </div>
-            <div className="writing-tele-item">
-              <span className="writing-tele-tag">BASE UNIT:</span>
-              <span className="writing-tele-val">₹{currentCatalog.basePrice}</span>
-            </div>
+            <h1 className="writing-game-model-title">{currentCatalog.modelName}</h1>
           </div>
 
-          {/* MAIN DOCK INTERFACE */}
-          <div className="writing-dock-main">
-            {/* ZONE 1: CATEGORIES */}
-            <div className="writing-dock-zone-cats">
-              <button
-                type="button"
-                className={`writing-dock-cat-btn ${category === "pen" ? "active" : ""}`}
-                onClick={() => handleCategoryChange("pen")}
-              >
-                PENS
-              </button>
-              <button
-                type="button"
-                className={`writing-dock-cat-btn ${category === "pencil" ? "active" : ""}`}
-                onClick={() => handleCategoryChange("pencil")}
-              >
-                PENCILS
-              </button>
-              <button
-                type="button"
-                className={`writing-dock-cat-btn ${category === "mechanical" ? "active" : ""}`}
-                onClick={() => handleCategoryChange("mechanical")}
-              >
-                MECHANICAL
-              </button>
+          {/* 3-BOX CAROUSEL ROW */}
+          <div className="writing-carousel-row">
+            {/* LEFT PREVIEW BOX */}
+            <div
+              className="writing-peek-box"
+              onClick={() => setActiveId(prevItem.id)}
+              title={`Previous: ${prevItem.modelName}`}
+            >
+              <div className="writing-peek-nav-arrow">←</div>
+              <div className="writing-peek-name">{prevItem.modelName}</div>
+              <div className="writing-peek-price">₹{prevItem.basePrice}</div>
             </div>
 
-            {/* ZONE 2: MODEL QUICK-RACK */}
-            <div className="writing-dock-zone-models">
-              {categoryItems.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`writing-dock-model-chip ${currentCatalog.id === item.id ? "active" : ""}`}
-                  onClick={() => setActiveId(item.id)}
-                >
-                  <span>{item.modelName}</span>
-                  <span className="writing-chip-price">₹{item.basePrice}</span>
-                </button>
-              ))}
-            </div>
+            {/* CENTER ACTIVE GLASSMORPHISM SHOWCASE */}
+            <div className="writing-active-glass-card">
+              {/* TELEMETRY ROW */}
+              <div className="writing-card-badge-row">
+                <span className="writing-protocol-pill">{currentCatalog.protocol}</span>
+                <span className="writing-base-price-pill">BASE UNIT: ₹{currentCatalog.basePrice}</span>
+              </div>
 
-            {/* ZONE 3: SUB-CONFIGS (NIBS, INKS, GRADES) */}
-            <div className="writing-dock-zone-configs">
-              {category === "pen" && (
-                <>
-                  <div className="writing-sub-pill-group">
-                    {["Gel", "Ball"].map((type) => (
+              {/* SPECIFICATION LORE */}
+              <p className="writing-spec-lore">{currentCatalog.lore1}</p>
+
+              {/* DYNAMIC SUB-OPTIONS */}
+              <div className="writing-options-box">
+                {category === "pen" && (
+                  <>
+                    <div className="writing-pill-group">
+                      {["Gel", "Ball"].map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          className={`writing-option-pill-btn ${penType === type ? "active" : ""}`}
+                          onClick={() => setPenType(type)}
+                        >
+                          {type.toUpperCase()}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="writing-ink-swatches">
+                      {INK_COLORS.map((c) => (
+                        <div
+                          key={c.name}
+                          title={c.name}
+                          className={`writing-ink-dot ${color === c.name ? "active" : ""}`}
+                          style={{ backgroundColor: c.hex }}
+                          onClick={() => setColor(c.name)}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {category === "pencil" && (
+                  <div className="writing-pill-group">
+                    {["HB", "2B", "Normal"].map((g) => (
                       <button
-                        key={type}
+                        key={g}
                         type="button"
-                        className={`writing-sub-pill-btn ${penType === type ? "active" : ""}`}
-                        onClick={() => setPenType(type)}
+                        className={`writing-option-pill-btn ${pencilType === g ? "active" : ""}`}
+                        onClick={() => setPencilType(g)}
                       >
-                        {type.toUpperCase()}
+                        {g.toUpperCase()}
                       </button>
                     ))}
                   </div>
+                )}
 
-                  <div className="writing-ink-swatches">
-                    {INK_COLORS.map((c) => (
-                      <div
-                        key={c.name}
-                        title={c.name}
-                        className={`writing-ink-dot ${color === c.name ? "active" : ""}`}
-                        style={{ backgroundColor: c.hex }}
-                        onClick={() => setColor(c.name)}
-                      />
+                {category === "mechanical" && (
+                  <div className="writing-pill-group">
+                    {["0.5 mm", "0.7 mm"].map((size) => (
+                      <button
+                        key={size}
+                        type="button"
+                        className={`writing-option-pill-btn ${mechSize === size ? "active" : ""}`}
+                        onClick={() => setMechSize(size)}
+                      >
+                        {size}
+                      </button>
                     ))}
                   </div>
-                </>
-              )}
-
-              {category === "pencil" && (
-                <div className="writing-sub-pill-group">
-                  {["HB", "2B", "Normal"].map((g) => (
-                    <button
-                      key={g}
-                      type="button"
-                      className={`writing-sub-pill-btn ${pencilType === g ? "active" : ""}`}
-                      onClick={() => setPencilType(g)}
-                    >
-                      {g.toUpperCase()}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {category === "mechanical" && (
-                <div className="writing-sub-pill-group">
-                  {["0.5 mm", "0.7 mm"].map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      className={`writing-sub-pill-btn ${mechSize === size ? "active" : ""}`}
-                      onClick={() => setMechSize(size)}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* ZONE 4: COUNTER & ADD CTA */}
-            <div className="writing-dock-zone-actions">
-              <div className="writing-dock-stepper">
-                <button
-                  type="button"
-                  className="writing-dock-step-btn"
-                  onClick={() => setQty((prev) => Math.max(1, prev - 1))}
-                  aria-label="Decrease quantity"
-                >
-                  −
-                </button>
-                <span className="writing-dock-step-val">{qty}</span>
-                <button
-                  type="button"
-                  className="writing-dock-step-btn"
-                  onClick={() => setQty((prev) => prev + 1)}
-                  aria-label="Increase quantity"
-                >
-                  +
-                </button>
+                )}
               </div>
 
-              <button
-                type="button"
-                className="writing-dock-cta-btn"
-                onClick={handleAdd}
-              >
-                ADD TO LOADOUT • ₹{grandTotal}
-              </button>
+              {/* DISPATCH ACTION BAR */}
+              <div className="writing-action-dispatch-row">
+                <div className="writing-stepper-ctrl">
+                  <button
+                    type="button"
+                    className="writing-step-btn"
+                    onClick={() => setQty((prev) => Math.max(1, prev - 1))}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <span className="writing-step-val">{qty}</span>
+                  <button
+                    type="button"
+                    className="writing-step-btn"
+                    onClick={() => setQty((prev) => prev + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  className="writing-game-cta-btn"
+                  onClick={handleAdd}
+                >
+                  ADD TO LOADOUT • ₹{grandTotal}
+                </button>
+              </div>
+            </div>
+
+            {/* RIGHT PREVIEW BOX */}
+            <div
+              className="writing-peek-box"
+              onClick={() => setActiveId(nextItem.id)}
+              title={`Next: ${nextItem.modelName}`}
+            >
+              <div className="writing-peek-nav-arrow">→</div>
+              <div className="writing-peek-name">{nextItem.modelName}</div>
+              <div className="writing-peek-price">₹{nextItem.basePrice}</div>
             </div>
           </div>
-        </footer>
+        </main>
+
+        {/* BOTTOM GAME NAVIGATION TABS (HILL CLIMB TABS) */}
+        <nav className="writing-bottom-tabs-dock" aria-label="Tool Categories">
+          <button
+            type="button"
+            className={`writing-game-tab ${category === "pen" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("pen")}
+          >
+            PENS
+          </button>
+          <button
+            type="button"
+            className={`writing-game-tab ${category === "pencil" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("pencil")}
+          >
+            PENCILS
+          </button>
+          <button
+            type="button"
+            className={`writing-game-tab ${category === "mechanical" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("mechanical")}
+          >
+            MECHANICAL
+          </button>
+        </nav>
 
         {/* TOAST POPUP */}
         {toast.show && (
