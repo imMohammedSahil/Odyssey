@@ -166,22 +166,24 @@ const styles = `
     align-items: baseline;
     justify-content: space-between;
     gap: 10px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 6px;
+    border-bottom: 2px solid rgba(157, 232, 105, 0.25);
+    padding-bottom: 8px;
   }
 
   .writing-card-model-name {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 20px;
+    font-size: 22px;
     color: var(--pure-white);
     letter-spacing: 0.5px;
+    text-shadow: 2px 2px 0px var(--void-black);
   }
 
   .writing-card-subtitle {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--hazard-gold);
-    letter-spacing: 0.3px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--slime-green);
+    letter-spacing: 0.4px;
+    text-shadow: 1px 1px 0px var(--void-black);
   }
 
   /* CAROUSEL CONTAINER (PREV, ACTIVE, NEXT) */
@@ -228,11 +230,11 @@ const styles = `
     box-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* MAIN ACTIVE GLASSMORPHISM CARD */
+  /* MAIN ACTIVE GLASSMORPHISM CARD (HARMONIZED WITH SEAFOAM & COMIC LIME BG) */
   .writing-active-glass-card {
     width: 650px;
     max-width: 92vw;
-    background: rgba(13, 13, 13, 0.74);
+    background: rgba(10, 24, 18, 0.82);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border: 4px solid var(--void-black);
@@ -246,7 +248,7 @@ const styles = `
     flex-shrink: 0;
   }
 
-  /* TELEMETRY TAG */
+  /* TELEMETRY TAGS */
   .writing-card-badge-row {
     display: flex;
     align-items: center;
@@ -259,19 +261,19 @@ const styles = `
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 4px 10px;
+    padding: 5px 12px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.5px;
     box-shadow: 2px 2px 0px var(--void-black);
   }
 
   .writing-base-price-pill {
-    background: var(--hazard-gold);
+    background: #CCFB9A;
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 4px 12px;
+    padding: 5px 14px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 13px;
     box-shadow: 2px 2px 0px var(--void-black);
@@ -281,11 +283,14 @@ const styles = `
   .writing-spec-lore {
     font-size: 13px;
     color: var(--parchment);
-    line-height: 1.4;
-    background: rgba(0, 0, 0, 0.35);
-    padding: 10px 14px;
+    line-height: 1.5;
+    background: rgba(1, 158, 112, 0.18);
+    padding: 12px 16px;
     border-radius: 8px;
-    border-left: 3px solid var(--slime-green);
+    border-left: 4px solid var(--slime-green);
+    border-top: 1px solid rgba(157, 232, 105, 0.2);
+    border-right: 1px solid rgba(157, 232, 105, 0.2);
+    border-bottom: 1px solid rgba(157, 232, 105, 0.2);
   }
 
   /* OPTIONS ROW (NIBS, INK COLORS, LEAD GRADES) */
@@ -295,24 +300,24 @@ const styles = `
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 10px 14px;
+    background: rgba(6, 17, 13, 0.65);
+    padding: 10px 16px;
     border-radius: 10px;
-    border: 2px solid #232A35;
+    border: 2px solid rgba(69, 184, 158, 0.35);
   }
 
   .writing-pill-group {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
   }
 
   .writing-option-pill-btn {
-    background: #191E26;
+    background: rgba(13, 13, 13, 0.6);
     color: var(--parchment);
-    border: 2px solid #2C3542;
+    border: 2px solid rgba(69, 184, 158, 0.3);
     border-radius: 6px;
-    padding: 6px 12px;
+    padding: 7px 14px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
     cursor: pointer;
@@ -320,12 +325,12 @@ const styles = `
   }
 
   .writing-option-pill-btn:hover {
-    border-color: var(--seafoam);
+    border-color: var(--slime-green);
     color: var(--pure-white);
   }
 
   .writing-option-pill-btn.active {
-    background: var(--seafoam);
+    background: var(--slime-green);
     color: var(--void-black);
     border-color: var(--void-black);
     box-shadow: 2px 2px 0px var(--void-black);
@@ -343,7 +348,7 @@ const styles = `
     height: 24px;
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid #333D4B;
+    border: 2px solid rgba(69, 184, 158, 0.4);
     transition: transform 0.1s ease;
   }
 
@@ -362,13 +367,13 @@ const styles = `
     display: flex;
     align-items: center;
     gap: 14px;
-    margin-top: 2px;
+    margin-top: 4px;
   }
 
   .writing-stepper-ctrl {
     display: flex;
     align-items: center;
-    background: #14181F;
+    background: rgba(6, 17, 13, 0.85);
     border: 3px solid var(--void-black);
     border-radius: 8px;
     overflow: hidden;
@@ -376,26 +381,27 @@ const styles = `
   }
 
   .writing-step-btn {
-    background: #1F2530;
-    color: var(--parchment);
+    background: #14281E;
+    color: var(--slime-green);
     border: none;
-    width: 36px;
-    height: 42px;
+    width: 38px;
+    height: 44px;
     font-size: 18px;
     font-weight: 800;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.1s ease;
+    transition: background 0.1s ease, color 0.1s ease;
   }
 
   .writing-step-btn:hover {
-    background: #2C3545;
+    background: var(--slime-green);
+    color: var(--void-black);
   }
 
   .writing-step-val {
-    min-width: 36px;
+    min-width: 38px;
     text-align: center;
     font-family: 'Archivo Black', sans-serif;
     font-size: 15px;
@@ -404,28 +410,31 @@ const styles = `
 
   .writing-game-cta-btn {
     flex: 1;
-    background: var(--brain-pink);
+    background: var(--slime-green);
     color: var(--void-black);
     border: 3px solid var(--void-black);
     border-radius: 8px;
-    padding: 12px 20px;
+    padding: 13px 20px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     cursor: pointer;
     box-shadow: 4px 4px 0px var(--void-black);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
     text-align: center;
   }
 
   .writing-game-cta-btn:hover {
     transform: translate(-1.5px, -1.5px);
     box-shadow: 5px 5px 0px var(--void-black);
-    background: #FF85B3;
+    background: #AEF37B;
   }
 
   .writing-game-cta-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--void-black);
+  }
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0px var(--void-black);
   }
