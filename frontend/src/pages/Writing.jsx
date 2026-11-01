@@ -54,7 +54,7 @@ const styles = `
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
-    background-color: #B86E00;
+    background-color: #019E70;
   }
 
   .writing-bg-vector {
@@ -1657,7 +1657,7 @@ function Writing() {
         {/* 100% PURE VECTOR BACKDROP: EXACT LANDSCAPE MAPPING */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/halloween-reference-landscape.svg?v=5"
+            src="/halloween-reference-landscape.svg?v=6"
             alt=""
             className="writing-bg-vector"
           />
