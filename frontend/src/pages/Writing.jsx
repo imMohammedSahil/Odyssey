@@ -303,57 +303,35 @@ const styles = `
     text-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* TIER 2: AUTHENTIC COMIC MEMO (LUMINOUS PALE MOON LIME) */
+  /* TIER 2: SUBTLE GLASS PRODUCT INFO BOX */
   .writing-card-dossier-box {
-    background: #CCFB9A;
-    color: var(--void-black);
-    border: 3.5px solid var(--void-black);
+    background: rgba(10, 26, 19, 0.52);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(157, 232, 105, 0.35);
     border-radius: 10px;
-    box-shadow: 4px 4px 0px var(--void-black);
+    box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    position: relative;
-  }
-
-  .writing-dossier-tag-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .writing-dossier-memo-badge {
-    background: var(--void-black);
-    color: var(--slime-green);
-    border: 2px solid var(--void-black);
-    border-radius: 4px;
-    padding: 2px 8px;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+    gap: 6px;
   }
 
   .writing-dossier-lore {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13.5px;
-    font-weight: 700;
-    color: var(--void-black);
-    line-height: 1.45;
+    font-weight: 600;
+    color: var(--parchment);
+    line-height: 1.5;
   }
 
   .writing-dossier-tagline {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    color: var(--void-black);
-    letter-spacing: 0.4px;
-    background: #B2F069;
-    border: 2px solid var(--void-black);
-    border-radius: 6px;
-    padding: 5px 10px;
-    display: inline-block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--slime-green);
+    letter-spacing: 0.2px;
+    line-height: 1.4;
   }
 
   /* TIER 3: STRUCTURED CONFIGURATIONS */
@@ -991,27 +969,20 @@ function Writing() {
 
             {/* CENTER ACTIVE GLASSMORPHISM SHOWCASE */}
             <div className="writing-active-glass-card">
-              {/* TIER 1: DOSSIER META & TITLE */}
-              <div className="writing-card-meta-top">
-                <span className="writing-protocol-tag">{currentCatalog.protocol}</span>
-                <span className="writing-unit-price-badge">₹{currentCatalog.basePrice} / UNIT</span>
-              </div>
-
+              {/* TIER 1: PRODUCT TITLE & PRICE */}
               <div className="writing-card-title-block">
-                <h2 className="writing-card-model-name">{currentCatalog.modelName}</h2>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
+                  <h2 className="writing-card-model-name">{currentCatalog.modelName}</h2>
+                  <span className="writing-unit-price-badge">₹{currentCatalog.basePrice} / UNIT</span>
+                </div>
                 <span className="writing-card-subtitle">{currentCatalog.subtitle}</span>
               </div>
 
-              {/* TIER 2: TACTICAL SPECIFICATION BRIEF (NEO-BRUTALIST COMIC MEMO) */}
+              {/* TIER 2: SUBTLE GLASS PRODUCT INFO */}
               <div className="writing-card-dossier-box">
-                <div className="writing-dossier-tag-row">
-                  <span className="writing-dossier-memo-badge">SURVIVOR MEMO // CLASSIFIED</span>
-                </div>
                 <p className="writing-dossier-lore">{currentCatalog.lore1}</p>
                 {currentCatalog.lore2 && (
-                  <div className="writing-dossier-tagline">
-                    DEPLOYMENT // {currentCatalog.lore2}
-                  </div>
+                  <p className="writing-dossier-tagline">{currentCatalog.lore2}</p>
                 )}
               </div>
 
