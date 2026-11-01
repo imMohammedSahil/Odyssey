@@ -60,8 +60,8 @@ const styles = `
   .writing-bg-vector {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center bottom;
+    object-fit: contain;
+    object-position: center top;
     display: block;
   }
 
