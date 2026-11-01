@@ -1,0 +1,397 @@
+<svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Sky Gradient -->
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="40%" y2="100%">
+      <stop offset="0%" stop-color="#2D114D" />
+      <stop offset="35%" stop-color="#461E76" />
+      <stop offset="70%" stop-color="#672F9B" />
+      <stop offset="100%" stop-color="#36135C" />
+    </linearGradient>
+
+    <!-- Deep Moon Glow -->
+    <radialGradient id="moonAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="35%" stop-color="#F2DEFF" />
+      <stop offset="60%" stop-color="#CE9FF5" />
+      <stop offset="85%" stop-color="#8E46CE" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#551D87" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Moon Core -->
+    <radialGradient id="moonBody" cx="45%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="50%" stop-color="#FAF0FF" />
+      <stop offset="80%" stop-color="#E7C7FE" />
+      <stop offset="100%" stop-color="#CCA2F2" />
+    </radialGradient>
+
+    <!-- Window Light -->
+    <linearGradient id="windowGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF385" />
+      <stop offset="40%" stop-color="#FFA812" />
+      <stop offset="100%" stop-color="#E65100" />
+    </linearGradient>
+
+    <!-- Pumpkin Glow -->
+    <radialGradient id="pumpkinFaceGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF899" />
+      <stop offset="60%" stop-color="#FF9E00" />
+      <stop offset="100%" stop-color="#CC4400" />
+    </radialGradient>
+
+    <!-- Pumpkin Shell Gradient -->
+    <linearGradient id="pumpkinShell" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF9D1C" />
+      <stop offset="70%" stop-color="#D94E00" />
+      <stop offset="100%" stop-color="#801C00" />
+    </linearGradient>
+
+    <!-- Ground Gradient -->
+    <linearGradient id="groundGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#140624" />
+      <stop offset="60%" stop-color="#0D0317" />
+      <stop offset="100%" stop-color="#05010A" />
+    </linearGradient>
+
+    <!-- Path Gradient -->
+    <linearGradient id="pathGrad" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" stop-color="#3C1A5C" />
+      <stop offset="50%" stop-color="#2D1149" />
+      <stop offset="100%" stop-color="#19062E" />
+    </linearGradient>
+  </defs>
+
+  <!-- 1. BASE SKY -->
+  <rect width="1920" height="1080" fill="url(#skyGrad)" />
+
+  <!-- 2. SKY SWIRLS & ATMOSPHERIC WAVES -->
+  <!-- Sweeping upper wind trails -->
+  <path d="M-50,140 Q 280,60 620,180 T 1300,110 Q 1650,40 1980,180 L 1980,-20 L -50,-20 Z" fill="#240A42" opacity="0.6" />
+  <path d="M-50,220 C 220,130 510,260 840,160 C 1120,70 1480,160 1980,80 L 1980,0 L -50,0 Z" fill="#38155E" opacity="0.45" />
+
+  <!-- Concentric Sky Glow Rings radiating from Moon (Moon center ~ 1400, 310) -->
+  <circle cx="1400" cy="310" r="620" fill="#6C2FA3" opacity="0.25" />
+  <circle cx="1400" cy="310" r="500" fill="#8038C0" opacity="0.32" />
+  <circle cx="1400" cy="310" r="390" fill="#9946E2" opacity="0.38" />
+  <circle cx="1400" cy="310" r="300" fill="#B465FA" opacity="0.42" />
+
+  <!-- Sky Swirl Flow Shapes (Halloween wind currents) -->
+  <path d="M 600,0 C 720,120 780,260 700,380 C 620,500 480,560 380,620 L 320,600 C 440,520 540,460 600,360 C 660,260 620,130 520,0 Z" fill="#582186" opacity="0.5" />
+  <path d="M 850,20 C 1020,160 1060,340 980,480 C 920,580 810,640 730,700 L 700,670 C 770,610 850,560 900,470 C 960,350 930,200 790,20 Z" fill="#521B80" opacity="0.4" />
+  <path d="M 1080,40 C 1220,120 1260,240 1220,320 C 1180,400 1100,440 1020,480 L 1000,440 C 1070,410 1120,370 1150,310 C 1180,240 1150,150 1040,40 Z" fill="#6A279F" opacity="0.4" />
+
+  <!-- 3. LUMINOUS MOON -->
+  <!-- Outer Aura Glow -->
+  <circle cx="1400" cy="310" r="260" fill="url(#moonAura)" />
+  <!-- Main Moon Disc -->
+  <circle cx="1400" cy="310" r="200" fill="url(#moonBody)" stroke="#0D0D0D" stroke-width="4.5" />
+  <!-- Moon Crater Whispers (clean stylized vector arcs) -->
+  <path d="M 1320,220 C 1370,180 1440,210 1430,260 C 1420,310 1340,300 1320,270 C 1300,240 1300,230 1320,220 Z" fill="#C596EB" opacity="0.45" />
+  <path d="M 1480,240 C 1530,250 1550,310 1510,340 C 1470,370 1440,320 1460,280 C 1470,250 1460,240 1480,240 Z" fill="#C596EB" opacity="0.4" />
+  <path d="M 1360,360 C 1410,340 1450,390 1420,440 C 1390,470 1330,440 1340,390 Z" fill="#C596EB" opacity="0.4" />
+  <circle cx="1275" cy="330" r="32" fill="#BE86E8" opacity="0.35" />
+  <circle cx="1485" cy="405" r="24" fill="#BE86E8" opacity="0.35" />
+
+  <!-- Clouds crossing moon / upper sky -->
+  <path d="M 1040,110 C 1140,80 1280,120 1380,80 C 1460,50 1560,90 1680,60 C 1600,90 1520,120 1420,110 C 1320,140 1200,120 1040,110 Z" fill="#401467" opacity="0.75" />
+  <path d="M 1490,130 C 1580,100 1720,140 1850,90 C 1760,130 1670,160 1570,145 Z" fill="#2E0C4C" opacity="0.8" />
+  <path d="M 1120,410 C 1240,380 1380,450 1500,400 C 1620,350 1740,430 1880,380 C 1720,450 1560,420 1450,470 C 1340,480 1220,450 1120,410 Z" fill="#582186" opacity="0.65" />
+  <path d="M 1250,470 C 1360,440 1490,520 1620,480 C 1500,540 1380,510 1250,470 Z" fill="#3D1361" opacity="0.7" />
+
+  <!-- 4. DISTANT HILLS & HORIZON RIDGE -->
+  <path d="M -20,780 Q 320,680 720,760 T 1480,790 Q 1750,750 1940,800 L 1940,1100 L -20,1100 Z" fill="#220B3B" />
+  <path d="M 860,740 Q 1180,670 1520,720 T 1940,710 L 1940,860 L 860,860 Z" fill="#1C0830" opacity="0.85" />
+
+  <!-- 5. MIDGROUND FENCE (Right of hill, spans x: 1240 to 1840, y: 740 to 860) -->
+  <g id="spooky-fence" stroke="#0D0D0D" stroke-width="4" stroke-linecap="round" fill="none">
+    <!-- Horizontal rails -->
+    <line x1="1240" y1="785" x2="1820" y2="785" />
+    <line x1="1240" y1="835" x2="1820" y2="835" />
+    <!-- Vertical fence pickets with spearheads -->
+    <!-- picket loop -->
+    <path d="M 1250,860 L 1250,755 L 1255,740 L 1260,755 L 1260,860" fill="#0D0D0D" />
+    <path d="M 1300,860 L 1300,750 L 1305,735 L 1310,750 L 1310,860" fill="#0D0D0D" />
+    <path d="M 1350,860 L 1350,755 L 1355,740 L 1360,755 L 1360,860" fill="#0D0D0D" />
+    <path d="M 1400,860 L 1400,745 L 1405,730 L 1410,745 L 1410,860" fill="#0D0D0D" />
+    <path d="M 1450,860 L 1450,755 L 1455,740 L 1460,755 L 1460,860" fill="#0D0D0D" />
+    <path d="M 1500,860 L 1500,750 L 1505,735 L 1510,750 L 1510,860" fill="#0D0D0D" />
+    <path d="M 1550,860 L 1550,755 L 1555,740 L 1560,755 L 1560,860" fill="#0D0D0D" />
+    <path d="M 1600,860 L 1600,745 L 1605,730 L 1610,745 L 1610,860" fill="#0D0D0D" />
+    <path d="M 1650,860 L 1650,755 L 1655,740 L 1660,755 L 1660,860" fill="#0D0D0D" />
+    <path d="M 1700,860 L 1700,750 L 1705,735 L 1710,750 L 1710,860" fill="#0D0D0D" />
+    <path d="M 1750,860 L 1750,755 L 1755,740 L 1760,755 L 1760,860" fill="#0D0D0D" />
+    <path d="M 1800,860 L 1800,745 L 1805,730 L 1810,745 L 1810,860" fill="#0D0D0D" />
+  </g>
+
+  <!-- 6. HIGH CLIFF / HILL ON LEFT WITH WINDING PATH -->
+  <!-- Left cliff silhouette -->
+  <path d="M -30,680 Q 240,660 520,680 Q 680,690 840,780 Q 980,850 1160,870 Q 1540,880 1950,840 L 1950,1110 L -30,1110 Z" fill="url(#groundGrad)" stroke="#0D0D0D" stroke-width="4.5" />
+
+  <!-- Winding Path from House downwards -->
+  <path d="M 540,710 Q 580,740 640,760 Q 720,780 780,800 Q 860,820 890,850 Q 910,880 840,900 Q 750,920 680,950 Q 590,990 620,1030 Q 640,1060 740,1080 L 1100,1080 Q 1020,1020 980,980 Q 940,940 990,900 Q 1060,850 1020,810 Q 960,770 850,750 Q 740,730 680,710 Z" fill="url(#pathGrad)" opacity="0.85" />
+
+  <!-- Cliff edge highlights & crags (sharp geometric facets) -->
+  <polygon points="520,680 580,730 660,745 610,705" fill="#2A0F45" />
+  <polygon points="760,760 840,780 880,830 810,800" fill="#250B3D" />
+  <polygon points="980,850 1060,860 1140,890 1040,880" fill="#1F0832" />
+
+  <!-- 7. GOTHIC HAUNTED MANSION (Left Hill, x: 80 to 520, y: 200 to 680) -->
+  <!-- House Base & Body Silhouette -->
+  <g id="mansion" fill="#0D0D0D" stroke="#0D0D0D" stroke-linejoin="round">
+    <!-- Chimney Left -->
+    <rect x="140" y="320" width="34" height="90" stroke-width="4" />
+    <polygon points="132,320 182,320 176,332 138,332" />
+
+    <!-- Main House Center Block -->
+    <rect x="120" y="410" width="320" height="270" stroke-width="4" />
+
+    <!-- Steeple Tower Left -->
+    <rect x="190" y="340" width="130" height="120" stroke-width="4" />
+    <!-- Sharp Tower Spire Roof -->
+    <polygon points="255,200 175,355 335,355" stroke-width="5" />
+    <!-- Spire tip finial / cross -->
+    <line x1="255" y1="185" x2="255" y2="205" stroke-width="4" />
+    <line x1="247" y1="193" x2="263" y2="193" stroke-width="4" />
+
+    <!-- Main Pitched Roof -->
+    <polygon points="100,420 280,330 460,420 450,440 110,440" stroke-width="4" />
+
+    <!-- Right Annex / Wing -->
+    <rect x="420" y="490" width="80" height="190" stroke-width="4" />
+    <polygon points="410,495 460,440 510,495" stroke-width="4" />
+
+    <!-- Eaves, Overhangs & Shingles (sharp comic facets) -->
+    <polygon points="120,430 255,340 260,346 130,436" fill="#1C0D2E" stroke="none" />
+    <polygon points="270,348 440,432 432,438 270,356" fill="#1C0D2E" stroke="none" />
+
+    <!-- GLOWING WINDOWS (Warm Amber Glow with Void Black Mullions) -->
+    <!-- Tower Arched Window -->
+    <g transform="translate(230, 375)">
+      <path d="M 0,45 L 0,22 Q 25,-8 50,22 L 50,45 Z" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4.5" />
+      <!-- Window mullions -->
+      <line x1="25" y1="3" x2="25" y2="45" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="50" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+
+    <!-- Second Floor Left Windows (2 windows) -->
+    <g transform="translate(160, 460)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+    <g transform="translate(225, 460)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+
+    <!-- Second Floor Right Windows (2 windows) -->
+    <g transform="translate(305, 460)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+    <g transform="translate(370, 460)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+
+    <!-- First Floor Left Windows (2 windows) -->
+    <g transform="translate(160, 545)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+    <g transform="translate(225, 545)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+
+    <!-- First Floor Right Windows (2 windows) -->
+    <g transform="translate(305, 545)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+    <g transform="translate(370, 545)">
+      <rect x="0" y="0" width="38" height="52" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="19" y1="0" x2="19" y2="52" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="26" x2="38" y2="26" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+
+    <!-- Right Wing Window -->
+    <g transform="translate(440, 520)">
+      <rect x="0" y="0" width="34" height="48" rx="3" fill="url(#windowGlow)" stroke="#0D0D0D" stroke-width="4" />
+      <line x1="17" y1="0" x2="17" y2="48" stroke="#0D0D0D" stroke-width="3.5" />
+      <line x1="0" y1="24" x2="34" y2="24" stroke="#0D0D0D" stroke-width="3.5" />
+    </g>
+  </g>
+
+  <!-- 8. SPOOKY GNARLED TREES -->
+  <!-- Tree 1: Hill tree beside the house (x: 520 to 760, y: 390 to 720) -->
+  <g fill="#0D0D0D" stroke="#0D0D0D" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Trunk -->
+    <path d="M 580,720 Q 610,610 600,530 Q 590,480 620,440 L 635,445 Q 615,500 625,580 Q 635,660 670,720 Z" />
+    <!-- Main Left Branch -->
+    <path d="M 605,510 Q 560,470 530,440 Q 510,410 480,390 L 485,385 Q 520,410 545,435 Q 575,465 615,495 Z" />
+    <path d="M 545,435 Q 550,390 535,360 L 542,358 Q 560,390 550,430 Z" />
+    <path d="M 505,425 Q 470,430 450,420 L 452,414 Q 475,422 510,418 Z" />
+    <!-- Main Right Branch -->
+    <path d="M 618,460 Q 670,420 710,400 Q 750,380 770,350 L 775,355 Q 750,390 705,410 Q 660,435 625,480 Z" />
+    <path d="M 670,425 Q 685,380 720,360 L 725,365 Q 695,385 680,425 Z" />
+    <path d="M 710,400 Q 730,420 760,425 L 758,432 Q 725,425 705,405 Z" />
+    <!-- Center Creepy Twigs -->
+    <path d="M 620,440 Q 635,380 625,340 L 632,338 Q 645,380 628,442 Z" />
+    <path d="M 630,375 Q 660,345 680,335 L 684,340 Q 662,350 635,380 Z" />
+  </g>
+
+  <!-- Tree 2: GIANT TWISTED TREE ON RIGHT (Reaching high into the moon and sky) -->
+  <g fill="#0D0D0D" stroke="#0D0D0D" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Massive Trunk Base at x: 1700 to 1920, y: 550 to 1080 -->
+    <path d="M 1720,1080 Q 1700,920 1730,780 Q 1750,680 1710,580 Q 1670,480 1685,380 L 1725,390 Q 1715,480 1750,560 Q 1795,660 1780,800 Q 1770,920 1880,1080 Z" />
+
+    <!-- Huge Left Branch reaching across the Moon Face -->
+    <path d="M 1725,590 Q 1630,550 1520,520 Q 1380,480 1280,380 Q 1200,300 1150,180 L 1165,175 Q 1215,290 1295,370 Q 1395,465 1530,505 Q 1640,535 1735,570 Z" />
+
+    <!-- Branch Splinters across Moon -->
+    <path d="M 1390,470 Q 1380,390 1340,320 Q 1300,260 1260,220 L 1270,215 Q 1315,260 1355,325 Q 1395,395 1405,465 Z" />
+    <path d="M 1340,320 Q 1390,280 1440,260 L 1445,268 Q 1395,290 1350,328 Z" />
+    <path d="M 1300,260 Q 1310,210 1330,170 L 1338,174 Q 1320,210 1310,258 Z" />
+    <path d="M 1240,340 Q 1200,350 1140,340 L 1138,330 Q 1200,340 1245,330 Z" />
+    <path d="M 1480,510 Q 1460,560 1420,600 L 1410,592 Q 1450,555 1470,505 Z" />
+
+    <!-- Huge Upper-Right Branches -->
+    <path d="M 1685,420 Q 1620,340 1610,240 Q 1600,160 1580,90 L 1595,85 Q 1615,160 1625,240 Q 1640,335 1700,410 Z" />
+    <path d="M 1620,280 Q 1680,220 1740,180 L 1748,188 Q 1690,225 1630,285 Z" />
+    <path d="M 1610,180 Q 1640,130 1680,100 L 1686,108 Q 1648,135 1620,185 Z" />
+
+    <!-- Right Canopy Branches extending offscreen -->
+    <path d="M 1740,510 Q 1820,440 1880,380 L 1890,390 Q 1830,450 1750,520 Z" />
+    <path d="M 1820,440 Q 1850,360 1890,310 L 1898,318 Q 1860,365 1830,445 Z" />
+  </g>
+
+  <!-- 9. SWIRLING PURPLE GROUND MIST & SPECTRAL SMOKE -->
+  <!-- Lower misty vapors weaving across path and pumpkins -->
+  <g opacity="0.85">
+    <!-- Vapor Band 1 (Left foreground) -->
+    <path d="M -40,840 Q 80,780 180,820 Q 280,860 380,810 Q 480,760 560,820 Q 620,870 540,910 Q 440,960 320,930 Q 200,900 110,950 Q 20,990 -40,960 Z" fill="#6A2E9E" opacity="0.6" />
+    <path d="M -40,860 Q 60,810 160,840 Q 260,880 340,830 Q 400,800 460,840 Q 380,890 280,870 Q 160,860 80,910 Q -10,950 -40,920 Z" fill="#9349D6" opacity="0.5" />
+
+    <!-- Vapor Band 2 (Mid-ground winding mist ribbon) -->
+    <path d="M 450,960 Q 580,900 700,940 Q 820,980 940,920 Q 1060,860 1180,910 Q 1100,970 980,950 Q 860,940 760,1010 Q 640,1070 520,1030 Q 440,1000 450,960 Z" fill="#5A238A" opacity="0.65" />
+    <path d="M 720,940 Q 840,890 950,930 Q 1060,970 1180,920 Q 1260,890 1340,930 Q 1240,980 1120,950 Q 1010,940 920,990 Q 820,1040 720,990 Z" fill="#843BBE" opacity="0.5" />
+
+    <!-- Vapor Band 3 (Right foreground mist swirl) -->
+    <path d="M 1200,980 Q 1340,920 1480,960 Q 1620,1000 1760,940 Q 1860,900 1960,950 L 1960,1040 Q 1840,980 1720,1020 Q 1580,1070 1440,1030 Q 1300,990 1200,980 Z" fill="#4D1977" opacity="0.7" />
+  </g>
+
+  <!-- 10. GLOWING JACK-O'-LANTERNS (Comic Sharp Vectors, 4px Black Outlines) -->
+
+  <!-- A. FOREGROUND RIGHT: GIANT HERO PUMPKIN (x: 1710, y: 920) -->
+  <g id="hero-pumpkin-right" transform="translate(1580, 800)">
+    <!-- Pumpkin Outer Comic Shadow/Border -->
+    <!-- Base Ribs Geometry -->
+    <ellipse cx="140" cy="140" rx="140" ry="115" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="5" />
+    <ellipse cx="140" cy="140" rx="100" ry="112" fill="none" stroke="#0D0D0D" stroke-width="4" />
+    <ellipse cx="140" cy="140" rx="55" ry="110" fill="none" stroke="#0D0D0D" stroke-width="4" />
+
+    <!-- Stem on Top -->
+    <path d="M 130,30 Q 120,5 145,-15 Q 160,-10 150,25 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+
+    <!-- CARVED GLOWING FACE -->
+    <!-- Left Triangular Eye -->
+    <polygon points="65,95 105,75 95,120" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+    <!-- Right Triangular Eye -->
+    <polygon points="175,75 215,95 185,120" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+    <!-- Nose Triangle -->
+    <polygon points="140,115 155,135 125,135" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3.5" stroke-linejoin="round" />
+    <!-- Jagged Grinning Mouth with Sharp Teeth -->
+    <path d="M 50,150 L 75,155 L 85,142 L 100,160 L 115,145 L 140,165 L 165,145 L 180,160 L 195,142 L 205,155 L 230,150 L 210,185 L 195,175 L 185,195 L 165,180 L 140,200 L 115,180 L 95,195 L 85,175 L 70,185 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+
+    <!-- Inner Glow Candle Depth Highlights -->
+    <polygon points="72,100 98,82 92,112" fill="#FFFFFF" opacity="0.5" />
+    <polygon points="182,82 208,100 188,115" fill="#FFFFFF" opacity="0.5" />
+  </g>
+
+  <!-- B. COMPANION PUMPKIN RIGHT 2 (Medium, x: 1420, y: 840) -->
+  <g id="companion-pumpkin-right" transform="translate(1420, 840)">
+    <ellipse cx="75" cy="75" rx="75" ry="60" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="4.5" />
+    <ellipse cx="75" cy="75" rx="50" ry="58" fill="none" stroke="#0D0D0D" stroke-width="3.5" />
+    <ellipse cx="75" cy="75" rx="25" ry="56" fill="none" stroke="#0D0D0D" stroke-width="3.5" />
+    <!-- Stem -->
+    <path d="M 70,18 Q 65,0 80,-8 Q 88,-5 82,16 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="3.5" stroke-linejoin="round" />
+    <!-- Face -->
+    <polygon points="35,55 58,42 50,68" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" stroke-linejoin="round" />
+    <polygon points="92,42 115,55 100,68" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" stroke-linejoin="round" />
+    <polygon points="75,65 83,76 67,76" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" stroke-linejoin="round" />
+    <path d="M 30,85 L 48,88 L 55,80 L 65,90 L 75,82 L 85,90 L 95,80 L 102,88 L 120,85 L 105,108 L 95,100 L 85,112 L 75,102 L 65,112 L 55,100 L 45,108 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" stroke-linejoin="round" />
+  </g>
+
+  <!-- C. COMPANION PUMPKIN RIGHT 3 (Small, x: 1300, y: 830) -->
+  <g id="small-pumpkin-right" transform="translate(1300, 830)">
+    <ellipse cx="50" cy="45" rx="50" ry="38" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="4" />
+    <ellipse cx="50" cy="45" rx="32" ry="37" fill="none" stroke="#0D0D0D" stroke-width="3" />
+    <path d="M 48,10 Q 42,0 54,-5 Q 60,-2 55,10 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="3" stroke-linejoin="round" />
+    <!-- Smiling Eyes & Mouth -->
+    <polygon points="25,32 38,24 34,40" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" />
+    <polygon points="62,24 75,32 66,40" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" />
+    <path d="M 22,50 L 35,52 L 42,46 L 50,54 L 58,46 L 65,52 L 78,50 L 68,66 L 50,70 L 32,66 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" />
+  </g>
+
+  <!-- D. FOREGROUND LEFT: PUMPKIN TRIO -->
+  <!-- Left Hero Pumpkin (x: 0, y: 820) -->
+  <g id="hero-pumpkin-left" transform="translate(0, 820)">
+    <ellipse cx="120" cy="120" rx="120" ry="100" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="5" />
+    <ellipse cx="120" cy="120" rx="85" ry="98" fill="none" stroke="#0D0D0D" stroke-width="4" />
+    <ellipse cx="120" cy="120" rx="45" ry="96" fill="none" stroke="#0D0D0D" stroke-width="4" />
+    <!-- Stem -->
+    <path d="M 112,25 Q 105,5 125,-12 Q 138,-8 130,22 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+    <!-- Carved Face -->
+    <polygon points="55,80 90,62 82,102" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+    <polygon points="150,62 185,80 160,102" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+    <polygon points="120,98 132,115 108,115" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" stroke-linejoin="round" />
+    <path d="M 45,130 L 68,135 L 76,122 L 90,140 L 104,125 L 120,145 L 136,125 L 150,140 L 164,122 L 172,135 L 195,130 L 178,162 L 158,152 L 142,168 L 120,155 L 98,168 L 82,152 L 62,162 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="4" stroke-linejoin="round" />
+  </g>
+
+  <!-- Left Companion Pumpkin 2 (Medium, x: 180, y: 860) -->
+  <g id="companion-pumpkin-left2" transform="translate(180, 860)">
+    <ellipse cx="70" cy="65" rx="70" ry="55" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="4.5" />
+    <ellipse cx="70" cy="65" rx="45" ry="53" fill="none" stroke="#0D0D0D" stroke-width="3.5" />
+    <path d="M 66,12 Q 60,-2 74,-8 Q 80,-4 76,12 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="3.5" stroke-linejoin="round" />
+    <!-- Face -->
+    <polygon points="32,48 52,36 46,60" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" />
+    <polygon points="88,36 108,48 94,60" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" />
+    <path d="M 28,75 L 44,78 L 50,70 L 60,80 L 70,72 L 80,80 L 90,70 L 96,78 L 112,75 L 98,96 L 86,88 L 70,98 L 54,88 L 42,96 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="3" />
+  </g>
+
+  <!-- Left Companion Pumpkin 3 (Small, x: 140, y: 810) -->
+  <g id="companion-pumpkin-left3" transform="translate(140, 810)">
+    <ellipse cx="50" cy="42" rx="50" ry="35" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="4" />
+    <ellipse cx="50" cy="42" rx="32" ry="34" fill="none" stroke="#0D0D0D" stroke-width="3" />
+    <path d="M 48,9 Q 42,0 52,-6 Q 58,-3 54,9 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="3" stroke-linejoin="round" />
+    <polygon points="25,28 38,20 34,36" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" />
+    <polygon points="62,20 75,28 66,36" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" />
+    <path d="M 24,46 L 36,48 L 42,42 L 50,50 L 58,42 L 64,48 L 76,46 L 66,60 L 50,64 L 34,60 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2.5" />
+  </g>
+
+  <!-- E. MIDGROUND RIDGE PATH PUMPKINS (Small glowing accents along the trail) -->
+  <g id="ridge-pumpkin-1" transform="translate(680, 735)">
+    <ellipse cx="32" cy="28" rx="32" ry="24" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="3" />
+    <ellipse cx="32" cy="28" rx="20" ry="23" fill="none" stroke="#0D0D0D" stroke-width="2" />
+    <path d="M 30,5 Q 26,-2 34,-6 Q 38,-4 35,5 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="2" />
+    <polygon points="16,18 24,12 22,23" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="1.8" />
+    <polygon points="40,12 48,18 42,23" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="1.8" />
+    <path d="M 16,30 L 24,32 L 28,27 L 32,33 L 36,27 L 40,32 L 48,30 L 42,39 L 32,42 L 22,39 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="2" />
+  </g>
+
+  <g id="ridge-pumpkin-2" transform="translate(760, 745)">
+    <ellipse cx="26" cy="22" rx="26" ry="19" fill="url(#pumpkinShell)" stroke="#0D0D0D" stroke-width="2.5" />
+    <ellipse cx="26" cy="22" rx="16" ry="18" fill="none" stroke="#0D0D0D" stroke-width="1.8" />
+    <path d="M 25,4 Q 22,-2 28,-5 Q 31,-3 29,4 Z" fill="#1C380C" stroke="#0D0D0D" stroke-width="1.8" />
+    <polygon points="13,14 19,10 18,18" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="1.5" />
+    <polygon points="33,10 39,14 34,18" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="1.5" />
+    <path d="M 13,24 L 20,26 L 23,22 L 26,27 L 29,22 L 32,26 L 39,24 L 34,31 L 26,33 L 18,31 Z" fill="url(#pumpkinFaceGlow)" stroke="#0D0D0D" stroke-width="1.8" />
+  </g>
+</svg>
