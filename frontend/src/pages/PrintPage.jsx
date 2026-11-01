@@ -169,9 +169,9 @@ const styles = `
     margin-bottom: 22px;
     display: inline-block;
     text-align: center;
-    /* Matte cartoon clay with organic 'v' creases & wavy drip folds (matching MOON RAZE) */
-    background: url('/clay-drips-pattern.svg?v=3') repeat;
-    background-size: 280px 110px;
+    /* Hand-drawn wobbly comic clay folds & pinched creases (matching MOON RAZE) */
+    background: url('/clay-drips-pattern.svg?v=4') repeat;
+    background-size: 300px 115px;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

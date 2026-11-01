@@ -1,45 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="110" viewBox="0 0 280 110">
-  <!-- Matte pumpkin clay fill (solid cartoon style like MOON RAZE) -->
-  <rect width="280" height="110" fill="#F47424"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="115" viewBox="0 0 300 115">
+  <!-- Matte pumpkin clay fill -->
+  <rect width="300" height="115" fill="#F47424"/>
 
-  <!-- Organic hand-drawn comic clay creases & drip folds -->
-  <g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Floating 'v' crease 1 (like in O and M of MOON RAZE) -->
-    <path d="M 28,26 L 33,37 L 38,28"/>
+  <!-- Hand-drawn wobbly comic clay folds & creases -->
+  <g fill="none" stroke="#000000" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Hand-drawn wobbly 'v' crease 1 (curved, pinched clay look) -->
+    <path d="M 26,24 C 27,30 30,36 33,38 C 36,35 37,30 41,25"/>
 
-    <!-- Gentle wavy clay drip loop 1 (curving smoothly, NOT a vertical bar) -->
-    <path d="M 52,18 C 64,36 82,34 94,16"/>
-    <!-- Small drip tongue hanging from fold -->
-    <path d="M 70,35 C 72,48 76,48 78,35"/>
+    <!-- Wobbly sagging clay loop 1 -->
+    <path d="M 54,16 C 60,26 66,38 74,37 C 82,36 89,28 96,15"/>
+    <!-- Organic hand-sketched hanging drip tongue -->
+    <path d="M 72,36 C 71,44 73,50 76,51 C 78,50 80,45 79,36"/>
 
-    <!-- Floating 'v' crease 2 -->
-    <path d="M 124,32 L 129,43 L 135,34"/>
+    <!-- Wobbly hand-drawn 'v' crease 2 (pinched fold) -->
+    <path d="M 126,28 C 127,34 130,41 133,43 C 137,39 138,34 142,29"/>
 
-    <!-- Slanted wavy fold 2 (like in N and R) -->
-    <path d="M 152,18 C 160,32 174,38 186,24"/>
+    <!-- Organic melting clay ripple 2 (wobbly, hand-drawn wave) -->
+    <path d="M 158,16 C 165,24 171,38 181,37 C 187,36 193,28 198,20"/>
 
-    <!-- Subtle teardrop lobe 3 -->
-    <path d="M 208,22 C 218,44 232,42 242,20"/>
-    <path d="M 223,43 C 224,53 227,53 228,42"/>
+    <!-- Drooping hand-sculpted teardrop crease 3 -->
+    <path d="M 218,18 C 224,30 228,44 235,43 C 242,42 248,30 252,17"/>
+    <path d="M 233,42 C 232,50 234,56 237,56 C 240,55 241,49 240,42"/>
 
-    <!-- Floating 'v' crease 3 -->
-    <path d="M 262,28 L 267,39 L 273,30"/>
+    <!-- Hand-drawn wobbly 'v' crease 3 -->
+    <path d="M 272,25 C 273,31 276,38 279,40 C 282,37 284,31 287,26"/>
 
-    <!-- Bottom Row (staggered & sparse) -->
-    <!-- Wavy melting contour (like in Z and E) -->
-    <path d="M 14,72 C 28,86 44,78 58,84"/>
+    <!-- Lower row: organic melting waves & wobbly creases -->
+    <!-- Wobbly horizontal clay fold (like in Z and E of MOON RAZE) -->
+    <path d="M 16,74 C 26,82 36,88 46,84 C 54,80 62,85 70,82"/>
 
-    <!-- Floating 'v' crease 4 -->
-    <path d="M 86,75 L 91,86 L 96,77"/>
+    <!-- Hand-drawn wobbly 'v' crease 4 -->
+    <path d="M 94,72 C 95,78 98,85 101,87 C 104,84 106,79 109,74"/>
 
-    <!-- Flowy curved clay crease -->
-    <path d="M 118,68 C 130,86 148,84 160,66"/>
-    <path d="M 136,85 C 138,96 142,96 144,84"/>
+    <!-- Flowy hand-sketched sagging drip loop 4 -->
+    <path d="M 128,65 C 135,76 142,88 152,87 C 161,86 167,78 174,64"/>
+    <path d="M 150,86 C 149,94 151,101 154,101 C 157,100 158,93 157,86"/>
 
-    <!-- Wavy horizontal clay crease (like in Z of MOON RAZE) -->
-    <path d="M 188,76 C 200,68 214,88 228,78"/>
+    <!-- Organic melting clay crease (wobbly hand-drawn contour) -->
+    <path d="M 198,72 C 208,66 216,79 226,86 C 234,84 240,74 246,78"/>
 
-    <!-- Floating 'v' crease 5 -->
-    <path d="M 248,70 L 253,81 L 259,72"/>
+    <!-- Hand-drawn wobbly 'v' crease 5 -->
+    <path d="M 264,68 C 265,74 268,81 271,83 C 274,80 276,75 279,70"/>
   </g>
 </svg>
