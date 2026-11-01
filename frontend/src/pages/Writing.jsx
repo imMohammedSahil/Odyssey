@@ -803,7 +803,7 @@ function Writing() {
         {/* 100% PURE VECTOR BACKDROP CANVAS */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/halloween-reference-landscape.svg?v=9"
+            src="/halloween-reference-landscape.svg?v=10"
             alt=""
             className="writing-bg-vector"
           />
