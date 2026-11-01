@@ -233,9 +233,9 @@ const styles = `
   /* MAIN ACTIVE GLASSMORPHISM CARD (LOCKED FIXED HEIGHT) */
   .writing-active-glass-card {
     width: 660px;
-    height: 490px;
-    min-height: 490px;
-    max-height: 490px;
+    height: 505px;
+    min-height: 505px;
+    max-height: 505px;
     max-width: 92vw;
     background: rgba(10, 24, 18, 0.84);
     backdrop-filter: blur(20px);
@@ -327,13 +327,13 @@ const styles = `
     border: 3.5px solid var(--void-black);
     border-radius: 10px;
     box-shadow: 4px 4px 0px var(--void-black);
-    padding: 12px 18px;
+    padding: 14px 18px 16px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 8px;
-    height: 104px;
-    min-height: 104px;
+    height: 116px;
+    min-height: 116px;
     box-sizing: border-box;
   }
 
