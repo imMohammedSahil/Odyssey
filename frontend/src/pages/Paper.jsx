@@ -6,20 +6,20 @@ const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
   :root {
-    --frost-blue: #95B4CB;
-    --frost-blue-light: #BFD5E5;
-    --electric-cyan: #00E5FF;
-    --electric-cyan-hover: #45EDFF;
+    --frost-blue: #C4A8AC;
+    --frost-blue-light: #F0E4E6;
+    --electric-cyan: #FF3B47;
+    --electric-cyan-hover: #FF5E68;
     --void-black: #0D0D0D;
-    --midnight-slate: #172B33;
+    --midnight-slate: #140507;
     --parchment: #F9F9F3;
-    --slate-box: #8EAEC7;
-    --slate-btn: #618BAE;
-    --slate-btn-hover: #4E789B;
-    --grave-grey: #8FA2B0;
+    --slate-box: #C4A8AC;
+    --slate-btn: #886E71;
+    --slate-btn-hover: #72585B;
+    --grave-grey: #9E888B;
     --pure-white: #FFFFFF;
-    --accent: #00E5FF;
-    --accent-glow: rgba(0, 229, 255, 0.35);
+    --accent: #FF3B47;
+    --accent-glow: rgba(255, 59, 71, 0.4);
   }
 
   * {
@@ -201,7 +201,7 @@ const styles = `
     min-height: 505px;
     max-height: 505px;
     max-width: 92vw;
-    background: rgba(18, 36, 48, 0.86);
+    background: rgba(18, 10, 12, 0.88);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 4px solid var(--void-black);
@@ -958,7 +958,7 @@ export default function Paper() {
         {/* 100% PURE VECTOR BACKDROP */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/paper-landscape.svg?v=2"
+            src="/paper-landscape.svg?v=6"
             alt=""
             className="writing-bg-vector"
           />
