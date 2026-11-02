@@ -85,7 +85,7 @@ const styles = `
     color: var(--pure-white);
     border: 3px solid var(--void-black);
     border-radius: 9999px;
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     padding: 8px 18px;
     display: inline-flex;
@@ -236,7 +236,7 @@ const styles = `
     border: 2px solid var(--void-black);
     border-radius: 6px;
     padding: 4px 12px;
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
     box-shadow: 2px 2px 0px var(--void-black);
   }
@@ -376,7 +376,7 @@ const styles = `
     border: 2px solid var(--void-black);
     border-radius: 6px;
     padding: 6px 12px;
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 11px;
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
@@ -510,7 +510,7 @@ const styles = `
   .writing-step-val {
     min-width: 34px;
     text-align: center;
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     color: var(--pure-white);
   }
@@ -522,7 +522,7 @@ const styles = `
     border: 3px solid var(--void-black);
     border-radius: 8px;
     padding: 12px 18px;
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
@@ -958,7 +958,7 @@ export default function Paper() {
         {/* 100% PURE VECTOR BACKDROP */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/paper-landscape.svg?v=1"
+            src="/paper-landscape.svg?v=2"
             alt=""
             className="writing-bg-vector"
           />
