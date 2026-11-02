@@ -696,33 +696,46 @@ export default function UploadOrder() {
       window.history.scrollRestoration = "manual";
     }
 
+    const savedCard = sessionStorage.getItem("student_scroll_card");
+    const savedY = sessionStorage.getItem("student_scroll_y");
+
     if (location.state?.scrollToKits) {
       navigate(location.pathname, { replace: true, state: {} });
       setTimeout(() => {
         smoothScrollToKits(1300);
       }, 150);
-    } else if (navType === "POP") {
-      const savedY = sessionStorage.getItem("student_scroll_y");
-      if (savedY !== null) {
-        const rawY = parseInt(savedY, 10);
-        if (rawY > 0) {
-          isRestoringRef.current = true;
-          const restore = () => {
-            window.scrollTo({ top: rawY, behavior: "instant" });
-          };
+    } else if (navType === "POP" || savedCard !== null || savedY !== null) {
+      if (savedCard || savedY) {
+        isRestoringRef.current = true;
+        const restore = () => {
+          if (savedCard) {
+            const el = document.getElementById(savedCard);
+            if (el) {
+              el.scrollIntoView({ block: "center", behavior: "instant" });
+              return;
+            }
+          }
+          if (savedY) {
+            const rawY = parseInt(savedY, 10);
+            if (rawY > 0) {
+              window.scrollTo({ top: rawY, behavior: "instant" });
+            }
+          }
+        };
+        restore();
+        const timer1 = setTimeout(restore, 50);
+        const timer2 = setTimeout(restore, 150);
+        const timer3 = setTimeout(restore, 300);
+        const timer4 = setTimeout(() => {
           restore();
-          const timer1 = setTimeout(restore, 50);
-          const timer2 = setTimeout(restore, 150);
-          const timer3 = setTimeout(() => {
-            restore();
-            isRestoringRef.current = false;
-          }, 350);
-          return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
-          };
-        }
+          isRestoringRef.current = false;
+        }, 500);
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+          clearTimeout(timer3);
+          clearTimeout(timer4);
+        };
       }
       isRestoringRef.current = false;
     } else {
@@ -1013,6 +1026,7 @@ export default function UploadOrder() {
               {services.map((svc) => (
                 <div
                   key={svc.to}
+                  id={`svc-card-${svc.to.replace(/\//g, "-")}`}
                   className={`neo-card ${svc.variant || ""}`}
                 >
                   {/* Pushpin from Ref Photo */}
@@ -1036,6 +1050,7 @@ export default function UploadOrder() {
                     <button
                       className="neo-card-btn"
                       onClick={() => {
+                        sessionStorage.setItem("student_scroll_card", `svc-card-${svc.to.replace(/\//g, "-")}`);
                         sessionStorage.setItem("student_scroll_y", String(window.scrollY));
                         navigate(svc.to);
                       }}

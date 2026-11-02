@@ -1227,6 +1227,11 @@ function Print() {
   const rate = color === "bw" ? 1 : 10;
   const total = (pages || 0) * rate * (copies || 1);
 
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Keyboard shortcut: Escape returns to base
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -1391,10 +1396,16 @@ function Print() {
         {/* TOP NAVIGATION BAR */}
         <header className="print-nav">
           <div className="print-nav-left">
-            <Link to="/student" className="print-brand">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              className="print-brand"
+              style={{ background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left", font: "inherit", color: "inherit" }}
+              title="Return to Base"
+            >
               ODYSSEY
               <span className="print-badge">PRINT STATION</span>
-            </Link>
+            </button>
           </div>
 
           <div style={{ display: "flex", gap: "10px" }}>
