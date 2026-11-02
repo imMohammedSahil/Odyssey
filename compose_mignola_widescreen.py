@@ -59,28 +59,31 @@ def build_widescreen_backdrop():
     # 3. Center Celtic Cross & Suited Pale Figure: x: 275..520, y: 350..720
     center_crop = img[350:720, 275:520]
     
+    ground_y = 540
+    
     # Component layout across widescreen 1200x675:
-    # Left Tree sits on left side:
-    left_ox, left_oy = 15, 20
-    left_scale = 1.12
+    # Left Tree & Crypt pushed further LEFT to anchor against screen edge
+    left_scale = 1.15
+    left_ox = -110
+    left_oy = ground_y - int(470 * left_scale)
     p_stone_l, p_arch_l, p_black_l = extract_paths_from_crop(left_crop, left_ox, left_oy, left_scale, left_scale)
     
-    # Right Mausoleum sits on right side:
-    right_ox, right_oy = 875, 145
-    right_scale = 1.15
+    # Right Mausoleum pushed further RIGHT into open screen space
+    right_scale = 1.25
+    right_ox = 935
+    right_oy = ground_y - int(410 * right_scale)
     p_stone_r, p_arch_r, p_black_r = extract_paths_from_crop(right_crop, right_ox, right_oy, right_scale, right_scale)
     
-    # Center Celtic Cross & Hero sits in center:
-    center_ox, center_oy = 475, 185
+    # Center Celtic Cross & Hero sits in center behind/above glass card:
     center_scale = 1.05
+    center_ox = 475
+    center_oy = ground_y - int(370 * center_scale)
     p_stone_c, p_arch_c, p_black_c = extract_paths_from_crop(center_crop, center_ox, center_oy, center_scale, center_scale)
     
-    # Moon in upper-right sky
-    moon_cx = 940
-    moon_cy = 85
-    moon_r = 30
-    
-    ground_y = 540
+    # Moon in open sky between center title and top-right actions
+    moon_cx = 840
+    moon_cy = 95
+    moon_r = 28
     
     svg = []
     svg.append(f'<svg viewBox="0 0 {canvas_w} {canvas_h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">')
@@ -118,11 +121,11 @@ def build_widescreen_backdrop():
         svg.append(f'  <!-- Crypt Portal Flame Glow -->')
         svg.append(f'  <path d="{" ".join(all_arch)}" fill="#B82833" />')
 
-    # Spiky grass connecting the hills along the horizon
+    # Spiky grass connecting the hills along the horizon seamlessly
     grass_elements = []
-    for gx in range(380, 890, 8):
-        gh = 25 + (gx % 13) * 3
-        grass_elements.append(f"M {gx},{ground_y} L {gx+4},{ground_y-gh} L {gx+8},{ground_y} Z")
+    for gx in range(0, canvas_w, 6):
+        gh = 20 + ((gx * 7) % 17) * 2
+        grass_elements.append(f"M {gx},{ground_y} L {gx+3},{ground_y-gh} L {gx+6},{ground_y} Z")
     if grass_elements:
         svg.append(f'  <!-- Midground Graveyard Grass -->')
         svg.append(f'  <path d="{" ".join(grass_elements)}" fill="#0D0D0D" />')
