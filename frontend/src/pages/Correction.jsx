@@ -13,9 +13,9 @@ const styles = `
     --void-black: #0D0D0D;
     --night-purple: #2D114D;
     --parchment: #F9F9F3;
-    --lilac-box: #EBD6FA;
-    --lilac-btn: #D3ACEC;
-    --lilac-btn-hover: #DFBEF6;
+    --lilac-box: #C899EB;
+    --lilac-btn: #B078DD;
+    --lilac-btn-hover: #9E62CE;
     --grave-grey: #A8B3B8;
     --pure-white: #FFFFFF;
   }
@@ -329,8 +329,9 @@ const styles = `
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 16px;
-    flex-wrap: wrap;
+    gap: 12px;
+    flex-wrap: nowrap;
+    width: 100%;
   }
 
   .writing-config-stacked {
@@ -338,7 +339,7 @@ const styles = `
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
   }
 
@@ -356,7 +357,7 @@ const styles = `
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .writing-option-pill-btn {
@@ -364,12 +365,13 @@ const styles = `
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 7px 14px;
+    padding: 6px 12px;
     font-family: 'Archivo Black', sans-serif;
     font-size: 11px;
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
+    white-space: nowrap;
   }
 
   .writing-option-pill-btn:hover {
@@ -390,23 +392,24 @@ const styles = `
     display: flex;
     align-items: center;
     gap: 6px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 
   .writing-ink-chip-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: var(--lilac-btn);
     border: 2px solid var(--void-black);
     border-radius: 6px;
-    padding: 5px 10px;
+    padding: 5px 8px;
     font-size: 11px;
     font-weight: 800;
     color: var(--void-black);
     cursor: pointer;
     box-shadow: 2px 2px 0px var(--void-black);
     transition: all 0.1s ease;
+    white-space: nowrap;
   }
 
   .writing-ink-chip-btn:hover {
@@ -816,18 +819,18 @@ const CATALOG_ITEMS = [
 ];
 
 const MARKER_COLORS = [
-  { name: "Void Black", hex: "#0D0D0D" },
-  { name: "Signal Blue", hex: "#1D4ED8" },
-  { name: "Crimson Red", hex: "#DC2626" },
-  { name: "Toxic Green", hex: "#16A34A" },
+  { name: "Black", hex: "#0D0D0D" },
+  { name: "Blue", hex: "#1D4ED8" },
+  { name: "Red", hex: "#DC2626" },
+  { name: "Green", hex: "#16A34A" },
 ];
 
 const HIGHLIGHTER_COLORS = [
-  { name: "Neon Yellow", hex: "#EAB308" },
-  { name: "Neon Green", hex: "#22C55E" },
-  { name: "Neon Pink", hex: "#EC4899" },
-  { name: "Pastel Blue", hex: "#38BDF8" },
-  { name: "Solar Orange", hex: "#F97316" },
+  { name: "Yellow", hex: "#EAB308" },
+  { name: "Green", hex: "#22C55E" },
+  { name: "Pink", hex: "#EC4899" },
+  { name: "Blue", hex: "#38BDF8" },
+  { name: "Orange", hex: "#F97316" },
 ];
 
 function Correction() {
@@ -840,9 +843,9 @@ function Correction() {
   // Options
   const [corrOption, setCorrOption] = useState("Standard (5mm)");
   const [markerTip, setMarkerTip] = useState("Bullet");
-  const [markerColor, setMarkerColor] = useState("Void Black");
+  const [markerColor, setMarkerColor] = useState("Black");
   const [hlMode, setHlMode] = useState("Single");
-  const [hlColor, setHlColor] = useState("Neon Yellow");
+  const [hlColor, setHlColor] = useState("Yellow");
 
   const [qty, setQty] = useState(1);
   const [toast, setToast] = useState({ show: false, message: "" });
@@ -1061,7 +1064,7 @@ function Correction() {
                             onClick={() => setMarkerColor(c.name)}
                           >
                             <span
-                              className={`writing-ink-chip-dot ${c.name === "Void Black" ? "is-black" : ""}`}
+                              className={`writing-ink-chip-dot ${c.name === "Black" ? "is-black" : ""}`}
                               style={{ backgroundColor: c.hex }}
                             />
                             <span>{c.name}</span>
