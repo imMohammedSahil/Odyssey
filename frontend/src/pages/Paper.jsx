@@ -6,20 +6,20 @@ const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
   :root {
-    --frost-blue: #B5C8DC;
-    --frost-blue-light: #D3DEE9;
-    --pumpkin-orange: #FFA012;
-    --pumpkin-orange-hover: #FFB338;
+    --frost-blue: #95B4CB;
+    --frost-blue-light: #BFD5E5;
+    --electric-cyan: #00E5FF;
+    --electric-cyan-hover: #45EDFF;
     --void-black: #0D0D0D;
     --midnight-slate: #172B33;
     --parchment: #F9F9F3;
-    --slate-box: #B5C8DC;
-    --slate-btn: #729BBF;
-    --slate-btn-hover: #5D85A7;
+    --slate-box: #8EAEC7;
+    --slate-btn: #618BAE;
+    --slate-btn-hover: #4E789B;
     --grave-grey: #8FA2B0;
     --pure-white: #FFFFFF;
-    --accent: #B5C8DC;
-    --accent-glow: rgba(181, 200, 220, 0.35);
+    --accent: #00E5FF;
+    --accent-glow: rgba(0, 229, 255, 0.35);
   }
 
   * {
@@ -108,13 +108,13 @@ const styles = `
   }
 
   .writing-cart-pill {
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     color: var(--void-black);
     border-color: var(--void-black);
   }
 
   .writing-cart-pill:hover {
-    background: var(--pumpkin-orange-hover);
+    background: var(--electric-cyan-hover);
   }
 
   /* GAME CENTER STAGE (HILL CLIMB RACING CAROUSEL STYLE) */
@@ -183,7 +183,7 @@ const styles = `
   }
 
   .writing-nav-arrow-btn:hover {
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     color: var(--void-black);
     transform: scale(1.08) translate(-1px, -1px);
     box-shadow: 5px 5px 0px var(--void-black);
@@ -231,7 +231,7 @@ const styles = `
   }
 
   .writing-unit-price-badge {
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
@@ -296,7 +296,7 @@ const styles = `
     font-size: 11.5px;
     font-weight: 800;
     color: var(--void-black);
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     border: 2px solid var(--void-black);
     border-radius: 6px;
     padding: 4px 10px;
@@ -393,7 +393,7 @@ const styles = `
 
   .writing-option-pill-btn.active {
     background: var(--void-black);
-    color: var(--pumpkin-orange);
+    color: var(--electric-cyan);
     border-color: var(--void-black);
     box-shadow: 2px 2px 0px var(--void-black);
   }
@@ -439,7 +439,7 @@ const styles = `
   .writing-ink-chip-btn.active {
     border-color: var(--void-black);
     background: var(--void-black);
-    color: var(--pumpkin-orange);
+    color: var(--electric-cyan);
     box-shadow: 2px 2px 0px var(--void-black);
   }
 
@@ -489,7 +489,7 @@ const styles = `
 
   .writing-step-btn {
     background: #172F40;
-    color: var(--pumpkin-orange);
+    color: var(--electric-cyan);
     border: none;
     width: 36px;
     height: 42px;
@@ -503,7 +503,7 @@ const styles = `
   }
 
   .writing-step-btn:hover {
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     color: var(--void-black);
   }
 
@@ -517,7 +517,7 @@ const styles = `
 
   .writing-game-cta-btn {
     flex: 1;
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     color: var(--void-black);
     border: 3px solid var(--void-black);
     border-radius: 8px;
@@ -535,7 +535,7 @@ const styles = `
   .writing-game-cta-btn:hover {
     transform: translate(-1.5px, -1.5px);
     box-shadow: 5px 5px 0px var(--void-black);
-    background: var(--pumpkin-orange-hover);
+    background: var(--electric-cyan-hover);
   }
 
   .writing-game-cta-btn:active {
@@ -590,7 +590,7 @@ const styles = `
     position: fixed;
     bottom: 28px;
     right: 28px;
-    background: var(--pumpkin-orange);
+    background: var(--electric-cyan);
     color: var(--void-black);
     border: 3.5px solid var(--void-black);
     border-radius: 12px;
@@ -640,7 +640,7 @@ const NOTE_COLORS = [
   { name: "Neon Green", hex: "#43E97B" },
   { name: "Pink", hex: "#FF65A3" },
   { name: "Ice Cyan", hex: "#38F9D7" },
-  { name: "Orange", hex: "#FF9F43" },
+  { name: "Frost White", hex: "#E8F0F8" },
 ];
 
 const CATALOG_ITEMS = [
