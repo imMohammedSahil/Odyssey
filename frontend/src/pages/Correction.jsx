@@ -918,7 +918,7 @@ function Correction() {
         {/* 100% PURE VECTOR BACKDROP */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/correction-landscape.svg"
+            src="/correction-landscape.svg?v=2"
             alt=""
             className="writing-bg-vector"
           />
