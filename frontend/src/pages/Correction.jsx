@@ -6,13 +6,16 @@ const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
   :root {
-    --slime-green: #9DE869;
-    --slime-green-dark: #78D83F;
+    --moon-lavender: #D2A9E8;
+    --moon-lavender-light: #EBD4FB;
+    --pumpkin-orange: #FFA012;
+    --pumpkin-orange-hover: #FFB338;
     --void-black: #0D0D0D;
-    --seafoam: #45B89E;
-    --hazard-gold: #F7B919;
-    --brain-pink: #FF70A6;
+    --night-purple: #2D114D;
     --parchment: #F9F9F3;
+    --lilac-box: #EBD6FA;
+    --lilac-btn: #D3ACEC;
+    --lilac-btn-hover: #DFBEF6;
     --grave-grey: #A8B3B8;
     --pure-white: #FFFFFF;
   }
@@ -103,13 +106,13 @@ const styles = `
   }
 
   .writing-cart-pill {
-    background: var(--slime-green);
+    background: var(--pumpkin-orange);
     color: var(--void-black);
     border-color: var(--void-black);
   }
 
   .writing-cart-pill:hover {
-    background: #AEF37B;
+    background: var(--pumpkin-orange-hover);
   }
 
   /* GAME CENTER STAGE (HILL CLIMB RACING CAROUSEL STYLE) */
@@ -162,7 +165,7 @@ const styles = `
     background: rgba(13, 13, 13, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    color: var(--slime-green);
+    color: var(--moon-lavender);
     border: 3.5px solid var(--void-black);
     border-radius: 50%;
     font-family: 'Archivo Black', sans-serif;
@@ -178,7 +181,7 @@ const styles = `
   }
 
   .writing-nav-arrow-btn:hover {
-    background: var(--slime-green);
+    background: var(--pumpkin-orange);
     color: var(--void-black);
     transform: scale(1.08) translate(-1px, -1px);
     box-shadow: 5px 5px 0px var(--void-black);
@@ -196,7 +199,7 @@ const styles = `
     min-height: 505px;
     max-height: 505px;
     max-width: 92vw;
-    background: rgba(10, 24, 18, 0.84);
+    background: rgba(28, 12, 44, 0.86);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 4px solid var(--void-black);
@@ -214,8 +217,8 @@ const styles = `
   /* TIER 1: HEADER BLOCK */
   .writing-counter-badge {
     background: rgba(13, 13, 13, 0.85);
-    color: var(--slime-green);
-    border: 2px solid rgba(157, 232, 105, 0.5);
+    color: var(--moon-lavender-light);
+    border: 2px solid rgba(210, 169, 232, 0.5);
     border-radius: 6px;
     padding: 4px 10px;
     font-family: 'Archivo Black', sans-serif;
@@ -226,7 +229,7 @@ const styles = `
   }
 
   .writing-unit-price-badge {
-    background: var(--slime-green);
+    background: var(--pumpkin-orange);
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
@@ -240,7 +243,7 @@ const styles = `
     display: flex;
     flex-direction: column;
     gap: 2px;
-    border-bottom: 2px solid rgba(157, 232, 105, 0.25);
+    border-bottom: 2px solid rgba(210, 169, 232, 0.25);
     padding-bottom: 10px;
   }
 
@@ -256,14 +259,14 @@ const styles = `
   .writing-card-subtitle {
     font-size: 13px;
     font-weight: 800;
-    color: var(--slime-green);
+    color: var(--moon-lavender);
     letter-spacing: 0.4px;
     text-shadow: 1px 1px 0px var(--void-black);
   }
 
-  /* TIER 2: COMIC PUNCHY LIME PRODUCT INFO BOX */
+  /* TIER 2: COMIC LILAC PRODUCT INFO BOX */
   .writing-card-dossier-box {
-    background: #CCFB9A;
+    background: var(--lilac-box);
     color: var(--void-black);
     border: 3.5px solid var(--void-black);
     border-radius: 10px;
@@ -291,7 +294,7 @@ const styles = `
     font-size: 11.5px;
     font-weight: 800;
     color: var(--void-black);
-    background: #B2F069;
+    background: var(--pumpkin-orange);
     border: 2px solid var(--void-black);
     border-radius: 6px;
     padding: 4px 10px;
@@ -299,7 +302,7 @@ const styles = `
     line-height: 1.4;
   }
 
-  /* TIER 3: STRUCTURED CONFIGURATIONS (COMIC LIME MATCH + FIXED HEIGHT) */
+  /* TIER 3: STRUCTURED CONFIGURATIONS (LILAC MATCH + FIXED HEIGHT) */
   .writing-config-section {
     display: flex;
     flex-direction: column;
@@ -308,7 +311,7 @@ const styles = `
     height: 126px;
     min-height: 126px;
     box-sizing: border-box;
-    background: #CCFB9A;
+    background: var(--lilac-box);
     border: 3.5px solid var(--void-black);
     border-radius: 10px;
     box-shadow: 4px 4px 0px var(--void-black);
@@ -357,7 +360,7 @@ const styles = `
   }
 
   .writing-option-pill-btn {
-    background: #B2F069;
+    background: var(--lilac-btn);
     color: var(--void-black);
     border: 2px solid var(--void-black);
     border-radius: 6px;
@@ -370,14 +373,14 @@ const styles = `
   }
 
   .writing-option-pill-btn:hover {
-    background: #9DE869;
+    background: var(--lilac-btn-hover);
     transform: translateY(-1px);
     box-shadow: 3px 3px 0px var(--void-black);
   }
 
   .writing-option-pill-btn.active {
     background: var(--void-black);
-    color: var(--slime-green);
+    color: var(--pumpkin-orange);
     border-color: var(--void-black);
     box-shadow: 2px 2px 0px var(--void-black);
   }
@@ -394,7 +397,7 @@ const styles = `
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: #B2F069;
+    background: var(--lilac-btn);
     border: 2px solid var(--void-black);
     border-radius: 6px;
     padding: 5px 10px;
@@ -407,14 +410,14 @@ const styles = `
   }
 
   .writing-ink-chip-btn:hover {
-    background: #9DE869;
+    background: var(--lilac-btn-hover);
     transform: translateY(-1px);
   }
 
   .writing-ink-chip-btn.active {
     border-color: var(--void-black);
     background: var(--void-black);
-    color: var(--slime-green);
+    color: var(--pumpkin-orange);
     box-shadow: 2px 2px 0px var(--void-black);
   }
 
@@ -428,7 +431,7 @@ const styles = `
   }
 
   .writing-ink-chip-btn.active .writing-ink-chip-dot.is-black {
-    border: 2px solid var(--slime-green);
+    border: 2px solid var(--moon-lavender);
   }
 
   /* TIER 4: DISPATCH COMMAND BAR */
@@ -455,7 +458,7 @@ const styles = `
   .writing-stepper-ctrl {
     display: flex;
     align-items: center;
-    background: rgba(6, 17, 13, 0.85);
+    background: rgba(18, 8, 30, 0.85);
     border: 3px solid var(--void-black);
     border-radius: 8px;
     overflow: hidden;
@@ -463,8 +466,8 @@ const styles = `
   }
 
   .writing-step-btn {
-    background: #14281E;
-    color: var(--slime-green);
+    background: #25123D;
+    color: var(--pumpkin-orange);
     border: none;
     width: 36px;
     height: 42px;
@@ -478,7 +481,7 @@ const styles = `
   }
 
   .writing-step-btn:hover {
-    background: var(--slime-green);
+    background: var(--pumpkin-orange);
     color: var(--void-black);
   }
 
@@ -492,7 +495,7 @@ const styles = `
 
   .writing-game-cta-btn {
     flex: 1;
-    background: var(--slime-green);
+    background: var(--pumpkin-orange);
     color: var(--void-black);
     border: 3px solid var(--void-black);
     border-radius: 8px;
@@ -510,7 +513,7 @@ const styles = `
   .writing-game-cta-btn:hover {
     transform: translate(-1.5px, -1.5px);
     box-shadow: 5px 5px 0px var(--void-black);
-    background: #AEF37B;
+    background: var(--pumpkin-orange-hover);
   }
 
   .writing-game-cta-btn:active {
@@ -548,12 +551,12 @@ const styles = `
   .writing-game-tab:hover {
     transform: translateY(-2px);
     color: var(--pure-white);
-    border-color: var(--slime-green);
+    border-color: var(--moon-lavender);
     box-shadow: 4px 4px 0px var(--void-black);
   }
 
   .writing-game-tab.active {
-    background: var(--slime-green);
+    background: var(--moon-lavender);
     color: var(--void-black);
     border-color: var(--void-black);
     box-shadow: 3px 3px 0px var(--void-black);
@@ -565,7 +568,7 @@ const styles = `
     position: fixed;
     bottom: 28px;
     right: 28px;
-    background: var(--slime-green);
+    background: var(--pumpkin-orange);
     color: var(--void-black);
     border: 3.5px solid var(--void-black);
     border-radius: 12px;
