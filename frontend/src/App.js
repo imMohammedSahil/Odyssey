@@ -11,6 +11,7 @@ import PaymentPage from "./pages/PaymentPage";
 import PrintPage from "./pages/PrintPage";
 import Writing from "./pages/Writing";
 import Correction from "./pages/Correction";
+import Paper from "./pages/Paper";
 import StationeryPage from "./pages/StationeryPage";
 import ReceiptPage from "./pages/ReceiptPage";
 import AdminIntroPage from "./pages/AdminIntroPage";
@@ -57,6 +58,24 @@ function App() {
         element={
           <ProtectedRoute allowedRole="student">
             <Correction />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/stationery/paper"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Paper />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/paper"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Paper />
           </ProtectedRoute>
         }
       />
