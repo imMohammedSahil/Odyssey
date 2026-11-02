@@ -63,13 +63,13 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 ## 5. Palette Harmonization Table
 
-| Role | Toxic Green Page ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx)) | Purple Twilight Page ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx)) | Gothic Mist Slate Page ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx)) |
+| Role | Toxic Green Page ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx)) | Purple Twilight Page ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx)) | Blood Crimson Graveyard Page ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx)) |
 | :--- | :--- | :--- | :--- |
-| **Background Fill** | `#019E70` (Seafoam Green) | `#2D114D` (Night Purple) | `#172B33` (Midnight Slate) |
-| **Glass Card Fill** | `rgba(10, 24, 18, 0.84)` | `rgba(28, 12, 44, 0.86)` | `rgba(18, 36, 48, 0.86)` |
-| **Memo / Dossier Box**| `#CCFB9A` (Moon Lime) | `#C899EB` (Twilight Lilac) | `#8EAEC7` (Soft Mist Slate) |
-| **Option Button Fill**| `#B2F069` | `#B078DD` | `#618BAE` (hover `#4E789B`) |
-| **Primary Action CTA**| `#9DE869` (Toxic Lime) | `#FFA012` (Pumpkin Orange) | `#00E5FF` (Electric Cyan) |
+| **Background Fill** | `#019E70` (Seafoam Green) | `#2D114D` (Night Purple) | `#140507` (Gothic Velvet Abyss) |
+| **Glass Card Fill** | `rgba(10, 24, 18, 0.84)` | `rgba(28, 12, 44, 0.86)` | `rgba(18, 10, 12, 0.88)` |
+| **Memo / Dossier Box**| `#CCFB9A` (Moon Lime) | `#C899EB` (Twilight Lilac) | `#C4A8AC` (Weathered Stone Mauve) |
+| **Option Button Fill**| `#B2F069` | `#B078DD` | `#886E71` (hover `#72585B`) |
+| **Primary Action CTA**| `#9DE869` (Toxic Lime) | `#FFA012` (Pumpkin Orange) | `#FF3B47` (Hazard Blood Crimson) |
 | **Comic Borders** | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) |
 
 ---
