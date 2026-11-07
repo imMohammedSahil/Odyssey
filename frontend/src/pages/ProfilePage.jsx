@@ -908,6 +908,8 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     // 1. Resolve user profile info
     const storedUser = sessionStorage.getItem("user") || "peter.parker@empire.edu";
     setUsername(storedUser);

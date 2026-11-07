@@ -796,7 +796,7 @@ export default function UploadOrder() {
       <style>{styles}</style>
       <div className="neo-body">
         {/* Slime Green Top Section with Header & Hero */}
-        <div className="neo-header-wrapper">
+        <div className="neo-header-wrapper" id="basecamp-header">
           {/* Top Bar */}
           <header className="neo-navbar">
             <div
@@ -820,8 +820,11 @@ export default function UploadOrder() {
 
               <div
                 className="neo-avatar-frame"
-                title="Your Profile"
-                onClick={() => navigate("/profile")}
+                onClick={() => {
+                  sessionStorage.setItem("student_scroll_card", "basecamp-header");
+                  sessionStorage.setItem("student_scroll_y", "0");
+                  navigate("/profile");
+                }}
               >
                 <img src={photo || "/avatar.jpg"} alt="profile" className="neo-avatar-img" />
               </div>
