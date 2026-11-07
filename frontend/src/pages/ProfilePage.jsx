@@ -778,14 +778,15 @@ const css = `
   }
 
   .pf-empty-mascot {
-    width: 220px;
+    width: 260px;
     height: auto;
-    max-height: 180px;
+    max-height: 230px;
     object-fit: contain;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
     display: inline-block;
     user-select: none;
     pointer-events: none;
+    filter: drop-shadow(4px 4px 0px rgba(13, 13, 13, 0.15));
   }
 
   .pf-empty-title {
@@ -1202,11 +1203,11 @@ export default function ProfilePage() {
               {filteredOrders.length === 0 ? (
                 <div className="pf-empty-card">
                   <img
-                    src="/zombie-rip.svg"
-                    alt="Empty Manifest Mascot"
+                    src="/empty-box-scavenger.png"
+                    alt="Empty Vault Scavenger Box"
                     className="pf-empty-mascot"
                     onError={(e) => {
-                      e.target.src = "/zombie-head.svg";
+                      e.target.src = "/empty-box-scavenger.jpg";
                     }}
                   />
                   <h4 className="pf-empty-title">
