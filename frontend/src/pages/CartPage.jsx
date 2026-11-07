@@ -117,7 +117,7 @@ const css = `
 
   .nb-cart-heading {
     font-family: 'Mosko Mappa', 'Titan One', 'Archivo Black', cursive, sans-serif;
-    font-size: clamp(28px, 4.5vw, 44px);
+    font-size: clamp(30px, 4.8vw, 48px);
     text-transform: uppercase;
     color: var(--brain-pink);
     -webkit-text-stroke: 2.5px var(--border-dark);
@@ -233,9 +233,39 @@ const css = `
     }
   }
 
+  /* ── TWO-ITEM PERFECT BOTTOM-LINE ALIGNMENT ── */
+  @media (min-width: 821px) {
+    .nb-cart-layout.nb-two-items .nb-summary-card {
+      padding: 18px 22px;
+    }
+
+    .nb-cart-layout.nb-two-items .nb-summary-title {
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+    }
+
+    .nb-cart-layout.nb-two-items .nb-summary-dashed {
+      margin: 10px 0;
+    }
+
+    .nb-cart-layout.nb-two-items .nb-summary-total-row {
+      margin-bottom: 14px;
+    }
+
+    .nb-cart-layout.nb-two-items .nb-checkout-btn {
+      padding: 13px 20px;
+    }
+
+    .nb-cart-layout.nb-two-items .nb-continue-link {
+      margin-top: 10px;
+    }
+  }
+
   /* ── ITEMS LIST ── */
   .nb-items-list {
     list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -279,9 +309,10 @@ const css = `
 
   .nb-item-name {
     font-family: 'Mosko Mappa', 'Titan One', 'Archivo Black', cursive, sans-serif;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: normal;
     color: var(--void-black);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     line-height: 1.25;
   }
 
@@ -425,12 +456,15 @@ const css = `
     border-radius: 999px;
     border: 2px solid var(--border-dark);
     display: inline-block;
+    align-self: flex-start;
+    width: fit-content;
     margin-bottom: 12px;
   }
 
   .nb-summary-title {
     font-family: 'Mosko Mappa', 'Titan One', 'Archivo Black', cursive, sans-serif;
     font-size: 22px;
+    font-weight: normal;
     color: var(--void-black);
     text-transform: uppercase;
     letter-spacing: 0.8px;
@@ -453,6 +487,21 @@ const css = `
     font-family: 'Mosko Mappa', 'Titan One', 'Archivo Black', cursive, sans-serif;
     color: var(--void-black);
     font-size: 14px;
+  }
+
+  .nb-free-text {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--void-black);
+    background: var(--seafoam);
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-dark);
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
   }
 
   .nb-summary-dashed {
@@ -590,7 +639,7 @@ export default function CartPage() {
             </div>
           ) : (
             /* CART LAYOUT WITH ITEMS & SUMMARY */
-            <div className="nb-cart-layout">
+            <div className={`nb-cart-layout ${cartItems.length === 2 ? "nb-two-items" : ""}`}>
               {/* Item Cards */}
               <ul className="nb-items-list">
                 {cartItems.map((item, index) => (
@@ -662,7 +711,7 @@ export default function CartPage() {
 
                 <div className="nb-summary-row">
                   <span>Campus Pickup</span>
-                  <span style={{ color: "var(--seafoam)", fontWeight: 900 }}>FREE</span>
+                  <span className="nb-free-text">FREE</span>
                 </div>
 
                 <div className="nb-summary-dashed" />
