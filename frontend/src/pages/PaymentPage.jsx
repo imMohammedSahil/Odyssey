@@ -471,7 +471,7 @@ export default function PaymentPage() {
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img
-            src="/graveyard-gate-landscape.svg?v=4"
+            src="/graveyard-gate-landscape.svg?v=5"
             alt="Checkout Gate Pure Vector Landscape"
             className="pay-bg-vector"
           />
