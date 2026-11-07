@@ -148,7 +148,8 @@ const css = `
 
   /* ── MAIN CONTENT CONTAINER ── */
   .nb-cart-container {
-    max-width: 1400px;
+    width: 100%;
+    box-sizing: border-box;
     margin: 40px auto 0;
     padding: 0 4%;
   }
@@ -221,6 +222,8 @@ const css = `
 
   /* ── CART GRID LAYOUT ── */
   .nb-cart-layout {
+    max-width: 1400px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 36px;
