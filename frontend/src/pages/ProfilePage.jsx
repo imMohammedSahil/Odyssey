@@ -479,8 +479,10 @@ const css = `
   }
 
   .pf-tab-btn {
-    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 12.5px;
+    letter-spacing: 0.3px;
     text-transform: uppercase;
     padding: 8px 16px;
     border-radius: 8px;
