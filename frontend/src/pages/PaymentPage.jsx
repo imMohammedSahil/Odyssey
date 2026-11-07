@@ -53,7 +53,7 @@ const styles = `
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center bottom;
+    object-position: center 8%;
     display: block;
     filter: brightness(0.96) contrast(1.04);
   }
@@ -679,7 +679,7 @@ export default function PaymentPage() {
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img
-            src="/graveyard-gate-landscape.svg?v=1"
+            src="/graveyard-gate-landscape.svg?v=2"
             alt="Graveyard Gate Pure Vector Landscape"
             className="pay-bg-vector"
           />
