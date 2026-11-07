@@ -8,6 +8,9 @@
   1. **Writing Essentials**: `/writing` ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx), backdrop: `/halloween-reference-landscape.svg`) — *Toxic Lime & Seafoam Green*
   2. **Correction & Marking**: `/stationery/correction` ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx), backdrop: `/correction-landscape.svg`) — *Twilight Purple & Pumpkin Orange*
   3. **Paper & Reams**: `/stationery/paper` and `/paper` ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx), backdrop: `/paper-landscape.svg`) — *Midnight Slate & Electric Cyan*
+  4. **Measuring & Drawing**: `/stationery/measuring` and `/measuring` ([Measuring.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Measuring.jsx), backdrop: `/measuring-landscape.svg`) — *Laser Flame Orange & Terracotta Mauve*
+  5. **Office & Utility**: `/stationery/office` and `/office` ([Office.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Office.jsx), backdrop: `/office-landscape.svg`)
+6. **Post-Apocalyptic Payment Receipt**: `/receipt` ([ReceiptPage.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/ReceiptPage.jsx), backdrop: `/receipt-backdrop-clean.svg`, full art vector: `/receipt-landscape.svg`) — *Toxic Lime, Hazard Yellow, Hot Pink & Outbreak Crimson* — *Industrial Charcoal Dusk & Luminous Sky Cream*
 
 ---
 
@@ -63,14 +66,14 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 ## 5. Palette Harmonization Table
 
-| Role | Toxic Green Page ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx)) | Purple Twilight Page ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx)) | Blood Crimson Graveyard Page ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx)) |
-| :--- | :--- | :--- | :--- |
-| **Background Fill** | `#019E70` (Seafoam Green) | `#2D114D` (Night Purple) | `#140507` (Gothic Velvet Abyss) |
-| **Glass Card Fill** | `rgba(10, 24, 18, 0.84)` | `rgba(28, 12, 44, 0.86)` | `rgba(18, 10, 12, 0.88)` |
-| **Memo / Dossier Box**| `#CCFB9A` (Moon Lime) | `#C899EB` (Twilight Lilac) | `#C4A8AC` (Weathered Stone Mauve) |
-| **Option Button Fill**| `#B2F069` | `#B078DD` | `#886E71` (hover `#72585B`) |
-| **Primary Action CTA**| `#9DE869` (Toxic Lime) | `#FFA012` (Pumpkin Orange) | `#FF3B47` (Hazard Blood Crimson) |
-| **Comic Borders** | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) |
+| Role | Toxic Green Page ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx)) | Purple Twilight Page ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx)) | Blood Crimson Graveyard Page ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx)) | Dark Vortex Ruins Page ([Measuring.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Measuring.jsx)) | Industrial Dusk Skyline ([Office.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Office.jsx)) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Background Fill** | `#019E70` (Seafoam Green) | `#2D114D` (Night Purple) | `#140507` (Gothic Velvet Abyss) | `#1E1119` (Gothic Plum Abyss) | `#181513` (Industrial Charcoal Abyss) |
+| **Glass Card Fill** | `rgba(10, 24, 18, 0.84)` | `rgba(28, 12, 44, 0.86)` | `rgba(18, 10, 12, 0.88)` (Locked Gothic Velvet Abyss) | `rgba(30, 17, 25, 0.88)` (Dark Vortex Plum Glass) | `rgba(26, 23, 21, 0.88)` (Industrial Charcoal Glass) |
+| **Memo / Dossier Box**| `#CCFB9A` (Moon Lime) | `#C899EB` (Twilight Lilac) | `#8D6B6D` (OG Weathered Stone Mauve) | `#AA726D` (Apocalyptic Terracotta Dust) | `#C2A482` (Warm Industrial Kraft Box) |
+| **Option Button Fill**| `#B2F069` | `#B078DD` | `#735557` | `#8A5954` | `#8A7059` (hover `#735A45`) |
+| **Primary Action CTA**| `#9DE869` (Toxic Lime) | `#FFA012` (Pumpkin Orange) | `#FF3B47` (Hazard Blood Crimson) | `#F56234` (Laser Flame Ember Orange) | `#C89F72` (Darker Architectural Kraft) |
+| **Comic Borders** | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) |
 
 ---
 
@@ -78,10 +81,11 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 1. **Backdrop Vectorization (Never use naive disjoint K-Means rings)**:
    - When converting reference paintings to SVG, **do NOT** trace disjoint contour slices with `fill-rule="evenodd"`. That inverts solid shapes into hollow wireframe ribbons and looks like an X-ray / MRI scan.
-   - **Always use cumulative back-to-front threshold stacking**:
-     1. Base sky gradient (`<linearGradient>` or `<radialGradient>`)
-     2. Cumulative masks: `gray < threshold_distant`, `gray < threshold_mid`, `gray < threshold_near`
-     3. Solid foreground silhouettes: `gray < threshold_black` rendered as **100% solid, opaque Void Black (`#0D0D0D`)** with standard non-zero fills.
+   - **Always bridge the architecture base layer**: Dilate the structure mask (`cv2.dilate`) under the black mortar lines and cracks bounded strictly by `~sky_mask`. This ensures the solid building color sits directly beneath the black lineart so the background sky color NEVER leaks through the seams as bright halos or borders.
+   - **Sample exact median OG colors from the reference**: Never guess or use washed-out pale tones. Directly calculate `np.median` on the architecture regions to match authentic Mike Mignola comic color fidelity.
+   - **Viewport Pinning (`object-position: center 20%`)**: Never use `center bottom` on wide 16:9 panoramas, as laptop screens and wide monitors push the top 150–200px off-screen and slice the moon/towers in half. Use `object-position: center 20%` to preserve both the sky/celestial features and the grounded floor.
+   - **Solid Foreground Ink Silhouettes**: Force the darkest ink layer to solid `#0D0D0D` with `stroke="#0D0D0D" stroke-width="0.5" stroke-linejoin="round"`.
+   - **Never draw artificial arbitrary `<line>` overlays**: The artwork already contains the architectural lines, column strokes, and masonry; drawing arbitrary computer lines ruins the drawing.
 2. **Font Fallback for Rupee (`₹`) Symbol**:
    - `Archivo Black` lacks the Indian Rupee (`₹`) glyph.
    - Always define font fallbacks as: `font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;` so the Rupee symbol renders cleanly without substitution glitches.
@@ -90,16 +94,16 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 ---
 
-## 7. Upcoming Stationery Pages to Implement
+## 7. Showcase Pages Implementation Status
 
-The remaining two stationery categories linked from [UploadOrder.js](file:///c:/Holidays/Odyssey/frontend/src/pages/UploadOrder.js):
+All 5 core stationery showcase categories linked from [UploadOrder.js](file:///c:/Holidays/Odyssey/frontend/src/pages/UploadOrder.js) are now **100% completed & fully harmonized**:
 
-1. **Measuring & Drawing** (`/stationery/measuring`):
-   - Items: Drafting Scales, Geometry Sets, Protractors, Engineering Compasses, Dividers, Set Squares.
-   - Suggested Theme: Precision Blueprint Navy / Grid Blue with Laser Neon Amber / Yellow CTA.
-2. **Office & Utility** (`/stationery/office`):
-   - Items: Heavy Staplers, Staple Pins, Glue Sticks, Brown Roll Covers, High-Tack Adhesives, Binder Clips.
-   - Suggested Theme: Industrial Kraft / Charcoal Slate with Safety Hazard Neon Orange / Yellow CTA.
+1. **Writing Essentials**: `/writing` ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx), backdrop: `/halloween-reference-landscape.svg`)
+2. **Correction & Marking**: `/stationery/correction` ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx), backdrop: `/correction-landscape.svg`)
+3. **Paper & Reams**: `/stationery/paper` and `/paper` ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx), backdrop: `/paper-landscape.svg`)
+4. **Measuring & Drawing**: `/stationery/measuring` and `/measuring` ([Measuring.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Measuring.jsx), backdrop: `/measuring-landscape.svg`)
+5. **Office & Utility**: `/stationery/office` and `/office` ([Office.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Office.jsx), backdrop: `/office-landscape.svg`)
+6. **Post-Apocalyptic Payment Receipt**: `/receipt` ([ReceiptPage.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/ReceiptPage.jsx), backdrop: `/receipt-backdrop-clean.svg`, full art vector: `/receipt-landscape.svg`) — *Toxic Lime, Hazard Yellow, Hot Pink & Outbreak Crimson*
 
 ---
 
