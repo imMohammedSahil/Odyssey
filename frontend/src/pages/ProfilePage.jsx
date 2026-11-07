@@ -479,10 +479,9 @@ const css = `
   }
 
   .pf-tab-btn {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 900;
-    font-size: 13px;
-    letter-spacing: 0.4px;
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
     padding: 8px 16px;
     border-radius: 8px;
@@ -790,12 +789,11 @@ const css = `
   }
 
   .pf-empty-title {
-    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 24px;
-    font-weight: 900;
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 26px;
     color: var(--void-black);
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.8px;
     margin-bottom: 10px;
   }
 
