@@ -494,15 +494,26 @@ const css = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.12s ease;
+    transition: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .pf-tab-btn:hover {
     background: #FFF;
   }
 
+  .pf-tab-btn:active,
+  .pf-tab-btn:focus {
+    outline: none;
+    transform: none;
+    box-shadow: 4px 4px 0px var(--slime-green);
+  }
+
   .pf-tab-btn.active {
     background: #FFFFFF;
+    transform: none;
+    box-shadow: 4px 4px 0px var(--slime-green);
   }
 
   /* ── ORDERS MANIFEST LIST ── */
