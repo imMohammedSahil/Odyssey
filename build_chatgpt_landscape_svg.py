@@ -9,7 +9,6 @@ def build_svg():
     h, w = img.shape[:2]
     print(f"Loaded {w}x{h} image")
 
-    # Downscale slightly for smooth, fast vector rendering (e.g. 1360 x 765) or keep full res with good polygon approximation
     scale = 1280.0 / w
     target_w = int(w * scale)
     target_h = int(h * scale)
@@ -19,9 +18,18 @@ def build_svg():
     gray = cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY)
     b, g, r = smooth[:, :, 0], smooth[:, :, 1], smooth[:, :, 2]
 
-    # 1. Solid Black Comic Ink Lineart & Silhouettes
+    # 1. Solid Black Comic Ink Lineart
     black_mask = (r < 44) & (g < 50) & (b < 44)
     black_mask[target_h-4:target_h, :] = True
+
+    # EXCLUDE original "GRAVEYARD" letters from black mask so we can render "CHECKOUT"
+    # Arch letters zone: y ~ 95..152, x ~ 642..848
+    # Keep the lower iron arch bar (y >= 152) and upper filigree (y <= 95)
+    for y in range(95, 152):
+        for x in range(642, 848):
+            # The arch curves up in the center: y_curve ≈ 148 - 35 * (1 - ((x - 745)/105)**2)
+            # Mask out the letter bodies
+            black_mask[y, x] = False
 
     # 2. Lantern Hot Cores & Warm Yellows
     lantern_core_mask = (r > 175) & (g > 185) & (b > 75)
@@ -31,7 +39,7 @@ def build_svg():
     # 3. Shovel wood handle
     wood_shovel_mask = (r > 80) & (r > g + 12) & (r > b + 25) & (~black_mask)
 
-    # 4. Sky Zone (upper half)
+    # 4. Sky Zone
     roi_sky = np.zeros((target_h, target_w), dtype=bool)
     roi_sky[:int(target_h * 0.65), :] = True
 
@@ -48,7 +56,7 @@ def build_svg():
     grass_hi_mask = grass_mask & (gray >= 95)
     grass_dark_mask = grass_mask & (gray < 95)
 
-    # 7. Solid Ground Foundation (Prevents any sky bleed under mortar or cracks)
+    # 7. Solid Ground Foundation
     non_sky = (gray < 142) | (smooth[:, :, 2] < 70) | (smooth[:, :, 1] < 125)
     non_sky[int(target_h*0.55):, :] = True
     k_bridge = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
@@ -94,9 +102,12 @@ def build_svg():
     path_lantern_core = mask_to_svg_paths(lantern_core_mask, min_area=3, approx_eps=0.18)
     path_black_ink = mask_to_svg_paths(black_mask, min_area=3, approx_eps=0.18)
 
-    # Lantern locations scaled
     l_cx, l_cy = int(755 * scale), int(115 * scale)
     r_cx, r_cy = int(1165 * scale), int(185 * scale)
+
+    # Curved iron text path matching the arch contour
+    # Arch starts at (645, 155), peaks at (746, 114), ends at (848, 155)
+    arch_curve = "M 644,152 Q 746,106 848,152"
 
     svg_defs = f'''  <defs>
     <linearGradient id="graveyardSky" x1="0" y1="0" x2="0" y2="100%">
@@ -132,6 +143,8 @@ def build_svg():
       <feGaussianBlur stdDeviation="3.5" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
+
+    <path id="archTextCurve" d="{arch_curve}" fill="none" />
   </defs>'''
 
     elements = []
@@ -169,6 +182,15 @@ def build_svg():
     if path_black_ink:
         elements.append(f'  <!-- Layer 16: Razor-Sharp Comic Black Ink Lineart -->\n  <path d="{path_black_ink}" fill="#0A120E" fill-rule="evenodd" stroke="#0A120E" stroke-width="0.32" stroke-linejoin="round" />')
 
+    # Layer 17: Curved Iron "CHECKOUT" Lettering along the arch
+    arch_text_svg = '''  <!-- Layer 17: Gothic Iron Arch "CHECKOUT" Lettering -->
+  <text font-family="'Titan One', 'Archivo Black', Impact, sans-serif" font-weight="900" font-size="25" fill="#0A120E" stroke="#0A120E" stroke-width="0.8" letter-spacing="4px">
+    <textPath href="#archTextCurve" startOffset="50%" text-anchor="middle">
+      CHECKOUT
+    </textPath>
+  </text>'''
+    elements.append(arch_text_svg)
+
     header = f'<svg viewBox="0 0 {target_w} {target_h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">\n{svg_defs}\n'
     footer = '</svg>\n'
 
@@ -178,7 +200,7 @@ def build_svg():
     with open(out_file, 'w', encoding='utf-8') as f:
         f.write(full_svg)
 
-    print(f"Generated 16:9 Vector SVG from input image: {out_file} ({len(full_svg):,} bytes)")
+    print(f"Generated 16:9 Vector SVG with CHECKOUT: {out_file} ({len(full_svg):,} bytes)")
 
 if __name__ == '__main__':
     build_svg()
