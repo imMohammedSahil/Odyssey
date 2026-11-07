@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Space+Grotesk:wght@700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Titan+One&display=swap');
 
   :root {
     --void-black: #0D0D0D;
     --toxic-lime: #B8F414;
-    --toxic-lime-dark: #91DD05;
     --caution-yellow: #F9EC1B;
     --hot-pink: #F72678;
   }
@@ -103,14 +102,23 @@ const styles = `
     box-shadow: 10px 12px 0px rgba(0, 0, 0, 0.65);
     overflow: hidden;
     background: #000;
+    aspect-ratio: 1024 / 576;
   }
 
-  .rcpt-svg-canvas {
+  .rcpt-vector-art {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    aspect-ratio: 1024 / 576;
+    object-fit: contain;
     user-select: none;
+  }
+
+  .rcpt-dynamic-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
   }
 
   /* SVG DYNAMIC TEXT STYLING */
@@ -361,22 +369,21 @@ export default function ReceiptPage() {
           </div>
         </header>
 
-        {/* 100% ACCURATE VECTOR / ARTWORK STAGE */}
+        {/* 100% ACCURATE PURE VECTOR STAGE */}
         <main className="rcpt-stage">
+          {/* PURE VECTOR SVG BACKDROP (Zero raster images) */}
+          <img
+            src="/receipt-landscape.svg?v=4"
+            alt="Basecamp Receipt Pure Vector Landscape"
+            className="rcpt-vector-art"
+          />
+
+          {/* DYNAMIC SVG TEXT OVERLAY LOCKED TO EXACT BASELINES */}
           <svg
             viewBox="0 0 1024 576"
-            className="rcpt-svg-canvas"
+            className="rcpt-dynamic-overlay"
             preserveAspectRatio="xMidYMid meet"
           >
-            {/* 1. Base Comic Illustration Artwork */}
-            <image
-              href="/receipt-canvas.png"
-              width="1024"
-              height="576"
-              preserveAspectRatio="xMidYMid slice"
-            />
-
-            {/* 2. DYNAMIC ORDER SPECS VALUES (Locked to Exact Text Baselines) */}
             {/* Row 1: Order ID */}
             <text x="561" y="250" className="svg-text-mono">
               {receipt.orderId || "OD-784921"}
@@ -397,7 +404,7 @@ export default function ReceiptPage() {
               {itemsTotalCount}
             </text>
 
-            {/* 3. TOTAL PAID ON HOT PINK BRUSH BANNER */}
+            {/* Total Paid on Pink Banner */}
             <text
               x="506"
               y="402"
@@ -409,7 +416,7 @@ export default function ReceiptPage() {
               <tspan dx="20" className="svg-total-amount">₹{formattedTotal}</tspan>
             </text>
 
-            {/* 4. BARCODE NUMBER UNDERNEATH BARCODE */}
+            {/* Barcode Number below barcode */}
             <text
               x="492"
               y="497"
