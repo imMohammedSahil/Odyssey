@@ -700,11 +700,6 @@ export default function PaymentPage() {
               <span>←</span>
               <span>Back To Cart</span>
             </Link>
-
-            <div className="pay-secure-pill">
-              <span className="pay-secure-dot" />
-              <span>256-BIT SECURE</span>
-            </div>
           </div>
         </header>
 
