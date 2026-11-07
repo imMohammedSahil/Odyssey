@@ -498,7 +498,7 @@ const css = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: none;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
     outline: none;
     -webkit-tap-highlight-color: transparent;
   }
@@ -507,17 +507,15 @@ const css = `
     background: #FFF;
   }
 
-  .pf-tab-btn:active,
-  .pf-tab-btn:focus {
-    outline: none;
-    transform: none;
-    box-shadow: 4px 4px 0px var(--slime-green);
+  .pf-tab-btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0px var(--slime-green);
   }
 
   .pf-tab-btn.active {
     background: #FFFFFF;
-    transform: none;
-    box-shadow: 4px 4px 0px var(--slime-green);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--slime-green);
   }
 
   /* ── ORDERS MANIFEST LIST ── */
