@@ -479,37 +479,34 @@ const css = `
   }
 
   .pf-tab-btn {
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 3px solid var(--border-dark);
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 11.5px;
+    font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    padding: 10px 18px;
-    border-radius: 12px;
-    border: 3px solid var(--border-dark);
     background: var(--parchment);
     color: var(--void-black);
-    box-shadow: 0px 5px 0px var(--border-dark), 0px 6px 10px rgba(0,0,0,0.25);
+    box-shadow: var(--shadow-comic-sm);
     cursor: pointer;
-    position: relative;
-    top: 0;
-    transition: all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
   }
 
   .pf-tab-btn:hover {
-    top: 1px;
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
     background: #FFF;
-    box-shadow: 0px 4px 0px var(--border-dark), 0px 5px 8px rgba(0,0,0,0.2);
-  }
-
-  .pf-tab-btn:active {
-    top: 5px;
-    box-shadow: 0px 0px 0px var(--border-dark);
   }
 
   .pf-tab-btn.active {
     background: var(--hazard-gold);
-    top: 3px;
-    box-shadow: 0px 2px 0px var(--border-dark), inset 0px -2px 0px rgba(0,0,0,0.15);
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
   }
 
   /* ── ORDERS MANIFEST LIST ── */
