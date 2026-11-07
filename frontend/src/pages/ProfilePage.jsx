@@ -1148,7 +1148,7 @@ export default function ProfilePage() {
                   <div className="pf-stat-num" style={{ color: activeOrdersCount > 0 ? "var(--seafoam)" : "inherit" }}>
                     {activeOrdersCount}
                   </div>
-                  <div className="pf-stat-lbl">Active Jobs</div>
+                  <div className="pf-stat-lbl">Active Runs</div>
                 </div>
               </div>
             </div>
