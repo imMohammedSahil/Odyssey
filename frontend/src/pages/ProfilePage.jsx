@@ -1159,7 +1159,7 @@ export default function ProfilePage() {
                 SURVIVOR REQUISITION DOSSIER // FILE #084
               </div>
               <p className="pf-identity-lore-p">
-                A brilliant, soft-spoken college student who stepped up as our primary supply runner when the horde overrun campus. He risks everything scavenging paper, ink, and survivor manifests so communication stays alive.
+                A brilliant, soft-spoken college student who stepped up as our primary supply runner when the undead horde overran campus. Every night, he risks everything navigating quarantined halls to scavenge vital paper, printing ink, and evacuation maps so our lifeline stays alive.
               </p>
               <p className="pf-identity-lore-notice">
                 <strong>Record Notice:</strong> This photo captures him back when campus was peaceful. Following the tragedy that wiped out his circle, no recent photo exists—we only hope he is still holding out there.
