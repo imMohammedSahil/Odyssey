@@ -502,7 +502,7 @@ const css = `
   }
 
   .pf-tab-btn.active {
-    background: var(--brain-pink);
+    background: #FFFFFF;
   }
 
   /* ── ORDERS MANIFEST LIST ── */
