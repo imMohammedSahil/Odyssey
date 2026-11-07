@@ -236,11 +236,11 @@ const css = `
   /* ── TWO-ITEM PERFECT BOTTOM-LINE ALIGNMENT ── */
   @media (min-width: 821px) {
     .nb-cart-layout.nb-two-items .nb-summary-card {
-      padding: 23px 22px;
+      padding: 20px 22px;
     }
 
     .nb-cart-layout.nb-two-items .nb-summary-title {
-      margin-bottom: 14px;
+      margin-bottom: 13px;
       padding-bottom: 10px;
     }
 
