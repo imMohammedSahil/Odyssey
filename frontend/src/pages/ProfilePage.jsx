@@ -452,6 +452,10 @@ const css = `
   }
 
   /* ── SECTION HEADER & TABS ── */
+  .pf-orders-section {
+    padding-top: 18px;
+  }
+
   .pf-section-toolbar {
     display: flex;
     align-items: center;
