@@ -236,28 +236,28 @@ const css = `
   /* ── TWO-ITEM PERFECT BOTTOM-LINE ALIGNMENT ── */
   @media (min-width: 821px) {
     .nb-cart-layout.nb-two-items .nb-summary-card {
-      padding: 18px 22px;
+      padding: 23px 22px;
     }
 
     .nb-cart-layout.nb-two-items .nb-summary-title {
-      margin-bottom: 12px;
-      padding-bottom: 8px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
     }
 
     .nb-cart-layout.nb-two-items .nb-summary-dashed {
-      margin: 10px 0;
+      margin: 13px 0;
     }
 
     .nb-cart-layout.nb-two-items .nb-summary-total-row {
-      margin-bottom: 14px;
+      margin-bottom: 18px;
     }
 
     .nb-cart-layout.nb-two-items .nb-checkout-btn {
-      padding: 13px 20px;
+      padding: 15px 20px;
     }
 
     .nb-cart-layout.nb-two-items .nb-continue-link {
-      margin-top: 10px;
+      margin-top: 12px;
     }
   }
 
