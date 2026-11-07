@@ -814,21 +814,7 @@ export default function PaymentPage() {
           </div>
         </main>
 
-        {/* ── FOOTER SECURITY STRIP ── */}
-        <footer className="pay-footer-strip">
-          <div className="pay-footer-tag">
-            <span>🛡</span>
-            <span>Verified SSL Gateway</span>
-          </div>
-          <div className="pay-footer-tag">
-            <span>⚡</span>
-            <span>Zero Processing Fees</span>
-          </div>
-          <div className="pay-footer-tag">
-            <span>📜</span>
-            <span>Instant Campus Receipt</span>
-          </div>
-        </footer>
+
       </div>
     </>
   );
