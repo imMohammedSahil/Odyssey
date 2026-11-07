@@ -1,1025 +1,1334 @@
-// ProfilePage.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-  .pf-root {
+  :root {
+    --slime-green: #9DE869;
+    --void-black: #0D0D0D;
+    --seafoam: #45B89E;
+    --hazard-gold: #F7B919;
+    --brain-pink: #FF70A6;
+    --parchment: #F9F9F3;
+    --parchment-dark: #EDECE2;
+    --border-dark: #0D0D0D;
+    --shadow-comic: 4px 4px 0px #0D0D0D;
+    --shadow-comic-sm: 2.5px 2.5px 0px #0D0D0D;
+    --shadow-comic-lg: 6px 6px 0px #0D0D0D;
+  }
+
+  body {
+    background-color: var(--void-black);
+  }
+
+  .pf-page-root {
     min-height: 100vh;
-    background: #0d0d10;
-    font-family: 'Sora', sans-serif;
-    color: #ccc9dd;
-    padding: 40px 16px 80px;
+    background-color: var(--void-black);
+    color: var(--void-black);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    padding-bottom: 90px;
+    letter-spacing: 0.2px;
     position: relative;
   }
 
-  .pf-root::before {
-    content: '';
-    position: fixed;
-    top: -30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    height: 500px;
-    background: radial-gradient(ellipse, rgba(109,86,210,0.07) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .pf-inner {
+  /* ── TOP HEADER / NAVBAR ── */
+  .pf-header-wrapper {
+    background-color: var(--slime-green);
+    border-bottom: 4px solid var(--border-dark);
+    padding: 22px 2.5% 30px;
     position: relative;
-    z-index: 1;
-    max-width: 520px;
-    margin: 0 auto;
+    box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2);
   }
 
-  .pf-page-title {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #3d3b52;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-
-  /* Success toast */
-  .pf-toast {
-    background: rgba(72,199,142,0.1);
-    border: 1px solid rgba(72,199,142,0.25);
-    color: #48c78e;
-    padding: 11px 16px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    animation: fadeInDown 0.3s ease;
-  }
-
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Profile card */
-  .pf-profile-card {
-    background: #13131a;
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    padding: 32px 24px;
-    text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
-  }
-
-  .pf-avatar-wrap {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 16px;
-    cursor: pointer;
-  }
-
-  .pf-avatar {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(109,86,210,0.3);
-    transition: border-color 0.2s ease, transform 0.2s ease;
-    display: block;
-  }
-
-  .pf-avatar-wrap:hover .pf-avatar {
-    border-color: rgba(109,86,210,0.7);
-    transform: scale(1.03);
-  }
-
-  .pf-avatar-overlay {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: rgba(109,86,210,0.4);
+  .pf-navbar {
+    max-width: 1540px;
+    width: 100%;
+    margin: 0 auto 24px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  .pf-avatar-wrap:hover .pf-avatar-overlay { opacity: 1; }
-
-  .pf-avatar-overlay svg { width: 20px; height: 20px; color: #fff; }
-
-  .pf-display-name {
-    font-size: 20px;
-    font-weight: 600;
-    color: #e8e6f0;
-    letter-spacing: -0.02em;
-    margin-bottom: 4px;
-  }
-
-  .pf-username {
-    font-size: 13px;
-    color: #4e4c65;
-    font-family: 'JetBrains Mono', monospace;
-    margin-bottom: 20px;
-  }
-
-  .pf-edit-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 9px 20px;
-    background: rgba(109,86,210,0.1);
-    border: 1px solid rgba(109,86,210,0.25);
-    color: #9b7ff0;
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-  }
-
-  .pf-edit-btn:hover {
-    background: rgba(109,86,210,0.18);
-    border-color: rgba(109,86,210,0.45);
-    color: #b89af5;
-  }
-
-  .pf-edit-btn svg { width: 13px; height: 13px; }
-
-  /* Info card */
-  .pf-card {
-    background: #13131a;
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-
-  .pf-card-header {
-    padding: 14px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #3d3b52;
-  }
-
-  .pf-info-row {
-    display: flex;
-    align-items: flex-start;
     justify-content: space-between;
     gap: 16px;
-    padding: 12px 20px;
-    transition: background 0.15s ease;
+    flex-wrap: wrap;
   }
 
-  .pf-info-row:not(:last-child) {
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .pf-info-row:hover { background: rgba(255,255,255,0.015); }
-
-  .pf-info-key {
-    font-size: 12px;
-    color: #4e4c65;
-    flex-shrink: 0;
-    padding-top: 1px;
-    min-width: 110px;
-  }
-
-  .pf-info-val {
-    font-size: 13px;
-    color: #a8a5c0;
-    text-align: right;
-    font-family: 'JetBrains Mono', monospace;
-    word-break: break-all;
-    line-height: 1.5;
-  }
-
-  .pf-info-val.plain {
-    font-family: 'Sora', sans-serif;
-    font-size: 13.5px;
-    color: #ccc9dd;
-  }
-
-  /* Orders */
-  .pf-orders-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #3d3b52;
-    margin-bottom: 12px;
-    padding: 0 2px;
-  }
-
-  .pf-no-orders {
-    text-align: center;
-    font-size: 13px;
-    color: #3d3b52;
-    padding: 24px 0;
-  }
-
-  .pf-order-card {
-    background: #13131a;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-  }
-
-  .pf-order-header {
+  .pf-nav-left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 13px 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    gap: 12px;
+    gap: 14px;
   }
 
-  .pf-order-id {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: #5a5870;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .pf-order-date {
-    font-size: 11px;
-    color: #3d3b52;
-    flex-shrink: 0;
-  }
-
-  .pf-order-items {
-    padding: 4px 0;
-  }
-
-  .pf-order-item-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-  }
-
-  .pf-order-item-row:last-child { border-bottom: none; }
-
-  .pf-order-item-name { font-size: 13px; color: #b8b5cc; }
-  .pf-order-item-qty { font-size: 11px; color: #4e4c65; font-family: 'JetBrains Mono', monospace; }
-  .pf-order-item-price { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #8880c0; }
-
-  .pf-order-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 18px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    background: rgba(255,255,255,0.015);
-  }
-
-  .pf-order-total {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
-    font-weight: 500;
-    color: #f0eeff;
-  }
-
-  .pf-status-badge {
+  .pf-back-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .pf-status-badge.pending {
-    background: rgba(255,152,0,0.1);
-    border: 1px solid rgba(255,152,0,0.22);
-    color: #ffa726;
-  }
-
-  .pf-status-badge.printing {
-    background: rgba(25,118,210,0.1);
-    border: 1px solid rgba(25,118,210,0.22);
-    color: #42a5f5;
-  }
-
-  .pf-status-badge.ready {
-    background: rgba(72,199,142,0.1);
-    border: 1px solid rgba(72,199,142,0.22);
-    color: #48c78e;
-  }
-
-  .pf-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-
-  /* Modal overlay */
-  .pf-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.75);
-    display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 20px;
-    backdrop-filter: blur(4px);
-  }
-
-  .pf-modal {
-    background: #16161f;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 18px;
-    width: 100%;
-    max-width: 380px;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-    overflow: hidden;
-    animation: modalPop 0.25s cubic-bezier(0.22,1,0.36,1);
-  }
-
-  @keyframes modalPop {
-    from { opacity: 0; transform: scale(0.95) translateY(10px); }
-    to   { opacity: 1; transform: scale(1) translateY(0); }
-  }
-
-  .pf-modal-header {
-    padding: 20px 22px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .pf-modal-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: #e8e6f0;
-    letter-spacing: -0.01em;
-  }
-
-  .pf-modal-close {
-    background: rgba(255,255,255,0.06);
-    border: none;
-    border-radius: 6px;
-    color: #5a5870;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-
-  .pf-modal-close:hover { background: rgba(255,255,255,0.1); color: #9490b8; }
-  .pf-modal-close svg { width: 14px; height: 14px; }
-
-  .pf-modal-body {
-    padding: 20px 22px;
-    max-height: 70vh;
-    overflow-y: auto;
-  }
-
-  /* Form */
-  .pf-form-group { margin-bottom: 14px; }
-
-  .pf-label {
-    display: block;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
+    gap: 8px;
+    height: 42px;
+    padding: 0 16px;
+    background: var(--parchment);
+    color: var(--void-black);
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
     text-transform: uppercase;
-    color: #4e4c65;
-    margin-bottom: 6px;
-  }
-
-  .pf-input, .pf-textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 9px;
-    padding: 10px 13px;
-    font-family: 'Sora', sans-serif;
-    font-size: 13.5px;
-    color: #ccc9dd;
-    outline: none;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-
-  .pf-input:focus, .pf-textarea:focus {
-    border-color: rgba(109,86,210,0.5);
-    background: rgba(109,86,210,0.04);
-  }
-
-  .pf-textarea { min-height: 80px; resize: vertical; }
-
-  .pf-modal-actions {
-    display: flex;
-    gap: 10px;
-    padding: 16px 22px 20px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .pf-save-btn {
-    flex: 1;
-    padding: 11px 18px;
-    background: linear-gradient(135deg, #6d56d2, #5a44bb);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
+    text-decoration: none;
+    border: 3px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: var(--shadow-comic-sm);
     cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-size: 13.5px;
-    font-weight: 600;
-    box-shadow: 0 4px 16px rgba(109,86,210,0.28);
-    transition: filter 0.15s ease, transform 0.15s ease;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
-  .pf-save-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
-  .pf-save-btn:active { transform: translateY(1px); }
-
-  .pf-cancel-btn {
-    padding: 11px 18px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-size: 13.5px;
-    color: #5a5870;
-    transition: background 0.15s ease, color 0.15s ease;
+  .pf-back-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
   }
 
-  .pf-cancel-btn:hover { background: rgba(255,255,255,0.08); color: #9490b8; }
-
-  /* Photo modal specific */
-  .pf-photo-action-btn {
-    width: 100%;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    background: rgba(109,86,210,0.08);
-    border: 1px solid rgba(109,86,210,0.2);
-    border-radius: 10px;
-    color: #9b7ff0;
-    cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-size: 13.5px;
-    font-weight: 500;
+  .pf-nav-brand {
     display: flex;
     align-items: center;
-    gap: 9px;
-    transition: background 0.15s ease, border-color 0.15s ease;
+    gap: 10px;
+    text-decoration: none;
   }
 
-  .pf-photo-action-btn:hover {
-    background: rgba(109,86,210,0.15);
-    border-color: rgba(109,86,210,0.38);
-  }
-
-  .pf-photo-action-btn svg { width: 15px; height: 15px; }
-
-  .pf-large-photo {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 16px;
-    border: 2px solid rgba(109,86,210,0.3);
-  }
-
-  .pf-file-input-label {
+  .pf-nav-logo {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 22px;
+    color: var(--void-black);
+    letter-spacing: 1.2px;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 14px;
-    background: rgba(255,255,255,0.04);
-    border: 1px dashed rgba(255,255,255,0.1);
-    border-radius: 10px;
-    cursor: pointer;
+  }
+
+  .pf-nav-badge {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 2px solid var(--border-dark);
+    box-shadow: 2px 2px 0px var(--border-dark);
+  }
+
+  .pf-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pf-nav-btn {
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 8px;
+    border: 3px solid var(--border-dark);
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
-    color: #5a5870;
-    margin-bottom: 12px;
-    transition: border-color 0.15s ease, color 0.15s ease;
-  }
-
-  .pf-file-input-label:hover { border-color: rgba(109,86,210,0.4); color: #9490b8; }
-  .pf-file-input-label input { display: none; }
-
-  .pf-upload-btn {
-    width: 100%;
-    padding: 11px;
-    background: linear-gradient(135deg, #6d56d2, #5a44bb);
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    font-family: 'Sora', sans-serif;
-    font-size: 13.5px;
-    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: var(--shadow-comic-sm);
     cursor: pointer;
-    transition: filter 0.15s ease;
-    box-shadow: 0 4px 16px rgba(109,86,210,0.28);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
-  .pf-upload-btn:hover { filter: brightness(1.08); }
+  .pf-nav-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+  }
 
-  /* Viewer overlay */
-  .pf-viewer-overlay {
-    cursor: zoom-out;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.93);
+  .pf-nav-cart {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
+  .pf-nav-logout {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+  }
+
+  /* ── HERO BANNER TITLE ── */
+  .pf-banner-content {
+    max-width: 1540px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .pf-banner-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .pf-page-heading {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(28px, 4.2vw, 46px);
+    text-transform: uppercase;
+    color: var(--brain-pink);
+    -webkit-text-stroke: 2.5px var(--border-dark);
+    paint-order: stroke fill;
+    text-shadow: 4px 4px 0px var(--border-dark);
+    line-height: 1.1;
+    letter-spacing: 1.5px;
+  }
+
+  .pf-page-subtext {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--void-black);
+  }
+
+  .pf-banner-counter {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    background: var(--parchment);
+    color: var(--void-black);
+    font-size: 13px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 3px solid var(--border-dark);
+    box-shadow: var(--shadow-comic-sm);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ── MAIN CONTENT CONTAINER ── */
+  .pf-container {
+    max-width: 1540px;
+    width: 100%;
+    margin: 36px auto 0;
+    padding: 0 2.5%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* ── CADET IDENTITY CARD ── */
+  .pf-identity-card {
+    background: var(--parchment);
+    border: 3.5px solid var(--border-dark);
+    border-radius: 20px;
+    box-shadow: var(--shadow-comic-lg);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .pf-identity-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    border-bottom: 2.5px dashed rgba(13, 13, 13, 0.2);
+    padding-bottom: 22px;
+  }
+
+  .pf-identity-profile-summary {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .pf-avatar-box {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    border-radius: 16px;
+    border: 3.5px solid var(--border-dark);
+    box-shadow: var(--shadow-comic-sm);
+    background: var(--hazard-gold);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pf-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pf-avatar-fallback {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 34px;
+    color: var(--void-black);
+    text-transform: uppercase;
+  }
+
+  .pf-avatar-online-dot {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--slime-green);
+    border: 3px solid var(--border-dark);
+  }
+
+  .pf-identity-title-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pf-identity-name {
+    font-family: 'Bangers', cursive, sans-serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: var(--void-black);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .pf-identity-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .pf-chip-badge {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 2px solid var(--border-dark);
+    box-shadow: 2px 2px 0px var(--border-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .pf-chip-lime {
+    background: var(--slime-green);
+    color: var(--void-black);
+  }
+
+  .pf-chip-gold {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+  }
+
+  .pf-chip-pink {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
+  /* Stat Summary Blocks */
+  .pf-identity-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pf-stat-box {
+    background: var(--parchment-dark);
+    border: 2.5px solid var(--border-dark);
+    border-radius: 12px;
+    box-shadow: var(--shadow-comic-sm);
+    padding: 12px 20px;
+    text-align: center;
+    min-width: 110px;
+  }
+
+  .pf-stat-num {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 24px;
+    color: var(--void-black);
+    line-height: 1.1;
+  }
+
+  .pf-stat-lbl {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #555;
+    margin-top: 4px;
+  }
+
+  /* Dossier Narrative Box */
+  .pf-identity-lore {
+    background: var(--parchment-dark);
+    border: 2.5px solid var(--border-dark);
+    box-shadow: var(--shadow-comic-sm);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pf-identity-lore-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #555;
+  }
+
+  .pf-identity-lore-header::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: rgba(13, 13, 13, 0.15);
+  }
+
+  .pf-identity-lore-p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1a1a1a;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .pf-identity-lore-notice {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2b3a20;
+    border-left: 3.5px solid var(--slime-green);
+    padding: 8px 14px;
+    background: rgba(157, 232, 105, 0.16);
+    border-radius: 0 8px 8px 0;
+    margin: 0;
+  }
+
+  .pf-identity-lore-notice strong {
+    color: #0d0d0d;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+  }
+
+  @media (max-width: 860px) {
+    .pf-identity-card {
+      padding: 22px 18px;
+    }
+    .pf-identity-header-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .pf-identity-stats {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .pf-stat-box {
+      flex: 1;
+      min-width: 85px;
+      padding: 10px 12px;
+    }
+  }
+
+  /* ── SECTION HEADER & TABS ── */
+  .pf-section-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .pf-section-title {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: var(--parchment);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pf-filter-tabs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pf-tab-btn {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 3px solid var(--border-dark);
+    background: var(--parchment);
+    color: var(--void-black);
+    box-shadow: var(--shadow-comic-sm);
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+  }
+
+  .pf-tab-btn:hover {
+    transform: translate(1.5px, 1.5px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+  }
+
+  .pf-tab-btn.active {
+    background: var(--hazard-gold);
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+  }
+
+  /* ── ORDERS MANIFEST LIST ── */
+  .pf-orders-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pf-order-card {
+    background: var(--parchment);
+    border: 3.5px solid var(--border-dark);
+    border-radius: 16px;
+    box-shadow: var(--shadow-comic);
+    overflow: hidden;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  .pf-order-card:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-comic-lg);
+  }
+
+  /* Order Card Header */
+  .pf-order-card-header {
+    background: var(--parchment-dark);
+    border-bottom: 3px solid var(--border-dark);
+    padding: 16px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .pf-order-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .pf-order-id-badge {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    background: var(--void-black);
+    color: var(--parchment);
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 2px solid var(--border-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pf-order-date {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #4b4b4b;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Status Badges */
+  .pf-status-badge {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 2.5px solid var(--border-dark);
+    box-shadow: 2px 2px 0px var(--border-dark);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pf-status-badge.ready {
+    background: var(--slime-green);
+    color: var(--void-black);
+  }
+
+  .pf-status-badge.printing {
+    background: var(--seafoam);
+    color: var(--void-black);
+  }
+
+  .pf-status-badge.pending {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+  }
+
+  .pf-status-badge.other {
+    background: #E0E0E0;
+    color: var(--void-black);
+  }
+
+  .pf-status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--void-black);
+  }
+
+  /* Order Items Body */
+  .pf-order-items-table {
+    padding: 16px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pf-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 14px;
+    background: #FFFFFF;
+    border: 2.5px solid var(--border-dark);
+    border-radius: 10px;
+  }
+
+  .pf-item-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+
+  .pf-item-icon-tag {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: var(--slime-green);
+    border: 2px solid var(--border-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .pf-item-name {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 14.5px;
+    color: var(--void-black);
+    line-height: 1.2;
+  }
+
+  .pf-item-qty-pill {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    background: var(--parchment-dark);
+    color: var(--void-black);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border-dark);
+    margin-left: 8px;
+    white-space: nowrap;
+  }
+
+  .pf-item-pricing {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pf-item-total {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    color: var(--void-black);
+    white-space: nowrap;
+  }
+
+  /* Order Footer */
+  .pf-order-card-footer {
+    background: var(--parchment-dark);
+    border-top: 3px solid var(--border-dark);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .pf-order-total-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pf-total-label {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #4b4b4b;
+  }
+
+  .pf-total-val {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 20px;
+    color: var(--void-black);
+  }
+
+  .pf-order-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pf-btn-receipt {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    background: var(--brain-pink);
+    color: var(--void-black);
+    border: 2.5px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: var(--shadow-comic-sm);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .pf-btn-receipt:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+  }
+
+  .pf-btn-reorder {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    background: var(--hazard-gold);
+    color: var(--void-black);
+    border: 2.5px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: var(--shadow-comic-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .pf-btn-reorder:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+  }
+
+  /* ── EMPTY ORDERS STATE ── */
+  .pf-empty-card {
+    background: var(--parchment);
+    border: 3.5px solid var(--border-dark);
+    border-radius: 18px;
+    box-shadow: var(--shadow-comic-lg);
+    padding: 56px 32px 46px;
+    text-align: center;
+    max-width: 580px;
+    margin: 20px auto;
+  }
+
+  .pf-empty-mascot {
+    width: 220px;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    display: inline-block;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .pf-empty-title {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 26px;
+    color: var(--void-black);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .pf-empty-desc {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4b4b4b;
+    max-width: 440px;
+    margin: 0 auto 28px;
+    line-height: 1.5;
+  }
+
+  .pf-empty-actions {
     display: flex;
     justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .pf-empty-btn {
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border: 3px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: var(--shadow-comic-sm);
+    text-decoration: none;
+    display: inline-flex;
     align-items: center;
-    z-index: 9999;
-    cursor: zoom-out;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
-  .pf-viewer-image {
-    max-width: 90%;
-    max-height: 90%;
+  .pf-empty-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+  }
+
+  .pf-empty-btn-stationery {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
+  .pf-empty-btn-print {
+    background: var(--slime-green);
+    color: var(--void-black);
+  }
+
+  /* ── TOAST NOTIFICATION ── */
+  .pf-toast {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--slime-green);
+    color: var(--void-black);
+    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    padding: 14px 22px;
+    border: 3.5px solid var(--border-dark);
     border-radius: 12px;
-    box-shadow: 0 10px 60px rgba(0,0,0,0.7);
+    box-shadow: var(--shadow-comic);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    animation: toastSlideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   }
 
-  @media (max-width: 520px) {
-    .pf-root { padding: 24px 12px 60px; }
-    .pf-profile-card { padding: 24px 16px; }
+  @keyframes toastSlideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 `;
 
-function getStatusClass(status) {
+function getStatusBadgeClass(status) {
   if (!status) return "pending";
-  const s = status.toUpperCase();
-  if (s === "READY") return "ready";
-  if (s === "PRINTING") return "printing";
-  return "pending";
+  const s = String(status).toUpperCase();
+  if (s === "READY" || s === "COMPLETED") return "ready";
+  if (s === "PRINTING" || s === "PROCESSING") return "printing";
+  if (s === "PENDING" || s === "AWAITING PAYMENT") return "pending";
+  return "other";
+}
+
+function formatStatusText(status) {
+  if (!status) return "PENDING";
+  return String(status).toUpperCase();
 }
 
 export default function ProfilePage() {
-  const [username, setUsername] = useState("");
-  const [orders, setOrders] = useState([]);
-  const [photo, setPhoto] = useState("");
-  const [file, setFile] = useState(null);
-
-  const [showPhotoModal, setShowPhotoModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-
-  const [phone, setPhone] = useState("");
-  const [collegeEmail, setCollegeEmail] = useState("");
-  const [department, setDepartment] = useState("");
-  const [year, setYear] = useState("");
-  const [section, setSection] = useState("");
-  const [bio, setBio] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
-  const [showViewer, setShowViewer] = useState(false);
   const navigate = useNavigate();
-  const [photoMode, setPhotoMode] = useState("");
+  const { cartItems, addToCart } = useCart();
 
-  useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
-    if (storedUser) setUsername(storedUser);
+  const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("PETER PARKER");
+  const [photo, setPhoto] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [activeTab, setActiveTab] = useState("ALL"); // "ALL", "ACTIVE", "READY"
+  const [toastMsg, setToastMsg] = useState("");
 
-    const storedOrders =
-      JSON.parse(localStorage.getItem("odysseyOrders")) || [];
-    setOrders(storedOrders.reverse());
+  const cartCount = (cartItems || []).reduce(
+    (sum, item) => sum + (Number(item.quantity) || 1),
+    0
+  );
 
-    const loadProfile = async () => {
-      const studentId = sessionStorage.getItem("user");
-
-      const res = await axios.get(
-        `http://localhost:5000/api/profile/${studentId}`
-      );
-
-      if (res.data?.profilePhoto) {
-        setPhoto("http://localhost:5000" + res.data.profilePhoto);
-      }
-
-      if (res.data) {
-        setPhone(res.data.phone || "");
-        setCollegeEmail(res.data.collegeEmail || "");
-        setDepartment(res.data.department || "");
-        setYear(res.data.year || "");
-        setSection(res.data.section || "");
-        setBio(res.data.bio || "");
-      }
-    };
-
-    loadProfile();
-  }, []);
-
-  useEffect(() => {
-    const loadPhoto = async () => {
-      const studentId = sessionStorage.getItem("user");
-
-      const res = await fetch(
-        `http://localhost:5000/api/profile/${studentId}`
-      );
-
-      const data = await res.json();
-
-      if (data.profilePhoto) {
-        setPhoto("http://localhost:5000" + data.profilePhoto);
-      }
-    };
-
-    loadPhoto();
-  }, []);
-
-  useEffect(() => {
-    const handleBack = () => {
-      if (showViewer) {
-        setShowViewer(false);
-      } else if (showPhotoModal) {
-        setShowPhotoModal(false);
-      }
-    };
-
-    window.addEventListener("popstate", handleBack);
-
-    return () => window.removeEventListener("popstate", handleBack);
-  }, [showViewer, showPhotoModal, navigate]);
-
-  const uploadPhoto = async () => {
-  if (!file) return;
-
-  try {
-    const studentId = sessionStorage.getItem("user");
-    const formData = new FormData();
-    formData.append("photo", file);
-    formData.append("studentId", studentId);
-
-    const res = await axios.post(
-      "http://localhost:5000/api/profile/upload",
-      formData,
-      { timeout: 15000 }   // prevents freeze
-    );
-
-    setPhoto(
-      "http://localhost:5000" +
-        res.data.photoPath +
-        "?t=" +
-        new Date().getTime()
-    );
-
-    setShowPhotoModal(false);
-    setPhotoMode("");
-    setFile(null);
-
-  } catch (err) {
-    console.error(err);
-    alert("Upload failed or image too large");
-  }
-};
-
-  const saveProfile = async () => {
-    const studentId = sessionStorage.getItem("user");
-
-    await axios.put("http://localhost:5000/api/profile/update", {
-      studentId,
-      phone,
-      collegeEmail,
-      department,
-      year,
-      section,
-      bio
-    });
-
-    setSuccessMsg("Profile updated successfully!");
-    setTimeout(() => setSuccessMsg(""), 2000);
-    setShowEditModal(false);
+  const showToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3000);
   };
 
-  const maskPassword = () =>
-    username ? username.substring(0, 2) + "******" : "";
+  useEffect(() => {
+    // 1. Resolve user profile info
+    const storedUser = sessionStorage.getItem("user") || "peter.parker@empire.edu";
+    setUsername(storedUser);
 
-  const displayName = "Mohammed Sahil";
+    // If storedUser looks like an email or name
+    if (storedUser.includes("@")) {
+      setDisplayName("PETER PARKER");
+    } else if (storedUser) {
+      setDisplayName(storedUser);
+    }
+
+    // 2. Load stored orders from localStorage
+    const localOrders = JSON.parse(localStorage.getItem("odysseyOrders")) || [];
+
+    // 3. Try to sync with server orders
+    const fetchServerOrders = async () => {
+      try {
+        const studentId = sessionStorage.getItem("user");
+        if (studentId) {
+          const profileRes = await axios.get(
+            `http://localhost:5000/api/profile/${studentId}`
+          );
+          if (profileRes.data?.profilePhoto) {
+            setPhoto("http://localhost:5000" + profileRes.data.profilePhoto);
+          }
+          if (profileRes.data?.name) {
+            setDisplayName(profileRes.data.name);
+          }
+        }
+
+        const ordersRes = await axios.get("http://localhost:5000/api/orders");
+        if (Array.isArray(ordersRes.data)) {
+          // Normalize server orders
+          const normalizedServerOrders = ordersRes.data.map((o) => ({
+            orderId: o.orderNumber || o._id,
+            mongoId: o._id,
+            date: o.createdAt
+              ? new Date(o.createdAt).toLocaleString("en-IN", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                })
+              : "Recent",
+            items:
+              (o.stationeryItems && o.stationeryItems.length > 0)
+                ? o.stationeryItems.map((si) => ({
+                    name: si.name,
+                    quantity: si.quantity || 1,
+                    price: 25, // default fallback price if not in DB
+                  }))
+                : (o.documents && o.documents.length > 0)
+                ? o.documents.map((doc) => ({
+                    name: `Print: ${doc.originalName || "Document"}`,
+                    quantity: doc.copies || 1,
+                    price: doc.color ? 10 : 3,
+                    isDocument: true,
+                  }))
+                : [],
+            total: o.total || (o.stationeryItems?.length ? o.stationeryItems.reduce((acc, it) => acc + (it.quantity || 1) * 25, 0) : 40),
+            status: (o.status || "PENDING").toUpperCase(),
+          }));
+
+          // Merge server orders with localOrders preventing duplicates
+          const merged = [...localOrders];
+          normalizedServerOrders.forEach((so) => {
+            const exists = merged.some(
+              (lo) =>
+                lo.orderId === so.orderId ||
+                lo.orderId === so.mongoId ||
+                lo._id === so.mongoId
+            );
+            if (!exists) {
+              merged.push(so);
+            }
+          });
+
+          // Sort descending by date if available
+          setOrders(merged.reverse());
+          return;
+        }
+      } catch (err) {
+        console.warn("Could not fetch remote orders, using local:", err.message);
+      }
+
+      setOrders(localOrders.slice().reverse());
+    };
+
+    fetchServerOrders();
+  }, []);
+
+  // Filter orders according to active tab
+  const filteredOrders = orders.filter((order) => {
+    const s = String(order.status || "").toUpperCase();
+    if (activeTab === "ACTIVE") {
+      return s === "PRINTING" || s === "PROCESSING" || s === "PENDING" || s === "AWAITING PAYMENT";
+    }
+    if (activeTab === "READY") {
+      return s === "READY" || s === "COMPLETED";
+    }
+    return true;
+  });
+
+  // Calculate high-level stats
+  const totalOrdersCount = orders.length;
+  const totalSpent = orders.reduce((sum, ord) => sum + (Number(ord.total) || 0), 0);
+  const activeOrdersCount = orders.filter((o) => {
+    const s = String(o.status || "").toUpperCase();
+    return s === "PRINTING" || s === "PROCESSING" || s === "PENDING" || s === "AWAITING PAYMENT";
+  }).length;
+
+  // View Receipt handler
+  const handleViewReceipt = (order) => {
+    localStorage.setItem(
+      "odysseyReceipt",
+      JSON.stringify({
+        orderId: order.orderId || order._id || "OD-ONLINE",
+        items: order.items || [],
+        total: order.total || 0,
+        date: order.date || new Date().toLocaleString(),
+        status: order.status || "READY",
+      })
+    );
+    navigate("/receipt");
+  };
+
+  // Re-order items
+  const handleReorder = (order) => {
+    if (!order.items || order.items.length === 0) {
+      showToast("No items to re-order!");
+      return;
+    }
+    order.items.forEach((item) => {
+      addToCart({
+        name: item.name,
+        price: item.price || 20,
+        quantity: item.quantity || 1,
+      });
+    });
+    showToast(`Re-ordered ${order.items.length} items to cart!`);
+  };
 
   return (
     <>
       <style>{css}</style>
-      <div className="pf-root">
-        <div className="pf-inner">
-          <p className="pf-page-title">My Profile</p>
-
-          {successMsg && (
-            <div className="pf-toast">{successMsg}</div>
-          )}
-
-          {/* PROFILE CARD */}
-          <div className="pf-profile-card">
-            <div
-              className="pf-avatar-wrap"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowPhotoModal(true);
-                window.history.pushState({ modal: "photo" }, "");
-              }}
-            >
-              <img
-                src={photo || "https://via.placeholder.com/150"}
-                alt="profile"
-                className="pf-avatar"
-              />
-              <div className="pf-avatar-overlay">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
-                  <circle cx="12" cy="13" r="4"/>
-                </svg>
-              </div>
+      <div className="pf-page-root">
+        {/* TOP SLIME HEADER */}
+        <header className="pf-header-wrapper">
+          <nav className="pf-navbar">
+            <div className="pf-nav-left">
+              <button
+                className="pf-back-btn"
+                onClick={() => navigate("/student")}
+              >
+                ← BACK TO BASECAMP
+              </button>
             </div>
 
-            <p className="pf-display-name">{displayName}</p>
-            <p className="pf-username">@{username}</p>
+            <div className="pf-nav-actions">
+              <button
+                className="pf-nav-btn pf-nav-cart"
+                onClick={() => navigate("/cart")}
+              >
+                CART ({cartCount})
+              </button>
 
-            <button
-              className="pf-edit-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowEditModal(true);
-                window.history.pushState({ modal: "edit" }, "");
-              }}
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-              </svg>
-              Edit Profile
-            </button>
+              <button
+                className="pf-nav-btn pf-nav-logout"
+                onClick={() => {
+                  sessionStorage.clear();
+                  window.location.replace("/");
+                }}
+              >
+                LOGOUT
+              </button>
+            </div>
+          </nav>
+
+          {/* BANNER CONTENT */}
+          <div className="pf-banner-content">
+            <div className="pf-banner-titles">
+              <h1 className="pf-page-heading">STUDENT PROFILE & ORDER VAULT</h1>
+              <p className="pf-page-subtext">
+                Live dispatch records, stationery requisitions, and print run manifests
+              </p>
+            </div>
           </div>
+        </header>
 
-          {/* ACCOUNT INFO */}
-          <div className="pf-card">
-            <div className="pf-card-header">Account Information</div>
-
-            <div className="pf-info-row">
-              <span className="pf-info-key">Full Name</span>
-              <span className="pf-info-val plain">{displayName}</span>
-            </div>
-            <div className="pf-info-row">
-              <span className="pf-info-key">Username</span>
-              <span className="pf-info-val">@{username}</span>
-            </div>
-            <div className="pf-info-row">
-              <span className="pf-info-key">Password</span>
-              <span className="pf-info-val">{maskPassword()}</span>
-            </div>
-            {phone && (
-              <div className="pf-info-row">
-                <span className="pf-info-key">Phone</span>
-                <span className="pf-info-val plain">{phone}</span>
-              </div>
-            )}
-            {collegeEmail && (
-              <div className="pf-info-row">
-                <span className="pf-info-key">College Email</span>
-                <span className="pf-info-val">{collegeEmail}</span>
-              </div>
-            )}
-            {department && (
-              <div className="pf-info-row">
-                <span className="pf-info-key">Department</span>
-                <span className="pf-info-val plain">{department}</span>
-              </div>
-            )}
-            {year && (
-              <div className="pf-info-row">
-                <span className="pf-info-key">Year</span>
-                <span className="pf-info-val plain">{year}</span>
-              </div>
-            )}
-            {section && (
-              <div className="pf-info-row">
-                <span className="pf-info-key">Section</span>
-                <span className="pf-info-val plain">{section}</span>
-              </div>
-            )}
-            {bio && (
-              <div className="pf-info-row">
-                <span className="pf-info-key">Bio</span>
-                <span className="pf-info-val plain" style={{ fontFamily: "'Sora', sans-serif", textAlign: "right" }}>{bio}</span>
-              </div>
-            )}
-          </div>
-
-          {/* ORDERS */}
-          <p className="pf-orders-label">Order History</p>
-
-          {orders.length === 0 ? (
-            <p className="pf-no-orders">No orders yet</p>
-          ) : (
-            orders.map((order, index) => (
-              <div key={index} className="pf-order-card">
-                <div className="pf-order-header">
-                  <span className="pf-order-id">#{order.orderId}</span>
-                  <span className="pf-order-date">{order.date}</span>
-                </div>
-
-                <div className="pf-order-items">
-                  {order.items?.map((item, i) => (
-                    <div key={i} className="pf-order-item-row">
-                      <div>
-                        <span className="pf-order-item-name">{item.name}</span>
-                        <span className="pf-order-item-qty" style={{ display: "block", marginTop: 2 }}>× {item.quantity}</span>
-                      </div>
-                      <span className="pf-order-item-price">₹{item.price * item.quantity}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pf-order-footer">
-                  <span className="pf-order-total">₹{order.total}</span>
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      color:
-                        order.status === "READY"
-                          ? "green"
-                          : order.status === "PRINTING"
-                          ? "#1976d2"
-                          : "#ff9800"
+        {/* MAIN BODY CONTAINER */}
+        <main className="pf-container">
+          {/* 1. COMPACT CADET IDENTITY CARD (NO EDIT PHOTO, NO PASSWORD FORM) */}
+          <section className="pf-identity-card">
+            {/* Top row: Avatar + Name/Badges on left, Stats on right */}
+            <div className="pf-identity-header-row">
+              <div className="pf-identity-profile-summary">
+                <div className="pf-avatar-box">
+                  <img
+                    src={photo || "/avatar.jpg"}
+                    alt="Student Profile"
+                    className="pf-avatar-img"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "block";
                     }}
-                  >
-                    <span className={`pf-status-badge ${getStatusClass(order.status)}`}>
-                      <span className="pf-status-dot"/>
-                      {order.status || "PENDING"}
-                    </span>
+                  />
+                  <span className="pf-avatar-fallback" style={{ display: "none" }}>
+                    {displayName.charAt(0)}
                   </span>
+                  <div className="pf-avatar-online-dot" title="Operative Online" />
                 </div>
-              </div>
-            ))
-          )}
-        </div>
 
-        {/* EDIT PROFILE MODAL */}
-        {showEditModal && (
-          <div
-            className="pf-modal-overlay"
-            onClick={() => setShowEditModal(false)}
-          >
-            <div
-              className="pf-modal"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="pf-modal-header">
-                <span className="pf-modal-title">Edit Profile</span>
-                <button className="pf-modal-close" onClick={() => setShowEditModal(false)}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
-                </button>
-              </div>
-
-              <div className="pf-modal-body">
-                <div className="pf-form-group">
-                  <label className="pf-label">Phone</label>
-                  <input className="pf-input" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                </div>
-                <div className="pf-form-group">
-                  <label className="pf-label">College Email</label>
-                  <input className="pf-input" value={collegeEmail} onChange={(e) => setCollegeEmail(e.target.value)} />
-                </div>
-                <div className="pf-form-group">
-                  <label className="pf-label">Department</label>
-                  <input className="pf-input" value={department} onChange={(e) => setDepartment(e.target.value)} />
-                </div>
-                <div className="pf-form-group">
-                  <label className="pf-label">Year</label>
-                  <input className="pf-input" value={year} onChange={(e) => setYear(e.target.value)} />
-                </div>
-                <div className="pf-form-group">
-                  <label className="pf-label">Section</label>
-                  <input className="pf-input" value={section} onChange={(e) => setSection(e.target.value)} />
-                </div>
-                <div className="pf-form-group">
-                  <label className="pf-label">Bio</label>
-                  <textarea className="pf-textarea" value={bio} onChange={(e) => setBio(e.target.value)} />
+                <div className="pf-identity-title-area">
+                  <h2 className="pf-identity-name">{displayName}</h2>
+                  <div className="pf-identity-badges">
+                    <span className="pf-chip-badge pf-chip-lime">
+                      UNINFECTED
+                    </span>
+                    <span className="pf-chip-badge pf-chip-gold">
+                      UNCAUGHT
+                    </span>
+                    <span className="pf-chip-badge pf-chip-pink">
+                      UNBROKEN
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="pf-modal-actions">
-                <button className="pf-save-btn" onClick={saveProfile}>Save Changes</button>
-                <button className="pf-cancel-btn" onClick={() => setShowEditModal(false)}>Cancel</button>
+              {/* Quick Stat Blocks aligned on the right */}
+              <div className="pf-identity-stats">
+                <div className="pf-stat-box">
+                  <div className="pf-stat-num">{totalOrdersCount}</div>
+                  <div className="pf-stat-lbl">Orders Placed</div>
+                </div>
+
+                <div className="pf-stat-box">
+                  <div className="pf-stat-num">₹{totalSpent}</div>
+                  <div className="pf-stat-lbl">Total Spent</div>
+                </div>
+
+                <div className="pf-stat-box">
+                  <div className="pf-stat-num" style={{ color: activeOrdersCount > 0 ? "var(--seafoam)" : "inherit" }}>
+                    {activeOrdersCount}
+                  </div>
+                  <div className="pf-stat-lbl">Active Jobs</div>
+                </div>
               </div>
             </div>
-          </div>
-        )}
 
-               {/* PHOTO MODAL */}
-        {showPhotoModal && (
-          <div
-            className="pf-modal-overlay"
-            onMouseDown={(e) => {
-              if (e.target.classList.contains("pf-modal-overlay")) {
-                setShowPhotoModal(false);
-                setPhotoMode("");
-              }
-            }}
-          >
-            <div
-              className="pf-modal"
-              onMouseDown={(e) => e.stopPropagation()}
-            >
-              <div className="pf-modal-header">
-                <span className="pf-modal-title">Profile Photo</span>
+            {/* Bottom: Full-width Narrative & Archive Notice */}
+            <div className="pf-identity-lore">
+              <div className="pf-identity-lore-header">
+                SURVIVOR REQUISITION DOSSIER // FILE #084
+              </div>
+              <p className="pf-identity-lore-p">
+                A brilliant, soft-spoken college student who stepped up as our primary supply runner when the horde overrun campus. He risks everything scavenging paper, ink, and survivor manifests so communication stays alive.
+              </p>
+              <p className="pf-identity-lore-notice">
+                <strong>Record Notice:</strong> This photo captures him back when campus was peaceful. Following the tragedy that wiped out his circle, no recent photo exists—we only hope he is still holding out there.
+              </p>
+            </div>
+          </section>
+
+          {/* 2. ORDER HISTORY SECTION */}
+          <section className="pf-orders-section">
+            <div className="pf-section-toolbar">
+              <h3 className="pf-section-title">
+                <span>PREVIOUS ORDERS MANIFEST</span>
+              </h3>
+
+              <div className="pf-filter-tabs">
                 <button
-                  className="pf-modal-close"
-                  onClick={() => {
-                    setShowPhotoModal(false);
-                    setPhotoMode("");
-                  }}
+                  className={`pf-tab-btn ${activeTab === "ALL" ? "active" : ""}`}
+                  onClick={() => setActiveTab("ALL")}
                 >
-                  ✕
+                  ALL ORDERS ({orders.length})
+                </button>
+                <button
+                  className={`pf-tab-btn ${activeTab === "ACTIVE" ? "active" : ""}`}
+                  onClick={() => setActiveTab("ACTIVE")}
+                >
+                  ACTIVE / PRINTING ({activeOrdersCount})
+                </button>
+                <button
+                  className={`pf-tab-btn ${activeTab === "READY" ? "active" : ""}`}
+                  onClick={() => setActiveTab("READY")}
+                >
+                  READY FOR PICKUP ({orders.filter((o) => ["READY", "COMPLETED"].includes(String(o.status || "").toUpperCase())).length})
                 </button>
               </div>
+            </div>
 
-              <div className="pf-modal-body">
+            {/* Orders List or Empty State */}
+            <div className="pf-orders-grid" style={{ marginTop: 22 }}>
+              {filteredOrders.length === 0 ? (
+                <div className="pf-empty-card">
+                  <img
+                    src="/zombie-rip.svg"
+                    alt="Empty Manifest Mascot"
+                    className="pf-empty-mascot"
+                    onError={(e) => {
+                      e.target.src = "/zombie-head.svg";
+                    }}
+                  />
+                  <h4 className="pf-empty-title">
+                    {activeTab === "ALL"
+                      ? "NO PREVIOUS ORDERS FOUND!"
+                      : `NO ${activeTab} ORDERS RECORDED!`}
+                  </h4>
+                  <p className="pf-empty-desc">
+                    {activeTab === "ALL"
+                      ? "Your supply manifest is completely clear. Requisition notebooks, pens, highlighters or send documents to our campus high-speed printers!"
+                      : `You currently have no orders in the ${activeTab.toLowerCase()} queue. Explore our catalog below to dispatch a new job.`}
+                  </p>
 
-                <button
-                  className="pf-photo-action-btn"
-                  onClick={() => {
-  setShowPhotoModal(false);
-  setShowViewer(true);
-}}
-                >
-                  View Profile Photo
-                </button>
-
-                <button
-                  className="pf-photo-action-btn"
-                  onClick={() => setPhotoMode("upload")}
-                >
-                  Upload New Photo
-                </button>
-
-                
-
-                {photoMode === "upload" && (
-                  <>
-                    <label className="pf-file-input-label">
-                      {file ? file.name : "Choose a photo…"}
-                      <input
-                        type="file"
-                        onChange={(e) => {
-  const selected = e.target.files[0];
-  if (!selected) return;
-
-  if (selected.size > 2 * 1024 * 1024) {
-    alert("Image must be under 2MB");
-    return;
-  }
-
-  setFile(selected);
-}}
-                      />
-                    </label>
-
+                  <div className="pf-empty-actions">
                     <button
-  className="pf-upload-btn"
-  onClick={uploadPhoto}
-  disabled={!file}
->
-  Upload Photo
-</button>
-                  </>
-                )}
+                      className="pf-empty-btn pf-empty-btn-stationery"
+                      onClick={() => navigate("/writing")}
+                    >
+                      BROWSE STATIONERY
+                    </button>
+                    <button
+                      className="pf-empty-btn pf-empty-btn-print"
+                      onClick={() => navigate("/printing")}
+                    >
+                      DISPATCH PRINT RUN
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                filteredOrders.map((order, idx) => {
+                  const badgeClass = getStatusBadgeClass(order.status);
+                  const statusLabel = formatStatusText(order.status);
+                  const itemsList = order.items || [];
 
-              </div>
+                  return (
+                    <article key={order.orderId || order._id || idx} className="pf-order-card">
+                      {/* Order Card Top Bar */}
+                      <div className="pf-order-card-header">
+                        <div className="pf-order-meta">
+                          <span className="pf-order-id-badge">
+                            #{order.orderId || `OD-${1000 + idx}`}
+                          </span>
+                          <span className="pf-order-date">
+                            {order.date || "Recent Dispatch"}
+                          </span>
+                        </div>
+
+                        <div className={`pf-status-badge ${badgeClass}`}>
+                          <span className="pf-status-indicator" />
+                          <span>{statusLabel}</span>
+                        </div>
+                      </div>
+
+                      {/* Itemized Manifest Rows */}
+                      <div className="pf-order-items-table">
+                        {itemsList.length === 0 ? (
+                          <div className="pf-item-row">
+                            <div className="pf-item-info">
+                              <span className="pf-item-name">Standard Stationery / Print Requisition</span>
+                            </div>
+                            <div className="pf-item-pricing">
+                              <span className="pf-item-total">₹{order.total || 0}</span>
+                            </div>
+                          </div>
+                        ) : (
+                          itemsList.map((item, itemIdx) => (
+                            <div key={itemIdx} className="pf-item-row">
+                              <div className="pf-item-info">
+                                <div>
+                                  <span className="pf-item-name">{item.name}</span>
+                                  <span className="pf-item-qty-pill">
+                                    QTY: {item.quantity || 1}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="pf-item-pricing">
+                                <span className="pf-item-total">
+                                  ₹{(Number(item.price) || 0) * (Number(item.quantity) || 1)}
+                                </span>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+
+                      {/* Order Card Footer */}
+                      <div className="pf-order-card-footer">
+                        <div className="pf-order-total-block">
+                          <span className="pf-total-label">Grand Total:</span>
+                          <span className="pf-total-val">₹{order.total || 0}</span>
+                        </div>
+
+                        <div className="pf-order-actions">
+                          <button
+                            className="pf-btn-receipt"
+                            onClick={() => handleViewReceipt(order)}
+                          >
+                            VIEW RECEIPT
+                          </button>
+                          <button
+                            className="pf-btn-reorder"
+                            onClick={() => handleReorder(order)}
+                          >
+                            RE-ORDER
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })
+              )}
             </div>
+          </section>
+        </main>
+
+        {/* TOAST FEEDBACK */}
+        {toastMsg && (
+          <div className="pf-toast">
+            <span>{toastMsg}</span>
           </div>
         )}
       </div>
-
-      {/* FULLSCREEN IMAGE VIEWER */}
-{showViewer && (
-  <div
-    className="pf-viewer-overlay"
-    onClick={() => setShowViewer(false)}
-  >
-    <img
-      src={photo || "https://via.placeholder.com/600"}
-      alt="full"
-      className="pf-viewer-image"
-    />
-  </div>
-)}
-
     </>
   );
 }
