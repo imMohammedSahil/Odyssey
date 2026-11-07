@@ -1216,7 +1216,7 @@ export default function ProfilePage() {
                   </h4>
                   <p className="pf-empty-desc">
                     {activeTab === "ALL"
-                      ? "Your supply manifest is completely clear. Requisition notebooks, pens, highlighters or send documents to our campus high-speed printers!"
+                      ? "Your vault is empty. Requisition fresh stationery or dispatch documents to our campus printers."
                       : `You currently have no orders in the ${activeTab.toLowerCase()} queue. Explore our catalog below to dispatch a new job.`}
                   </p>
 
