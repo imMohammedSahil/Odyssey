@@ -1087,7 +1087,7 @@ export default function ProfilePage() {
             <div className="pf-banner-titles">
               <h1 className="pf-page-heading">STUDENT PROFILE & ORDER VAULT</h1>
               <p className="pf-page-subtext">
-                Live dispatch records, stationery requisitions, and print run manifests
+                Your personal vault for all print and stationery orders.
               </p>
             </div>
           </div>
