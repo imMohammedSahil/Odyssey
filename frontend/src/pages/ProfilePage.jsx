@@ -1234,7 +1234,7 @@ export default function ProfilePage() {
                       className="pf-empty-btn pf-empty-btn-print"
                       onClick={() => navigate("/printing")}
                     >
-                      DISPATCH PRINT RUN
+                      START A PRINT RUN
                     </button>
                   </div>
                 </div>
