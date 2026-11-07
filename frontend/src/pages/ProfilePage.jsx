@@ -480,9 +480,9 @@ const css = `
 
   .pf-tab-btn {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: 12.5px;
-    letter-spacing: 0.3px;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
     padding: 8px 16px;
     border-radius: 8px;
