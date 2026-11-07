@@ -1,478 +1,494 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Titan+One&display=swap');
-
-  :root {
-    --void-black: #0D0D0D;
-    --toxic-lime: #B8F414;
-    --caution-yellow: #F9EC1B;
-    --hot-pink: #F72678;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
   .rcpt-root {
     min-height: 100vh;
-    width: 100vw;
-    background-color: var(--toxic-lime);
-    background-image: 
-      radial-gradient(#88D303 1.5px, transparent 1.5px),
-      linear-gradient(135deg, #BFF81B 0%, #A2F20A 50%, #8FE704 100%);
-    background-size: 14px 14px, 100% 100%;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    color: var(--void-black);
+    background: #0d0d10;
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-family: 'Sora', sans-serif;
+    padding: 40px 16px 60px;
+    position: relative;
+  }
+
+  .rcpt-root::before {
+    content: '';
+    position: fixed;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(109, 86, 210, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .rcpt-card {
+    width: 100%;
+    max-width: 500px;
+    background: #13131a;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(109,86,210,0.07);
+    position: relative;
+    z-index: 1;
+    animation: rcptFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes rcptFadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Success Banner */
+  .rcpt-success-banner {
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .rcpt-success-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(72, 199, 142, 0.1);
+    border: 1.5px solid rgba(72, 199, 142, 0.25);
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px 20px 28px;
-    position: relative;
-    overflow-x: hidden;
+    flex-shrink: 0;
+    animation: iconPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
   }
 
-  /* TOP FLOATING ACTION BAR */
-  .rcpt-top-nav {
-    width: 100%;
-    max-width: 1040px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-    z-index: 50;
-    gap: 12px;
+  @keyframes iconPop {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
   }
 
-  .rcpt-pill-btn {
-    background: var(--void-black);
-    color: #FFFFFF;
-    border: 3.5px solid var(--void-black);
-    border-radius: 9999px;
-    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 12.5px;
-    padding: 9px 22px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
-    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+  .rcpt-success-icon svg {
+    width: 20px;
+    height: 20px;
+    color: #48c78e;
   }
 
-  .rcpt-pill-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.7);
-    background: #1F1F1F;
-  }
-
-  .rcpt-pill-btn:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
-  }
-
-  .rcpt-pill-btn.yellow {
-    background: var(--caution-yellow);
-    color: var(--void-black);
-  }
-  .rcpt-pill-btn.yellow:hover {
-    background: #FFF238;
-  }
-
-  .rcpt-pill-btn.pink {
-    background: var(--hot-pink);
-    color: #FFFFFF;
-  }
-  .rcpt-pill-btn.pink:hover {
-    background: #FF3C88;
-  }
-
-  /* MAIN ARTWORK VIEWPORT CONTAINER */
-  .rcpt-stage {
-    width: 100%;
-    max-width: 1040px;
-    position: relative;
-    border: 4px solid var(--void-black);
-    border-radius: 14px;
-    box-shadow: 10px 12px 0px rgba(0, 0, 0, 0.65);
-    overflow: hidden;
-    background: #000;
-    aspect-ratio: 1024 / 576;
-  }
-
-  .rcpt-vector-art {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: contain;
-    user-select: none;
-  }
-
-  .rcpt-dynamic-overlay {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  /* SVG DYNAMIC TEXT STYLING */
-  .svg-text-mono {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13.5px;
-    font-weight: 700;
-    fill: #0D0D0D;
-    letter-spacing: 0.02em;
-  }
-
-  .svg-total-text {
-    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    fill: #0D0D0D;
-  }
-
-  .svg-total-label {
-    font-size: 26px;
-    letter-spacing: 0.02em;
-  }
-
-  .svg-total-slash {
-    font-size: 28px;
-  }
-
-  .svg-total-amount {
-    font-size: 38px;
+  .rcpt-success-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #e8e6f0;
+    margin: 0;
     letter-spacing: -0.01em;
   }
 
-  .svg-barcode-text {
+  .rcpt-success-sub {
+    font-size: 12px;
+    color: #48c78e;
+    margin: 3px 0 0;
+    letter-spacing: 0.02em;
+  }
+
+  /* Body */
+  .rcpt-body {
+    padding: 24px 32px;
+  }
+
+  /* Total block */
+  .rcpt-total-block {
+    background: rgba(109, 86, 210, 0.06);
+    border: 1px solid rgba(109, 86, 210, 0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .rcpt-total-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6d56d2;
+    margin: 0 0 8px;
+  }
+
+  .rcpt-total-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 40px;
+    font-weight: 500;
+    color: #f0eeff;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .rcpt-total-currency {
+    font-size: 22px;
+    color: #9b7ff0;
+    vertical-align: super;
+    margin-right: 2px;
+  }
+
+  /* Section label */
+  .rcpt-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #3d3b52;
+    margin: 0 0 12px;
+  }
+
+  /* Items */
+  .rcpt-items {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .rcpt-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    transition: background 0.15s ease;
+  }
+
+  .rcpt-item:not(:last-child) {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .rcpt-item:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .rcpt-item-name {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #ccc9dd;
+    display: block;
+    letter-spacing: -0.01em;
+  }
+
+  .rcpt-item-qty {
+    font-size: 11.5px;
+    color: #4e4c65;
+    font-family: 'JetBrains Mono', monospace;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .rcpt-item-price {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    fill: #0D0D0D;
+    font-weight: 500;
+    color: #a89ee8;
   }
 
-  /* ITEMS BREAKDOWN MODAL */
-  .rcpt-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(4px);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    animation: rcptFade 0.18s ease-out;
-  }
-
-  @keyframes rcptFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  .rcpt-modal-card {
-    width: 100%;
-    max-width: 520px;
-    background: #FCEDD3;
-    border: 4px solid var(--void-black);
+  /* Details block */
+  .rcpt-details {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.05);
     border-radius: 12px;
-    box-shadow: 8px 8px 0px var(--void-black);
-    padding: 24px;
-    position: relative;
-    max-height: 85vh;
-    overflow-y: auto;
+    overflow: hidden;
+    margin-bottom: 24px;
   }
 
-  .rcpt-modal-header {
+  .rcpt-detail-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 3px solid var(--void-black);
-    padding-bottom: 12px;
-    margin-bottom: 18px;
+    justify-content: space-between;
+    padding: 11px 16px;
+    gap: 12px;
   }
 
-  .rcpt-modal-title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 19px;
-    color: var(--void-black);
+  .rcpt-detail-row:not(:last-child) {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .rcpt-detail-key {
+    font-size: 11.5px;
+    color: #4e4c65;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  .rcpt-detail-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: #9490b8;
+    text-align: right;
+    word-break: break-all;
+  }
+
+  /* Status badge */
+  .rcpt-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
-  .rcpt-modal-close {
-    background: var(--void-black);
-    color: #FFF;
-    border: none;
+  .rcpt-status-badge.pending {
+    background: rgba(255, 152, 0, 0.1);
+    border: 1px solid rgba(255, 152, 0, 0.25);
+    color: #ffa726;
+  }
+
+  .rcpt-status-badge.printing {
+    background: rgba(25, 118, 210, 0.1);
+    border: 1px solid rgba(25, 118, 210, 0.25);
+    color: #42a5f5;
+  }
+
+  .rcpt-status-badge.ready {
+    background: rgba(72, 199, 142, 0.1);
+    border: 1px solid rgba(72, 199, 142, 0.25);
+    color: #48c78e;
+  }
+
+  .rcpt-status-dot {
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    background: currentColor;
+  }
+
+  /* CTA */
+  .rcpt-btn {
+    width: 100%;
+    padding: 15px 24px;
+    background: linear-gradient(135deg, #6d56d2 0%, #5a44bb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: 0.01em;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 900;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 2px 2px 0px rgba(0,0,0,0.4);
+    gap: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 4px 20px rgba(109, 86, 210, 0.28);
+    position: relative;
+    overflow: hidden;
   }
 
-  .rcpt-modal-item {
+  .rcpt-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .rcpt-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px rgba(109, 86, 210, 0.42);
+    filter: brightness(1.05);
+  }
+
+  .rcpt-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(109, 86, 210, 0.2);
+  }
+
+  .rcpt-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Footer */
+  .rcpt-footer {
+    padding: 14px 32px 22px;
+    border-top: 1px solid rgba(255,255,255,0.04);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
-    border-bottom: 1.5px dotted rgba(13, 13, 13, 0.3);
-    font-size: 14px;
-  }
-  .rcpt-modal-item:last-child {
-    border-bottom: none;
+    justify-content: center;
+    gap: 6px;
   }
 
-  .rcpt-modal-item-name {
-    font-weight: 800;
-    color: var(--void-black);
+  .rcpt-footer-text {
+    font-size: 11px;
+    color: #2e2d3e;
+    letter-spacing: 0.03em;
   }
 
-  .rcpt-modal-item-cost {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    color: var(--void-black);
-    white-space: nowrap;
-  }
-
-  .rcpt-modal-total-row {
-    margin-top: 16px;
-    padding-top: 14px;
-    border-top: 3px solid var(--void-black);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 20px;
-  }
-
-  /* PRINT MEDIA */
-  @media print {
-    body, .rcpt-root {
-      background: white !important;
-      padding: 0 !important;
-    }
-    .rcpt-top-nav,
-    .rcpt-modal-overlay {
-      display: none !important;
-    }
-    .rcpt-stage {
-      border: none !important;
-      box-shadow: none !important;
-      max-width: 100% !important;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .rcpt-top-nav {
-      flex-wrap: wrap;
-    }
-    .rcpt-pill-btn {
-      padding: 7px 14px;
-      font-size: 11px;
-    }
+  @media (max-width: 520px) {
+    .rcpt-body { padding: 20px; }
+    .rcpt-success-banner { padding: 20px; }
+    .rcpt-footer { padding: 14px 20px 20px; }
+    .rcpt-total-amount { font-size: 34px; }
   }
 `;
 
+function getStatusClass(status) {
+  if (!status) return "pending";
+  const s = status.toUpperCase();
+  if (s === "READY") return "ready";
+  if (s === "PRINTING") return "printing";
+  return "pending";
+}
+
 export default function ReceiptPage() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [showModal, setShowModal] = useState(false);
 
-  // Retrieve receipt from localStorage or location state, or fallback to exact reference defaults
-  const savedReceipt = JSON.parse(localStorage.getItem("odysseyReceipt") || "null");
-  const stateReceipt = location.state?.receipt;
+  const receipt = JSON.parse(localStorage.getItem("odysseyReceipt"));
 
-  const defaultReceipt = {
-    orderId: "OD-784921",
-    date: "07 Nov 2026, 08:37 PM",
-    paymentMethod: "UPI",
-    itemsCount: 4,
-    total: 540,
-    items: [
-      { name: "A4 Engineering Bond Paper (100 GSM)", quantity: 2, price: 160 },
-      { name: "Fine Liner Technical Pens (0.5mm 3-Pack)", quantity: 1, price: 120 },
-      { name: "Matte Precision Drafting Triangle", quantity: 1, price: 100 }
-    ],
-    status: "CONFIRMED"
-  };
+  // ✅ SAVE TO ORDER HISTORY (SAFE ADD)
+  if (receipt) {
+    const existingOrders =
+      JSON.parse(localStorage.getItem("odysseyOrders")) || [];
 
-  const receipt = stateReceipt || savedReceipt || defaultReceipt;
+    // prevent duplicate save on refresh
+    const alreadySaved = existingOrders.some(
+      (order) => order.orderId === receipt.orderId
+    );
 
-  // Persist safely in orders history
-  useEffect(() => {
-    if (receipt && receipt.orderId) {
-      try {
-        const existingOrders = JSON.parse(localStorage.getItem("odysseyOrders") || "[]");
-        const alreadySaved = existingOrders.some((o) => o.orderId === receipt.orderId);
-        if (!alreadySaved) {
-          existingOrders.unshift(receipt);
-          localStorage.setItem("odysseyOrders", JSON.stringify(existingOrders));
-        }
-      } catch (e) {
-        console.error("Orders persistence error:", e);
-      }
+    if (!alreadySaved) {
+      existingOrders.push(receipt);
+      localStorage.setItem(
+        "odysseyOrders",
+        JSON.stringify(existingOrders)
+      );
     }
-  }, [receipt]);
+  }
 
-  const itemsTotalCount =
-    receipt.itemsCount ||
-    (receipt.items ? receipt.items.reduce((acc, i) => acc + (i.quantity || 1), 0) : 4);
+  if (!receipt) {
+    return (
+      <>
+        <style>{styles}</style>
+        <div className="rcpt-root">
+          <div className="rcpt-card">
+            <div className="rcpt-body">
+              <h2 style={{ color: "#5a5870", fontFamily: "'Sora', sans-serif", textAlign: "center", padding: "20px 0" }}>
+                No receipt found.
+              </h2>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
-  const formattedTotal = Number(receipt.total || 540).toFixed(2);
-  const barcodeText = (receipt.orderId || "OD-784921").replace(/[^a-zA-Z0-9]/g, "");
-
-  const handlePrint = () => {
-    window.print();
-  };
+  const statusKey = receipt.status || "PENDING";
+  const statusClass = getStatusClass(statusKey);
 
   return (
     <>
       <style>{styles}</style>
       <div className="rcpt-root">
+        <div className="rcpt-card">
 
-        {/* TOP FLOATING CONTROLS */}
-        <header className="rcpt-top-nav">
-          <button
-            onClick={() => navigate("/student")}
-            className="rcpt-pill-btn"
-            title="Return to Odyssey Basecamp"
-          >
-            ← BACK TO BASE
-          </button>
-
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button
-              onClick={() => setShowModal(true)}
-              className="rcpt-pill-btn yellow"
-              title="Inspect order items list"
-            >
-              📦 VIEW ITEMS
-            </button>
-            <button
-              onClick={handlePrint}
-              className="rcpt-pill-btn pink"
-              title="Print official receipt slip"
-            >
-              🖨️ PRINT SLIP
-            </button>
-          </div>
-        </header>
-
-        {/* 100% ACCURATE PURE VECTOR STAGE */}
-        <main className="rcpt-stage">
-          {/* PURE VECTOR SVG BACKDROP (Zero raster images) */}
-          <img
-            src="/receipt-landscape.svg?v=4"
-            alt="Basecamp Receipt Pure Vector Landscape"
-            className="rcpt-vector-art"
-          />
-
-          {/* DYNAMIC SVG TEXT OVERLAY LOCKED TO EXACT BASELINES */}
-          <svg
-            viewBox="0 0 1024 576"
-            className="rcpt-dynamic-overlay"
-            preserveAspectRatio="xMidYMid meet"
-          >
-            {/* Row 1: Order ID */}
-            <text x="561" y="250" className="svg-text-mono">
-              {receipt.orderId || "OD-784921"}
-            </text>
-
-            {/* Row 2: Order Date */}
-            <text x="561" y="277" className="svg-text-mono">
-              {receipt.date || "07 Nov 2026, 08:37 PM"}
-            </text>
-
-            {/* Row 3: Payment Method */}
-            <text x="561" y="304" className="svg-text-mono">
-              {receipt.paymentMethod || "UPI"}
-            </text>
-
-            {/* Row 4: Items Count */}
-            <text x="561" y="331" className="svg-text-mono">
-              {itemsTotalCount}
-            </text>
-
-            {/* Total Paid on Pink Banner */}
-            <text
-              x="506"
-              y="402"
-              textAnchor="middle"
-              className="svg-total-text"
-            >
-              <tspan className="svg-total-label">Total Paid</tspan>
-              <tspan dx="16" className="svg-total-slash">/</tspan>
-              <tspan dx="20" className="svg-total-amount">₹{formattedTotal}</tspan>
-            </text>
-
-            {/* Barcode Number below barcode */}
-            <text
-              x="492"
-              y="497"
-              textAnchor="middle"
-              className="svg-barcode-text"
-            >
-              {barcodeText}
-            </text>
-          </svg>
-        </main>
-
-        {/* ORDER ITEMS MODAL */}
-        {showModal && (
-          <div className="rcpt-modal-overlay" onClick={() => setShowModal(false)}>
-            <div className="rcpt-modal-card" onClick={(e) => e.stopPropagation()}>
-              <div className="rcpt-modal-header">
-                <span className="rcpt-modal-title">Order Manifest</span>
-                <button
-                  className="rcpt-modal-close"
-                  onClick={() => setShowModal(false)}
-                >
-                  ✕
-                </button>
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                {receipt.items && receipt.items.length > 0 ? (
-                  receipt.items.map((it, idx) => (
-                    <div key={idx} className="rcpt-modal-item">
-                      <div>
-                        <div className="rcpt-modal-item-name">{it.name}</div>
-                        <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
-                          Qty: {it.quantity || 1}
-                        </div>
-                      </div>
-                      <div className="rcpt-modal-item-cost">
-                        ₹{(it.price || 0) * (it.quantity || 1)}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rcpt-modal-item">
-                    <span className="rcpt-modal-item-name">Stationery & Print Dispatch</span>
-                    <span className="rcpt-modal-item-cost">₹{formattedTotal}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="rcpt-modal-total-row">
-                <span>TOTAL DISPATCHED</span>
-                <span>₹{formattedTotal}</span>
-              </div>
+          {/* Success Banner */}
+          <div className="rcpt-success-banner">
+            <div className="rcpt-success-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div>
+              <h1 className="rcpt-success-title">Order Confirmed</h1>
+              <p className="rcpt-success-sub">Your payment was received successfully</p>
             </div>
           </div>
-        )}
 
+          <div className="rcpt-body">
+
+            {/* Total Paid */}
+            <div className="rcpt-total-block">
+              <p className="rcpt-total-label">Total Paid</p>
+              <p className="rcpt-total-amount">
+                <span className="rcpt-total-currency">₹</span>
+                {receipt.total?.toLocaleString('en-IN') ?? receipt.total}
+              </p>
+            </div>
+
+            {/* Items */}
+            {receipt.items?.length > 0 && (
+              <>
+                <p className="rcpt-section-label">Items Ordered</p>
+                <div className="rcpt-items">
+                  {receipt.items.map((item, index) => (
+                    <div className="rcpt-item" key={index}>
+                      <div>
+                        <span className="rcpt-item-name">{item.name}</span>
+                        <span className="rcpt-item-qty">× {item.quantity}</span>
+                      </div>
+                      <span className="rcpt-item-price">₹{item.price * item.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Receipt Details */}
+            <p className="rcpt-section-label">Receipt Details</p>
+            <div className="rcpt-details">
+              <div className="rcpt-detail-row">
+                <span className="rcpt-detail-key">Order ID</span>
+                <span className="rcpt-detail-val">{receipt.orderId}</span>
+              </div>
+              <div className="rcpt-detail-row">
+                <span className="rcpt-detail-key">Date</span>
+                <span className="rcpt-detail-val">{receipt.date}</span>
+              </div>
+              <div className="rcpt-detail-row">
+                <span className="rcpt-detail-key">Status</span>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                    color:
+                      receipt.status === "READY"
+                        ? "green"
+                        : receipt.status === "PRINTING"
+                        ? "#1976d2"
+                        : "#ff9800"
+                  }}
+                >
+                  <span className={`rcpt-status-badge ${statusClass}`}>
+                    <span className="rcpt-status-dot"/>
+                    {statusKey}
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <button
+              onClick={() => navigate("/student")}
+              className="rcpt-btn"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/>
+              </svg>
+              Back to Home
+            </button>
+
+          </div>
+
+          {/* Footer */}
+          <div className="rcpt-footer">
+            <span className="rcpt-footer-text">Odyssey · Order Receipt · Keep for your records</span>
+          </div>
+
+        </div>
       </div>
     </>
   );
