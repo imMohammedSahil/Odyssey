@@ -489,7 +489,7 @@ const css = `
     text-transform: uppercase;
     background: var(--parchment);
     color: var(--void-black);
-    box-shadow: 3.5px 3.5px 0px #000000, 0 0 0 1px #333333;
+    box-shadow: 4px 4px 0px var(--slime-green);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -499,14 +499,14 @@ const css = `
 
   .pf-tab-btn:hover {
     transform: translate(2px, 2px);
-    box-shadow: 1.5px 1.5px 0px #000000;
+    box-shadow: 2px 2px 0px var(--slime-green);
     background: #FFF;
   }
 
   .pf-tab-btn.active {
     background: var(--hazard-gold);
     transform: translate(2px, 2px);
-    box-shadow: 1.5px 1.5px 0px #000000;
+    box-shadow: 2px 2px 0px var(--slime-green);
   }
 
   /* ── ORDERS MANIFEST LIST ── */
