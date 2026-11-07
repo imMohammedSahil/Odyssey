@@ -494,19 +494,15 @@ const css = `
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    transition: background 0.12s ease;
   }
 
   .pf-tab-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px var(--slime-green);
     background: #FFF;
   }
 
   .pf-tab-btn.active {
-    background: var(--hazard-gold);
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px var(--slime-green);
+    background: var(--brain-pink);
   }
 
   /* ── ORDERS MANIFEST LIST ── */
