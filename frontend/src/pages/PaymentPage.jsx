@@ -168,402 +168,193 @@ const styles = `
     50% { opacity: 0.5; transform: scale(0.85); }
   }
 
-  /* ── MAIN CONTENT CONTAINER ── */
-  .pay-main {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    max-width: 620px;
-    margin: 10px auto 40px;
-    padding: 0 16px;
+  /* ── SLEEK FLOATING ACTION DOCK (UNOBSTRUCTED BACKGROUND) ── */
+  .pay-dock-wrapper {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    width: 92%;
+    max-width: 780px;
   }
 
-  /* ── NEO-BRUTALIST PAYMENT CARD ── */
-  .pay-card {
-    background: rgba(16, 33, 27, 0.94);
-    border: 4px solid var(--border-dark);
-    border-radius: 16px;
-    box-shadow: 8px 8px 0px var(--border-dark);
-    overflow: hidden;
-    backdrop-filter: blur(16px);
-    animation: paySlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  @keyframes paySlideUp {
-    from {
-      opacity: 0;
-      transform: translateY(24px) scale(0.98);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  /* Card Header Banner */
-  .pay-card-header {
-    background: var(--hazard-gold);
-    color: var(--void-black);
-    border-bottom: 4px solid var(--border-dark);
-    padding: 16px 22px;
+  .pay-dock {
+    background: rgba(16, 33, 27, 0.92);
+    border: 3.5px solid var(--border-dark);
+    border-radius: 14px;
+    box-shadow: 6px 6px 0px var(--border-dark);
+    padding: 14px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 16px;
+    backdrop-filter: blur(14px);
+    animation: paySlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .pay-card-title-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .pay-card-icon {
-    width: 38px;
-    height: 38px;
-    background: var(--void-black);
-    color: var(--hazard-gold);
-    border: 2.5px solid var(--border-dark);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    box-shadow: 2px 2px 0px var(--border-dark);
-  }
-
-  .pay-card-title {
-    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
-    font-size: 19px;
-    letter-spacing: 0.5px;
-    line-height: 1.1;
-  }
-
-  .pay-card-subtitle {
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    opacity: 0.85;
-  }
-
-  .pay-step-badge {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    background: var(--void-black);
-    color: var(--parchment);
-    padding: 4px 10px;
-    border-radius: 6px;
-    letter-spacing: 0.5px;
-  }
-
-  /* Card Body */
-  .pay-card-body {
-    padding: 24px;
+  .pay-dock-total {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2px;
   }
 
-  /* ── TOTAL HERO BOX ── */
-  .pay-total-box {
-    background: var(--grave-slate);
-    border: 3px solid var(--border-dark);
-    border-radius: 12px;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 4px 4px 0px var(--border-dark);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .pay-total-box::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60px;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(253, 228, 101, 0.08));
-    pointer-events: none;
-  }
-
-  .pay-total-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .pay-total-tag {
+  .pay-dock-label {
     font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--lantern-yellow);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
-  .pay-total-items-badge {
-    font-size: 12px;
-    font-weight: 700;
-    color: #92B5A9;
-    letter-spacing: 0.2px;
-  }
-
-  .pay-total-amount {
+  .pay-dock-amount {
     font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 34px;
+    font-size: 26px;
     color: var(--parchment);
     line-height: 1;
     display: flex;
     align-items: baseline;
-    gap: 2px;
-    text-shadow: 2px 2px 0px var(--border-dark);
+    gap: 3px;
   }
 
-  .pay-total-currency {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 22px;
+  .pay-dock-currency {
+    font-size: 18px;
+    color: var(--lantern-yellow);
     font-weight: 800;
-    color: var(--lantern-yellow);
   }
 
-  /* ── ORDER ITEMS SUMMARY (COMIC ACCORDION) ── */
-  .pay-summary-block {
-    background: rgba(10, 20, 16, 0.7);
-    border: 3px solid var(--border-dark);
-    border-radius: 10px;
-    padding: 14px 16px;
-    box-shadow: 3px 3px 0px var(--border-dark);
-  }
-
-  .pay-summary-title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
-    text-transform: uppercase;
-    color: var(--seafoam);
-    letter-spacing: 1px;
-    margin-bottom: 10px;
+  .pay-dock-actions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
-  .pay-summary-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 140px;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
-
-  .pay-summary-list::-webkit-scrollbar {
-    width: 6px;
-  }
-  .pay-summary-list::-webkit-scrollbar-thumb {
-    background: var(--grave-slate);
-    border-radius: 3px;
-  }
-
-  .pay-summary-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 13px;
-    font-weight: 600;
-    color: #CDE2DA;
-    padding-bottom: 6px;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
-  }
-
-  .pay-summary-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-
-  .pay-item-name {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .pay-item-qty {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    background: var(--void-black);
-    color: var(--lantern-yellow);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 700;
-  }
-
-  .pay-item-price {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--parchment);
-    font-weight: 700;
-  }
-
-  /* ── QR PAYMENT CENTERPIECE ── */
-  .pay-qr-wrapper {
+  .pay-qr-toggle-btn {
     background: var(--parchment);
-    border: 3.5px solid var(--border-dark);
-    border-radius: 14px;
-    padding: 20px 16px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 5px 5px 0px var(--border-dark);
-    position: relative;
-  }
-
-  .pay-qr-top-tag {
-    position: absolute;
-    top: -12px;
-    background: var(--slime-green);
     color: var(--void-black);
     font-family: 'Archivo Black', sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    padding: 3px 12px;
-    border: 2px solid var(--border-dark);
-    border-radius: 20px;
-    box-shadow: 2px 2px 0px var(--border-dark);
-  }
-
-  .pay-qr-frame {
-    position: relative;
-    padding: 10px;
-    background: #FFFFFF;
+    padding: 12px 18px;
     border: 3px solid var(--border-dark);
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 3px 3px 0px var(--border-dark);
-    margin: 8px 0 12px;
-  }
-
-  .pay-qr-frame img {
-    display: block;
-    width: 160px;
-    height: 160px;
-  }
-
-  .pay-qr-corner {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-color: var(--void-black);
-    border-style: solid;
-  }
-  .pay-qr-corner.tl { top: -4px; left: -4px; border-width: 4px 0 0 4px; }
-  .pay-qr-corner.tr { top: -4px; right: -4px; border-width: 4px 4px 0 0; }
-  .pay-qr-corner.bl { bottom: -4px; left: -4px; border-width: 0 0 4px 4px; }
-  .pay-qr-corner.br { bottom: -4px; right: -4px; border-width: 0 4px 4px 0; }
-
-  .pay-upi-apps {
+    cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 4px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
-  .pay-app-pill {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    background: var(--void-black);
-    color: var(--parchment);
-    padding: 4px 9px;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
+  .pay-qr-toggle-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
+    background: #FFFFFF;
   }
 
-  .pay-qr-hint {
-    font-size: 12px;
-    font-weight: 700;
-    color: #384F47;
-    margin-top: 8px;
-    text-align: center;
-  }
-
-  /* ── NOTICE BOX ── */
-  .pay-notice-box {
-    background: rgba(247, 185, 25, 0.15);
-    border: 2.5px solid var(--hazard-gold);
-    border-radius: 10px;
-    padding: 12px 14px;
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .pay-notice-icon {
-    color: var(--hazard-gold);
-    font-size: 16px;
-    flex-shrink: 0;
-    line-height: 1.2;
-  }
-
-  .pay-notice-text {
-    font-size: 12px;
-    color: #E2ECE8;
-    line-height: 1.5;
-    font-weight: 600;
-  }
-
-  /* ── CONFIRM CTA BUTTON ── */
-  .pay-cta-btn {
-    width: 100%;
-    padding: 16px 24px;
+  .pay-dock-confirm-btn {
     background: var(--brain-pink);
     color: var(--void-black);
     font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 15px;
+    font-size: 13.5px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border: 3.5px solid var(--border-dark);
-    border-radius: 10px;
+    padding: 12px 24px;
+    border: 3px solid var(--border-dark);
+    border-radius: 8px;
     box-shadow: 4px 4px 0px var(--border-dark);
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    gap: 8px;
     transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
   }
 
-  .pay-cta-btn:hover:not(:disabled) {
+  .pay-dock-confirm-btn:hover:not(:disabled) {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0px var(--border-dark);
     background: #ff85b3;
   }
 
-  .pay-cta-btn:active:not(:disabled) {
-    transform: translate(4px, 4px);
-    box-shadow: 0px 0px 0px var(--border-dark);
-  }
-
-  .pay-cta-btn:disabled {
-    opacity: 0.65;
+  .pay-dock-confirm-btn:disabled {
+    opacity: 0.6;
     cursor: not-allowed;
-    filter: grayscale(0.4);
   }
 
-  /* Spinner */
-  .pay-spinner {
-    width: 18px;
-    height: 18px;
-    border: 3px solid var(--void-black);
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: paySpin 0.7s linear infinite;
+  /* ── QR MODAL POPUP (CLICK TO REVEAL) ── */
+  .pay-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 16, 0.75);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(6px);
   }
 
-  @keyframes paySpin {
-    to { transform: rotate(360deg); }
+  .pay-modal-card {
+    background: var(--parchment);
+    border: 4px solid var(--border-dark);
+    border-radius: 16px;
+    box-shadow: 8px 8px 0px var(--border-dark);
+    padding: 24px;
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    animation: paySlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .pay-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--void-black);
+    color: var(--parchment);
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pay-modal-title {
+    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+    font-size: 18px;
+    color: var(--void-black);
+    margin-bottom: 4px;
+  }
+
+  .pay-modal-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 800;
+    color: #1F3C34;
+    margin-bottom: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .pay-dock {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .pay-dock-actions {
+      flex-direction: column;
+    }
+    .pay-qr-toggle-btn, .pay-dock-confirm-btn {
+      width: 100%;
+      justify-content: center;
+    }
   }
 
   /* ── FOOTER BAR ── */
@@ -602,6 +393,7 @@ export default function PaymentPage() {
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showQr, setShowQr] = useState(false);
 
   // Compute live cart total
   const calculatedTotal = cartItems.reduce(
@@ -703,116 +495,87 @@ export default function PaymentPage() {
           </div>
         </header>
 
-        {/* ── MAIN PAYMENT CONSOLE ── */}
-        <main className="pay-main">
-          <div className="pay-card">
-            {/* Header Banner */}
-            <div className="pay-card-header">
-              <div className="pay-card-title-group">
-                <div className="pay-card-icon">⚡</div>
-                <div>
-                  <h1 className="pay-card-title">COMPLETE PAYMENT</h1>
-                  <p className="pay-card-subtitle">Odyssey Campus Dispatch · Step 2 of 2</p>
-                </div>
+        {/* ── SLEEK FLOATING ACTION DOCK (BACKGROUND FULLY UNOBSTRUCTED) ── */}
+        <div className="pay-dock-wrapper">
+          <div className="pay-dock">
+            <div className="pay-dock-total">
+              <span className="pay-dock-label">TOTAL DUE ({totalItemCount} {totalItemCount === 1 ? "ITEM" : "ITEMS"})</span>
+              <div className="pay-dock-amount">
+                <span className="pay-dock-currency">₹</span>
+                <span>{total.toLocaleString("en-IN")}</span>
               </div>
-              <span className="pay-step-badge">UPI / SCAN</span>
             </div>
 
-            {/* Body */}
-            <div className="pay-card-body">
-              {/* Total Due Banner */}
-              <div className="pay-total-box">
-                <div className="pay-total-info">
-                  <span className="pay-total-tag">TOTAL AMOUNT DUE</span>
-                  <span className="pay-total-items-badge">
-                    {totalItemCount} {totalItemCount === 1 ? "Item" : "Items"} in Cart {isDemo && "· [Demo Preview]"}
-                  </span>
-                </div>
-                <div className="pay-total-amount">
-                  <span className="pay-total-currency">₹</span>
-                  <span>{total.toLocaleString("en-IN")}</span>
-                </div>
-              </div>
+            <div className="pay-dock-actions">
+              <button
+                type="button"
+                className="pay-qr-toggle-btn"
+                onClick={() => setShowQr(true)}
+              >
+                <span>📷</span>
+                <span>Scan UPI QR</span>
+              </button>
 
-              {/* Order Items Summary */}
-              <div className="pay-summary-block">
-                <div className="pay-summary-title">
-                  <span>Order Summary</span>
-                  <span>{effectiveItems.length} Products</span>
-                </div>
-                <div className="pay-summary-list">
-                  {effectiveItems.map((item, idx) => (
-                    <div className="pay-summary-row" key={idx}>
-                      <span className="pay-item-name">
-                        <span className="pay-item-qty">×{item.quantity || 1}</span>
-                        <span>{item.name}</span>
-                      </span>
-                      <span className="pay-item-price">
-                        ₹{((item.price || 0) * (item.quantity || 1)).toLocaleString("en-IN")}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* UPI QR Payment Centerpiece */}
-              <div className="pay-qr-wrapper">
-                <span className="pay-qr-top-tag">Instant UPI Settlement</span>
-                <div className="pay-qr-frame">
-                  <span className="pay-qr-corner tl" />
-                  <span className="pay-qr-corner tr" />
-                  <span className="pay-qr-corner bl" />
-                  <span className="pay-qr-corner br" />
-                  <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`}
-                    alt="UPI Payment QR Code"
-                    width={160}
-                    height={160}
-                  />
-                </div>
-
-                <div className="pay-upi-apps">
-                  <span className="pay-app-pill">GPAY</span>
-                  <span className="pay-app-pill">PHONEPE</span>
-                  <span className="pay-app-pill">PAYTM</span>
-                  <span className="pay-app-pill">BHIM UPI</span>
-                </div>
-
-                <p className="pay-qr-hint">
-                  Scan with any UPI app to complete transfer of ₹{total.toLocaleString("en-IN")}
-                </p>
-              </div>
-
-              {/* Notice */}
-              <div className="pay-notice-box">
-                <span className="pay-notice-icon">ℹ</span>
-                <p className="pay-notice-text">
-                  After initiating payment through your UPI app, click below to verify and generate your official stamped dispatch receipt.
-                </p>
-              </div>
-
-              {/* CTA Confirm Button */}
               <button
                 onClick={handlePaymentComplete}
                 disabled={loading}
-                className="pay-cta-btn"
+                className="pay-dock-confirm-btn"
                 id="confirm-payment-btn"
               >
                 {loading ? (
                   <>
                     <span className="pay-spinner" />
-                    <span>Verifying Dispatch...</span>
+                    <span>Processing...</span>
                   </>
                 ) : (
                   <>
-                    <span>Confirm Payment & Generate Receipt</span>
+                    <span>Confirm Payment</span>
                     <span>→</span>
                   </>
                 )}
               </button>
             </div>
           </div>
-        </main>
+        </div>
+
+        {/* ── OPTIONAL QR POPUP MODAL ── */}
+        {showQr && (
+          <div className="pay-modal-backdrop" onClick={() => setShowQr(false)}>
+            <div className="pay-modal-card" onClick={(e) => e.stopPropagation()}>
+              <button
+                className="pay-modal-close"
+                onClick={() => setShowQr(false)}
+                title="Close"
+              >
+                ✕
+              </button>
+              <h2 className="pay-modal-title">SCAN & PAY</h2>
+              <p className="pay-modal-amount">Total: ₹{total.toLocaleString("en-IN")}</p>
+              
+              <div style={{
+                background: "#fff",
+                padding: "8px",
+                border: "3px solid #0D0D0D",
+                borderRadius: "8px",
+                boxShadow: "3px 3px 0px #0D0D0D"
+              }}>
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`}
+                  alt="UPI Payment QR Code"
+                  width={160}
+                  height={160}
+                  style={{ display: "block" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "6px", marginTop: "12px" }}>
+                <span style={{ background: "#0D0D0D", color: "#F9F9F3", fontSize: "10px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>GPAY</span>
+                <span style={{ background: "#0D0D0D", color: "#F9F9F3", fontSize: "10px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>PHONEPE</span>
+                <span style={{ background: "#0D0D0D", color: "#F9F9F3", fontSize: "10px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>PAYTM</span>
+              </div>
+            </div>
+          </div>
+        )}
 
 
       </div>
