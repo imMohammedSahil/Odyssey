@@ -1156,7 +1156,7 @@ export default function ProfilePage() {
             {/* Bottom: Full-width Narrative & Archive Notice */}
             <div className="pf-identity-lore">
               <div className="pf-identity-lore-header">
-                SURVIVOR REQUISITION DOSSIER // FILE #084
+                ACADEMIC REGISTRY — STUDENT FILE #084
               </div>
               <p className="pf-identity-lore-p">
                 A brilliant, soft-spoken college student who stepped up as our primary supply runner when the undead horde overran campus. Every night, he risks everything navigating quarantined halls to scavenge vital paper, printing ink, and evacuation maps so our lifeline stays alive.
