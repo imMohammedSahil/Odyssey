@@ -222,11 +222,11 @@ const css = `
 
   /* ── CART GRID LAYOUT ── */
   .nb-cart-layout {
-    max-width: 1040px;
-    margin: 0;
+    max-width: 1400px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(0, 640px) 360px;
-    gap: 32px;
+    grid-template-columns: 1fr 380px;
+    gap: 36px;
     align-items: flex-start;
   }
 
