@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 const css = `
@@ -895,7 +895,6 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const { cartItems, addToCart } = useCart();
 
-  const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("PETER PARKER");
   const [photo, setPhoto] = useState("");
   const [orders, setOrders] = useState([]);
@@ -917,7 +916,6 @@ export default function ProfilePage() {
 
     // 1. Resolve user profile info
     const storedUser = sessionStorage.getItem("user") || "peter.parker@empire.edu";
-    setUsername(storedUser);
 
     // If storedUser looks like an email or name
     if (storedUser.includes("@")) {

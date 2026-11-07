@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useNavigate, useLocation, useNavigationType } from "react-router-dom";
+import { useNavigate, useLocation, useNavigationType } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import PhoneChatDispatch from "../components/PhoneChatDispatch";
 import ZombieLeft from "../components/ZombieLeft";
