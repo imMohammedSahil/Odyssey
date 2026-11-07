@@ -790,11 +790,12 @@ const css = `
   }
 
   .pf-empty-title {
-    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 26px;
+    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
     color: var(--void-black);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.6px;
     margin-bottom: 10px;
   }
 
