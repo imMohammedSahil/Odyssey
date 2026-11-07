@@ -482,14 +482,14 @@ const css = `
     height: 42px;
     padding: 0 18px;
     border-radius: 8px;
-    border: 3px solid var(--border-dark);
+    border: 3px solid #000000;
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     background: var(--parchment);
     color: var(--void-black);
-    box-shadow: var(--shadow-comic-sm);
+    box-shadow: 3.5px 3.5px 0px #000000, 0 0 0 1px #333333;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -499,14 +499,14 @@ const css = `
 
   .pf-tab-btn:hover {
     transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--border-dark);
+    box-shadow: 1.5px 1.5px 0px #000000;
     background: #FFF;
   }
 
   .pf-tab-btn.active {
     background: var(--hazard-gold);
     transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--border-dark);
+    box-shadow: 1.5px 1.5px 0px #000000;
   }
 
   /* ── ORDERS MANIFEST LIST ── */
