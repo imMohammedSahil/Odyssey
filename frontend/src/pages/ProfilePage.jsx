@@ -483,25 +483,33 @@ const css = `
     font-size: 11.5px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    padding: 8px 16px;
-    border-radius: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
     border: 3px solid var(--border-dark);
     background: var(--parchment);
     color: var(--void-black);
-    box-shadow: var(--shadow-comic-sm);
+    box-shadow: 0px 5px 0px var(--border-dark), 0px 6px 10px rgba(0,0,0,0.25);
     cursor: pointer;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+    position: relative;
+    top: 0;
+    transition: all 0.12s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   .pf-tab-btn:hover {
-    transform: translate(1.5px, 1.5px);
-    box-shadow: 1px 1px 0px var(--border-dark);
+    top: 1px;
+    background: #FFF;
+    box-shadow: 0px 4px 0px var(--border-dark), 0px 5px 8px rgba(0,0,0,0.2);
+  }
+
+  .pf-tab-btn:active {
+    top: 5px;
+    box-shadow: 0px 0px 0px var(--border-dark);
   }
 
   .pf-tab-btn.active {
     background: var(--hazard-gold);
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--border-dark);
+    top: 3px;
+    box-shadow: 0px 2px 0px var(--border-dark), inset 0px -2px 0px rgba(0,0,0,0.15);
   }
 
   /* ── ORDERS MANIFEST LIST ── */
