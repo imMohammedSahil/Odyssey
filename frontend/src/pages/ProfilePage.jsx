@@ -44,14 +44,14 @@ const css = `
   .pf-header-wrapper {
     background-color: var(--slime-green);
     border-bottom: 4px solid var(--border-dark);
-    padding: 22px 2.5% 30px;
+    padding: 22px 0 30px;
     position: relative;
     box-shadow: 0 4px 0px rgba(0, 0, 0, 0.2);
   }
 
   .pf-navbar {
     max-width: 1540px;
-    width: 100%;
+    width: 95%;
     margin: 0 auto 24px;
     display: flex;
     align-items: center;
@@ -161,7 +161,7 @@ const css = `
   /* ── HERO BANNER TITLE ── */
   .pf-banner-content {
     max-width: 1540px;
-    width: 100%;
+    width: 95%;
     margin: 0 auto;
     display: flex;
     align-items: flex-end;
@@ -211,9 +211,9 @@ const css = `
   /* ── MAIN CONTENT CONTAINER ── */
   .pf-container {
     max-width: 1540px;
-    width: 100%;
+    width: 95%;
     margin: 36px auto 0;
-    padding: 0 2.5%;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 32px;
