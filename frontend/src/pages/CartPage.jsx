@@ -236,7 +236,7 @@ const css = `
   /* ── TWO-ITEM PERFECT BOTTOM-LINE ALIGNMENT ── */
   @media (min-width: 821px) {
     .nb-cart-layout.nb-two-items .nb-summary-card {
-      padding: 20px 22px;
+      padding: 19px 22px;
     }
 
     .nb-cart-layout.nb-two-items .nb-summary-title {
