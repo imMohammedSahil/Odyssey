@@ -1173,7 +1173,7 @@ export default function ProfilePage() {
           <section className="pf-orders-section">
             <div className="pf-section-toolbar">
               <h3 className="pf-section-title">
-                <span>PREVIOUS ORDERS MANIFEST</span>
+                <span>DISPATCH LOGS & ORDER HISTORY</span>
               </h3>
 
               <div className="pf-filter-tabs">
