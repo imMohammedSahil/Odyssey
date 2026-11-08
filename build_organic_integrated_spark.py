@@ -12,111 +12,97 @@ from vectorize_wizard_greenlight import extract_paths
 w, h = 1672, 941
 wand_x, wand_y = 928, 328
 
+# Generous natural bounding region (2x larger than before so NO paths get cut off by an oval boundary)
 Y, X = np.ogrid[:h, :w]
-theta = np.radians(43.0)
-cos_t = np.cos(theta)
-sin_t = np.sin(theta)
-
 dx = X - wand_x
 dy = Y - wand_y
+dist = np.hypot(dx, dy)
+# Generous 260px radius - well beyond the light reach
+broad_zone = dist <= 260.0
 
-u = dx * cos_t - dy * sin_t
-v = dx * sin_t + dy * cos_t
-
-u_norm = np.where(u >= 0, u / 120.0, u / 90.0)
-v_norm = v / 50.0
-zone = (u_norm**2 + v_norm**2) <= 1.0
-
-# 1. Wooden wand stick (meeting the bulb smoothly)
-wand_mask = zone & (u < 5) & (gray < 45)
-p_wand = extract_paths(wand_mask, min_area=5, approx_eps=0.4)
-
-# 2. Outer emerald atmosphere
-outer_mask = zone & (gray >= 135) & (gray < 195)
-p_outer = extract_paths(outer_mask, min_area=6, approx_eps=0.4)
-
-# 3. Mint plasma flame & neck fold
-mint_mask = zone & (gray >= 195) & (gray < 235)
-p_mint = extract_paths(mint_mask, min_area=4, approx_eps=0.35)
-
-# 4. White-hot neck tendrils (feathered, no hard shapes)
-white_mask = zone & (gray >= 235) & (u > 8)
-p_white_neck = extract_paths(white_mask, min_area=3, approx_eps=0.3)
+# Extract TRUE organic artwork paths without any artificial ellipse clipping
+p_outer = extract_paths(broad_zone & (gray >= 130) & (gray < 195), min_area=8, approx_eps=0.45)
+p_mint = extract_paths(broad_zone & (gray >= 195) & (gray < 235), min_area=5, approx_eps=0.4)
+p_white = extract_paths(broad_zone & (gray >= 235), min_area=3, approx_eps=0.3)
+p_wand = extract_paths(broad_zone & (X <= wand_x + 10) & (Y >= wand_y - 10) & (gray < 45), min_area=6, approx_eps=0.4)
 
 defs = f'''  <defs>
-    <!-- Ultra-Smooth Feathered Optical Core Glow (Continuous Gaussian Falloff, ZERO hard edges) -->
-    <radialGradient id="smoothBulbOpticalGlow" cx="{wand_x}" cy="{wand_y}" r="68" gradientUnits="userSpaceOnUse">
+    <!-- Seamless 360° Non-Linear Optical Falloff Mask (Zero Oval/Box Boundaries) -->
+    <mask id="infiniteSoftFalloff">
+      <radialGradient id="pureGaussianFade" cx="{wand_x}" cy="{wand_y}" r="220" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
+        <stop offset="25%" stop-color="#FFFFFF" stop-opacity="0.9" />
+        <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.5" />
+        <stop offset="75%" stop-color="#FFFFFF" stop-opacity="0.15" />
+        <stop offset="92%" stop-color="#FFFFFF" stop-opacity="0.02" />
+        <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+      </radialGradient>
+      <rect width="{w}" height="{h}" fill="url(#pureGaussianFade)" />
+    </mask>
+
+    <!-- Ultra-Smooth Core Bloom -->
+    <radialGradient id="seamlessBulbGlow" cx="{wand_x}" cy="{wand_y}" r="75" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
       <stop offset="20%" stop-color="#FFFFFF" stop-opacity="0.95" />
-      <stop offset="42%" stop-color="#E0FFE8" stop-opacity="0.80" />
-      <stop offset="62%" stop-color="#72FFA5" stop-opacity="0.48" />
-      <stop offset="80%" stop-color="#24C862" stop-opacity="0.20" />
-      <stop offset="94%" stop-color="#0E7836" stop-opacity="0.05" />
+      <stop offset="45%" stop-color="#DFFFF0" stop-opacity="0.75" />
+      <stop offset="70%" stop-color="#5EFF9A" stop-opacity="0.4" />
+      <stop offset="90%" stop-color="#18B856" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#021C0A" stop-opacity="0.0" />
+    </radialGradient>
+
+    <!-- Broad Atmospheric Green Radiance -->
+    <radialGradient id="broadAtmosphere" cx="{wand_x}" cy="{wand_y}" r="210" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#56FFA0" stop-opacity="0.65" />
+      <stop offset="35%" stop-color="#1EB859" stop-opacity="0.35" />
+      <stop offset="65%" stop-color="#0E652F" stop-opacity="0.12" />
+      <stop offset="90%" stop-color="#04200E" stop-opacity="0.02" />
       <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
     </radialGradient>
 
-    <!-- Wider Ambient Green Halo -->
-    <radialGradient id="smoothAmbientHalo" cx="{wand_x}" cy="{wand_y}" r="150" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#62FF98" stop-opacity="0.65" />
-      <stop offset="35%" stop-color="#22D065" stop-opacity="0.35" />
-      <stop offset="70%" stop-color="#0E7836" stop-opacity="0.12" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
-    </radialGradient>
-
-    <!-- Upward Neck Blend Gradient -->
-    <linearGradient id="smoothNeckBeam" x1="{wand_x}" y1="{wand_y}" x2="{wand_x + 55}" y2="{wand_y - 65}" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
-      <stop offset="45%" stop-color="#B6FFD4" stop-opacity="0.75" />
-      <stop offset="80%" stop-color="#46F887" stop-opacity="0.30" />
-      <stop offset="100%" stop-color="#14B052" stop-opacity="0.0" />
-    </linearGradient>
-
-    <!-- High-Quality Feather Filter for Soft Light Bleed -->
-    <filter id="softGlowFilter" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="5.0" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
+    <!-- Diffuse Blur Filter for Natural Light Dispersion -->
+    <filter id="diffuseLight" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6.0" />
     </filter>
 
-    <filter id="featherNeck" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="3.0" />
+    <filter id="coronaBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" />
     </filter>
   </defs>'''
 
 svg = [f'<svg viewBox="0 0 {w} {h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">']
 svg.append(defs)
 
-# 1. Wide Ambient Green Halo
-svg.append(f'  <!-- 1. Ambient Green Halo -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="150" fill="url(#smoothAmbientHalo)" />')
+# Wrap EVERYTHING inside the seamless mask so all shapes dissolve to 0 smoothly
+svg.append('  <!-- Unified Flame with Seamless Gaussian Alpha Falloff -->')
+svg.append('  <g mask="url(#infiniteSoftFalloff)">')
 
-# 2. Wooden wand stick (grounding the light onto the wood)
+# 1. Atmospheric green light spread
+svg.append(f'    <circle cx="{wand_x}" cy="{wand_y}" r="210" fill="url(#broadAtmosphere)" />')
+
+# 2. Wooden wand stick (naturally silhouetted)
 if p_wand:
-    svg.append(f'  <!-- 2. Wooden Wand Stick -->\n  <path d="{" ".join(p_wand)}" fill="#020804" stroke="#020804" stroke-width="0.7" />')
+    svg.append(f'    <path d="{" ".join(p_wand)}" fill="#020804" stroke="#020804" stroke-width="0.8" />')
 
-# 3. Outer Emerald Plasma Corona
+# 3. Natural emerald wall and smoke corona
 if p_outer:
-    svg.append(f'  <!-- 3. Emerald Corona -->\n  <path d="{" ".join(p_outer)}" fill="#1EB859" opacity="0.7" filter="url(#softGlowFilter)" fill-rule="evenodd" />')
+    svg.append(f'    <path d="{" ".join(p_outer)}" fill="#1EB859" opacity="0.75" filter="url(#diffuseLight)" fill-rule="evenodd" />')
 
-# 4. Mint Flame Body
+# 4. Mint plasma flame body & smoke fold
 if p_mint:
-    svg.append(f'  <!-- 4. Mint Plasma Body -->\n  <path d="{" ".join(p_mint)}" fill="#54F68C" opacity="0.85" filter="url(#featherNeck)" fill-rule="evenodd" />')
+    svg.append(f'    <path d="{" ".join(p_mint)}" fill="#54F68C" opacity="0.9" filter="url(#coronaBlur)" fill-rule="evenodd" />')
 
-# 5. Upward Neck Beam Wash (Smooth continuous flare along the neck)
-svg.append(f'  <!-- 5. Upward Neck Beam Flare -->\n  <ellipse cx="{wand_x + 24}" cy="{wand_y - 28}" rx="32" ry="16" transform="rotate(-43 {wand_x + 24} {wand_y - 28})" fill="url(#smoothNeckBeam)" filter="url(#featherNeck)" />')
+# 5. White-hot plasma core & neck filaments
+if p_white:
+    svg.append(f'    <path d="{" ".join(p_white)}" fill="#FFFFFF" opacity="0.95" filter="url(#coronaBlur)" fill-rule="evenodd" />')
 
-# 6. Feathered White-Hot Neck Filaments
-if p_white_neck:
-    svg.append(f'  <!-- 6. White-Hot Neck Filaments -->\n  <path d="{" ".join(p_white_neck)}" fill="#FFFFFF" opacity="0.9" filter="url(#featherNeck)" fill-rule="evenodd" />')
+# 6. Ultra-smooth feathered incandescent center (Zero hard dot, zero oval border)
+svg.append(f'    <circle cx="{wand_x}" cy="{wand_y}" r="75" fill="url(#seamlessBulbGlow)" filter="url(#coronaBlur)" />')
 
-# 7. Ultra-Smooth Feathered Optical Core (Continuous seamless falloff - NO hard white dot!)
-svg.append(f'  <!-- 7. Seamless Feathered Optical Core Glow -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="68" fill="url(#smoothBulbOpticalGlow)" filter="url(#softGlowFilter)" />')
-
+svg.append('  </g>')
 svg.append('</svg>')
 
 full_svg = '\n'.join(svg)
 with open('frontend/public/wand-spark-flame.svg', 'w', encoding='utf-8') as f:
     f.write(full_svg)
 
-print(f'Generated seamless feathered wand flame! Size: {len(full_svg):,} bytes')
+print(f'Generated seamless natural flame without any oval cutoffs! Size: {len(full_svg):,} bytes')
