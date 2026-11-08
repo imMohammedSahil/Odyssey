@@ -8,6 +8,7 @@
   1. **Writing Essentials**: `/writing` ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx), backdrop: `/halloween-reference-landscape.svg`) — *Toxic Lime & Seafoam Green*
   2. **Correction & Marking**: `/stationery/correction` ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx), backdrop: `/correction-landscape.svg`) — *Twilight Purple & Pumpkin Orange*
   3. **Paper & Reams**: `/stationery/paper` and `/paper` ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx), backdrop: `/paper-landscape.svg`) — *Midnight Slate & Electric Cyan*
+  4. **Payment Gateway & Checkout**: `/payment` ([PaymentPage.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/PaymentPage.jsx), backdrop: `/graveyard-gate-landscape.svg?v=15`) — *Gothic Steel Slate, Void Black & Fiery Crimson*
 
 ---
 
