@@ -178,7 +178,7 @@ const styles = `
     width: 100%;
     max-width: 580px;
     margin-top: 20px;
-    aspect-ratio: 683 / 1024;
+    aspect-ratio: 1024 / 1535;
     user-select: text !important;
     -webkit-user-select: text !important;
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
@@ -809,10 +809,10 @@ export default function ReceiptPage() {
         {stage >= 3 && (
           <section className="rcpt-record-section">
             <div className="rcpt-scroll-stage" onClick={(e) => e.stopPropagation()}>
-              {/* PURE VECTOR SVG BACKDROP (Raven, Rods, Spikes, Deckled Parchment, Smoke) */}
+              {/* HOODED CROW PERCHED ON PARCHMENT SCROLL */}
               <img
-                src="/raven-receipt-scroll.svg"
-                alt="Vector Raven Scroll Receipt"
+                src="/hooded-crow-scroll.png"
+                alt="Hooded Crow Perched on Parchment Scroll"
                 className="rcpt-scroll-vector"
               />
 
