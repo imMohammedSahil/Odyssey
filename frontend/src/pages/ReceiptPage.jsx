@@ -425,23 +425,12 @@ export default function ReceiptPage() {
         {/* Ambient depth vignette */}
         <div className={`rcpt-bg-vignette ${stage >= 2 ? "active" : ""}`} aria-hidden="true" />
 
-        {/* Click 1: Precise Organic Vector Flame Tease at Wand Tip */}
+        {/* Click 1: Precise Concentrated Wand Tip Spark Tease */}
         {showSpark && (
           <div key={sparkKey} className="wand-spark-layer tease" aria-hidden="true">
             <img
               src="/wand-spark-flame.svg"
-              alt="Organic Wand Spark Flame"
-              className="wand-spark-vector"
-            />
-          </div>
-        )}
-
-        {/* Click 2+: Permanent Vector Flame Anchor while paint flows */}
-        {stage >= 2 && (
-          <div className="wand-spark-layer ignited" aria-hidden="true">
-            <img
-              src="/wand-spark-flame.svg"
-              alt="Organic Wand Spark Flame"
+              alt="Wand Spark Core"
               className="wand-spark-vector"
             />
           </div>
