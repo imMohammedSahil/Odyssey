@@ -55,14 +55,14 @@ const styles = `
     object-fit: cover;
     object-position: center center;
     display: block;
-    filter: brightness(0.96) contrast(1.04);
+    filter: brightness(1.05) contrast(1.02);
   }
 
   /* Ambient light overlay for extra depth */
   .pay-bg-vignette {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at 50% 20%, transparent 40%, rgba(13, 17, 20, 0.5) 85%);
+    background: radial-gradient(circle at 50% 20%, transparent 45%, rgba(13, 17, 20, 0.38) 90%);
     pointer-events: none;
     z-index: 1;
   }
@@ -466,7 +466,7 @@ export default function PaymentPage() {
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img
-            src="/graveyard-gate-landscape.svg?v=21"
+            src="/graveyard-gate-landscape.svg?v=22"
             alt="Checkout Gate Pure Vector Landscape"
             className="pay-bg-vector"
           />
