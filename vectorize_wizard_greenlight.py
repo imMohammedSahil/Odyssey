@@ -68,8 +68,8 @@ def build_wizard_svg():
     smooth = cv2.bilateralFilter(bgr, d=5, sigmaColor=25, sigmaSpace=25)
     gray = cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY)
 
-    # Coords of focal points
-    wand_x, wand_y = 929, 328
+    # Coords of focal points (Physical tip of wooden wand)
+    wand_x, wand_y = 910, 331
     grimoire_x, grimoire_y = 1347, 813
     door_x, door_y = 1090, 480
 
@@ -90,12 +90,14 @@ def build_wizard_svg():
     </linearGradient>
 
     <!-- Radiant Wand Core Bloom (White-hot incandescence at wand tip x={wand_x}, y={wand_y}) -->
-    <radialGradient id="wandBloomCore" cx="{wand_x}" cy="{wand_y}" r="150" gradientUnits="userSpaceOnUse">
+    <radialGradient id="wandBloomCore" cx="{wand_x}" cy="{wand_y}" r="220" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
-      <stop offset="15%" stop-color="#EAFFF0" stop-opacity="0.95" />
-      <stop offset="35%" stop-color="#60FFA0" stop-opacity="0.80" />
-      <stop offset="65%" stop-color="#19BD5C" stop-opacity="0.45" />
-      <stop offset="100%" stop-color="#074B24" stop-opacity="0" />
+      <stop offset="10%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="22%" stop-color="#DCFFE7" stop-opacity="0.80" />
+      <stop offset="40%" stop-color="#60FFA0" stop-opacity="0.45" />
+      <stop offset="62%" stop-color="#23BD60" stop-opacity="0.18" />
+      <stop offset="82%" stop-color="#0D6B35" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#02140A" stop-opacity="0" />
     </radialGradient>
 
     <!-- Wide Atmospheric Room Light Cast from Wand -->
@@ -229,12 +231,12 @@ def build_wizard_svg():
         svg_layers.append('  <!-- Layer 10E: Floating Arcane Motes & Spark Embers -->')
         svg_layers.append(f'  <path d="{" ".join(p_motes)}" fill="#8AFFBA" fill-rule="evenodd" />')
 
-    # Layer 11: Wand Bloom Core Flare
-    svg_layers.append(f'  <!-- Layer 11: Wand Tip Radiant Core Incandescence -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="80" fill="url(#wandBloomCore)" />')
+    # Layer 11: Wand Bloom Core Flare (Smooth outward atmospheric decay with no sharp circular boundary)
+    svg_layers.append(f'  <!-- Layer 11: Wand Tip Radiant Core Incandescence (Smooth outward atmospheric decay) -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="240" fill="url(#wandBloomCore)" />')
 
-    # Layer 12: Inscribed Down Arrow Mark on Upper Door Panel (Environment Matched)
-    door_inscription = '''  <!-- Layer 12: Inscribed Down Arrow Mark on Upper Door Panel (Environment Matched) -->
-  <g id="doorArrowMark" transform="translate(1135, 462)">
+    # Layer 12: Inscribed Down Arrow Mark on Center Door Panel (Environment Matched)
+    door_inscription = '''  <!-- Layer 12: Inscribed Down Arrow Mark on Center Door Panel (Environment Matched) -->
+  <g id="doorArrowMark" transform="translate(1112, 510)">
     <!-- Deep carved relief shadow in comic black-green ink -->
     <path d="M 0,22 L -14,6 L -5,6 L -5,-18 L 5,-18 L 5,6 L 14,6 Z"
           fill="#020a05" transform="translate(2, 2)" opacity="0.95" />

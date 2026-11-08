@@ -10,7 +10,7 @@ gray = cv2.cvtColor(smooth, cv2.COLOR_RGB2GRAY)
 from vectorize_wizard_greenlight import extract_paths
 
 w, h = 1672, 941
-wand_x, wand_y = 929, 328
+wand_x, wand_y = 910, 331
 
 # Confine tightly to a realistic radius r=58px around the wand tip
 Y, X = np.ogrid[:h, :w]

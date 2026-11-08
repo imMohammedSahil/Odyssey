@@ -296,8 +296,8 @@ function getWandScreenPos(width, height) {
     offsetY = 0;
   }
 
-  const originX = offsetX + (928 / 1672) * renderW;
-  const originY = offsetY + (328 / 941) * renderH;
+  const originX = offsetX + (910 / 1672) * renderW;
+  const originY = offsetY + (331 / 941) * renderH;
   const scale = renderW / 1672;
   return { originX, originY, renderW, renderH, offsetX, offsetY, scale };
 }
@@ -473,14 +473,16 @@ export default function ReceiptPage() {
         if (waveAlpha > 0 && currentR > 4) {
           ctx.globalCompositeOperation = "destination-out";
 
-          // Fixed, sharp circular boundary (anti-aliased 3px edge, not a spreaded vignette)
-          const featherStart = Math.max(0, currentR - 3);
+          // Smooth outward radial falloff with zero harsh circular perimeter
           const waveGrad = ctx.createRadialGradient(
-            originX, originY, featherStart,
+            originX, originY, 0,
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.85, `rgba(0, 0, 0, ${waveAlpha})`);
+          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha * 0.92})`);
+          waveGrad.addColorStop(0.60, `rgba(0, 0, 0, ${waveAlpha * 0.65})`);
+          waveGrad.addColorStop(0.80, `rgba(0, 0, 0, ${waveAlpha * 0.30})`);
+          waveGrad.addColorStop(0.94, `rgba(0, 0, 0, ${waveAlpha * 0.08})`);
           waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
@@ -543,17 +545,19 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out to reveal pure, crystal-clear artwork with crisp leading edge
+        // 2. Carve out to reveal pure, crystal-clear artwork with smooth outward leading edge
         ctx.globalCompositeOperation = "destination-out";
 
         if (waveR > 4) {
-          const featherW = Math.min(6 * scale, waveR * 0.05);
+          const featherW = Math.min(80 * scale, waveR * 0.35);
           const waveGrad = ctx.createRadialGradient(
             originX, originY, Math.max(0, waveR - featherW),
             originX, originY, waveR
           );
           waveGrad.addColorStop(0, "#000000"); // 100% revealed artwork
-          waveGrad.addColorStop(0.85, "#000000");
+          waveGrad.addColorStop(0.40, "rgba(0, 0, 0, 0.85)");
+          waveGrad.addColorStop(0.70, "rgba(0, 0, 0, 0.40)");
+          waveGrad.addColorStop(0.90, "rgba(0, 0, 0, 0.10)");
           waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
