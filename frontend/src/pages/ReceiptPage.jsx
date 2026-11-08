@@ -291,25 +291,14 @@ export default function ReceiptPage() {
         Math.max(originY, canvas.height - originY)
       ) * 1.35;
 
-      // Generate random organic fluid harmonics for natural liquid flow (random tendrils, paper grain)
-      const numRays = 220;
+      // Low-amplitude, buttery-smooth organic liquid lobes (NO sharp saw-teeth or jagged spikes)
+      const numRays = 180;
       const rays = [];
       for (let i = 0; i < numRays; i++) {
         const theta = (i / numRays) * Math.PI * 2;
-        // Non-uniform speed per direction: simulates fluid spilling faster along random streams
-        const speedVar = 0.72 + 0.38 * Math.sin(theta * 2.3 + 1.1) + 0.22 * Math.cos(theta * 4.7 - 0.8) + (Math.random() - 0.5) * 0.18;
-        // High-frequency capillary ripples
-        const capillary = (Math.random() - 0.5) * 0.12;
-        rays.push({ theta, speedVar: Math.max(0.45, speedVar), capillary });
-      }
-
-      // Droplets and satellite paint splashes ahead of main front
-      const droplets = [];
-      for (let j = 0; j < 24; j++) {
-        const angle = Math.random() * Math.PI * 2;
-        const distRatio = 0.25 + Math.random() * 0.7;
-        const radius = 6 + Math.random() * 22;
-        droplets.push({ angle, distRatio, radius, delay: Math.random() * 0.4 });
+        // Gentle, rolling low-amplitude variation (±12% total max swing)
+        const speedVar = 1.0 + 0.07 * Math.sin(theta * 2 + 0.7) + 0.04 * Math.cos(theta * 3 - 0.4) + 0.02 * Math.sin(theta * 5 + 1.2);
+        rays.push({ theta, speedVar });
       }
 
       const durationMs = 16000; // 16s ultra-slow painterly liquid creep
@@ -319,7 +308,7 @@ export default function ReceiptPage() {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Smooth liquid crawl curve: slow organic expansion across 16 seconds
+        // Smooth liquid crawl curve
         const ease = 1 - Math.pow(1 - progress, 2.2);
 
         // 1. Redraw black sheet
@@ -331,17 +320,17 @@ export default function ReceiptPage() {
         // 2. Carve out the organic flowing paint spill from the black sheet
         ctx.globalCompositeOperation = "destination-out";
 
-        // Generate fluid spill boundary vertices
+        // Generate fluid spill boundary vertices with gentle rolling curves
         const points = [];
         for (let i = 0; i < numRays; i++) {
-          const { theta, speedVar, capillary } = rays[i];
-          const currentRadius = maxDist * ease * speedVar * (1 + capillary);
+          const { theta, speedVar } = rays[i];
+          const currentRadius = maxDist * ease * speedVar;
           const px = originX + Math.cos(theta) * currentRadius;
           const py = originY + Math.sin(theta) * currentRadius;
           points.push({ x: px, y: py });
         }
 
-        // Draw organic smooth liquid boundary using midpoint quadratic curves
+        // Draw smooth, rolling liquid boundary using midpoint quadratic curves
         if (points.length > 2) {
           ctx.beginPath();
           const p0 = points[0];
@@ -359,22 +348,6 @@ export default function ReceiptPage() {
           ctx.fillStyle = "#000000";
           ctx.fill();
         }
-
-        // Carve ahead satellite droplets that pool and merge into the front
-        droplets.forEach((d) => {
-          if (ease > d.delay) {
-            const dropProgress = Math.min(1.0, (ease - d.delay) / 0.5);
-            const dropDist = maxDist * d.distRatio * (0.8 + 0.2 * dropProgress);
-            const dx = originX + Math.cos(d.angle) * dropDist;
-            const dy = originY + Math.sin(d.angle) * dropDist;
-            const dr = d.radius * dropProgress;
-
-            ctx.beginPath();
-            ctx.arc(dx, dy, dr, 0, Math.PI * 2);
-            ctx.fillStyle = "#000000";
-            ctx.fill();
-          }
-        });
 
         ctx.restore();
 
