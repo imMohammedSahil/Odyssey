@@ -102,12 +102,13 @@ def build_accurate_gothic_chapel_svg():
       <stop offset="100%" stop-color="#222B30" />
     </linearGradient>
 
-    <!-- Lantern Glass Flame Bloom (Confined strictly to lantern glass aperture, r=30) -->
-    <radialGradient id="lanternRedMistBloom" cx="755" cy="405" r="30" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FF5538" stop-opacity="0.95" />
-      <stop offset="40%" stop-color="#E03422" stop-opacity="0.75" />
-      <stop offset="75%" stop-color="#9C241C" stop-opacity="0.35" />
-      <stop offset="100%" stop-color="#6B1812" stop-opacity="0" />
+    <!-- Lantern Flame Bloom with Soft Atmospheric Spread (r=52) -->
+    <radialGradient id="lanternRedMistBloom" cx="755" cy="405" r="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5A38" stop-opacity="0.95" />
+      <stop offset="30%" stop-color="#E53522" stop-opacity="0.75" />
+      <stop offset="55%" stop-color="#B82418" stop-opacity="0.38" />
+      <stop offset="80%" stop-color="#7A150E" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#7A150E" stop-opacity="0" />
     </radialGradient>
 
     <radialGradient id="bloomLanternLeft" cx="348" cy="385" r="50" gradientUnits="userSpaceOnUse">
@@ -125,7 +126,6 @@ def build_accurate_gothic_chapel_svg():
 
     <radialGradient id="bloomShrineAperture" cx="414" cy="342" r="20" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFF0DE" stop-opacity="0.95" />
-      <stop offset="40%" stop-color="#FF482B" stop-opacity="0.7" />
       <stop offset="100%" stop-color="#C4150C" stop-opacity="0" />
     </radialGradient>
 
@@ -196,9 +196,9 @@ def build_accurate_gothic_chapel_svg():
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
 
-    # Layer 6: Realistic Atmospheric Lantern Glows (Confined Strictly to Lantern Glass, Zero Fog Wash)
-    svg_layers.append('  <!-- Layer 6: Lantern Glass Flame Bloom -->')
-    svg_layers.append('  <circle cx="755" cy="405" r="30" fill="url(#lanternRedMistBloom)" />')
+    # Layer 6: Realistic Atmospheric Lantern Glows
+    svg_layers.append('  <!-- Layer 6: Lantern Flame Atmospheric Spread Bloom (r=52) -->')
+    svg_layers.append('  <circle cx="755" cy="405" r="52" fill="url(#lanternRedMistBloom)" />')
     svg_layers.append('  <circle cx="348" cy="385" r="50" fill="url(#bloomLanternLeft)" />')
     svg_layers.append('  <circle cx="505" cy="318" r="30" fill="url(#bloomChurchDoor)" />')
     svg_layers.append('  <circle cx="414" cy="342" r="20" fill="url(#bloomShrineAperture)" />')
