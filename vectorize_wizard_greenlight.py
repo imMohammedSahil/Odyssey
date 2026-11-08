@@ -234,15 +234,15 @@ def build_wizard_svg():
     # Layer 11: Wand Bloom Core Flare (Smooth outward atmospheric decay with no sharp circular boundary)
     svg_layers.append(f'  <!-- Layer 11: Wand Tip Radiant Core Incandescence (Smooth outward atmospheric decay) -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="240" fill="url(#wandBloomCore)" />')
 
-    # Layer 12: Inscribed Crimson Down Arrow Mark on Center Door Panel
-    door_inscription = '''  <!-- Layer 12: Inscribed Crimson Down Arrow Mark on Center Door Panel -->
-  <g id="doorArrowMark" transform="translate(1112, 510)">
-    <!-- Deep carved relief shadow in comic black-red ink -->
-    <path d="M 0,22 L -14,6 L -5,6 L -5,-18 L 5,-18 L 5,6 L 14,6 Z"
-          fill="#1A0205" transform="translate(2, 2)" opacity="0.95" />
-    <!-- Chiseled crimson arrow face -->
-    <path d="M 0,22 L -14,6 L -5,6 L -5,-18 L 5,-18 L 5,6 L 14,6 Z"
-          fill="#FF2E3B" stroke="#2B0004" stroke-width="2"
+    # Layer 12: Weathered Occult Crimson Arrow Mark on Center Door Panel (Atmosphere Matched)
+    door_inscription = '''  <!-- Layer 12: Weathered Occult Crimson Arrow Mark on Center Door Panel (Atmosphere Matched) -->
+  <g id="doorArrowMark" transform="translate(1112, 510)" opacity="0.85">
+    <!-- Deep carved relief shadow in chamber ink -->
+    <path d="M 0,18 L -11,5 L -4,5 L -4,-15 L 4,-15 L 4,5 L 11,5 Z"
+          fill="#020804" transform="translate(1.5, 1.5)" opacity="0.9" />
+    <!-- Weathered stone face in deep occult crimson -->
+    <path d="M 0,18 L -11,5 L -4,5 L -4,-15 L 4,-15 L 4,5 L 11,5 Z"
+          fill="#8A221E" stroke="#040e06" stroke-width="1.5"
           stroke-linejoin="round" />
   </g>'''
     svg_layers.append(door_inscription)
