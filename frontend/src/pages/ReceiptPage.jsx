@@ -168,7 +168,7 @@ const styles = `
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 100px 16px 120px;
+    padding: 240px 16px 160px;
     background: #000000;
     cursor: default;
   }
