@@ -74,6 +74,10 @@ def build_accurate_grim_reaper_svg():
     kernel_fg = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
     clean_fg = cv2.morphologyEx(fg_mask.astype(np.uint8), cv2.MORPH_CLOSE, kernel_fg) > 0
 
+    # Remove floating bottom tail artifact (spurious dangling flap below base stones)
+    clean_fg[956:, :] = False
+    clean_fg[945:, 380:510] = False
+
     # 2. Glowing Eyes of the Grim Reaper
     eye_zone = np.zeros_like(gray, dtype=bool)
     eye_zone[85:140, 430:510] = True
@@ -93,19 +97,34 @@ def build_accurate_grim_reaper_svg():
     qr_inner_zone = np.zeros_like(gray, dtype=bool)
     qr_inner_zone[385:595, 365:585] = True
 
-    # 5. Red Fabrics, Heraldry, Ribbons, and Occult Sigil
-    red_rich = (r > 90) & (r > g * 1.35) & (r > b * 1.35)
-    red_bright = (r > 135) & (r > g * 1.45) & (r > b * 1.45)
-    red_dark = (r > 60) & (r > g * 1.22) & (r > b * 1.22) & (~red_rich)
+    # 5. Clean Heraldic Fabrics & Carved Relief Text (ZERO Blood Splatters)
+    y_grid, x_grid = np.ogrid[:h, :w]
 
-    # Sigil on parchment
-    sigil_mask = red_rich & (r > 105) & (~qr_inner_zone)
+    # Legitimate Heraldic & Architectural Zones:
+    roi_right_banner = (x_grid >= 685) & (x_grid <= 815) & (y_grid >= 340) & (y_grid <= 630)
+    roi_left_banner = (x_grid >= 110) & (x_grid <= 210) & (y_grid >= 310) & (y_grid <= 570)
+    roi_left_ribbon = (x_grid >= 130) & (x_grid <= 220) & (y_grid >= 780) & (y_grid <= 930)
+    roi_center_crest = (x_grid >= 460) & (x_grid <= 490) & (y_grid >= 285) & (y_grid <= 318)
+    roi_plaque_text = (y_grid >= 630) & (y_grid <= 700) & (x_grid >= 220) & (x_grid <= 740)
+
+    allowed_red_zone = roi_right_banner | roi_left_banner | roi_left_ribbon | roi_center_crest | roi_plaque_text
+
+    raw_red_rich = (r > 90) & (r > g * 1.35) & (r > b * 1.35)
+    raw_red_bright = (r > 135) & (r > g * 1.45) & (r > b * 1.45)
+    raw_red_dark = (r > 60) & (r > g * 1.22) & (r > b * 1.22) & (~raw_red_rich)
+
+    # Filtered red: only legitimate banners, emblems, and carved text remain. All blood splatters eliminated!
+    red_rich = raw_red_rich & allowed_red_zone
+    red_bright = raw_red_bright & allowed_red_zone
+    red_dark = raw_red_dark & allowed_red_zone
+
+    # Sigil on parchment is cleaned (zero blood splatters on scroll)
+    sigil_mask = np.zeros_like(gray, dtype=bool)
 
     # 6. Carved Wood Plaque Typography
-    y_grid, x_grid = np.ogrid[:h, :w]
     # "MAKE YOUR OFFERING"
-    text_make_offering = (y_grid >= 630) & (y_grid <= 700) & (x_grid >= 220) & (x_grid <= 740) & red_rich
-    text_make_offering_bright = (y_grid >= 630) & (y_grid <= 700) & (x_grid >= 220) & (x_grid <= 740) & red_bright
+    text_make_offering = roi_plaque_text & raw_red_rich
+    text_make_offering_bright = roi_plaque_text & raw_red_bright
 
     # "TO COMPLETE THE RITUAL"
     text_to_complete = (y_grid >= 700) & (y_grid <= 740) & (x_grid >= 225) & (x_grid <= 735) & (gray > 110)
@@ -117,10 +136,19 @@ def build_accurate_grim_reaper_svg():
     # Right Banner Printer / Campus Icon
     printer_icon = (y_grid >= 425) & (y_grid <= 530) & (x_grid >= 740) & (x_grid <= 805) & (gray > 95) & (r > 115) & (g > 75)
 
-    # 7. Parchment Scroll Paper
+    # 7. Clean Antique Parchment Scroll Paper (Seamless, Unstained & Pristine)
     parch_zone = (y_grid >= 290) & (y_grid <= 650) & (x_grid >= 250) & (x_grid <= 690)
-    parchment_body = (parch_zone & (gray > 110) & (r > 115) & (g > 95) & (b > 65) & (~red_rich) & (~flame_halo)) | (qr_inner_zone & clean_fg)
-    parchment_light = parch_zone & (gray > 155) & (r > 155) & (g > 135) & (b > 95) & (~red_rich) & (~qr_inner_zone)
+    raw_parch = parch_zone & ((gray > 55) | (r > 70)) & (x_grid >= 260) & (x_grid <= 680)
+    k_parch = cv2.getStructuringElement(cv2.MORPH_RECT, (11, 11))
+    parch_closed = cv2.morphologyEx(raw_parch.astype(np.uint8), cv2.MORPH_CLOSE, k_parch)
+    contours_p, _ = cv2.findContours(parch_closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    parch_mask = np.zeros_like(gray, dtype=bool)
+    if contours_p:
+        cnt_p = max(contours_p, key=cv2.contourArea)
+        cv2.drawContours(parch_mask.view(np.uint8), [cnt_p], -1, 1, thickness=-1)
+
+    parchment_body = parch_mask & clean_fg & (~flame_halo)
+    parchment_light = parchment_body & (gray > 130) & (~qr_inner_zone)
 
     # 8. Skeletal Claws & Wax Pillars
     bone_zone = np.zeros_like(gray, dtype=bool)
@@ -185,154 +213,155 @@ def build_accurate_grim_reaper_svg():
       <stop offset="100%" stop-color="#083814" />
     </radialGradient>
 
-    <!-- Hanging Lantern Radial Flame -->
+    <!-- Hanging Lantern Radial Flame (Matches Background Gothic Lanterns) -->
     <radialGradient id="lanternFlameGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#FFFAD1" />
-      <stop offset="25%" stop-color="#FFA826" />
-      <stop offset="65%" stop-color="#DE3C16" />
-      <stop offset="100%" stop-color="#73150A" />
+      <stop offset="0%" stop-color="#FFF6B8" />
+      <stop offset="25%" stop-color="#FFA62B" />
+      <stop offset="65%" stop-color="#FF3814" />
+      <stop offset="100%" stop-color="#6B0E06" />
     </radialGradient>
 
     <!-- Candle Flame Radial -->
     <radialGradient id="candleFlameGrad" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#FFFFF0" />
-      <stop offset="30%" stop-color="#FFB338" />
-      <stop offset="70%" stop-color="#E64415" />
+      <stop offset="30%" stop-color="#FFA826" />
+      <stop offset="70%" stop-color="#E63810" />
       <stop offset="100%" stop-color="#6B1309" />
     </radialGradient>
 
-    <!-- Parchment Paper Shading Gradient -->
+    <!-- Moonlit Antique Parchment Paper Shading Gradient -->
     <linearGradient id="parchmentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#E0CEB4" />
-      <stop offset="50%" stop-color="#EFE0CA" />
-      <stop offset="100%" stop-color="#D4C0A3" />
+      <stop offset="0%" stop-color="#C8C2B7" />
+      <stop offset="50%" stop-color="#DDD7CB" />
+      <stop offset="100%" stop-color="#BFB8AB" />
+    </linearGradient>
+
+    <!-- Atmospheric Ground Fog Drift across Base Rocks -->
+    <linearGradient id="shrineGroundMist" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2D3B40" stop-opacity="0" />
+      <stop offset="55%" stop-color="#223035" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#141E22" stop-opacity="0.75" />
     </linearGradient>
   </defs>''')
 
     # Group: Character & Shrine Container
     svg_parts.append('  <g id="ritualShrineGroup" class="shrine-vector-group">')
 
-    # Layer 0: Deep Silhouette Underlay (Prevents pinholes)
+    # Layer 0: Deep Silhouette Underlay (Matches Gothic Midnight Void)
     fg_paths = extract_paths(clean_fg, min_area=80, approx_eps=0.7)
     if fg_paths:
         svg_parts.append(f'    <!-- Layer 0: Silhouette Base -->')
-        svg_parts.append(f'    <path d="{" ".join(fg_paths)}" fill="#120F0E" />')
+        svg_parts.append(f'    <path d="{" ".join(fg_paths)}" fill="#0E1418" />')
 
-    # Layer 1: Dark Wood & Cloak Folds
+    # Layer 1: Dark Wood & Cloak Folds (Cold Gothic Slate Wood)
     w_deep_paths = extract_paths(wood_deep, min_area=12, approx_eps=0.55)
     if w_deep_paths:
         svg_parts.append(f'    <!-- Layer 1: Deep Timber & Robe Shadows -->')
-        svg_parts.append(f'    <path d="{" ".join(w_deep_paths)}" fill="#261C17" />')
+        svg_parts.append(f'    <path d="{" ".join(w_deep_paths)}" fill="#1B2328" />')
 
-    # Layer 2: Stone Rubble & Cobblestone Base
+    # Layer 2: Stone Rubble & Cobblestone Base (Matches Graveyard Cobblestone Path & Teal-Moss)
     st_b_paths = extract_paths(stone_body, min_area=10, approx_eps=0.55)
     if st_b_paths:
         svg_parts.append(f'    <!-- Layer 2: Boulders & Stone Rubble -->')
-        svg_parts.append(f'    <path d="{" ".join(st_b_paths)}" fill="#383234" />')
+        svg_parts.append(f'    <path d="{" ".join(st_b_paths)}" fill="#232E35" />')
     st_m_paths = extract_paths(stone_mid, min_area=10, approx_eps=0.5)
     if st_m_paths:
-        svg_parts.append(f'    <path d="{" ".join(st_m_paths)}" fill="#544B4E" />')
+        svg_parts.append(f'    <path d="{" ".join(st_m_paths)}" fill="#384750" />')
     st_l_paths = extract_paths(stone_light, min_area=10, approx_eps=0.5)
     if st_l_paths:
-        svg_parts.append(f'    <path d="{" ".join(st_l_paths)}" fill="#7A6F73" />')
+        svg_parts.append(f'    <path d="{" ".join(st_l_paths)}" fill="#546B64" />')
 
-    # Layer 3: Midtone Timber Planks
+    # Layer 3: Midtone Timber Planks (Weathered Bog Oak)
     w_mid_paths = extract_paths(wood_mid, min_area=10, approx_eps=0.5)
     if w_mid_paths:
         svg_parts.append(f'    <!-- Layer 3: Weathered Timber Planks -->')
-        svg_parts.append(f'    <path d="{" ".join(w_mid_paths)}" fill="#47352B" />')
+        svg_parts.append(f'    <path d="{" ".join(w_mid_paths)}" fill="#2D3941" />')
 
-    # Layer 4: Timber Grain & Edge Highlights
+    # Layer 4: Timber Grain & Edge Highlights (Moonlit Slate Relief)
     w_l_paths = extract_paths(wood_light, min_area=10, approx_eps=0.5)
     if w_l_paths:
         svg_parts.append(f'    <!-- Layer 4: Timber Grain & Edge Relief -->')
-        svg_parts.append(f'    <path d="{" ".join(w_l_paths)}" fill="#6B5041" />')
+        svg_parts.append(f'    <path d="{" ".join(w_l_paths)}" fill="#445560" />')
     w_hl_paths = extract_paths(wood_highlight, min_area=8, approx_eps=0.45)
     if w_hl_paths:
-        svg_parts.append(f'    <path d="{" ".join(w_hl_paths)}" fill="#8A6B57" />')
+        svg_parts.append(f'    <path d="{" ".join(w_hl_paths)}" fill="#667C88" />')
 
-    # Layer 5: Bone Claws & Dripping Wax Pillars
+    # Layer 5: Bone Claws & Dripping Wax Pillars (Aged Skeletal Ivory)
     b_b_paths = extract_paths(bone_body, min_area=8, approx_eps=0.45)
     if b_b_paths:
         svg_parts.append(f'    <!-- Layer 5: Skeletal Claws & Candle Wax -->')
-        svg_parts.append(f'    <path d="{" ".join(b_b_paths)}" fill="#82715F" />')
+        svg_parts.append(f'    <path d="{" ".join(b_b_paths)}" fill="#6E726E" />')
     b_l_paths = extract_paths(bone_light, min_area=8, approx_eps=0.45)
     if b_l_paths:
-        svg_parts.append(f'    <path d="{" ".join(b_l_paths)}" fill="#C7B49B" />')
+        svg_parts.append(f'    <path d="{" ".join(b_l_paths)}" fill="#AEAFA2" />')
 
-    # Layer 6: Red Fabric Banners & Ribbons
+    # Layer 6: Red Fabric Banners & Ribbons (Gothic Crimson)
     r_dark_paths = extract_paths(red_dark, min_area=8, approx_eps=0.5)
     if r_dark_paths:
         svg_parts.append(f'    <!-- Layer 6: Crimson Fabric & Ribbons -->')
-        svg_parts.append(f'    <path d="{" ".join(r_dark_paths)}" fill="#541410" />')
+        svg_parts.append(f'    <path d="{" ".join(r_dark_paths)}" fill="#4A1210" />')
     r_rich_paths = extract_paths(red_rich, min_area=8, approx_eps=0.45)
     if r_rich_paths:
-        svg_parts.append(f'    <path d="{" ".join(r_rich_paths)}" fill="#9C261E" />')
+        svg_parts.append(f'    <path d="{" ".join(r_rich_paths)}" fill="#8E201A" />')
     r_bright_paths = extract_paths(red_bright, min_area=8, approx_eps=0.45)
     if r_bright_paths:
-        svg_parts.append(f'    <path d="{" ".join(r_bright_paths)}" fill="#CC382B" />')
+        svg_parts.append(f'    <path d="{" ".join(r_bright_paths)}" fill="#BA2820" />')
 
     # Right Banner Printer Icon
     pr_paths = extract_paths(printer_icon, min_area=4, approx_eps=0.4)
     if pr_paths:
         svg_parts.append(f'    <!-- Odyssey Print Emblem on Banner -->')
-        svg_parts.append(f'    <path d="{" ".join(pr_paths)}" fill="#D8C4A9" />')
+        svg_parts.append(f'    <path d="{" ".join(pr_paths)}" fill="#C4BCB0" />')
 
-    # Layer 7: Torn Parchment Scroll Base & Shading
+    # Layer 7: Torn Parchment Scroll Base & Shading (Moonlit Antique Vellum)
     p_b_paths = extract_paths(parchment_body, min_area=10, approx_eps=0.5)
     if p_b_paths:
         svg_parts.append(f'    <!-- Layer 7: Torn Parchment Scroll -->')
         svg_parts.append(f'    <path d="{" ".join(p_b_paths)}" fill="url(#parchmentGrad)" />')
     p_l_paths = extract_paths(parchment_light, min_area=10, approx_eps=0.45)
     if p_l_paths:
-        svg_parts.append(f'    <path d="{" ".join(p_l_paths)}" fill="#F5E8D3" />')
-
-    # Occult Sigil Ring & Markings on Parchment
-    sig_paths = extract_paths(sigil_mask, min_area=6, approx_eps=0.4)
-    if sig_paths:
-        svg_parts.append(f'    <!-- Sacred Occult Sigil & Boundary Runes -->')
-        svg_parts.append(f'    <path d="{" ".join(sig_paths)}" fill="#A8281E" />')
+        svg_parts.append(f'    <path d="{" ".join(p_l_paths)}" fill="#ECE7DD" />')
 
     # Layer 8: Carved Plaque Typography
     t_crimson_paths = extract_paths(text_make_offering, min_area=4, approx_eps=0.35)
     if t_crimson_paths:
         svg_parts.append(f'    <!-- Carved Plaque: MAKE YOUR OFFERING -->')
-        svg_parts.append(f'    <path d="{" ".join(t_crimson_paths)}" fill="#B8281E" />')
+        svg_parts.append(f'    <path d="{" ".join(t_crimson_paths)}" fill="#9C221A" />')
     t_crimson_br_paths = extract_paths(text_make_offering_bright, min_area=4, approx_eps=0.35)
     if t_crimson_br_paths:
-        svg_parts.append(f'    <path d="{" ".join(t_crimson_br_paths)}" fill="#E0382B" />')
+        svg_parts.append(f'    <path d="{" ".join(t_crimson_br_paths)}" fill="#C82E24" />')
 
     t_white_paths = extract_paths(text_to_complete, min_area=4, approx_eps=0.35)
     if t_white_paths:
         svg_parts.append(f'    <!-- Carved Plaque: TO COMPLETE THE RITUAL -->')
-        svg_parts.append(f'    <path d="{" ".join(t_white_paths)}" fill="#DDD0BF" />')
+        svg_parts.append(f'    <path d="{" ".join(t_white_paths)}" fill="#C6C2B8" />')
     t_white_br_paths = extract_paths(text_to_complete_bright, min_area=4, approx_eps=0.35)
     if t_white_br_paths:
-        svg_parts.append(f'    <path d="{" ".join(t_white_br_paths)}" fill="#F5EEE4" />')
+        svg_parts.append(f'    <path d="{" ".join(t_white_br_paths)}" fill="#E6E2D8" />')
 
     t_sub_paths = extract_paths(text_subtitle, min_area=4, approx_eps=0.35)
     if t_sub_paths:
         svg_parts.append(f'    <!-- Carved Plaque: Subtitle & Star Glyph -->')
-        svg_parts.append(f'    <path d="{" ".join(t_sub_paths)}" fill="#A6947D" />')
+        svg_parts.append(f'    <path d="{" ".join(t_sub_paths)}" fill="#828E8C" />')
 
     # Layer 9: Comic Inking & Void Black Contours
     ink_paths = extract_paths(ink_mask, min_area=6, approx_eps=0.4)
     if ink_paths:
         svg_parts.append(f'    <!-- Layer 9: Mignola Comic Void Black Inking -->')
-        svg_parts.append(f'    <path d="{" ".join(ink_paths)}" fill="#0D0D0D" />')
+        svg_parts.append(f'    <path d="{" ".join(ink_paths)}" fill="#090E11" />')
 
-    # Layer 10: Flickering Lantern & Candle Flames
+    # Layer 10: Flickering Lantern & Candle Flames (Matches Background Lantern Flame Cores)
     f_halo_paths = extract_paths(flame_halo, min_area=5, approx_eps=0.4)
     if f_halo_paths:
         svg_parts.append(f'    <!-- Layer 10: Animated Ritual Flames -->')
         svg_parts.append(f'    <g id="ritualFlames" filter="url(#ritualFlameGlow)" class="flame-flicker-group">')
-        svg_parts.append(f'      <path d="{" ".join(f_halo_paths)}" fill="#FF5E14" />')
+        svg_parts.append(f'      <path d="{" ".join(f_halo_paths)}" fill="#FF4414" />')
         f_core_paths = extract_paths(flame_core, min_area=4, approx_eps=0.35)
         if f_core_paths:
-            svg_parts.append(f'      <path d="{" ".join(f_core_paths)}" fill="#FFAE26" />')
+            svg_parts.append(f'      <path d="{" ".join(f_core_paths)}" fill="#FFA62B" />')
         f_cen_paths = extract_paths(flame_center, min_area=4, approx_eps=0.3)
         if f_cen_paths:
-            svg_parts.append(f'      <path d="{" ".join(f_cen_paths)}" fill="#FFF28F" />')
+            svg_parts.append(f'      <path d="{" ".join(f_cen_paths)}" fill="#FFF4B8" />')
         svg_parts.append(f'    </g>')
 
     # Layer 11: Glowing Mint-Green Eyes
@@ -348,6 +377,10 @@ def build_accurate_grim_reaper_svg():
         if eye_hs_paths:
             svg_parts.append(f'      <path d="{" ".join(eye_hs_paths)}" fill="#E6FFF0" />')
         svg_parts.append(f'    </g>')
+
+    # Layer 12: Atmospheric Ground Fog Blend (Feathers the base boulders into the cobblestone mist)
+    svg_parts.append('    <!-- Layer 12: Atmospheric Ground Mist Feather -->')
+    svg_parts.append(f'    <path d="M 120,890 Q 460,860 830,890 L 830,956 L 120,956 Z" fill="url(#shrineGroundMist)" pointer-events="none" />')
 
     svg_parts.append('  </g>')
     svg_parts.append('</svg>')

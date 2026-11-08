@@ -163,34 +163,35 @@ const styles = `
     box-shadow: 1px 1px 0px var(--border-dark);
   }
 
-  /* ── CENTRAL RITUAL SHRINE (GRIM REAPER & BOARD) ── */
+  /* ── GROUNDED RITUAL SHRINE (MINIMIZED & PLACED BESIDE THE PATH) ── */
   .pay-center-container {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-end; /* Grounded directly on the cobblestone path */
     position: relative;
     z-index: 20;
-    padding: 10px 16px 24px;
+    padding: 0 0 3.5vh max(24px, calc(37% - 150px)); /* Positions center of 300px shrine at exactly ~37% of screen width */
   }
 
   .ritual-shrine-stage {
     position: relative;
     width: 100%;
-    max-width: 600px;
+    max-width: 300px; /* Minimized to match reference scale */
     aspect-ratio: 935 / 1024;
-    max-height: 78vh;
+    max-height: 46vh;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
+    margin-bottom: -16px; /* Sits naturally on the road */
     animation: shrineEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes shrineEntrance {
     0% {
       opacity: 0;
-      transform: translateY(24px) scale(0.97);
+      transform: translateY(18px) scale(0.98);
     }
     100% {
       opacity: 1;
@@ -198,67 +199,67 @@ const styles = `
     }
   }
 
-  /* Idle floating & breathing animation */
+  /* Grounded wrapper (stable and planted beside the path - no hovering or floating) */
   .ritual-floating-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    animation: shrineIdleFloat 6s ease-in-out infinite;
   }
 
-  @keyframes shrineIdleFloat {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  /* Soft ground shadow cast onto cobblestone road */
+  /* Deep cobblestone ground contact shadow directly under base boulders */
   .ritual-ground-shadow {
     position: absolute;
-    bottom: -6px;
-    left: 12%;
-    right: 12%;
-    height: 38px;
-    background: radial-gradient(ellipse at 50% 50%, rgba(13, 15, 18, 0.75) 0%, rgba(13, 15, 18, 0.3) 50%, transparent 75%);
+    bottom: 12px;
+    left: -4%;
+    right: -4%;
+    height: 28px;
+    background: radial-gradient(ellipse at 50% 50%, rgba(6, 10, 13, 0.96) 0%, rgba(12, 18, 22, 0.7) 45%, rgba(20, 30, 36, 0.25) 65%, transparent 80%);
     pointer-events: none;
     z-index: -1;
+    filter: blur(4px);
   }
 
-  /* The 100% Pure Vector SVG Asset */
+  /* Soft ground mist drift across bottom rocks for seamless atmospheric blend */
+  .ritual-ground-mist {
+    position: absolute;
+    bottom: 2px;
+    left: -8%;
+    right: -8%;
+    height: 32px;
+    background: radial-gradient(ellipse at 50% 65%, rgba(65, 84, 90, 0.38) 0%, rgba(35, 50, 56, 0.2) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: 25;
+    filter: blur(5px);
+  }
+
+  /* The 100% Pure Vector SVG Asset - Harmonized with Environment */
   .ritual-vector-svg {
     width: 100%;
     height: 100%;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(0 6px 14px rgba(6, 11, 14, 0.65)) drop-shadow(0 1px 3px rgba(10, 16, 20, 0.4));
     user-select: none;
     -webkit-user-drag: none;
   }
 
-  /* ── INTERACTIVE DYNAMIC UPI QR SLOT ── */
+  /* ── STATIC UPI QR CODE INKED ON PARCHMENT ── */
   .ritual-qr-interactive-anchor {
     position: absolute;
     top: 37.89%;
     left: 39.36%;
     width: 22.89%;
     height: 19.92%;
-    cursor: pointer;
     z-index: 30;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
-  }
-
-  .ritual-qr-interactive-anchor:hover {
-    transform: scale(1.035);
+    border-radius: 4px;
+    cursor: default;
+    user-select: none;
   }
 
   /* Scannable Real UPI QR Container */
@@ -270,8 +271,7 @@ const styles = `
     justify-content: center;
     mix-blend-mode: multiply; /* Inks directly onto torn parchment */
     position: relative;
-    opacity: 0.96;
-    transition: opacity 0.2s ease;
+    opacity: 0.94;
   }
 
   .ritual-live-qr-box svg {
@@ -281,70 +281,15 @@ const styles = `
     shape-rendering: crispEdges;
   }
 
-  /* Occult aura pulse on hover */
-  .ritual-qr-hover-aura {
-    position: absolute;
-    inset: -8%;
-    border-radius: 50%;
-    border: 2px dashed rgba(217, 59, 47, 0);
-    pointer-events: none;
-    transition: all 0.3s ease;
-  }
-
-  .ritual-qr-interactive-anchor:hover .ritual-qr-hover-aura {
-    border-color: rgba(217, 59, 47, 0.7);
-    box-shadow: 0 0 20px rgba(217, 59, 47, 0.45);
-    animation: rotateAura 10s linear infinite;
-  }
-
-  @keyframes rotateAura {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* Floating Tooltip Pill */
-  .ritual-qr-tooltip {
-    position: absolute;
-    bottom: -32px;
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    background: rgba(13, 13, 13, 0.92);
-    color: var(--hazard-gold);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border: 1.5px solid var(--hazard-gold);
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    z-index: 40;
-  }
-
-  .ritual-qr-interactive-anchor:hover .ritual-qr-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0px);
-  }
-
-  /* Secondary Click Zone: Carved Plaque */
+  /* Secondary Click Zone: Carved Plaque (Static, no hover highlight) */
   .ritual-plaque-click-zone {
     position: absolute;
     top: 61.5%;
     left: 23.5%;
     width: 55.5%;
     height: 15.5%;
-    cursor: pointer;
+    cursor: default;
     z-index: 30;
-    border-radius: 4px;
-    transition: background 0.2s ease;
-  }
-
-  .ritual-plaque-click-zone:hover {
-    background: rgba(217, 59, 47, 0.08);
   }
 
   /* ── RITUAL OFFERING ACTIVE TRANSITION OVERLAY ── */
@@ -399,7 +344,15 @@ const styles = `
   }
 
   @media (max-width: 640px) {
-    .ritual-shrine-stage { max-height: 68vh; }
+    .pay-center-container {
+      align-items: center;
+      padding: 0 16px 20px;
+    }
+    .ritual-shrine-stage {
+      max-width: 280px;
+      max-height: 54vh;
+      margin-bottom: -10px;
+    }
   }
 `;
 
@@ -541,49 +494,40 @@ export default function PaymentPage() {
           </div>
         </header>
 
-        {/* ── CENTRAL FLOATING RITUAL SHRINE (GRIM REAPER & NOTICE BOARD) ── */}
+        {/* ── GROUNDED RITUAL SHRINE (GRIM REAPER & NOTICE BOARD ON PATH) ── */}
         <main className="pay-center-container">
           <div className="ritual-shrine-stage">
             <div className="ritual-floating-wrapper">
-              {/* Soft Cobblestone Ground Shadow */}
+              {/* Cobblestone Ground Contact Shadow */}
               <div className="ritual-ground-shadow" aria-hidden="true" />
 
               {/* 100% Pure Vector Grim Reaper Ritual Shrine SVG */}
               <img
-                src="/grim-reaper-ritual-board.svg?v=1"
+                src="/grim-reaper-ritual-board.svg?v=4"
                 alt="Grim Reaper Ritual Offering Notice Board"
                 className="ritual-vector-svg"
               />
 
-              {/* Scannable Real Dynamic UPI QR Code mounted on Parchment */}
+              {/* Soft Atmospheric Ground Mist Feather */}
+              <div className="ritual-ground-mist" aria-hidden="true" />
+
+              {/* Scannable Static UPI QR Code inked onto Parchment */}
               <div
                 className="ritual-qr-interactive-anchor"
                 onClick={handlePaymentComplete}
-                title={`Click to complete ritual offering of ₹${total}`}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handlePaymentComplete();
-                  }
-                }}
+                role="img"
+                aria-label={`UPI QR Code for payment of ₹${total}`}
               >
-                <div className="ritual-qr-hover-aura" aria-hidden="true" />
                 <div
                   className="ritual-live-qr-box"
                   dangerouslySetInnerHTML={{ __html: qrSvg }}
-                  aria-label={`UPI QR Code for payment of ₹${total}`}
                 />
-                <div className="ritual-qr-tooltip">
-                  ✦ Click To Offer Tribute • ₹{total} ✦
-                </div>
               </div>
 
               {/* Carved Plaque Secondary Click Zone ('MAKE YOUR OFFERING') */}
               <div
                 className="ritual-plaque-click-zone"
                 onClick={handlePaymentComplete}
-                title={`Click to complete ritual offering of ₹${total}`}
                 role="button"
                 tabIndex={0}
               />
