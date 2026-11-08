@@ -503,7 +503,7 @@ export default function PaymentPage() {
 
               {/* 100% Pure Vector Grim Reaper Ritual Shrine SVG */}
               <img
-                src="/grim-reaper-ritual-board.svg?v=4"
+                src="/grim-reaper-ritual-board.svg?v=5"
                 alt="Grim Reaper Ritual Offering Notice Board"
                 className="ritual-vector-svg"
               />

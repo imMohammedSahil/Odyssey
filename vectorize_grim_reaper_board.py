@@ -231,16 +231,16 @@ def build_accurate_grim_reaper_svg():
 
     <!-- Moonlit Antique Parchment Paper Shading Gradient -->
     <linearGradient id="parchmentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#C8C2B7" />
-      <stop offset="50%" stop-color="#DDD7CB" />
-      <stop offset="100%" stop-color="#BFB8AB" />
+      <stop offset="0%" stop-color="#948E84" />
+      <stop offset="50%" stop-color="#A6A095" />
+      <stop offset="100%" stop-color="#8A8478" />
     </linearGradient>
 
     <!-- Atmospheric Ground Fog Drift across Base Rocks -->
     <linearGradient id="shrineGroundMist" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#2D3B40" stop-opacity="0" />
-      <stop offset="55%" stop-color="#223035" stop-opacity="0.3" />
-      <stop offset="100%" stop-color="#141E22" stop-opacity="0.75" />
+      <stop offset="0%" stop-color="#1A2225" stop-opacity="0" />
+      <stop offset="55%" stop-color="#141C20" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#0A1013" stop-opacity="0.85" />
     </linearGradient>
   </defs>''')
 
@@ -251,67 +251,67 @@ def build_accurate_grim_reaper_svg():
     fg_paths = extract_paths(clean_fg, min_area=80, approx_eps=0.7)
     if fg_paths:
         svg_parts.append(f'    <!-- Layer 0: Silhouette Base -->')
-        svg_parts.append(f'    <path d="{" ".join(fg_paths)}" fill="#0E1418" />')
+        svg_parts.append(f'    <path d="{" ".join(fg_paths)}" fill="#080C0F" />')
 
     # Layer 1: Dark Wood & Cloak Folds (Cold Gothic Slate Wood)
     w_deep_paths = extract_paths(wood_deep, min_area=12, approx_eps=0.55)
     if w_deep_paths:
         svg_parts.append(f'    <!-- Layer 1: Deep Timber & Robe Shadows -->')
-        svg_parts.append(f'    <path d="{" ".join(w_deep_paths)}" fill="#1B2328" />')
+        svg_parts.append(f'    <path d="{" ".join(w_deep_paths)}" fill="#12181C" />')
 
     # Layer 2: Stone Rubble & Cobblestone Base (Matches Graveyard Cobblestone Path & Teal-Moss)
     st_b_paths = extract_paths(stone_body, min_area=10, approx_eps=0.55)
     if st_b_paths:
         svg_parts.append(f'    <!-- Layer 2: Boulders & Stone Rubble -->')
-        svg_parts.append(f'    <path d="{" ".join(st_b_paths)}" fill="#232E35" />')
+        svg_parts.append(f'    <path d="{" ".join(st_b_paths)}" fill="#171F24" />')
     st_m_paths = extract_paths(stone_mid, min_area=10, approx_eps=0.5)
     if st_m_paths:
-        svg_parts.append(f'    <path d="{" ".join(st_m_paths)}" fill="#384750" />')
+        svg_parts.append(f'    <path d="{" ".join(st_m_paths)}" fill="#263138" />')
     st_l_paths = extract_paths(stone_light, min_area=10, approx_eps=0.5)
     if st_l_paths:
-        svg_parts.append(f'    <path d="{" ".join(st_l_paths)}" fill="#546B64" />')
+        svg_parts.append(f'    <path d="{" ".join(st_l_paths)}" fill="#384944" />')
 
     # Layer 3: Midtone Timber Planks (Weathered Bog Oak)
     w_mid_paths = extract_paths(wood_mid, min_area=10, approx_eps=0.5)
     if w_mid_paths:
         svg_parts.append(f'    <!-- Layer 3: Weathered Timber Planks -->')
-        svg_parts.append(f'    <path d="{" ".join(w_mid_paths)}" fill="#2D3941" />')
+        svg_parts.append(f'    <path d="{" ".join(w_mid_paths)}" fill="#1D262C" />')
 
     # Layer 4: Timber Grain & Edge Highlights (Moonlit Slate Relief)
     w_l_paths = extract_paths(wood_light, min_area=10, approx_eps=0.5)
     if w_l_paths:
         svg_parts.append(f'    <!-- Layer 4: Timber Grain & Edge Relief -->')
-        svg_parts.append(f'    <path d="{" ".join(w_l_paths)}" fill="#445560" />')
+        svg_parts.append(f'    <path d="{" ".join(w_l_paths)}" fill="#2E3A42" />')
     w_hl_paths = extract_paths(wood_highlight, min_area=8, approx_eps=0.45)
     if w_hl_paths:
-        svg_parts.append(f'    <path d="{" ".join(w_hl_paths)}" fill="#667C88" />')
+        svg_parts.append(f'    <path d="{" ".join(w_hl_paths)}" fill="#475660" />')
 
     # Layer 5: Bone Claws & Dripping Wax Pillars (Aged Skeletal Ivory)
     b_b_paths = extract_paths(bone_body, min_area=8, approx_eps=0.45)
     if b_b_paths:
         svg_parts.append(f'    <!-- Layer 5: Skeletal Claws & Candle Wax -->')
-        svg_parts.append(f'    <path d="{" ".join(b_b_paths)}" fill="#6E726E" />')
+        svg_parts.append(f'    <path d="{" ".join(b_b_paths)}" fill="#4B504D" />')
     b_l_paths = extract_paths(bone_light, min_area=8, approx_eps=0.45)
     if b_l_paths:
-        svg_parts.append(f'    <path d="{" ".join(b_l_paths)}" fill="#AEAFA2" />')
+        svg_parts.append(f'    <path d="{" ".join(b_l_paths)}" fill="#7B7D72" />')
 
     # Layer 6: Red Fabric Banners & Ribbons (Gothic Crimson)
     r_dark_paths = extract_paths(red_dark, min_area=8, approx_eps=0.5)
     if r_dark_paths:
         svg_parts.append(f'    <!-- Layer 6: Crimson Fabric & Ribbons -->')
-        svg_parts.append(f'    <path d="{" ".join(r_dark_paths)}" fill="#4A1210" />')
+        svg_parts.append(f'    <path d="{" ".join(r_dark_paths)}" fill="#360C0A" />')
     r_rich_paths = extract_paths(red_rich, min_area=8, approx_eps=0.45)
     if r_rich_paths:
-        svg_parts.append(f'    <path d="{" ".join(r_rich_paths)}" fill="#8E201A" />')
+        svg_parts.append(f'    <path d="{" ".join(r_rich_paths)}" fill="#661713" />')
     r_bright_paths = extract_paths(red_bright, min_area=8, approx_eps=0.45)
     if r_bright_paths:
-        svg_parts.append(f'    <path d="{" ".join(r_bright_paths)}" fill="#BA2820" />')
+        svg_parts.append(f'    <path d="{" ".join(r_bright_paths)}" fill="#8A1C16" />')
 
     # Right Banner Printer Icon
     pr_paths = extract_paths(printer_icon, min_area=4, approx_eps=0.4)
     if pr_paths:
         svg_parts.append(f'    <!-- Odyssey Print Emblem on Banner -->')
-        svg_parts.append(f'    <path d="{" ".join(pr_paths)}" fill="#C4BCB0" />')
+        svg_parts.append(f'    <path d="{" ".join(pr_paths)}" fill="#8A847B" />')
 
     # Layer 7: Torn Parchment Scroll Base & Shading (Moonlit Antique Vellum)
     p_b_paths = extract_paths(parchment_body, min_area=10, approx_eps=0.5)
@@ -320,35 +320,35 @@ def build_accurate_grim_reaper_svg():
         svg_parts.append(f'    <path d="{" ".join(p_b_paths)}" fill="url(#parchmentGrad)" />')
     p_l_paths = extract_paths(parchment_light, min_area=10, approx_eps=0.45)
     if p_l_paths:
-        svg_parts.append(f'    <path d="{" ".join(p_l_paths)}" fill="#ECE7DD" />')
+        svg_parts.append(f'    <path d="{" ".join(p_l_paths)}" fill="#ADA89D" />')
 
     # Layer 8: Carved Plaque Typography
     t_crimson_paths = extract_paths(text_make_offering, min_area=4, approx_eps=0.35)
     if t_crimson_paths:
         svg_parts.append(f'    <!-- Carved Plaque: MAKE YOUR OFFERING -->')
-        svg_parts.append(f'    <path d="{" ".join(t_crimson_paths)}" fill="#9C221A" />')
+        svg_parts.append(f'    <path d="{" ".join(t_crimson_paths)}" fill="#721712" />')
     t_crimson_br_paths = extract_paths(text_make_offering_bright, min_area=4, approx_eps=0.35)
     if t_crimson_br_paths:
-        svg_parts.append(f'    <path d="{" ".join(t_crimson_br_paths)}" fill="#C82E24" />')
+        svg_parts.append(f'    <path d="{" ".join(t_crimson_br_paths)}" fill="#96221A" />')
 
     t_white_paths = extract_paths(text_to_complete, min_area=4, approx_eps=0.35)
     if t_white_paths:
         svg_parts.append(f'    <!-- Carved Plaque: TO COMPLETE THE RITUAL -->')
-        svg_parts.append(f'    <path d="{" ".join(t_white_paths)}" fill="#C6C2B8" />')
+        svg_parts.append(f'    <path d="{" ".join(t_white_paths)}" fill="#918D85" />')
     t_white_br_paths = extract_paths(text_to_complete_bright, min_area=4, approx_eps=0.35)
     if t_white_br_paths:
-        svg_parts.append(f'    <path d="{" ".join(t_white_br_paths)}" fill="#E6E2D8" />')
+        svg_parts.append(f'    <path d="{" ".join(t_white_br_paths)}" fill="#ACA79E" />')
 
     t_sub_paths = extract_paths(text_subtitle, min_area=4, approx_eps=0.35)
     if t_sub_paths:
         svg_parts.append(f'    <!-- Carved Plaque: Subtitle & Star Glyph -->')
-        svg_parts.append(f'    <path d="{" ".join(t_sub_paths)}" fill="#828E8C" />')
+        svg_parts.append(f'    <path d="{" ".join(t_sub_paths)}" fill="#5C6664" />')
 
     # Layer 9: Comic Inking & Void Black Contours
     ink_paths = extract_paths(ink_mask, min_area=6, approx_eps=0.4)
     if ink_paths:
         svg_parts.append(f'    <!-- Layer 9: Mignola Comic Void Black Inking -->')
-        svg_parts.append(f'    <path d="{" ".join(ink_paths)}" fill="#090E11" />')
+        svg_parts.append(f'    <path d="{" ".join(ink_paths)}" fill="#05080A" />')
 
     # Layer 10: Flickering Lantern & Candle Flames (Matches Background Lantern Flame Cores)
     f_halo_paths = extract_paths(flame_halo, min_area=5, approx_eps=0.4)
