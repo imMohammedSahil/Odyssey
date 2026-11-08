@@ -55,7 +55,8 @@ def extract_paths(mask, min_area=6, approx_eps=0.45, sharp_angle=45.0):
 
 def build_accurate_gothic_chapel_svg():
     t0 = time.time()
-    img_path = r'C:/Users/Mohammed sahil/.gemini/antigravity/brain/25f8873c-4373-4f93-938e-d0dbaee43d77/.user_uploaded/media_1794127207406_caddc69f.jpg'
+    local_path = 'payment_gothic_chapel_reference.jpg'
+    img_path = local_path if os.path.exists(local_path) else r'C:/Users/Mohammed sahil/.gemini/antigravity/brain/25f8873c-4373-4f93-938e-d0dbaee43d77/.user_uploaded/media_1794127207406_caddc69f.jpg'
     img = cv2.imread(img_path)
     if img is None:
         raise ValueError(f"Could not load image: {img_path}")
@@ -80,8 +81,8 @@ def build_accurate_gothic_chapel_svg():
     red_cores_2x = cv2.resize(red_cores, (w2, h2), interpolation=cv2.INTER_NEAREST) > 0
     
     y_coords = np.arange(h2)[:, None]
-    thresh_2x = np.clip(70 - (y_coords / h2) * 16, 52, 70)
-    black_2x = (gray_2x < thresh_2x).astype(np.uint8) * 255
+    thresh_2x = np.clip(74 - (y_coords / h2) * 18, 54, 74)
+    black_2x = ((gray_2x < thresh_2x) & (~red_cores_2x)).astype(np.uint8) * 255
     black_2x[h2-4:h2, :] = 255
 
     # Canny edges to preserve building corners and tombstone outlines
@@ -90,18 +91,7 @@ def build_accurate_gothic_chapel_svg():
     k_edge = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
     edges_dil = cv2.dilate(edges_2x, k_edge)
     black_2x = cv2.bitwise_or(black_2x, edges_dil)
-
-    # USER REQUEST: Make the house / church surfaces framing the red glow SOLID BLACK
-    # This covers the church roof, eave overhangs, side wall, and low ground around the glow
-    church_glow_frame = np.zeros((h2, w2), dtype=bool)
-    # Church wall & roof above/left of glow:
-    church_glow_frame[int(180*scale):int(465*scale), int(510*scale):int(676*scale)] = True
-    # Low stone foundation / terrain around glow:
-    church_glow_frame[int(385*scale):int(465*scale), int(600*scale):int(710*scale)] = True
-
-    # Turn church surface into solid black Void Black (excluding the glowing red window/apertures)
-    solid_black_church = church_glow_frame & (gray_2x < 120) & (~red_cores_2x)
-    black_2x[solid_black_church] = 255
+    black_2x[red_cores_2x] = 0
 
     defs = '''  <defs>
     <!-- Misty Gothic Atmosphere Gradient -->
