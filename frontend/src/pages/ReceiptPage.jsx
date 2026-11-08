@@ -106,42 +106,38 @@ const styles = `
   @keyframes realisticFlameTease {
     0% {
       opacity: 0;
-      transform: scale(0.65);
-      filter: brightness(2.2);
+      transform: scale(0.7);
     }
     18% {
       opacity: 1;
-      transform: scale(1.04);
-      filter: brightness(1.7);
+      transform: scale(1.02);
     }
     38% {
-      opacity: 0.9;
+      opacity: 0.92;
       transform: scale(0.99);
-      filter: brightness(1.3);
     }
     55% {
       opacity: 1;
-      transform: scale(1.02);
-      filter: brightness(1.6);
+      transform: scale(1.01);
     }
     75% {
-      opacity: 0.85;
+      opacity: 0.88;
       transform: scale(0.98);
-      filter: brightness(1.2);
     }
     100% {
       opacity: 0;
       transform: scale(0.85);
-      filter: brightness(0.4);
     }
   }
 
   @keyframes flamePulse {
     0%, 100% {
-      filter: brightness(1.2) drop-shadow(0 0 25px rgba(114, 255, 165, 0.7));
+      opacity: 0.95;
+      transform: scale(1.0);
     }
     50% {
-      filter: brightness(1.5) drop-shadow(0 0 45px rgba(95, 226, 145, 0.95));
+      opacity: 1.0;
+      transform: scale(1.02);
     }
   }
 
@@ -282,8 +278,25 @@ export default function ReceiptPage() {
     }
 
     if (stage === 2) {
-      const originX = canvas.width * 0.5556;
-      const originY = canvas.height * 0.3486;
+      // Calculate the exact screen coordinates of the wand spark point (928, 328) taking object-fit: cover into account
+      const imgAspect = 1672 / 941;
+      const screenAspect = canvas.width / canvas.height;
+      let renderW, renderH, offsetX, offsetY;
+
+      if (screenAspect > imgAspect) {
+        renderW = canvas.width;
+        renderH = canvas.width / imgAspect;
+        offsetX = 0;
+        offsetY = (canvas.height - renderH) / 2;
+      } else {
+        renderH = canvas.height;
+        renderW = canvas.height * imgAspect;
+        offsetX = (canvas.width - renderW) / 2;
+        offsetY = 0;
+      }
+
+      const originX = offsetX + (928 / 1672) * renderW;
+      const originY = offsetY + (328 / 941) * renderH;
 
       // Max radius to cover all screen corners comfortably
       const maxDist = Math.hypot(
