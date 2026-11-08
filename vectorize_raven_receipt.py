@@ -56,7 +56,10 @@ def extract_paths(mask, min_area=8, approx_eps=0.45, sharp_angle=45.0):
 
 def build_raven_receipt_svg():
     t0 = time.time()
-    img_bgr = cv2.imread('clean_raven_scroll_bg.png')
+    orig_path = r'C:\Users\Mohammed sahil\.gemini\antigravity\brain\a93a4b92-4896-408b-8aa4-3b2ee219bf77\.user_uploaded\media_1794167039438_92d4450d.jpg'
+    img_bgr = cv2.imread(orig_path)
+    if img_bgr is None:
+        img_bgr = cv2.imread('clean_raven_scroll_bg.png')
     h, w, _ = img_bgr.shape
     print(f"Loaded reference image: {w}x{h}")
 
@@ -70,8 +73,36 @@ def build_raven_receipt_svg():
     bg_mask = ff_mask[1:-1, 1:-1] > 0
     fg_mask = ~bg_mask
 
+    # 2. Identify parchment sheet & construct inner blank writing zone
+    parch_mask = np.zeros((h, w), dtype=np.uint8)
+    for y in range(275, 920):
+        for x in range(120, 580):
+            if fg_mask[y, x] and not (x < 155 and y > 670):
+                parch_mask[y, x] = 255
+    cnts, _ = cv2.findContours(parch_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    c_parch = max(cnts, key=cv2.contourArea)
+    parch_solid = np.zeros((h, w), dtype=np.uint8)
+    cv2.drawContours(parch_solid, [c_parch], -1, 255, -1)
+
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (19, 19))
+    blank_zone = cv2.erode(parch_solid, kernel)
+    blank_zone[:285, :] = 0
+    blank_zone[905:, :] = 0
+    blank_bool = blank_zone > 0
+
+    # Inpaint / smooth the clean parchment interior so no text/buttons remain
+    clean_bgr = img_bgr.copy()
+    for y in range(285, 905):
+        t = (y - 285) / (905 - 285)
+        row_color = (
+            int(150 * (1-t) + 172 * t),
+            int(208 * (1-t) + 203 * t),
+            int(190 * (1-t) + 196 * t)
+        )
+        clean_bgr[y, blank_bool[y]] = row_color
+
     # Bilateral smoothing for noise-free graphic-novel cel separation
-    smooth = cv2.bilateralFilter(img_bgr, d=5, sigmaColor=25, sigmaSpace=25)
+    smooth = cv2.bilateralFilter(clean_bgr, d=5, sigmaColor=25, sigmaSpace=25)
     gray = cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY)
     r = smooth[:, :, 2].astype(float)
     g = smooth[:, :, 1].astype(float)
@@ -90,21 +121,21 @@ def build_raven_receipt_svg():
         svg_layers.append(f'  <path d="{" ".join(fg_paths)}" fill="#000000" opacity="0.55" transform="translate(6, 12)" filter="url(#dropShadowBlur)" />')
 
     # Layer 1: Parchment scroll body & smoke
-    parchment_base = fg_mask & (g > 150) & (g > b + 10) & (r > 130)
+    parchment_base = (fg_mask & (g > 140) & (g > b + 5) & (r > 120)) | blank_bool
     p_parch = extract_paths(parchment_base, min_area=15, approx_eps=0.45)
     if p_parch:
         svg_layers.append('  <!-- Layer 1: Parchment Scroll Base & Smoke Tendril -->')
-        svg_layers.append(f'  <path d="{" ".join(p_parch)}" fill="#C2DCB2" fill-rule="evenodd" />')
+        svg_layers.append(f'  <path d="{" ".join(p_parch)}" fill="url(#parchmentGrad)" fill-rule="evenodd" />')
 
-    # Layer 2: Parchment subtle highlights
-    parch_hi = parchment_base & (g >= 205)
+    # Layer 2: Parchment subtle highlights (outside blank zone)
+    parch_hi = parchment_base & (g >= 205) & (~blank_bool)
     p_phi = extract_paths(parch_hi, min_area=8, approx_eps=0.4)
     if p_phi:
         svg_layers.append('  <!-- Layer 2: Parchment Crease Highlights -->')
         svg_layers.append(f'  <path d="{" ".join(p_phi)}" fill="#D5EAC6" fill-rule="evenodd" />')
 
-    # Layer 3: Parchment distress & shadows
-    parch_sh = parchment_base & (g < 185)
+    # Layer 3: Parchment distress & shadows (outside blank zone)
+    parch_sh = parchment_base & (g < 185) & (~blank_bool)
     p_psh = extract_paths(parch_sh, min_area=10, approx_eps=0.45)
     if p_psh:
         svg_layers.append('  <!-- Layer 3: Parchment Fold & Edge Shadows -->')
@@ -136,13 +167,6 @@ def build_raven_receipt_svg():
         svg_layers.append('  <!-- Layer 7: Raven Feather & Hood Highlights -->')
         svg_layers.append(f'  <path d="{" ".join(p_rhi)}" fill="#3F4F44" fill-rule="evenodd" />')
 
-    # Layer 8: Stone buttons on bottom
-    stone_btn = fg_mask & (smooth[:, :, 1] > 130) & (smooth[:, :, 1] < 185) & (np.arange(h)[:, None] > 820)
-    p_sbtn = extract_paths(stone_btn, min_area=15, approx_eps=0.4)
-    if p_sbtn:
-        svg_layers.append('  <!-- Layer 8: Stone Action Buttons Base -->')
-        svg_layers.append(f'  <path d="{" ".join(p_sbtn)}" fill="#9ABF8B" fill-rule="evenodd" />')
-
     # Layer 9: Raven glowing yellow-green eyes
     eyes_mask = fg_mask & (r > 180) & (g > 190) & (b < 140) & (np.arange(h)[:, None] < 260)
     p_eyes = extract_paths(eyes_mask, min_area=3, approx_eps=0.25)
@@ -150,20 +174,28 @@ def build_raven_receipt_svg():
         svg_layers.append('  <!-- Layer 9: Raven Glowing Occult Eyes -->')
         svg_layers.append(f'  <path d="{" ".join(p_eyes)}" fill="#F5FFA3" filter="url(#eyeGlow)" fill-rule="evenodd" />')
 
-    # Layer 10: Mignola Comic Void Black Ink Lines, Folds, Ribbons, Borders
-    black_ink = fg_mask & (gray < 38) & (~eyes_mask)
+    # Layer 10: Mignola Comic Void Black Ink Lines, Folds, Ribbons, Borders (EXCLUDING blank writing zone)
+    black_ink = fg_mask & (gray < 38) & (~eyes_mask) & (~blank_bool)
     edges = cv2.Canny(smooth, 28, 80)
+    edges[blank_bool] = 0
     k_edge = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
     edges_dil = cv2.dilate(edges, k_edge)
     black_comb = cv2.bitwise_or(black_ink.astype(np.uint8) * 255, edges_dil)
     black_comb[bg_mask] = 0
     black_comb[eyes_mask] = 0
+    black_comb[blank_bool] = 0
     p_ink = extract_paths(black_comb > 0, min_area=10, approx_eps=0.45)
     if p_ink:
         svg_layers.append('  <!-- Layer 10: Razor-Sharp Mignola Comic Black Ink Lineart & Ribbons -->')
         svg_layers.append(f'  <path d="{" ".join(p_ink)}" fill="#101713" stroke="#101713" stroke-width="0.5" stroke-linejoin="round" fill-rule="evenodd" />')
 
     defs = '''  <defs>
+    <linearGradient id="parchmentGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C2DCB2" />
+      <stop offset="35%" stop-color="#BAD5AA" />
+      <stop offset="70%" stop-color="#B2CEA2" />
+      <stop offset="100%" stop-color="#A5C495" />
+    </linearGradient>
     <filter id="dropShadowBlur" x="-15%" y="-15%" width="130%" height="130%">
       <feGaussianBlur stdDeviation="10" />
     </filter>
@@ -184,7 +216,7 @@ def build_raven_receipt_svg():
     with open(out_file, 'w', encoding='utf-8') as f:
         f.write(full_svg)
 
-    print(f"Generated Clean Raven Receipt Scroll SVG at {out_file}! Size: {len(full_svg):,} bytes in {time.time()-t0:.2f}s")
+    print(f"Generated Clean Blank Parchment Raven Receipt Scroll SVG at {out_file}! Size: {len(full_svg):,} bytes in {time.time()-t0:.2f}s")
 
 if __name__ == '__main__':
     build_raven_receipt_svg()

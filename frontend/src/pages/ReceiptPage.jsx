@@ -222,20 +222,27 @@ const styles = `
     font-weight: 900;
     letter-spacing: 0.05em;
     color: #121c16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
   .rcpt-sc-ribbon {
     position: absolute;
     display: flex;
     align-items: center;
-    padding-left: 12px;
+    padding: 2px 10px;
     font-family: 'Cinzel', serif;
     font-style: italic;
-    font-size: clamp(9.5px, 1.55vw, 12px);
-    font-weight: 700;
+    font-size: clamp(9px, 1.45vw, 11.5px);
+    font-weight: 800;
     color: #d6eac7;
+    background: #141f17;
+    border-radius: 3px;
     letter-spacing: 0.02em;
-    pointer-events: none;
+    clip-path: polygon(0 0, 100% 0, 97% 50%, 100% 100%, 0 100%);
+    box-shadow: 1px 2px 0px rgba(0, 0, 0, 0.25);
   }
 
   .rcpt-sc-val {
@@ -258,6 +265,9 @@ const styles = `
     font-size: clamp(10px, 1.6vw, 12.5px);
     font-weight: 900;
     color: #1b4728;
+    background: rgba(40, 110, 60, 0.08);
+    border: 1.5px solid #1b4728;
+    border-radius: 4px;
     letter-spacing: 0.06em;
   }
 
@@ -285,8 +295,12 @@ const styles = `
     flex-direction: column;
     justify-content: flex-start;
     padding: 10px 14px;
-    gap: 12px;
-    overflow: hidden;
+    gap: 10px;
+    overflow-y: auto;
+    border: 1.5px solid #142018;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.03);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.06);
   }
 
   .rcpt-sc-item-row {
@@ -327,6 +341,10 @@ const styles = `
     font-size: clamp(17px, 2.9vw, 24px);
     font-weight: 900;
     color: #eaf8dd;
+    background: #141f17;
+    border: 1.5px solid #142018;
+    border-radius: 6px;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
     letter-spacing: -0.02em;
   }
 
@@ -350,13 +368,20 @@ const styles = `
     font-family: 'Cinzel', serif;
     font-weight: 900;
     letter-spacing: 0.06em;
-    font-size: clamp(11px, 1.8vw, 14px);
+    font-size: clamp(11px, 1.8vw, 13.5px);
     color: #121c16;
-    background: transparent;
-    border: none;
+    background: #9abf8b;
+    border: 2px solid #142018;
+    border-radius: 7px;
+    box-shadow: 2px 3px 0px #142018;
     cursor: pointer !important;
     user-select: none !important;
-    transition: transform 0.15s ease, filter 0.15s ease;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .rcpt-sc-btn:hover {
+    background: #a9cf9a;
+    transform: translateY(-1.5px);
   }
 
   .rcpt-sc-btn:hover {
