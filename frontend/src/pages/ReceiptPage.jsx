@@ -365,6 +365,7 @@ export default function ReceiptPage() {
   // Canvas ref for both Click 1 tease and Click 2 paint spill
   const canvasRef = useRef(null);
   const strokesRef = useRef([]);
+  const bgImgRef = useRef(null);
 
   useEffect(() => {
     fetch("/wizard-ink-strokes.json")
@@ -420,14 +421,17 @@ export default function ReceiptPage() {
     window.addEventListener("resize", resizeCanvas);
 
     if (stage === 0 || stage === 1 || stage === 2) {
-      // Solid black sheet
+      // Solid black sheet & pre-blur background
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      if (bgImgRef.current) {
+        bgImgRef.current.style.filter = "blur(18px)";
+      }
       return () => window.removeEventListener("resize", resizeCanvas);
     }
 
     if (stage === 0.5 || stage === 1.5) {
-      // ✦ CLICK 1 & CLICK 2: Concentrated at center (wand tip), soft optical blur at ends
+      // ✦ CLICK 1 & CLICK 2: The artwork reveals and unblurs simultaneously!
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const isSecondClick = stage === 1.5;
       const targetReach = (isSecondClick ? 150 : 92) * scale;
@@ -452,6 +456,12 @@ export default function ReceiptPage() {
           waveAlpha = Math.max(0, (1.0 - progress) / 0.38);
         }
 
+        // Dynamically unblur the background image as the reveal expands!
+        if (bgImgRef.current) {
+          const blurVal = Math.max(0, (1 - drawProg) * 16 + (1 - waveAlpha) * 16);
+          bgImgRef.current.style.filter = blurVal > 0.3 ? `blur(${blurVal.toFixed(1)}px)` : "none";
+        }
+
         const currentR = targetReach * drawProg;
 
         ctx.save();
@@ -461,35 +471,31 @@ export default function ReceiptPage() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (waveAlpha > 0 && currentR > 4) {
-          // Center is clear & visible; outer extremes carry heavy, pronounced optical blur
           ctx.globalCompositeOperation = "destination-out";
 
-          const blurPx = Math.max(10, 18 * scale);
-          ctx.filter = `blur(${blurPx}px)`;
-
-          const featherStart = currentR * 0.48;
+          // Feathered perimeter so the portal fades cleanly into black
+          const featherStart = currentR * 0.72;
           const waveGrad = ctx.createRadialGradient(
             originX, originY, featherStart,
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.25, `rgba(0, 0, 0, ${waveAlpha * 0.94})`);
-          waveGrad.addColorStop(0.50, `rgba(0, 0, 0, ${waveAlpha * 0.72})`);
-          waveGrad.addColorStop(0.72, `rgba(0, 0, 0, ${waveAlpha * 0.40})`);
-          waveGrad.addColorStop(0.88, `rgba(0, 0, 0, ${waveAlpha * 0.15})`);
-          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Deep heavy blur at extremes
+          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
+          waveGrad.addColorStop(0.68, `rgba(0, 0, 0, ${waveAlpha * 0.50})`);
+          waveGrad.addColorStop(0.88, `rgba(0, 0, 0, ${waveAlpha * 0.18})`);
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, currentR, 0, Math.PI * 2);
           ctx.fill();
-          ctx.filter = "none";
         }
         ctx.restore();
 
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateTease);
         } else {
+          if (bgImgRef.current) bgImgRef.current.style.filter = "blur(18px)";
           setStage(stage === 0.5 ? 1 : 2);
         }
       };
@@ -502,7 +508,7 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: Full Screen Reveal — Crisp, vibrant vector painting with ZERO blur and ZERO vignette
+      // ✦ CLICK 3: The whole background unblurs in real-time as the wave reveals the page!
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const maxCanvasDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
@@ -515,6 +521,12 @@ export default function ReceiptPage() {
       const animateFormation = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
+
+        // Dynamically unblur the background image from 18px down to 0px!
+        if (bgImgRef.current) {
+          const blurVal = Math.max(0, (1 - progress) * 18);
+          bgImgRef.current.style.filter = blurVal > 0.2 ? `blur(${blurVal.toFixed(1)}px)` : "none";
+        }
 
         let ease;
         if (progress <= 0.45) {
@@ -533,7 +545,7 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out to reveal pure, crystal-clear artwork (NO blur)
+        // 2. Carve out to reveal pure, crystal-clear artwork
         ctx.globalCompositeOperation = "destination-out";
 
         if (waveR > 4) {
@@ -542,7 +554,7 @@ export default function ReceiptPage() {
             originX, originY, Math.max(0, waveR - featherW),
             originX, originY, waveR
           );
-          waveGrad.addColorStop(0, "#000000"); // 100% crisp revealed artwork
+          waveGrad.addColorStop(0, "#000000"); // 100% revealed artwork
           waveGrad.addColorStop(0.75, "rgba(0, 0, 0, 0.9)");
           waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
@@ -557,7 +569,8 @@ export default function ReceiptPage() {
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateFormation);
         } else {
-          // Painting completely revealed — 100% pure crisp vector artwork
+          // Painting completely revealed — 100% crisp, zero blur!
+          if (bgImgRef.current) bgImgRef.current.style.filter = "none";
           setStage(4);
         }
       };
@@ -593,9 +606,10 @@ export default function ReceiptPage() {
         
         {/* HERO FOLD (100vh) */}
         <div className="rcpt-hero-fold">
-          {/* 100% PURE VECTOR BACKDROP */}
+          {/* 100% PURE VECTOR BACKDROP (Unblurs dynamically on reveal) */}
           <div className="rcpt-bg-layer" aria-hidden="true">
             <img
+              ref={bgImgRef}
               src="/wizard-enchanted-greenlight.svg"
               alt="Enchanted Greenlight Vector Canvas"
               className="rcpt-bg-vector"
@@ -604,9 +618,6 @@ export default function ReceiptPage() {
 
           {/* Dynamic Organic Paint Spill Canvas */}
           {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
-
-          {/* Ambient depth vignette (Active ONLY during tease reveals, completely OFF on full screen) */}
-          <div className={`rcpt-bg-vignette ${(stage === 0.5 || stage === 1.5) ? "active" : ""}`} aria-hidden="true" />
 
           {/* Awwwards Cursor Follower Pill (Shown before third click) */}
           {stage < 3 && (
