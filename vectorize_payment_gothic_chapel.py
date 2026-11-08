@@ -104,12 +104,11 @@ def build_accurate_gothic_chapel_svg():
       <stop offset="100%" stop-color="#4C585E" />
     </linearGradient>
 
-    <!-- Natural Ambient Red Mist Bloom around Right Lantern (Organically centered around lantern, r=90) -->
-    <radialGradient id="lanternRedMistBloom" cx="745" cy="395" r="90" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FF5538" stop-opacity="0.85" />
-      <stop offset="30%" stop-color="#E03422" stop-opacity="0.55" />
-      <stop offset="65%" stop-color="#9C241C" stop-opacity="0.25" />
-      <stop offset="85%" stop-color="#6B1812" stop-opacity="0.08" />
+    <!-- Lantern Glass Flame Bloom (Confined strictly to lantern glass aperture, r=32) -->
+    <radialGradient id="lanternRedMistBloom" cx="755" cy="405" r="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5538" stop-opacity="0.95" />
+      <stop offset="40%" stop-color="#E03422" stop-opacity="0.75" />
+      <stop offset="75%" stop-color="#9C241C" stop-opacity="0.35" />
       <stop offset="100%" stop-color="#6B1812" stop-opacity="0" />
     </radialGradient>
 
@@ -185,7 +184,7 @@ def build_accurate_gothic_chapel_svg():
     m3 = cv2.morphologyEx(m3, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p3 = extract_paths(m3, min_area=20, approx_eps=0.45)
     if p3:
-        svg_layers.append(f'  <!-- Layer 4: Church Masonry & Solid Ground -->\n  <path d="{" ".join(p3)}" fill="#38474F" />')
+        svg_layers.append(f'  <!-- Layer 4: Church Masonry & Solid Ground (Deep Moody Slate) -->\n  <path d="{" ".join(p3)}" fill="#222D33" />')
 
     # Layer 5 (Part A): Cobblestone Path Highlights & Atmospheric Moonlit Path Glow
     cobble_roi = np.zeros((h, w), dtype=bool)
@@ -204,9 +203,14 @@ def build_accurate_gothic_chapel_svg():
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
 
-    # Layer 6: Realistic Atmospheric Red Lantern Glow over Mist (Seamless Radial Bloom, r=90)
-    svg_layers.append('  <!-- Layer 6: Seamless Atmospheric Red Mist Bloom -->')
-    svg_layers.append('  <circle cx="745" cy="395" r="90" fill="url(#lanternRedMistBloom)" />')
+    # Layer 6: Realistic Atmospheric Lantern Glows (Confined Strictly to Lantern Glass, Zero Fog Wash)
+    svg_layers.append('  <!-- Layer 6: Lantern Glass Flame Bloom -->')
+    svg_layers.append('  <circle cx="755" cy="405" r="32" fill="url(#lanternRedMistBloom)" />')
+    svg_layers.append('  <circle cx="348" cy="385" r="85" fill="url(#bloomLanternLeft)" />')
+    svg_layers.append('  <circle cx="505" cy="318" r="50" fill="url(#bloomChurchDoor)" />')
+    svg_layers.append('  <circle cx="414" cy="342" r="28" fill="url(#bloomShrineAperture)" />')
+    svg_layers.append('  <circle cx="651" cy="77" r="32" fill="url(#bloomTowerBelfry)" />')
+    svg_layers.append('  <circle cx="658" cy="315" r="32" fill="url(#bloomTowerWindow)" />')
     svg_layers.append('  <circle cx="348" cy="385" r="85" fill="url(#bloomLanternLeft)" />')
     svg_layers.append('  <circle cx="505" cy="318" r="50" fill="url(#bloomChurchDoor)" />')
     svg_layers.append('  <circle cx="414" cy="342" r="28" fill="url(#bloomShrineAperture)" />')
