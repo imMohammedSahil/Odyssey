@@ -409,13 +409,29 @@ export default function ReceiptPage() {
           </div>
           <div className="rcpt-bg-vignette" aria-hidden="true" />
 
-          <div className="rcpt-card">
-            <div className="rcpt-body">
-              <h2 style={{ color: "#a8d8ba", fontFamily: "'Sora', sans-serif", textAlign: "center", padding: "20px 0" }}>
-                No receipt found.
-              </h2>
-            </div>
-          </div>
+          <button
+            onClick={() => navigate("/student")}
+            style={{
+              position: "fixed",
+              top: 24,
+              left: 24,
+              zIndex: 10,
+              background: "rgba(13, 21, 17, 0.85)",
+              border: "2px solid #5fe291",
+              color: "#e8fff0",
+              padding: "8px 18px",
+              borderRadius: "10px",
+              fontSize: "13px",
+              fontWeight: "700",
+              cursor: "pointer",
+              boxShadow: "3px 3px 0px #020804",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px"
+            }}
+          >
+            ← BACK TO HOME
+          </button>
         </div>
       </>
     );
@@ -438,101 +454,32 @@ export default function ReceiptPage() {
         </div>
         <div className="rcpt-bg-vignette" aria-hidden="true" />
 
-        <div className="rcpt-card">
+        {/* Minimal Nav to Return */}
+        <button
+          onClick={() => navigate("/student")}
+          style={{
+            position: "fixed",
+            top: 24,
+            left: 24,
+            zIndex: 10,
+            background: "rgba(13, 21, 17, 0.85)",
+            border: "2px solid #5fe291",
+            color: "#e8fff0",
+            padding: "8px 18px",
+            borderRadius: "10px",
+            fontSize: "13px",
+            fontWeight: "700",
+            cursor: "pointer",
+            boxShadow: "3px 3px 0px #020804",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px"
+          }}
+        >
+          ← BACK TO HOME
+        </button>
 
-          {/* Success Banner */}
-          <div className="rcpt-success-banner">
-            <div className="rcpt-success-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-            </div>
-            <div>
-              <h1 className="rcpt-success-title">Order Confirmed</h1>
-              <p className="rcpt-success-sub">Your payment was received successfully</p>
-            </div>
-          </div>
-
-          <div className="rcpt-body">
-
-            {/* Total Paid */}
-            <div className="rcpt-total-block">
-              <p className="rcpt-total-label">Total Paid</p>
-              <p className="rcpt-total-amount">
-                <span className="rcpt-total-currency">₹</span>
-                {receipt.total?.toLocaleString('en-IN') ?? receipt.total}
-              </p>
-            </div>
-
-            {/* Items */}
-            {receipt.items?.length > 0 && (
-              <>
-                <p className="rcpt-section-label">Items Ordered</p>
-                <div className="rcpt-items">
-                  {receipt.items.map((item, index) => (
-                    <div className="rcpt-item" key={index}>
-                      <div>
-                        <span className="rcpt-item-name">{item.name}</span>
-                        <span className="rcpt-item-qty">× {item.quantity}</span>
-                      </div>
-                      <span className="rcpt-item-price">₹{item.price * item.quantity}</span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {/* Receipt Details */}
-            <p className="rcpt-section-label">Receipt Details</p>
-            <div className="rcpt-details">
-              <div className="rcpt-detail-row">
-                <span className="rcpt-detail-key">Order ID</span>
-                <span className="rcpt-detail-val">{receipt.orderId}</span>
-              </div>
-              <div className="rcpt-detail-row">
-                <span className="rcpt-detail-key">Date</span>
-                <span className="rcpt-detail-val">{receipt.date}</span>
-              </div>
-              <div className="rcpt-detail-row">
-                <span className="rcpt-detail-key">Status</span>
-                <span
-                  style={{
-                    fontWeight: "bold",
-                    color:
-                      receipt.status === "READY"
-                        ? "green"
-                        : receipt.status === "PRINTING"
-                        ? "#1976d2"
-                        : "#ff9800"
-                  }}
-                >
-                  <span className={`rcpt-status-badge ${statusClass}`}>
-                    <span className="rcpt-status-dot"/>
-                    {statusKey}
-                  </span>
-                </span>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <button
-              onClick={() => navigate("/student")}
-              className="rcpt-btn"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/>
-              </svg>
-              Back to Home
-            </button>
-
-          </div>
-
-          {/* Footer */}
-          <div className="rcpt-footer">
-            <span className="rcpt-footer-text">Odyssey · Order Receipt · Keep for your records</span>
-          </div>
-
-        </div>
+        {/* Card Box hidden temporarily per request */}
       </div>
     </>
   );
