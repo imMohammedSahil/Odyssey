@@ -181,7 +181,9 @@ def build_accurate_gothic_chapel_svg():
 
     # Layer 5 (Part A): Cobblestone Path Highlights & Atmospheric Moonlit Path Glow
     cobble_roi = np.zeros((h, w), dtype=bool)
-    cobble_roi[370:576, 230:720] = True
+    # Winding cobblestone road naturally below the church foundation:
+    cobble_roi[385:430, 240:590] = True
+    cobble_roi[430:576, 220:720] = True
     cobble_bright = cobble_roi & (gray >= 145) & (g > 140) & (b > 130)
     cobble_mid = cobble_roi & (gray >= 105) & (gray < 145) & (g > 100) & (b > 90)
 
@@ -205,9 +207,9 @@ def build_accurate_gothic_chapel_svg():
     svg_layers.append('  <circle cx="651" cy="77" r="24" fill="url(#bloomTowerBelfry)" />')
     svg_layers.append('  <circle cx="658" cy="315" r="16" fill="url(#bloomTowerWindow)" />')
 
-    # Layer 7: Deep Gothic Shadow Slate, Church Under-eaves, Wall & Shingles (gray < 95)
-    # Renders in ultra-deep gothic dark slate (#111619 - dark, not pitch black #0D0D0D)
-    m4 = (gray < 95).astype(np.uint8) * 255
+    # Layer 7: Deep Gothic Shadow Slate, Church Under-eaves, Wall & Shingles (gray < 112)
+    # Renders in ultra-deep gothic dark slate (#111619 - dark, seamlessly matching church masonry)
+    m4 = (gray < 112).astype(np.uint8) * 255
     m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
     if p4:
