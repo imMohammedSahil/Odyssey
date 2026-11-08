@@ -178,45 +178,58 @@ const styles = `
     width: 100%;
     max-width: 580px;
     margin-top: 20px;
-    aspect-ratio: 1024 / 1535;
+    display: flex;
+    flex-direction: column;
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
     user-select: text !important;
     -webkit-user-select: text !important;
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
   }
 
-  .rcpt-scroll-vector {
-    position: absolute;
-    inset: 0;
+  .rcpt-scroll-head {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1024 / 470;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .rcpt-scroll-head img,
+  .rcpt-scroll-foot img {
     width: 100%;
     height: 100%;
     display: block;
     pointer-events: none;
-    z-index: 1;
     user-select: none;
   }
 
-  .rcpt-scroll-content {
-    position: absolute;
-    inset: 0;
+  .rcpt-scroll-body {
+    position: relative;
     width: 100%;
-    height: 100%;
-    z-index: 2;
+    background: url('/scroll-body.png') 0 0 / 100% 100% no-repeat;
+    padding: 0 19%;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    user-select: text !important;
+    -webkit-user-select: text !important;
     font-family: 'Cinzel', 'Plus Jakarta Sans', Georgia, serif;
     color: #121c16;
+  }
+
+  .rcpt-scroll-body * {
     user-select: text !important;
     -webkit-user-select: text !important;
   }
 
-  .rcpt-scroll-content * {
-    user-select: text !important;
-    -webkit-user-select: text !important;
+  .rcpt-scroll-foot {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1024 / 235;
+    pointer-events: none;
+    user-select: none;
   }
 
   .rcpt-sc-title {
-    position: absolute;
-    top: 31.6%;
-    left: 17%;
-    right: 17%;
     text-align: center;
     font-family: 'Cinzel', serif;
     font-size: clamp(14px, 2.5vw, 19px);
@@ -227,13 +240,26 @@ const styles = `
     align-items: center;
     justify-content: center;
     gap: 8px;
+    margin-bottom: 2px;
+  }
+
+  .rcpt-sc-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .rcpt-sc-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   .rcpt-sc-ribbon {
-    position: absolute;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    padding: 2px 10px;
+    padding: 3px 10px;
     font-family: 'Cinzel', serif;
     font-style: italic;
     font-size: clamp(9px, 1.45vw, 11.5px);
@@ -244,10 +270,10 @@ const styles = `
     letter-spacing: 0.02em;
     clip-path: polygon(0 0, 100% 0, 97% 50%, 100% 100%, 0 100%);
     box-shadow: 1px 2px 0px rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
   }
 
   .rcpt-sc-val {
-    position: absolute;
     display: flex;
     align-items: center;
     font-family: 'JetBrains Mono', monospace;
@@ -255,13 +281,14 @@ const styles = `
     font-weight: 700;
     color: #121c16;
     word-break: break-all;
+    text-align: right;
   }
 
   .rcpt-sc-status-box {
-    position: absolute;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 2px 10px;
     font-family: 'Cinzel', serif;
     font-size: clamp(10px, 1.6vw, 12.5px);
     font-weight: 900;
@@ -290,14 +317,18 @@ const styles = `
     transform: scale(1.08);
   }
 
+  .rcpt-sc-manifest-header {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+  }
+
   .rcpt-sc-manifest-box {
-    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: 10px 14px;
+    padding: 12px 14px;
     gap: 10px;
-    overflow-y: auto;
     border: 1.5px solid #142018;
     border-radius: 8px;
     background: rgba(0, 0, 0, 0.03);
@@ -333,11 +364,19 @@ const styles = `
     margin-left: 10px;
   }
 
+  .rcpt-sc-total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 2px;
+  }
+
   .rcpt-sc-total-val {
-    position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 3px 14px;
     font-family: 'Archivo Black', 'JetBrains Mono', sans-serif;
     font-size: clamp(17px, 2.9vw, 24px);
     font-weight: 900;
@@ -350,9 +389,6 @@ const styles = `
   }
 
   .rcpt-sc-upi {
-    position: absolute;
-    left: 20%;
-    right: 20%;
     text-align: center;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-style: italic;
@@ -361,15 +397,23 @@ const styles = `
     color: #121c16;
   }
 
+  .rcpt-sc-btn-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
   .rcpt-sc-btn {
-    position: absolute;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 9px 8px;
     font-family: 'Cinzel', serif;
     font-weight: 900;
     letter-spacing: 0.06em;
-    font-size: clamp(11px, 1.8vw, 13.5px);
+    font-size: clamp(10.5px, 1.7vw, 13px);
     color: #121c16;
     background: #9abf8b;
     border: 2px solid #142018;
@@ -809,76 +853,74 @@ export default function ReceiptPage() {
         {stage >= 3 && (
           <section className="rcpt-record-section">
             <div className="rcpt-scroll-stage" onClick={(e) => e.stopPropagation()}>
-              {/* HOODED CROW PERCHED ON PARCHMENT SCROLL */}
-              <img
-                src="/hooded-crow-scroll.png"
-                alt="Hooded Crow Perched on Parchment Scroll"
-                className="rcpt-scroll-vector"
-              />
+              {/* 1. SCROLL TOP: Raven & Top Rod */}
+              <div className="rcpt-scroll-head">
+                <img
+                  src="/scroll-head.png"
+                  alt="Raven Perched on Scroll"
+                />
+              </div>
 
-              {/* LIVE INTERACTIVE & MOUSE-SELECTABLE TEXT OVERLAY */}
-              <div className="rcpt-scroll-content">
-                {/* Header Title */}
+              {/* 2. SCROLL MIDDLE: Dynamic Parchment Body that stretches naturally with items */}
+              <div className="rcpt-scroll-body">
+                {/* Title */}
                 <div className="rcpt-sc-title">
                   ✦ CAMPUS ORDER RECEIPT ✦
                 </div>
 
-                {/* 1. Order Reference */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "37.5%", width: "20.2%", height: "2.44%" }}>
-                  Order Reference
-                </div>
-                <div className="rcpt-sc-val" style={{ left: "42.8%", top: "37.3%", width: "36%" }}>
-                  <span>{receiptData.orderId}</span>
-                  <button
-                    className="rcpt-sc-copy-btn"
-                    title="Copy Order ID"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigator.clipboard.writeText(receiptData.orderId);
-                      setCopied(true);
-                      setTimeout(() => setCopied(false), 1600);
-                    }}
-                  >
-                    {copied ? "COPIED" : "COPY"}
-                  </button>
+                {/* Metadata List */}
+                <div className="rcpt-sc-meta-list">
+                  <div className="rcpt-sc-meta-row">
+                    <span className="rcpt-sc-ribbon">Order Reference</span>
+                    <span className="rcpt-sc-val">
+                      <span>{receiptData.orderId}</span>
+                      <button
+                        className="rcpt-sc-copy-btn"
+                        title="Copy Order ID"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigator.clipboard.writeText(receiptData.orderId);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 1600);
+                        }}
+                      >
+                        {copied ? "COPIED" : "COPY"}
+                      </button>
+                    </span>
+                  </div>
+
+                  <div className="rcpt-sc-meta-row">
+                    <span className="rcpt-sc-ribbon">Sanctum Status</span>
+                    <span className="rcpt-sc-status-box">{receiptData.status}</span>
+                  </div>
+
+                  <div className="rcpt-sc-meta-row">
+                    <span className="rcpt-sc-ribbon">Pickup Counter</span>
+                    <span className="rcpt-sc-val">{receiptData.pickupCounter}</span>
+                  </div>
+
+                  <div className="rcpt-sc-meta-row">
+                    <span className="rcpt-sc-ribbon">Recorded At</span>
+                    <span className="rcpt-sc-val">{receiptData.date}</span>
+                  </div>
                 </div>
 
-                {/* 2. Sanctum Status */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "41.8%", width: "20.2%", height: "2.44%" }}>
-                  Sanctum Status
-                </div>
-                <div className="rcpt-sc-status-box" style={{ left: "45.7%", top: "41.0%", width: "27.8%", height: "3.12%" }}>
-                  {receiptData.status}
-                </div>
-
-                {/* 3. Pickup Counter */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "46.1%", width: "20.2%", height: "2.44%" }}>
-                  Pickup Counter
-                </div>
-                <div className="rcpt-sc-val" style={{ left: "42.8%", top: "45.7%", width: "36%", lineHeight: "1.25" }}>
-                  {receiptData.pickupCounter}
+                {/* Manifest Header */}
+                <div className="rcpt-sc-manifest-header">
+                  <span className="rcpt-sc-ribbon">
+                    Order Manifest ({receiptData.items.length} Items)
+                  </span>
                 </div>
 
-                {/* 4. Recorded At */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "50.4%", width: "20.2%", height: "2.44%" }}>
-                  Recorded At
-                </div>
-                <div className="rcpt-sc-val" style={{ left: "42.8%", top: "50.4%", width: "36%" }}>
-                  {receiptData.date}
-                </div>
-
-                {/* 5. Order Manifest Header */}
-                <div className="rcpt-sc-ribbon" style={{ left: "23.7%", top: "55.5%", width: "36.6%", height: "2.44%" }}>
-                  Order Manifest ({receiptData.items.length} Items)
-                </div>
-
-                {/* 6. Manifest Items Box */}
-                <div className="rcpt-sc-manifest-box" style={{ left: "20.8%", top: "58.4%", width: "57.8%", height: "11.2%" }}>
+                {/* Manifest Items Box - Expands dynamically without inner scrollbar! */}
+                <div className="rcpt-sc-manifest-box">
                   {receiptData.items.map((item, idx) => (
                     <div key={idx} className="rcpt-sc-item-row">
                       <div>
                         <div className="rcpt-sc-item-title">{item.name || item.title}</div>
-                        <div className="rcpt-sc-item-qty">Qty: {item.quantity || item.qty || 1} {item.specs ? `• ${item.specs}` : ""}</div>
+                        <div className="rcpt-sc-item-qty">
+                          Qty: {item.quantity || item.qty || 1} {item.specs ? `• ${item.specs}` : ""}
+                        </div>
                       </div>
                       <div className="rcpt-sc-item-price">
                         ₹{((item.price || 0) * (item.quantity || item.qty || 1)).toFixed(0)}
@@ -887,40 +929,50 @@ export default function ReceiptPage() {
                   ))}
                 </div>
 
-                {/* 7. Total Offering Paid Ribbon & Starburst */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "72.8%", width: "33%", height: "3.52%", fontSize: "clamp(10px, 1.7vw, 13px)" }}>
-                  Total Offering Paid
-                </div>
-                <div className="rcpt-sc-total-val" style={{ left: "55.9%", top: "72.2%", width: "22.7%", height: "4.7%" }}>
-                  ₹{receiptData.total}
+                {/* Total Offering Paid */}
+                <div className="rcpt-sc-total-row">
+                  <span className="rcpt-sc-ribbon" style={{ fontSize: "clamp(10px, 1.7vw, 13px)" }}>
+                    Total Offering Paid
+                  </span>
+                  <span className="rcpt-sc-total-val">
+                    ₹{receiptData.total}
+                  </span>
                 </div>
 
-                {/* 8. UPI Note */}
-                <div className="rcpt-sc-upi" style={{ top: "79.2%" }}>
+                {/* UPI Subtext */}
+                <div className="rcpt-sc-upi">
                   {receiptData.paymentMethod}
                 </div>
 
-                {/* 9. Action Buttons */}
-                <button
-                  className="rcpt-sc-btn"
-                  style={{ left: "21.2%", top: "82.2%", width: "26.4%", height: "5.1%" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.print();
-                  }}
-                >
-                  PRINT PDF
-                </button>
-                <button
-                  className="rcpt-sc-btn"
-                  style={{ left: "50.5%", top: "82.2%", width: "27.1%", height: "5.1%", fontSize: "clamp(9.5px, 1.55vw, 12px)" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate("/student");
-                  }}
-                >
-                  RETURN TO BASECAMP
-                </button>
+                {/* Action Buttons */}
+                <div className="rcpt-sc-btn-row">
+                  <button
+                    className="rcpt-sc-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.print();
+                    }}
+                  >
+                    PRINT PDF
+                  </button>
+                  <button
+                    className="rcpt-sc-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate("/student");
+                    }}
+                  >
+                    RETURN TO BASECAMP
+                  </button>
+                </div>
+              </div>
+
+              {/* 3. SCROLL FOOT: Bottom paper tear, bottom rod, cuffs & smoke */}
+              <div className="rcpt-scroll-foot">
+                <img
+                  src="/scroll-foot.png"
+                  alt="Scroll Rod Footer"
+                />
               </div>
             </div>
           </section>
