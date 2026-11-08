@@ -461,18 +461,20 @@ export default function ReceiptPage() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (waveAlpha > 0 && currentR > 4) {
-          // 2. Clean, fixed circular border — no hazy spread-out blur
+          // 2. Center is 100% clear and visible; only the outer extremes (outer 24% rim) are blurred into black
           ctx.globalCompositeOperation = "destination-out";
           ctx.filter = "none";
 
-          // Crisp, fixed circular edge with a subtle 3px anti-aliased perimeter
-          const edgeFeather = Math.min(3 * scale, 3);
+          const featherStart = currentR * 0.76;
           const waveGrad = ctx.createRadialGradient(
-            originX, originY, Math.max(0, currentR - edgeFeather),
+            originX, originY, featherStart,
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
+          waveGrad.addColorStop(0.65, `rgba(0, 0, 0, ${waveAlpha * 0.52})`);
+          waveGrad.addColorStop(0.86, `rgba(0, 0, 0, ${waveAlpha * 0.20})`);
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
