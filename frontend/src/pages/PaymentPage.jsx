@@ -490,72 +490,9 @@ export default function PaymentPage() {
           </div>
         </header>
 
-        {/* ── CENTRAL PAYMENT & QR TERMINAL BOX ── */}
+        {/* ── CENTRAL PAYMENT & QR TERMINAL BOX (REMOVED FOR USER'S NEW IDEA) ── */}
         <main className="pay-center-container">
-          <div className="pay-central-card">
-            <div className="pay-card-top-row">
-              <span className="pay-terminal-badge">⚡ SECURE UPI GATEWAY</span>
-              <div className="pay-secure-pill">
-                <span className="pay-secure-dot" />
-                <span>ACTIVE</span>
-              </div>
-            </div>
-
-            <h1 className="pay-card-title">SCAN & PAY</h1>
-            <p className="pay-card-subtitle">INSTANT VERIFICATION • ZERO TRANSACTION FEE</p>
-
-            {/* Dossier Bar */}
-            <div className="pay-dossier-box">
-              <div className="pay-dossier-left">
-                <span className="pay-dossier-label">Total Due</span>
-                <span className="pay-dossier-count">{totalItemCount} {totalItemCount === 1 ? "Item" : "Items"}</span>
-              </div>
-              <div className="pay-dossier-price">
-                <span className="pay-dossier-currency">₹</span>
-                <span>{total.toLocaleString("en-IN")}</span>
-              </div>
-            </div>
-
-            {/* Centered QR Code Box */}
-            <div className="pay-qr-frame">
-              <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`}
-                alt="UPI Payment QR Code"
-                width={180}
-                height={180}
-                style={{ display: "block" }}
-              />
-            </div>
-
-            {/* Supported Apps Badges */}
-            <div className="pay-apps-row">
-              <span className="pay-app-pill">GPAY</span>
-              <span className="pay-app-pill">PHONEPE</span>
-              <span className="pay-app-pill">PAYTM</span>
-              <span className="pay-app-pill">BHIM UPI</span>
-              <span className="pay-app-pill">CRED</span>
-            </div>
-
-            {/* Confirm Payment CTA */}
-            <button
-              onClick={handlePaymentComplete}
-              disabled={loading}
-              className="pay-cta-btn"
-              id="confirm-payment-btn"
-            >
-              {loading ? (
-                <>
-                  <span className="pay-spinner" />
-                  <span>Processing Payment...</span>
-                </>
-              ) : (
-                <>
-                  <span>Confirm Payment</span>
-                  <span>→</span>
-                </>
-              )}
-            </button>
-          </div>
+          {/* Box removed temporarily per user request */}
         </main>
 
 
