@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&family=Sora:wght@400;600;700&display=swap');
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    overflow-x: hidden;
+  }
 
   .rcpt-root {
     min-height: 100vh;
-    background: #020b07;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    font-family: 'Sora', sans-serif;
-    padding: 40px 16px 60px;
+    width: 100vw;
+    background: #000000;
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
   }
 
   /* ── 100% PURE VECTOR BACKDROP ── */
@@ -22,10 +27,10 @@ const styles = `
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
     overflow: hidden;
-    background: #020b07;
+    background: #000000;
     contain: strict;
   }
 
@@ -39,447 +44,290 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* Ambient light overlay for natural UI integration */
+  /* Arcane Bloom Expansion from Wand Tip (54.5% X, 36.5% Y) */
+  .rcpt-bg-layer.hidden-veil {
+    clip-path: circle(0% at 54.5% 36.5%);
+    opacity: 0;
+  }
+
+  .rcpt-bg-layer.blooming {
+    opacity: 1;
+    clip-path: circle(160% at 54.5% 36.5%);
+    transition: clip-path 2.4s cubic-bezier(0.12, 0.9, 0.25, 1), opacity 0.5s ease-out;
+  }
+
+  .rcpt-bg-layer.revealed {
+    clip-path: circle(180% at 54.5% 36.5%);
+    opacity: 1;
+  }
+
+  /* Ambient light vignette after reveal */
   .rcpt-bg-vignette {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 0;
-    background: radial-gradient(circle at 50% 40%, rgba(2, 11, 7, 0.25) 0%, rgba(2, 11, 7, 0.72) 100%);
+    z-index: 2;
+    background: radial-gradient(circle at 54.5% 36.5%, rgba(2, 11, 7, 0.1) 0%, rgba(0, 0, 0, 0.75) 100%);
+    opacity: 0;
+    transition: opacity 2s ease;
   }
 
-  .rcpt-card {
-    width: 100%;
-    max-width: 500px;
-    background: rgba(13, 21, 17, 0.90);
-    border: 1.5px solid rgba(95, 226, 145, 0.22);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(95, 226, 145, 0.12);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    position: relative;
-    z-index: 1;
-    animation: rcptFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  .rcpt-bg-vignette.active {
+    opacity: 1;
   }
 
-  @keyframes rcptFadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Success Banner */
-  .rcpt-success-banner {
-    padding: 28px 32px 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .rcpt-success-icon {
-    width: 44px;
-    height: 44px;
+  /* ── WAND SPARK TEASE (CLICK 1) ── */
+  .wand-spark-flare {
+    position: fixed;
+    left: 54.5%;
+    top: 36.5%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10;
     border-radius: 50%;
-    background: rgba(72, 199, 142, 0.1);
-    border: 1.5px solid rgba(72, 199, 142, 0.25);
+    animation: sparkFlash 0.75s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes sparkFlash {
+    0% {
+      width: 0px;
+      height: 0px;
+      opacity: 0;
+      background: radial-gradient(circle, #ffffff 0%, #72ffa5 40%, rgba(35, 185, 90, 0) 70%);
+      box-shadow: 0 0 0px #72ffa5;
+    }
+    30% {
+      width: 180px;
+      height: 180px;
+      opacity: 1;
+      background: radial-gradient(circle, #ffffff 0%, #72ffa5 45%, rgba(35, 185, 90, 0.4) 70%, transparent 100%);
+      box-shadow: 0 0 60px #5fe291, 0 0 120px #229c52;
+    }
+    60% {
+      width: 190px;
+      height: 190px;
+      opacity: 0.85;
+    }
+    100% {
+      width: 60px;
+      height: 60px;
+      opacity: 0;
+      box-shadow: 0 0 0px transparent;
+    }
+  }
+
+  /* ── COLOR EXPANSION WAVE (CLICK 2) ── */
+  .wand-bloom-wave {
+    position: fixed;
+    left: 54.5%;
+    top: 36.5%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 5;
+    border-radius: 50%;
+    animation: expandWave 2.4s cubic-bezier(0.12, 0.9, 0.25, 1) forwards;
+  }
+
+  @keyframes expandWave {
+    0% {
+      width: 10px;
+      height: 10px;
+      opacity: 1;
+      border: 4px solid #ffffff;
+      box-shadow: 0 0 40px #72ffa5, inset 0 0 20px #5fe291;
+    }
+    40% {
+      opacity: 0.9;
+      border: 6px solid #72ffa5;
+      box-shadow: 0 0 90px #5fe291, 0 0 160px #1d6d44;
+    }
+    100% {
+      width: 280vw;
+      height: 280vw;
+      opacity: 0;
+      border: 2px solid transparent;
+      box-shadow: 0 0 180px transparent;
+    }
+  }
+
+  /* ── AWWWARDS MAGNETIC CURSOR FOLLOWER PILL ── */
+  .awwwards-cursor-pill {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    pointer-events: none;
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    animation: iconPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-  }
-
-  @keyframes iconPop {
-    from { opacity: 0; transform: scale(0.6); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  .rcpt-success-icon svg {
-    width: 20px;
-    height: 20px;
-    color: #48c78e;
-  }
-
-  .rcpt-success-title {
-    font-size: 17px;
-    font-weight: 600;
-    color: #e8e6f0;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-
-  .rcpt-success-sub {
+    gap: 8px;
+    padding: 10px 22px;
+    background: rgba(2, 11, 7, 0.85);
+    border: 1.5px solid #5fe291;
+    border-radius: 9999px;
+    box-shadow: 0 0 24px rgba(95, 226, 145, 0.35), 0 8px 30px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #e8fff0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
-    color: #48c78e;
-    margin: 3px 0 0;
-    letter-spacing: 0.02em;
-  }
-
-  /* Body */
-  .rcpt-body {
-    padding: 24px 32px;
-  }
-
-  /* Total block */
-  .rcpt-total-block {
-    background: rgba(109, 86, 210, 0.06);
-    border: 1px solid rgba(109, 86, 210, 0.15);
-    border-radius: 14px;
-    padding: 20px 24px;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-
-  .rcpt-total-label {
-    font-size: 11px;
-    font-weight: 500;
+    font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #6d56d2;
-    margin: 0 0 8px;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s ease, border-color 0.25s ease, background 0.25s ease, transform 0.1s ease-out;
   }
 
-  .rcpt-total-amount {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 40px;
-    font-weight: 500;
-    color: #f0eeff;
-    letter-spacing: -0.02em;
-    margin: 0;
-    line-height: 1;
-  }
-
-  .rcpt-total-currency {
-    font-size: 22px;
-    color: #9b7ff0;
-    vertical-align: super;
-    margin-right: 2px;
-  }
-
-  /* Section label */
-  .rcpt-section-label {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #3d3b52;
-    margin: 0 0 12px;
-  }
-
-  /* Items */
-  .rcpt-items {
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-
-  .rcpt-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    transition: background 0.15s ease;
-  }
-
-  .rcpt-item:not(:last-child) {
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .rcpt-item:hover {
-    background: rgba(255,255,255,0.02);
-  }
-
-  .rcpt-item-name {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #ccc9dd;
-    display: block;
-    letter-spacing: -0.01em;
-  }
-
-  .rcpt-item-qty {
-    font-size: 11.5px;
-    color: #4e4c65;
-    font-family: 'JetBrains Mono', monospace;
-    display: block;
-    margin-top: 2px;
-  }
-
-  .rcpt-item-price {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    color: #a89ee8;
-  }
-
-  /* Details block */
-  .rcpt-details {
-    background: rgba(255,255,255,0.025);
-    border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-
-  .rcpt-detail-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 11px 16px;
-    gap: 12px;
-  }
-
-  .rcpt-detail-row:not(:last-child) {
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-
-  .rcpt-detail-key {
-    font-size: 11.5px;
-    color: #4e4c65;
-    letter-spacing: 0.02em;
-    flex-shrink: 0;
-  }
-
-  .rcpt-detail-val {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    color: #9490b8;
-    text-align: right;
-    word-break: break-all;
-  }
-
-  /* Status badge */
-  .rcpt-status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .rcpt-status-badge.pending {
-    background: rgba(255, 152, 0, 0.1);
-    border: 1px solid rgba(255, 152, 0, 0.25);
-    color: #ffa726;
-  }
-
-  .rcpt-status-badge.printing {
-    background: rgba(25, 118, 210, 0.1);
-    border: 1px solid rgba(25, 118, 210, 0.25);
-    color: #42a5f5;
-  }
-
-  .rcpt-status-badge.ready {
-    background: rgba(72, 199, 142, 0.1);
-    border: 1px solid rgba(72, 199, 142, 0.25);
-    color: #48c78e;
-  }
-
-  .rcpt-status-dot {
-    width: 5px;
-    height: 5px;
+  .awwwards-cursor-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: currentColor;
+    background: #5fe291;
+    box-shadow: 0 0 8px #5fe291;
+    animation: dotPulse 1.2s infinite ease-in-out;
   }
 
-  /* CTA */
-  .rcpt-btn {
-    width: 100%;
-    padding: 15px 24px;
-    background: linear-gradient(135deg, #6d56d2 0%, #5a44bb 100%);
-    color: #fff;
-    border: none;
+  @keyframes dotPulse {
+    0%, 100% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1.4); opacity: 1; }
+  }
+
+  /* Top Return Button */
+  .rcpt-nav-back {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 50;
+    background: rgba(2, 11, 7, 0.85);
+    border: 1.5px solid #5fe291;
+    color: #e8fff0;
+    padding: 9px 18px;
     border-radius: 12px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 800;
     cursor: pointer;
-    font-family: 'Sora', sans-serif;
-    font-weight: 600;
-    font-size: 14.5px;
-    letter-spacing: 0.01em;
+    box-shadow: 3px 3px 0px #020804;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
-    box-shadow: 0 4px 20px rgba(109, 86, 210, 0.28);
-    position: relative;
-    overflow: hidden;
+    transition: transform 0.15s ease, background 0.15s ease;
   }
 
-  .rcpt-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .rcpt-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 28px rgba(109, 86, 210, 0.42);
-    filter: brightness(1.05);
-  }
-
-  .rcpt-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 10px rgba(109, 86, 210, 0.2);
-  }
-
-  .rcpt-btn svg {
-    width: 15px;
-    height: 15px;
-  }
-
-  /* Footer */
-  .rcpt-footer {
-    padding: 14px 32px 22px;
-    border-top: 1px solid rgba(255,255,255,0.04);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .rcpt-footer-text {
-    font-size: 11px;
-    color: #2e2d3e;
-    letter-spacing: 0.03em;
-  }
-
-  @media (max-width: 520px) {
-    .rcpt-body { padding: 20px; }
-    .rcpt-success-banner { padding: 20px; }
-    .rcpt-footer { padding: 14px 20px 20px; }
-    .rcpt-total-amount { font-size: 34px; }
+  .rcpt-nav-back:hover {
+    background: #145a37;
+    transform: translate(-1px, -1px);
   }
 `;
-
-function getStatusClass(status) {
-  if (!status) return "pending";
-  const s = status.toUpperCase();
-  if (s === "READY") return "ready";
-  if (s === "PRINTING") return "printing";
-  return "pending";
-}
 
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
-  const receipt = JSON.parse(localStorage.getItem("odysseyReceipt"));
+  // 0 = pitch black | 1 = sparked (waiting click 2) | 2 = blooming | 3 = fully revealed
+  const [stage, setStage] = useState(0);
+  const [sparkKey, setSparkKey] = useState(0);
+  const [showSpark, setShowSpark] = useState(false);
 
-  // ✅ SAVE TO ORDER HISTORY (SAFE ADD)
-  if (receipt) {
-    const existingOrders =
-      JSON.parse(localStorage.getItem("odysseyOrders")) || [];
+  // Smooth Awwwards cursor follower
+  const cursorRef = useRef(null);
+  const targetPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const currentPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
-    // prevent duplicate save on refresh
-    const alreadySaved = existingOrders.some(
-      (order) => order.orderId === receipt.orderId
-    );
+  useEffect(() => {
+    let animId;
+    const onMouseMove = (e) => {
+      targetPos.current = { x: e.clientX, y: e.clientY };
+    };
 
-    if (!alreadySaved) {
-      existingOrders.push(receipt);
-      localStorage.setItem(
-        "odysseyOrders",
-        JSON.stringify(existingOrders)
-      );
+    const updateCursor = () => {
+      // Smooth lerp for silky feel
+      currentPos.current.x += (targetPos.current.x - currentPos.current.x) * 0.16;
+      currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.16;
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+      animId = requestAnimationFrame(updateCursor);
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    animId = requestAnimationFrame(updateCursor);
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      cancelAnimationFrame(animId);
+    };
+  }, []);
+
+  const handleScreenClick = (e) => {
+    if (e.target.closest(".rcpt-nav-back")) return;
+
+    if (stage === 0) {
+      // ✦ FIRST CLICK: Flash brief spark at wand tip, then back to pitch black
+      setShowSpark(true);
+      setSparkKey((prev) => prev + 1);
+      setTimeout(() => {
+        setShowSpark(false);
+        setStage(1); // Ready for click 2
+      }, 750);
+    } else if (stage === 1) {
+      // ✦ SECOND CLICK: Wand ignites, color bloom expands outward like a painting
+      setStage(2);
+      setTimeout(() => {
+        setStage(3); // Fully painted & revealed
+      }, 2500);
     }
-  }
-
-  if (!receipt) {
-    return (
-      <>
-        <style>{styles}</style>
-        <div className="rcpt-root">
-          {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
-          <div className="rcpt-bg-layer" aria-hidden="true">
-            <img
-              src="/wizard-enchanted-greenlight.svg"
-              alt="Enchanted Greenlight Pure Vector Backdrop"
-              className="rcpt-bg-vector"
-            />
-          </div>
-          <div className="rcpt-bg-vignette" aria-hidden="true" />
-
-          <button
-            onClick={() => navigate("/student")}
-            style={{
-              position: "fixed",
-              top: 24,
-              left: 24,
-              zIndex: 10,
-              background: "rgba(13, 21, 17, 0.85)",
-              border: "2px solid #5fe291",
-              color: "#e8fff0",
-              padding: "8px 18px",
-              borderRadius: "10px",
-              fontSize: "13px",
-              fontWeight: "700",
-              cursor: "pointer",
-              boxShadow: "3px 3px 0px #020804",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px"
-            }}
-          >
-            ← BACK TO HOME
-          </button>
-        </div>
-      </>
-    );
-  }
-
-  const statusKey = receipt.status || "PENDING";
-  const statusClass = getStatusClass(statusKey);
+  };
 
   return (
     <>
       <style>{styles}</style>
-      <div className="rcpt-root">
-        {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
-        <div className="rcpt-bg-layer" aria-hidden="true">
+      <div className="rcpt-root" onClick={handleScreenClick}>
+        {/* 100% PURE VECTOR BACKDROP (Radial Bloom Transition from Wand Tip) */}
+        <div
+          className={`rcpt-bg-layer ${
+            stage === 0 || stage === 1
+              ? "hidden-veil"
+              : stage === 2
+              ? "blooming"
+              : "revealed"
+          }`}
+          aria-hidden="true"
+        >
           <img
             src="/wizard-enchanted-greenlight.svg"
             alt="Enchanted Greenlight Pure Vector Backdrop"
             className="rcpt-bg-vector"
           />
         </div>
-        <div className="rcpt-bg-vignette" aria-hidden="true" />
+
+        {/* Ambient depth vignette */}
+        <div className={`rcpt-bg-vignette ${stage >= 2 ? "active" : ""}`} aria-hidden="true" />
+
+        {/* Click 1: Brief Wand Spark Flare */}
+        {showSpark && <div key={sparkKey} className="wand-spark-flare" aria-hidden="true" />}
+
+        {/* Click 2: Arcane Color Expansion Shockwave */}
+        {stage >= 2 && <div className="wand-bloom-wave" aria-hidden="true" />}
+
+        {/* Awwwards Cursor Follower Pill */}
+        {stage < 3 && (
+          <div ref={cursorRef} className="awwwards-cursor-pill">
+            <span className="awwwards-cursor-dot" />
+            {stage === 0 && "CLICK TO ENTER"}
+            {stage === 1 && "CLICK AGAIN"}
+            {stage === 2 && "ILLUMINATING..."}
+          </div>
+        )}
 
         {/* Minimal Nav to Return */}
         <button
           onClick={() => navigate("/student")}
-          style={{
-            position: "fixed",
-            top: 24,
-            left: 24,
-            zIndex: 10,
-            background: "rgba(13, 21, 17, 0.85)",
-            border: "2px solid #5fe291",
-            color: "#e8fff0",
-            padding: "8px 18px",
-            borderRadius: "10px",
-            fontSize: "13px",
-            fontWeight: "700",
-            cursor: "pointer",
-            boxShadow: "3px 3px 0px #020804",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px"
-          }}
+          className="rcpt-nav-back"
         >
           ← BACK TO HOME
         </button>
-
-        {/* Card Box hidden temporarily per request */}
       </div>
     </>
   );
