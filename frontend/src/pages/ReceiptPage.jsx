@@ -440,11 +440,10 @@ export default function ReceiptPage() {
     }
 
     if (stage === 0.5 || stage === 1.5) {
-      // ✦ CLICK 1 & CLICK 2: Reveal the actual painting in a tight, focused radius around the wand tip
+      // ✦ CLICK 1 & CLICK 2: Concentrated at center (wand tip), soft optical blur at ends
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const isSecondClick = stage === 1.5;
-      // Tight, intimate radii (Click 1: tight wand tip spark; Click 2: hand + plume base)
-      const targetReach = (isSecondClick ? 145 : 88) * scale;
+      const targetReach = (isSecondClick ? 150 : 92) * scale;
       const startTime = performance.now();
       const durationMs = isSecondClick ? 1000 : 880;
 
@@ -475,22 +474,28 @@ export default function ReceiptPage() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (waveAlpha > 0 && currentR > 4) {
-          // 2. Carve out to reveal the actual painting in ONE clean, organic, feathered wave
+          // 2. Carve out with concentrated center & dreamy blurred ends
           ctx.globalCompositeOperation = "destination-out";
 
-          const featherW = Math.min(30 * scale, currentR * 0.45);
+          const blurPx = Math.max(4, 7 * scale);
+          ctx.filter = `blur(${blurPx}px)`;
+
           const waveGrad = ctx.createRadialGradient(
-            originX, originY, Math.max(0, currentR - featherW),
+            originX, originY, 0,
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.75, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
-          waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha})`); // Concentrated sharp center
+          waveGrad.addColorStop(0.58, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
+          waveGrad.addColorStop(0.76, `rgba(0, 0, 0, ${waveAlpha * 0.55})`);
+          waveGrad.addColorStop(0.90, `rgba(0, 0, 0, ${waveAlpha * 0.22})`);
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Ethereal blur falloff at ends
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, currentR, 0, Math.PI * 2);
           ctx.fill();
+          ctx.filter = "none";
         }
         ctx.restore();
 
@@ -509,21 +514,20 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: ONE single, continuous, luminous wave of the actual painting sweeping outward across the entire screen!
+      // ✦ CLICK 3: ONE unified wave — concentrated at center, organically blurred at expanding perimeter
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const maxCanvasDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
         Math.max(originY, canvas.height - originY)
       );
 
-      const durationMs = 2800; // Crisp, cinematic reveal pacing
+      const durationMs = 2800;
       const startTime = performance.now();
 
       const animateFormation = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Smooth cinematic ease: starts centered on wand tip, accelerates organically across the scene
         let ease;
         if (progress <= 0.45) {
           const u = progress / 0.45;
@@ -541,23 +545,30 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out to reveal the actual painting in ONE single unified wave
+        // 2. Carve out with concentrated center & blurred edge front
         ctx.globalCompositeOperation = "destination-out";
 
         if (waveR > 4) {
-          const featherW = Math.min(65 * scale, waveR * 0.35);
+          const blurPx = Math.max(6, Math.min(18 * scale, waveR * 0.1));
+          ctx.filter = `blur(${blurPx}px)`;
+
+          const innerSolidR = Math.max(0, waveR * 0.55);
           const waveGrad = ctx.createRadialGradient(
-            originX, originY, Math.max(0, waveR - featherW),
+            originX, originY, innerSolidR,
             originX, originY, waveR
           );
-          waveGrad.addColorStop(0, "#000000");
-          waveGrad.addColorStop(0.8, "rgba(0, 0, 0, 0.92)");
-          waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+          waveGrad.addColorStop(0, "#000000"); // 100% concentrated core
+          waveGrad.addColorStop(0.35, "#000000");
+          waveGrad.addColorStop(0.65, "rgba(0, 0, 0, 0.88)");
+          waveGrad.addColorStop(0.85, "rgba(0, 0, 0, 0.48)");
+          waveGrad.addColorStop(0.96, "rgba(0, 0, 0, 0.15)");
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Soft blurred boundary at ends
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, waveR, 0, Math.PI * 2);
           ctx.fill();
+          ctx.filter = "none";
         }
 
         ctx.restore();
@@ -568,6 +579,10 @@ export default function ReceiptPage() {
           // Painting completely revealed
           setStage(4);
         }
+      };
+
+      animationId = requestAnimationFrame(animateFormation);
+    }
       };
 
       animationId = requestAnimationFrame(animateFormation);
