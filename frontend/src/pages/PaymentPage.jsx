@@ -168,193 +168,188 @@ const styles = `
     50% { opacity: 0.5; transform: scale(0.85); }
   }
 
-  /* ── SLEEK FLOATING ACTION DOCK (UNOBSTRUCTED BACKGROUND) ── */
-  .pay-dock-wrapper {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 50;
-    width: 92%;
-    max-width: 780px;
-  }
-
-  .pay-dock {
-    background: rgba(22, 29, 34, 0.94);
-    border: 3.5px solid var(--border-dark);
-    border-radius: 14px;
-    box-shadow: 6px 6px 0px var(--border-dark);
-    padding: 14px 20px;
+  /* ── CENTRAL PAYMENT & QR TERMINAL BOX ── */
+  .pay-center-container {
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    backdrop-filter: blur(14px);
+    justify-content: center;
+    position: relative;
+    z-index: 50;
+    padding: 24px 20px 40px;
+  }
+
+  .pay-central-card {
+    background: rgba(20, 27, 32, 0.93);
+    border: 4px solid var(--border-dark);
+    border-radius: 18px;
+    box-shadow: 8px 8px 0px var(--border-dark);
+    width: 100%;
+    max-width: 440px;
+    padding: 24px 26px 22px;
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     animation: paySlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .pay-dock-total {
+  .pay-card-top-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .pay-terminal-badge {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--lantern-yellow);
+    text-transform: uppercase;
+  }
+
+  .pay-card-title {
+    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+    font-size: 24px;
+    color: var(--parchment);
+    letter-spacing: 0.5px;
+    text-shadow: 2px 2px 0px var(--border-dark);
+    margin-bottom: 2px;
+    text-align: center;
+  }
+
+  .pay-card-subtitle {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--slime-green);
+    margin-bottom: 14px;
+    letter-spacing: 0.4px;
+    text-align: center;
+  }
+
+  .pay-dossier-box {
+    width: 100%;
+    background: #172126;
+    border: 3px solid var(--border-dark);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px var(--border-dark);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .pay-dossier-left {
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
 
-  .pay-dock-label {
+  .pay-dossier-label {
     font-family: 'Archivo Black', sans-serif;
     font-size: 10px;
-    color: var(--lantern-yellow);
+    color: #8C9EA7;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
   }
 
-  .pay-dock-amount {
+  .pay-dossier-count {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--parchment);
+  }
+
+  .pay-dossier-price {
     font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 26px;
-    color: var(--parchment);
-    line-height: 1;
+    color: var(--hazard-gold);
     display: flex;
     align-items: baseline;
-    gap: 3px;
+    gap: 2px;
   }
 
-  .pay-dock-currency {
+  .pay-dossier-currency {
     font-size: 18px;
     color: var(--lantern-yellow);
-    font-weight: 800;
   }
 
-  .pay-dock-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .pay-qr-toggle-btn {
-    background: var(--parchment);
-    color: var(--void-black);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
-    text-transform: uppercase;
-    padding: 12px 18px;
-    border: 3px solid var(--border-dark);
-    border-radius: 8px;
-    box-shadow: 3px 3px 0px var(--border-dark);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-  }
-
-  .pay-qr-toggle-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--border-dark);
+  .pay-qr-frame {
     background: #FFFFFF;
+    border: 3.5px solid var(--border-dark);
+    border-radius: 14px;
+    box-shadow: 5px 5px 0px var(--border-dark);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
   }
 
-  .pay-dock-confirm-btn {
+  .pay-apps-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .pay-app-pill {
+    background: var(--void-black);
+    color: var(--parchment);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    letter-spacing: 0.5px;
+  }
+
+  .pay-cta-btn {
+    width: 100%;
     background: var(--brain-pink);
     color: var(--void-black);
     font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 13.5px;
+    font-size: 14px;
     text-transform: uppercase;
-    padding: 12px 24px;
-    border: 3px solid var(--border-dark);
-    border-radius: 8px;
+    letter-spacing: 0.5px;
+    padding: 14px 20px;
+    border: 3.5px solid var(--border-dark);
+    border-radius: 12px;
     box-shadow: 4px 4px 0px var(--border-dark);
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
   }
 
-  .pay-dock-confirm-btn:hover:not(:disabled) {
+  .pay-cta-btn:hover:not(:disabled) {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0px var(--border-dark);
     background: #FF5445;
   }
 
-  .pay-dock-confirm-btn:disabled {
-    opacity: 0.6;
+  .pay-cta-btn:disabled {
+    opacity: 0.65;
     cursor: not-allowed;
   }
 
-  /* ── QR MODAL POPUP (CLICK TO REVEAL) ── */
-  .pay-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(10, 20, 16, 0.75);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(6px);
+  .pay-spinner {
+    width: 16px;
+    height: 16px;
+    border: 3px solid var(--void-black);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
   }
 
-  .pay-modal-card {
-    background: var(--parchment);
-    border: 4px solid var(--border-dark);
-    border-radius: 16px;
-    box-shadow: 8px 8px 0px var(--border-dark);
-    padding: 24px;
-    max-width: 360px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    animation: paySlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .pay-modal-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: var(--void-black);
-    color: var(--parchment);
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 14px;
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pay-modal-title {
-    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
-    font-size: 18px;
-    color: var(--void-black);
-    margin-bottom: 4px;
-  }
-
-  .pay-modal-amount {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 15px;
-    font-weight: 800;
-    color: #1F3C34;
-    margin-bottom: 14px;
-  }
-
-  @media (max-width: 600px) {
-    .pay-dock {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-    }
-    .pay-dock-actions {
-      flex-direction: column;
-    }
-    .pay-qr-toggle-btn, .pay-dock-confirm-btn {
-      width: 100%;
-      justify-content: center;
-    }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
   }
 
   /* ── FOOTER BAR ── */
@@ -495,87 +490,73 @@ export default function PaymentPage() {
           </div>
         </header>
 
-        {/* ── SLEEK FLOATING ACTION DOCK (BACKGROUND FULLY UNOBSTRUCTED) ── */}
-        <div className="pay-dock-wrapper">
-          <div className="pay-dock">
-            <div className="pay-dock-total">
-              <span className="pay-dock-label">TOTAL DUE ({totalItemCount} {totalItemCount === 1 ? "ITEM" : "ITEMS"})</span>
-              <div className="pay-dock-amount">
-                <span className="pay-dock-currency">₹</span>
+        {/* ── CENTRAL PAYMENT & QR TERMINAL BOX ── */}
+        <main className="pay-center-container">
+          <div className="pay-central-card">
+            <div className="pay-card-top-row">
+              <span className="pay-terminal-badge">⚡ SECURE UPI GATEWAY</span>
+              <div className="pay-secure-pill">
+                <span className="pay-secure-dot" />
+                <span>ACTIVE</span>
+              </div>
+            </div>
+
+            <h1 className="pay-card-title">SCAN & PAY</h1>
+            <p className="pay-card-subtitle">INSTANT VERIFICATION • ZERO TRANSACTION FEE</p>
+
+            {/* Dossier Bar */}
+            <div className="pay-dossier-box">
+              <div className="pay-dossier-left">
+                <span className="pay-dossier-label">Total Due</span>
+                <span className="pay-dossier-count">{totalItemCount} {totalItemCount === 1 ? "Item" : "Items"}</span>
+              </div>
+              <div className="pay-dossier-price">
+                <span className="pay-dossier-currency">₹</span>
                 <span>{total.toLocaleString("en-IN")}</span>
               </div>
             </div>
 
-            <div className="pay-dock-actions">
-              <button
-                type="button"
-                className="pay-qr-toggle-btn"
-                onClick={() => setShowQr(true)}
-              >
-                <span>📷</span>
-                <span>Scan UPI QR</span>
-              </button>
-
-              <button
-                onClick={handlePaymentComplete}
-                disabled={loading}
-                className="pay-dock-confirm-btn"
-                id="confirm-payment-btn"
-              >
-                {loading ? (
-                  <>
-                    <span className="pay-spinner" />
-                    <span>Processing...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Confirm Payment</span>
-                    <span>→</span>
-                  </>
-                )}
-              </button>
+            {/* Centered QR Code Box */}
+            <div className="pay-qr-frame">
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`}
+                alt="UPI Payment QR Code"
+                width={180}
+                height={180}
+                style={{ display: "block" }}
+              />
             </div>
-          </div>
-        </div>
 
-        {/* ── OPTIONAL QR POPUP MODAL ── */}
-        {showQr && (
-          <div className="pay-modal-backdrop" onClick={() => setShowQr(false)}>
-            <div className="pay-modal-card" onClick={(e) => e.stopPropagation()}>
-              <button
-                className="pay-modal-close"
-                onClick={() => setShowQr(false)}
-                title="Close"
-              >
-                ✕
-              </button>
-              <h2 className="pay-modal-title">SCAN & PAY</h2>
-              <p className="pay-modal-amount">Total: ₹{total.toLocaleString("en-IN")}</p>
-              
-              <div style={{
-                background: "#fff",
-                padding: "8px",
-                border: "3px solid #0D0D0D",
-                borderRadius: "8px",
-                boxShadow: "3px 3px 0px #0D0D0D"
-              }}>
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`}
-                  alt="UPI Payment QR Code"
-                  width={160}
-                  height={160}
-                  style={{ display: "block" }}
-                />
-              </div>
-
-              <div style={{ display: "flex", gap: "6px", marginTop: "12px" }}>
-                <span style={{ background: "#0D0D0D", color: "#F9F9F3", fontSize: "10px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>GPAY</span>
-                <span style={{ background: "#0D0D0D", color: "#F9F9F3", fontSize: "10px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>PHONEPE</span>
-                <span style={{ background: "#0D0D0D", color: "#F9F9F3", fontSize: "10px", fontWeight: "800", padding: "3px 8px", borderRadius: "4px" }}>PAYTM</span>
-              </div>
+            {/* Supported Apps Badges */}
+            <div className="pay-apps-row">
+              <span className="pay-app-pill">GPAY</span>
+              <span className="pay-app-pill">PHONEPE</span>
+              <span className="pay-app-pill">PAYTM</span>
+              <span className="pay-app-pill">BHIM UPI</span>
+              <span className="pay-app-pill">CRED</span>
             </div>
+
+            {/* Confirm Payment CTA */}
+            <button
+              onClick={handlePaymentComplete}
+              disabled={loading}
+              className="pay-cta-btn"
+              id="confirm-payment-btn"
+            >
+              {loading ? (
+                <>
+                  <span className="pay-spinner" />
+                  <span>Processing Payment...</span>
+                </>
+              ) : (
+                <>
+                  <span>Confirm Payment</span>
+                  <span>→</span>
+                </>
+              )}
+            </button>
           </div>
-        )}
+        </main>
 
 
       </div>
