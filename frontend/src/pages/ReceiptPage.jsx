@@ -21,7 +21,7 @@ const styles = `
     user-select: none;
   }
 
-  /* ── 100% PURE VECTOR BACKDROP CANVAS LAYERS ── */
+  /* ── 100% PURE VECTOR BACKDROP ── */
   .rcpt-bg-layer {
     position: fixed;
     inset: 0;
@@ -44,48 +44,15 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* ✦ WAVE 1: INK OUTLINES & EMERALD UNDERCOAT BLEED (LEADS THE WAVE) */
-  .rcpt-bg-ink {
-    z-index: 2;
-    filter: contrast(1.5) brightness(1.25) drop-shadow(0 0 25px rgba(95, 226, 145, 0.45));
-    transition: clip-path 6.8s cubic-bezier(0.22, 0.95, 0.32, 1), opacity 0.4s ease-out;
-  }
-
-  .rcpt-bg-ink.hidden-veil {
-    clip-path: circle(0% at 55.56% 34.86%);
-    opacity: 0;
-  }
-
-  .rcpt-bg-ink.blooming {
-    opacity: 1;
-    clip-path: circle(165% at 55.56% 34.86%);
-  }
-
-  .rcpt-bg-ink.revealed {
-    clip-path: circle(180% at 55.56% 34.86%);
-    opacity: 0; /* Fades out smoothly into full final painting */
-    transition: opacity 1s ease;
-  }
-
-  /* ✦ WAVE 2: FULL SATURATED OIL / COLOR PAINTING (FOLLOWS WITH RICH TONES) */
-  .rcpt-bg-color {
+  /* ── ORGANIC PAINT SPILL CANVAS MASK (Single fluid wave spreading randomly) ── */
+  .rcpt-paint-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: 3;
-    transition: clip-path 7.6s cubic-bezier(0.25, 0.96, 0.35, 1) 0.35s, opacity 0.5s ease-out;
-  }
-
-  .rcpt-bg-color.hidden-veil {
-    clip-path: circle(0% at 55.56% 34.86%);
-    opacity: 0;
-  }
-
-  .rcpt-bg-color.blooming {
-    opacity: 1;
-    clip-path: circle(165% at 55.56% 34.86%);
-  }
-
-  .rcpt-bg-color.revealed {
-    clip-path: circle(180% at 55.56% 34.86%);
-    opacity: 1;
+    pointer-events: none;
+    display: block;
   }
 
   /* Ambient depth vignette */
@@ -95,10 +62,10 @@ const styles = `
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 4;
+    z-index: 2;
     background: radial-gradient(circle at 55.56% 34.86%, rgba(2, 11, 7, 0.05) 0%, rgba(0, 0, 0, 0.72) 100%);
     opacity: 0;
-    transition: opacity 3s ease 2s;
+    transition: opacity 3s ease 1s;
   }
 
   .rcpt-bg-vignette.active {
@@ -178,50 +145,6 @@ const styles = `
     }
   }
 
-  /* ── SLOW LIVING CANVAS PAINTERLY BLEED RIPPLE ── */
-  .painterly-wash-wave {
-    position: fixed;
-    left: 55.56%;
-    top: 34.86%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 5;
-    border-radius: 50%;
-    animation: slowPaintExpansion 7.5s cubic-bezier(0.22, 0.95, 0.32, 1) forwards;
-  }
-
-  @keyframes slowPaintExpansion {
-    0% {
-      width: 12px;
-      height: 12px;
-      opacity: 1;
-      border: 4px solid #ffffff;
-      box-shadow: 0 0 45px #72ffa5, inset 0 0 25px #5fe291;
-    }
-    15% {
-      opacity: 0.95;
-      border: 6px solid #72ffa5;
-      box-shadow: 0 0 80px #5fe291, 0 0 140px #1d6d44;
-    }
-    55% {
-      opacity: 0.75;
-      border: 5px solid rgba(114, 255, 165, 0.75);
-      box-shadow: 0 0 120px rgba(95, 226, 145, 0.6), 0 0 220px rgba(29, 109, 68, 0.4);
-    }
-    85% {
-      opacity: 0.35;
-      border: 2px solid rgba(114, 255, 165, 0.3);
-      box-shadow: 0 0 140px rgba(95, 226, 145, 0.2);
-    }
-    100% {
-      width: 290vw;
-      height: 290vw;
-      opacity: 0;
-      border: 1px solid transparent;
-      box-shadow: 0 0 180px transparent;
-    }
-  }
-
   /* ── AWWWARDS MAGNETIC CURSOR FOLLOWER PILL ── */
   .awwwards-cursor-pill {
     position: fixed;
@@ -294,15 +217,18 @@ const styles = `
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
-  // 0 = pitch black | 1 = sparked (waiting click 2) | 2 = slow canvas painting | 3 = fully revealed
+  // 0 = pitch black | 1 = sparked (waiting click 2) | 2 = paint spill flowing | 3 = fully revealed
   const [stage, setStage] = useState(0);
   const [sparkKey, setSparkKey] = useState(0);
   const [showSpark, setShowSpark] = useState(false);
 
-  // Smooth Awwwards cursor follower
+  // Awwwards cursor follower
   const cursorRef = useRef(null);
   const targetPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const currentPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+
+  // Canvas ref for the organic fluid paint spill
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     let animId;
@@ -311,7 +237,6 @@ export default function ReceiptPage() {
     };
 
     const updateCursor = () => {
-      // Smooth lerp for silky feel
       currentPos.current.x += (targetPos.current.x - currentPos.current.x) * 0.16;
       currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.16;
 
@@ -330,6 +255,169 @@ export default function ReceiptPage() {
     };
   }, []);
 
+  // ✦ SINGLE ORGANIC PAINT SPILL FLOW (LIQUID WATERCOLOR ACROSS BLACK SHEET)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+
+    let animationId;
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      if (stage < 2) {
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+    };
+
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
+    if (stage < 2) {
+      // Solid black sheet
+      ctx.fillStyle = "#000000";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      return () => window.removeEventListener("resize", resizeCanvas);
+    }
+
+    if (stage === 2) {
+      const originX = canvas.width * 0.5556;
+      const originY = canvas.height * 0.3486;
+
+      // Max radius to cover all screen corners comfortably
+      const maxDist = Math.hypot(
+        Math.max(originX, canvas.width - originX),
+        Math.max(originY, canvas.height - originY)
+      ) * 1.35;
+
+      // Generate random organic fluid harmonics for natural liquid flow (random tendrils, paper grain)
+      const numRays = 220;
+      const rays = [];
+      for (let i = 0; i < numRays; i++) {
+        const theta = (i / numRays) * Math.PI * 2;
+        // Non-uniform speed per direction: simulates fluid spilling faster along random streams
+        const speedVar = 0.72 + 0.38 * Math.sin(theta * 2.3 + 1.1) + 0.22 * Math.cos(theta * 4.7 - 0.8) + (Math.random() - 0.5) * 0.18;
+        // High-frequency capillary ripples
+        const capillary = (Math.random() - 0.5) * 0.12;
+        rays.push({ theta, speedVar: Math.max(0.45, speedVar), capillary });
+      }
+
+      // Droplets and satellite paint splashes ahead of main front
+      const droplets = [];
+      for (let j = 0; j < 24; j++) {
+        const angle = Math.random() * Math.PI * 2;
+        const distRatio = 0.25 + Math.random() * 0.7;
+        const radius = 6 + Math.random() * 22;
+        droplets.push({ angle, distRatio, radius, delay: Math.random() * 0.4 });
+      }
+
+      const durationMs = 7200; // 7.2s smooth painterly flow
+      const startTime = performance.now();
+
+      const animateSpill = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(1.0, elapsed / durationMs);
+
+        // Natural liquid deceleration curve: fast initial spill, gentle creeping finish
+        // Cubic ease-out
+        const ease = 1 - Math.pow(1 - progress, 2.6);
+
+        // 1. Redraw black sheet
+        ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 2. Carve out the organic flowing paint spill from the black sheet
+        ctx.globalCompositeOperation = "destination-out";
+
+        // Generate fluid spill boundary vertices
+        const points = [];
+        for (let i = 0; i < numRays; i++) {
+          const { theta, speedVar, capillary } = rays[i];
+          const currentRadius = maxDist * ease * speedVar * (1 + capillary);
+          const px = originX + Math.cos(theta) * currentRadius;
+          const py = originY + Math.sin(theta) * currentRadius;
+          points.push({ x: px, y: py });
+        }
+
+        // Draw organic smooth liquid boundary using midpoint quadratic curves
+        if (points.length > 2) {
+          ctx.beginPath();
+          const p0 = points[0];
+          const pLast = points[points.length - 1];
+          const startMid = { x: (p0.x + pLast.x) / 2, y: (p0.y + pLast.y) / 2 };
+          ctx.moveTo(startMid.x, startMid.y);
+
+          for (let i = 0; i < points.length; i++) {
+            const curr = points[i];
+            const next = points[(i + 1) % points.length];
+            const mid = { x: (curr.x + next.x) / 2, y: (curr.y + next.y) / 2 };
+            ctx.quadraticCurveTo(curr.x, curr.y, mid.x, mid.y);
+          }
+          ctx.closePath();
+          ctx.fillStyle = "#000000";
+          ctx.fill();
+        }
+
+        // Carve ahead satellite droplets that pool and merge into the front
+        droplets.forEach((d) => {
+          if (ease > d.delay) {
+            const dropProgress = Math.min(1.0, (ease - d.delay) / 0.5);
+            const dropDist = maxDist * d.distRatio * (0.8 + 0.2 * dropProgress);
+            const dx = originX + Math.cos(d.angle) * dropDist;
+            const dy = originY + Math.sin(d.angle) * dropDist;
+            const dr = d.radius * dropProgress;
+
+            ctx.beginPath();
+            ctx.arc(dx, dy, dr, 0, Math.PI * 2);
+            ctx.fillStyle = "#000000";
+            ctx.fill();
+          }
+        });
+
+        // 3. Highlight the wet leading edge of the liquid paint as it flows across the page
+        if (progress < 0.95 && points.length > 2) {
+          ctx.globalCompositeOperation = "source-over";
+          ctx.save();
+          ctx.beginPath();
+          const p0 = points[0];
+          const pLast = points[points.length - 1];
+          ctx.moveTo((p0.x + pLast.x) / 2, (p0.y + pLast.y) / 2);
+          for (let i = 0; i < points.length; i++) {
+            const curr = points[i];
+            const next = points[(i + 1) % points.length];
+            ctx.quadraticCurveTo(curr.x, curr.y, (curr.x + next.x) / 2, (curr.y + next.y) / 2);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = `rgba(114, 255, 165, ${Math.max(0, 0.75 * (1 - progress * 0.85))})`;
+          ctx.lineWidth = 4;
+          ctx.shadowColor = "#5fe291";
+          ctx.shadowBlur = 18;
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        ctx.restore();
+
+        if (progress < 1.0) {
+          animationId = requestAnimationFrame(animateSpill);
+        } else {
+          // Finished flowing across entire page
+          setStage(3);
+        }
+      };
+
+      animationId = requestAnimationFrame(animateSpill);
+    }
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [stage]);
+
   const handleScreenClick = (e) => {
     if (e.target.closest(".rcpt-nav-back")) return;
 
@@ -342,11 +430,8 @@ export default function ReceiptPage() {
         setStage(1); // Ready for click 2
       }, 950);
     } else if (stage === 1) {
-      // ✦ SECOND CLICK: Slow living canvas painting begins originating from the spark
+      // ✦ SECOND CLICK: Organic liquid paint spills randomly across the sheet
       setStage(2);
-      setTimeout(() => {
-        setStage(3); // Fully painted & settled
-      }, 7600);
     }
   };
 
@@ -355,41 +440,17 @@ export default function ReceiptPage() {
       <style>{styles}</style>
       <div className="rcpt-root" onClick={handleScreenClick}>
         
-        {/* WAVE 1: Inked outlines & light wash bleeding out first */}
-        <div
-          className={`rcpt-bg-layer rcpt-bg-ink ${
-            stage === 0 || stage === 1
-              ? "hidden-veil"
-              : stage === 2
-              ? "blooming"
-              : "revealed"
-          }`}
-          aria-hidden="true"
-        >
+        {/* 100% PURE VECTOR BACKDROP (Revealed along the path of the flowing paint) */}
+        <div className="rcpt-bg-layer" aria-hidden="true">
           <img
             src="/wizard-enchanted-greenlight.svg"
-            alt="Enchanted Greenlight Inked Canvas"
+            alt="Enchanted Greenlight Vector Canvas"
             className="rcpt-bg-vector"
           />
         </div>
 
-        {/* WAVE 2: Full saturated gothic color painting expanding right behind */}
-        <div
-          className={`rcpt-bg-layer rcpt-bg-color ${
-            stage === 0 || stage === 1
-              ? "hidden-veil"
-              : stage === 2
-              ? "blooming"
-              : "revealed"
-          }`}
-          aria-hidden="true"
-        >
-          <img
-            src="/wizard-enchanted-greenlight.svg"
-            alt="Enchanted Greenlight Color Canvas"
-            className="rcpt-bg-vector"
-          />
-        </div>
+        {/* Dynamic Organic Paint Spill Canvas (Carves away black sheet organically) */}
+        {stage < 3 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
 
         {/* Ambient depth vignette */}
         <div className={`rcpt-bg-vignette ${stage >= 2 ? "active" : ""}`} aria-hidden="true" />
@@ -405,7 +466,7 @@ export default function ReceiptPage() {
           </div>
         )}
 
-        {/* Click 2+: Permanent Vector Flame Anchor while painting spreads */}
+        {/* Click 2+: Permanent Vector Flame Anchor while paint flows */}
         {stage >= 2 && (
           <div className="wand-spark-layer ignited" aria-hidden="true">
             <img
@@ -415,9 +476,6 @@ export default function ReceiptPage() {
             />
           </div>
         )}
-
-        {/* Click 2: Slow Living Canvas Paint Bleed Ripple (7.5s) */}
-        {stage === 2 && <div className="painterly-wash-wave" aria-hidden="true" />}
 
         {/* Awwwards Cursor Follower Pill (Only shown before second click) */}
         {stage < 2 && (
