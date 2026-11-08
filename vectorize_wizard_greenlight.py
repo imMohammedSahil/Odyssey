@@ -234,15 +234,15 @@ def build_wizard_svg():
     # Layer 11: Wand Bloom Core Flare (Smooth outward atmospheric decay with no sharp circular boundary)
     svg_layers.append(f'  <!-- Layer 11: Wand Tip Radiant Core Incandescence (Smooth outward atmospheric decay) -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="240" fill="url(#wandBloomCore)" />')
 
-    # Layer 12: Inscribed Down Arrow Mark on Center Door Panel (Environment Matched)
-    door_inscription = '''  <!-- Layer 12: Inscribed Down Arrow Mark on Center Door Panel (Environment Matched) -->
+    # Layer 12: Inscribed Crimson Down Arrow Mark on Center Door Panel
+    door_inscription = '''  <!-- Layer 12: Inscribed Crimson Down Arrow Mark on Center Door Panel -->
   <g id="doorArrowMark" transform="translate(1112, 510)">
-    <!-- Deep carved relief shadow in comic black-green ink -->
+    <!-- Deep carved relief shadow in comic black-red ink -->
     <path d="M 0,22 L -14,6 L -5,6 L -5,-18 L 5,-18 L 5,6 L 14,6 Z"
-          fill="#020a05" transform="translate(2, 2)" opacity="0.95" />
-    <!-- Chiseled stone arrow face illuminated by wand's radiant greenlight -->
+          fill="#1A0205" transform="translate(2, 2)" opacity="0.95" />
+    <!-- Chiseled crimson arrow face -->
     <path d="M 0,22 L -14,6 L -5,6 L -5,-18 L 5,-18 L 5,6 L 14,6 Z"
-          fill="#8AFFBA" stroke="#04160b" stroke-width="2"
+          fill="#FF2E3B" stroke="#2B0004" stroke-width="2"
           stroke-linejoin="round" />
   </g>'''
     svg_layers.append(door_inscription)
