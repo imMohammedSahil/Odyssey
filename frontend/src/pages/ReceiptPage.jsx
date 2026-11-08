@@ -226,45 +226,177 @@ export default function ReceiptPage() {
     }
 
     if (stage === 0.5 || stage === 1.5) {
-      // ✦ CLICK 1 & CLICK 2: Tease reveal of the circled artwork zone, breathe, then dim to black
+      // ✦ CLICK 1 & CLICK 2: Reverse-trace linework actively draws outwards from wand tip, breathes, then de-traces
       const { originX, originY, renderW } = getWandScreenPos(canvas.width, canvas.height);
-      const baseRadius = stage === 0.5 ? 215 : 235;
-      const teaseRadius = baseRadius * (renderW / 1672);
+      const isSecondClick = stage === 1.5;
+      const scale = renderW / 1672;
+      const targetReach = (isSecondClick ? 285 : 195) * scale;
       const startTime = performance.now();
-      const durationMs = 1200;
+      const durationMs = isSecondClick ? 1250 : 1150;
+
+      // Curated artistic linework trajectories based on painting geometry
+      const filaments = [
+        // Smoke plume rising upward and curling
+        { angle: -1.69, maxD: targetReach * 1.12, freq: 3.2, amp: 14 * scale, forks: [0.45, 0.75] },
+        { angle: -1.48, maxD: targetReach * 1.18, freq: 3.8, amp: 16 * scale, forks: [0.5] },
+        { angle: -1.13, maxD: targetReach * 1.05, freq: 4.0, amp: 18 * scale, forks: [0.4] },
+        { angle: -0.80, maxD: targetReach * 1.08, freq: 3.0, amp: 15 * scale, forks: [0.55] },
+        { angle: -2.00, maxD: targetReach * 0.95, freq: 3.5, amp: 12 * scale, forks: [0.6] },
+
+        // Wand wooden shaft & wizard hand
+        { angle: 2.19, maxD: targetReach * 1.02, freq: 1.2, amp: 5 * scale, forks: [0.5, 0.8] },
+        { angle: 2.35, maxD: targetReach * 0.98, freq: 1.8, amp: 7 * scale, forks: [0.6] },
+        { angle: 1.92, maxD: targetReach * 0.90, freq: 2.2, amp: 8 * scale, forks: [0.55] },
+
+        // Wizard face & cloak
+        { angle: -3.05, maxD: targetReach * 1.00, freq: 2.5, amp: 9 * scale, forks: [0.5] },
+        { angle: 2.80, maxD: targetReach * 1.05, freq: 2.8, amp: 11 * scale, forks: [0.6] },
+        { angle: 2.55, maxD: targetReach * 0.95, freq: 2.0, amp: 8 * scale, forks: [0.5] },
+
+        // Doorway lintel & panels
+        { angle: 0.00, maxD: targetReach * 1.10, freq: 1.0, amp: 4 * scale, forks: [0.45, 0.8] },
+        { angle: 0.26, maxD: targetReach * 1.15, freq: 2.2, amp: 8 * scale, forks: [0.5] },
+        { angle: 0.52, maxD: targetReach * 1.05, freq: 2.5, amp: 10 * scale, forks: [0.6] },
+        { angle: 0.79, maxD: targetReach * 1.02, freq: 2.0, amp: 9 * scale, forks: [0.5] },
+
+        // Surrounding aura filaments
+        { angle: -0.40, maxD: targetReach * 0.88, freq: 3.0, amp: 10 * scale, forks: [] },
+        { angle: 1.10, maxD: targetReach * 0.85, freq: 2.5, amp: 8 * scale, forks: [] },
+        { angle: 1.50, maxD: targetReach * 0.80, freq: 2.0, amp: 7 * scale, forks: [] },
+        { angle: -2.40, maxD: targetReach * 0.85, freq: 2.8, amp: 9 * scale, forks: [] },
+        { angle: -2.75, maxD: targetReach * 0.90, freq: 2.6, amp: 10 * scale, forks: [] }
+      ];
 
       const animateTease = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Teasing breath curve
-        let opacity;
-        if (progress < 0.28) {
-          opacity = progress / 0.28;
-        } else if (progress < 0.65) {
-          opacity = 1.0 - 0.08 * Math.sin(((progress - 0.28) / 0.37) * Math.PI);
+        // Tracing wave: actively draws outward (0-42%), holds and pulses (42-68%), then un-draws/dissolves (68-100%)
+        let drawProg, lineAlpha;
+        if (progress < 0.42) {
+          drawProg = progress / 0.42;
+          drawProg = 1 - Math.pow(1 - drawProg, 2.2); // Smooth ease-out draw
+          lineAlpha = 1.0;
+        } else if (progress < 0.68) {
+          drawProg = 1.0;
+          lineAlpha = 1.0 - 0.08 * Math.sin(((progress - 0.42) / 0.26) * Math.PI); // Arcane pulse
         } else {
-          opacity = (1.0 - progress) / 0.35;
+          drawProg = 1.0;
+          lineAlpha = Math.max(0, (1.0 - progress) / 0.32); // Smooth dissolve
         }
-        opacity = Math.max(0, Math.min(1.0, opacity));
 
         ctx.save();
+        // 1. Solid pitch black canvas sheet
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        if (opacity > 0) {
+        if (lineAlpha > 0) {
+          // 2. Carve out the artwork along the traced lines and central core
           ctx.globalCompositeOperation = "destination-out";
-          const grad = ctx.createRadialGradient(originX, originY, 0, originX, originY, teaseRadius);
-          grad.addColorStop(0, `rgba(0, 0, 0, ${opacity})`);
-          grad.addColorStop(0.68, `rgba(0, 0, 0, ${opacity * 0.95})`);
-          grad.addColorStop(0.88, `rgba(0, 0, 0, ${opacity * 0.4})`);
-          grad.addColorStop(1, "rgba(0, 0, 0, 0)");
 
-          ctx.fillStyle = grad;
+          // Central incandescent core reveal
+          const coreRadius = (35 + 25 * drawProg) * scale;
+          const coreGrad = ctx.createRadialGradient(originX, originY, 0, originX, originY, coreRadius);
+          coreGrad.addColorStop(0, `rgba(0, 0, 0, ${lineAlpha})`);
+          coreGrad.addColorStop(0.65, `rgba(0, 0, 0, ${lineAlpha * 0.9})`);
+          coreGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+          ctx.fillStyle = coreGrad;
           ctx.beginPath();
-          ctx.arc(originX, originY, teaseRadius, 0, Math.PI * 2);
+          ctx.arc(originX, originY, coreRadius, 0, Math.PI * 2);
           ctx.fill();
+
+          // Carve out artwork along the exact path of each tracing line
+          filaments.forEach((f) => {
+            const currentDist = f.maxD * drawProg;
+            if (currentDist <= 2) return;
+
+            const steps = Math.max(6, Math.floor(currentDist / 12));
+            ctx.beginPath();
+            ctx.moveTo(originX, originY);
+
+            for (let s = 1; s <= steps; s++) {
+              const d = (s / steps) * currentDist;
+              const lateral = Math.sin((d / 120) * f.freq) * f.amp * (d / f.maxD);
+              const perpAngle = f.angle + Math.PI / 2;
+              const px = originX + Math.cos(f.angle) * d + Math.cos(perpAngle) * lateral;
+              const py = originY + Math.sin(f.angle) * d + Math.sin(perpAngle) * lateral;
+              ctx.lineTo(px, py);
+            }
+
+            ctx.lineWidth = Math.max(14 * scale, 22 * scale * (1 - (currentDist / (targetReach * 1.5)) * 0.5));
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.strokeStyle = `rgba(0, 0, 0, ${lineAlpha * 0.95})`;
+            ctx.stroke();
+
+            // Forks / sub-branches carving
+            f.forks.forEach((forkRatio, idx) => {
+              if (drawProg > forkRatio) {
+                const forkProg = (drawProg - forkRatio) / (1 - forkRatio);
+                const forkLen = f.maxD * 0.45 * forkProg;
+                const forkDist = f.maxD * forkRatio;
+                const lateral = Math.sin((forkDist / 120) * f.freq) * f.amp * (forkDist / f.maxD);
+                const perp = f.angle + Math.PI / 2;
+                const startX = originX + Math.cos(f.angle) * forkDist + Math.cos(perp) * lateral;
+                const startY = originY + Math.sin(f.angle) * forkDist + Math.sin(perp) * lateral;
+
+                const branchAngle = f.angle + (idx % 2 === 0 ? 0.42 : -0.42);
+                const endX = startX + Math.cos(branchAngle) * forkLen;
+                const endY = startY + Math.sin(branchAngle) * forkLen;
+
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
+                ctx.lineWidth = 12 * scale;
+                ctx.strokeStyle = `rgba(0, 0, 0, ${lineAlpha * 0.85})`;
+                ctx.stroke();
+              }
+            });
+          });
+
+          // 3. Draw luminous white-hot & mint tracing sparks & strokes over the leading edge
+          ctx.globalCompositeOperation = "source-over";
+
+          filaments.forEach((f) => {
+            const currentDist = f.maxD * drawProg;
+            if (currentDist <= 4) return;
+
+            const steps = Math.max(6, Math.floor(currentDist / 12));
+            const pts = [];
+            for (let s = 0; s <= steps; s++) {
+              const d = (s / steps) * currentDist;
+              const lateral = Math.sin((d / 120) * f.freq) * f.amp * (d / f.maxD);
+              const perpAngle = f.angle + Math.PI / 2;
+              const px = originX + Math.cos(f.angle) * d + Math.cos(perpAngle) * lateral;
+              const py = originY + Math.sin(f.angle) * d + Math.sin(perpAngle) * lateral;
+              pts.push({ x: px, y: py });
+            }
+
+            // Outer mint glow stroke
+            ctx.beginPath();
+            ctx.moveTo(pts[0].x, pts[0].y);
+            for (let p = 1; p < pts.length; p++) {
+              ctx.lineTo(pts[p].x, pts[p].y);
+            }
+            ctx.lineWidth = 3.5;
+            ctx.strokeStyle = `rgba(95, 226, 145, ${lineAlpha * 0.85})`;
+            ctx.stroke();
+
+            // Inner white-hot filament core
+            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha * 0.95})`;
+            ctx.stroke();
+
+            // Leading spark head actively drawing the line
+            if (drawProg < 0.98) {
+              const tip = pts[pts.length - 1];
+              ctx.beginPath();
+              ctx.arc(tip.x, tip.y, 2.8, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(255, 255, 255, ${lineAlpha})`;
+              ctx.fill();
+            }
+          });
         }
         ctx.restore();
 
@@ -284,84 +416,133 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: Organic paint spill starts at the exact wand tip and flows across the entire page
-      const { originX, originY } = getWandScreenPos(canvas.width, canvas.height);
+      // ✦ CLICK 3: Tracing lines race outward to screen borders, forming the entire painting
+      const { originX, originY, renderW } = getWandScreenPos(canvas.width, canvas.height);
+      const scale = renderW / 1672;
 
       const maxDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
         Math.max(originY, canvas.height - originY)
       ) * 1.35;
 
-      const numRays = 180;
-      const rays = [];
-      for (let i = 0; i < numRays; i++) {
-        const theta = (i / numRays) * Math.PI * 2;
-        const speedVar = 1.0 + 0.07 * Math.sin(theta * 2 + 0.7) + 0.04 * Math.cos(theta * 3 - 0.4) + 0.02 * Math.sin(theta * 5 + 1.2);
-        rays.push({ theta, speedVar });
+      const numFilaments = 42;
+      const filaments = [];
+      for (let i = 0; i < numFilaments; i++) {
+        const angle = (i / numFilaments) * Math.PI * 2;
+        const speedVar = 1.0 + 0.08 * Math.sin(angle * 2 + 0.7) + 0.05 * Math.cos(angle * 3 - 0.4);
+        const freq = 2.0 + (i % 3) * 1.2;
+        const amp = (8 + (i % 4) * 4) * scale;
+        filaments.push({ angle, speedVar, freq, amp });
       }
 
-      const durationMs = 6200; // Faster, punchy liquid pacing as requested
+      const durationMs = 5800; // Crisp, engaging formation pacing
       const startTime = performance.now();
 
-      const animateSpill = (now) => {
+      const animateFormation = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Slow & time-consuming at center (0-60%), then rapidly sweeps across outer edges (60-100%)
+        // Center line formation (0-55% slow & detailed), outer sweep acceleration (55-100%)
         let ease;
-        if (progress <= 0.6) {
-          const u = progress / 0.6;
-          ease = 0.55 * (0.4 * u + 0.6 * Math.pow(u, 1.6));
+        if (progress <= 0.55) {
+          const u = progress / 0.55;
+          ease = 0.50 * (0.35 * u + 0.65 * Math.pow(u, 1.5));
         } else {
-          const v = (progress - 0.6) / 0.4;
-          ease = 0.55 + 0.45 * (1.0 - Math.pow(1.0 - v, 2.0));
+          const v = (progress - 0.55) / 0.45;
+          ease = 0.50 + 0.50 * (1.0 - Math.pow(1.0 - v, 2.2));
         }
 
         ctx.save();
+        // 1. Redraw black sheet
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        // 2. Carve out the formed painting along lines and connected web
         ctx.globalCompositeOperation = "destination-out";
 
+        // Connected formation front
         const points = [];
-        for (let i = 0; i < numRays; i++) {
-          const { theta, speedVar } = rays[i];
-          const currentRadius = maxDist * ease * speedVar;
-          const px = originX + Math.cos(theta) * currentRadius;
-          const py = originY + Math.sin(theta) * currentRadius;
-          points.push({ x: px, y: py });
+        for (let i = 0; i < numFilaments; i++) {
+          const f = filaments[i];
+          const currentRadius = maxDist * ease * f.speedVar;
+          const lateral = Math.sin((currentRadius / 120) * f.freq) * f.amp;
+          const perpAngle = f.angle + Math.PI / 2;
+          const px = originX + Math.cos(f.angle) * currentRadius + Math.cos(perpAngle) * lateral;
+          const py = originY + Math.sin(f.angle) * currentRadius + Math.sin(perpAngle) * lateral;
+          points.push({ x: px, y: py, r: currentRadius, angle: f.angle });
         }
 
         if (points.length > 2) {
           ctx.beginPath();
           const p0 = points[0];
           const pLast = points[points.length - 1];
-          const startMid = { x: (p0.x + pLast.x) / 2, y: (p0.y + pLast.y) / 2 };
-          ctx.moveTo(startMid.x, startMid.y);
+          ctx.moveTo((p0.x + pLast.x) / 2, (p0.y + pLast.y) / 2);
 
           for (let i = 0; i < points.length; i++) {
             const curr = points[i];
             const next = points[(i + 1) % points.length];
-            const mid = { x: (curr.x + next.x) / 2, y: (curr.y + next.y) / 2 };
-            ctx.quadraticCurveTo(curr.x, curr.y, mid.x, mid.y);
+            ctx.quadraticCurveTo(curr.x, curr.y, (curr.x + next.x) / 2, (curr.y + next.y) / 2);
           }
           ctx.closePath();
           ctx.fillStyle = "#000000";
           ctx.fill();
         }
 
+        // Additional line-carving tendrils reaching ahead of main front
+        filaments.forEach((f) => {
+          const leadRadius = maxDist * Math.min(1.0, ease * 1.18) * f.speedVar;
+          const baseRadius = maxDist * ease * f.speedVar;
+          if (leadRadius > baseRadius) {
+            ctx.beginPath();
+            const steps = 8;
+            for (let s = 0; s <= steps; s++) {
+              const d = baseRadius + (s / steps) * (leadRadius - baseRadius);
+              const lateral = Math.sin((d / 120) * f.freq) * f.amp;
+              const perpAngle = f.angle + Math.PI / 2;
+              const px = originX + Math.cos(f.angle) * d + Math.cos(perpAngle) * lateral;
+              const py = originY + Math.sin(f.angle) * d + Math.sin(perpAngle) * lateral;
+              if (s === 0) ctx.moveTo(px, py);
+              else ctx.lineTo(px, py);
+            }
+            ctx.lineWidth = 14 * scale;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "#000000";
+            ctx.stroke();
+          }
+        });
+
+        // 3. Draw luminous reverse-tracing lines and spark heads running along the perimeter
+        if (progress < 0.98) {
+          ctx.globalCompositeOperation = "source-over";
+
+          // Leading sparks actively drawing into darkness
+          points.forEach((p, idx) => {
+            if (idx % 2 === 0) {
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+              ctx.fillStyle = "#FFFFFF";
+              ctx.fill();
+
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, 5.0, 0, Math.PI * 2);
+              ctx.fillStyle = "rgba(95, 226, 145, 0.4)";
+              ctx.fill();
+            }
+          });
+        }
+
         ctx.restore();
 
         if (progress < 1.0) {
-          animationId = requestAnimationFrame(animateSpill);
+          animationId = requestAnimationFrame(animateFormation);
         } else {
-          // Finished flowing across entire page
+          // Painting completely formed into view
           setStage(4);
         }
       };
 
-      animationId = requestAnimationFrame(animateSpill);
+      animationId = requestAnimationFrame(animateFormation);
     }
 
     return () => {
