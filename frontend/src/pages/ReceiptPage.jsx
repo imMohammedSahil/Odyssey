@@ -174,27 +174,27 @@ const styles = `
   }
 
   .rcpt-card {
-    max-width: 580px;
+    max-width: 620px;
     width: 100%;
-    background: rgba(4, 18, 11, 0.92);
-    border: 1.5px solid #5fe291;
+    background: rgba(4, 18, 11, 0.95);
+    border: 2px solid #5fe291;
     border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(95, 226, 145, 0.12);
+    padding: 36px 32px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(95, 226, 145, 0.15);
     color: #e8fff0;
     font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
   .rcpt-card-header {
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     border-bottom: 1px dashed rgba(95, 226, 145, 0.25);
-    padding-bottom: 24px;
+    padding-bottom: 20px;
   }
 
   .rcpt-badge {
     display: inline-block;
-    padding: 6px 14px;
+    padding: 5px 14px;
     background: rgba(95, 226, 145, 0.12);
     border: 1px solid #5fe291;
     border-radius: 9999px;
@@ -203,20 +203,20 @@ const styles = `
     letter-spacing: 0.15em;
     color: #5fe291;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
 
   .rcpt-title {
-    font-family: 'Cinzel', serif;
+    font-family: 'Archivo Black', sans-serif;
     font-size: 26px;
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.05em;
     color: #ffffff;
-    margin: 0 0 8px 0;
+    margin: 0 0 6px 0;
   }
 
   .rcpt-subtitle {
-    font-size: 13px;
+    font-size: 12.5px;
     color: #8da496;
     margin: 0;
   }
@@ -224,13 +224,17 @@ const styles = `
   .rcpt-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    margin-bottom: 28px;
+    gap: 16px;
+    margin-bottom: 22px;
+    background: rgba(2, 10, 6, 0.6);
+    border: 1px solid rgba(95, 226, 145, 0.2);
+    border-radius: 12px;
+    padding: 16px 18px;
   }
 
   .rcpt-item-label {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: 10.5px;
+    font-weight: 800;
     letter-spacing: 0.08em;
     color: #608570;
     text-transform: uppercase;
@@ -239,40 +243,114 @@ const styles = `
 
   .rcpt-item-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     color: #e8fff0;
+    display: flex;
+    align-items: center;
   }
 
-  .rcpt-total-box {
-    background: rgba(2, 10, 6, 0.7);
-    border: 1px solid rgba(95, 226, 145, 0.35);
-    border-radius: 12px;
-    padding: 18px 22px;
+  .rcpt-copy-pill {
+    margin-left: 8px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(95, 226, 145, 0.15);
+    border: 1px solid #5fe291;
+    color: #5fe291;
+    cursor: pointer;
+    font-weight: 800;
+    transition: all 0.15s ease;
+  }
+
+  .rcpt-copy-pill:hover {
+    background: #5fe291;
+    color: #020b06;
+  }
+
+  .rcpt-manifest-header {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8da496;
+    margin-bottom: 10px;
+  }
+
+  .rcpt-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed rgba(95, 226, 145, 0.25);
+  }
+
+  .rcpt-item-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 28px;
+    background: rgba(2, 12, 7, 0.7);
+    border: 1px solid rgba(95, 226, 145, 0.18);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  .rcpt-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .rcpt-item-name {
+    font-size: 13px;
+    font-weight: 800;
+    color: #e8fff0;
+  }
+
+  .rcpt-item-specs {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7b9e8b;
+  }
+
+  .rcpt-item-cost {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 800;
+    color: #5fe291;
+    text-align: right;
+  }
+
+  .rcpt-total-box {
+    background: rgba(2, 10, 6, 0.85);
+    border: 1.5px solid #5fe291;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
   }
 
   .rcpt-total-label {
     font-size: 13px;
     font-weight: 800;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #a4c9b3;
   }
 
   .rcpt-total-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 900;
     color: #5fe291;
   }
 
   .rcpt-actions {
     display: flex;
-    gap: 14px;
+    gap: 12px;
   }
 
   .rcpt-btn-primary {
@@ -281,6 +359,21 @@ const styles = `
     background: #5fe291;
     color: #020c06;
     border: none;
+    border-radius: 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(95, 226, 145, 0.3);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .rcpt-btn-primary:hover {
+    background: #7dffac;
+    transform: translateY(-2px);
+  }
     border-radius: 10px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 13px;
@@ -374,6 +467,43 @@ export default function ReceiptPage() {
 
   // 0 = pitch black | 0.5 = tease 1 | 1 = waiting click 2 | 1.5 = tease 2 | 2 = waiting click 3 | 3 = paint spill flowing | 4 = fully revealed
   const [stage, setStage] = useState(0);
+  const [copied, setCopied] = useState(false);
+
+  // Load real order data from localStorage with graceful fallback
+  const [receiptData] = useState(() => {
+    try {
+      const stored = localStorage.getItem("odysseyReceipt");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return {
+          orderId: parsed.orderId ? (parsed.orderId.startsWith("#") ? parsed.orderId : `#${parsed.orderId}`) : "#ORD-9428-CAMPUS",
+          items: parsed.items && parsed.items.length > 0 ? parsed.items : [
+            { name: "Odyssey Bond Paper Ream (75 GSM)", quantity: 1, price: 100, specs: "500 Sheets • Crisp White" },
+            { name: "Toxic Neon Highlighters (Pack of 3)", quantity: 1, price: 50, specs: "Emerald • Amber • Magenta" }
+          ],
+          total: parsed.total || 150,
+          date: parsed.date || new Date().toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+          status: "IN PRINT QUEUE",
+          pickupCounter: "Basecamp Counter A (Library Vault)",
+          estimatedTime: "Ready in ~10 mins",
+          paymentMethod: "UPI Scanned (odysseycampus@upi)"
+        };
+      }
+    } catch (e) {}
+    return {
+      orderId: "#ORD-9428-CAMPUS",
+      items: [
+        { name: "Odyssey Bond Paper Ream (75 GSM)", quantity: 1, price: 100, specs: "500 Sheets • Crisp White" },
+        { name: "Toxic Neon Highlighters (Pack of 3)", quantity: 1, price: 50, specs: "Emerald • Amber • Magenta" }
+      ],
+      total: 150,
+      date: new Date().toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" }),
+      status: "IN PRINT QUEUE",
+      pickupCounter: "Basecamp Counter A (Library Vault)",
+      estimatedTime: "Ready in ~10 mins",
+      paymentMethod: "UPI Scanned (odysseycampus@upi)"
+    };
+  });
 
   // Awwwards cursor follower
   const cursorRef = useRef(null);
@@ -656,53 +786,103 @@ export default function ReceiptPage() {
           </button>
         </div>
 
-        {/* BELOW-THE-FOLD COVENANT RECORD SECTION (Scroll Down Target) */}
+        {/* BELOW-THE-FOLD ORDER RECEIPT SECTION (Scroll Down Target) */}
         {stage >= 3 && (
           <section className="rcpt-record-section">
             <div className="rcpt-card">
               <div className="rcpt-card-header">
-                <span className="rcpt-badge">SACRED COVENANT RECORD</span>
-                <h1 className="rcpt-title">TITHE OF SAFE PASSAGE</h1>
-                <p className="rcpt-subtitle">Inscribed within the arcane ledger of the Citadel</p>
+                <span className="rcpt-badge">OFFICIAL DISPATCH DOSSIER</span>
+                <h1 className="rcpt-title">CAMPUS ORDER RECEIPT</h1>
+                <p className="rcpt-subtitle">Odyssey Campus Print Sanctum • Payment Verified &amp; Sequenced</p>
               </div>
 
               <div className="rcpt-grid">
                 <div>
-                  <div className="rcpt-item-label">Covenant ID</div>
-                  <div className="rcpt-item-val">#ODY-9428-ARCANE</div>
+                  <div className="rcpt-item-label">Order Reference</div>
+                  <div className="rcpt-item-val">
+                    {receiptData.orderId}
+                    <button
+                      className="rcpt-copy-pill"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText(receiptData.orderId);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 1600);
+                      }}
+                    >
+                      {copied ? "COPIED!" : "COPY"}
+                    </button>
+                  </div>
                 </div>
                 <div>
-                  <div className="rcpt-item-label">Status</div>
-                  <div className="rcpt-item-val" style={{ color: "#5fe291" }}>SEALED &amp; BOUND</div>
+                  <div className="rcpt-item-label">Sanctum Status</div>
+                  <div className="rcpt-item-val" style={{ color: "#5fe291" }}>
+                    🟢 {receiptData.status}
+                  </div>
                 </div>
                 <div>
-                  <div className="rcpt-item-label">Threshold</div>
-                  <div className="rcpt-item-val">The Wizard's Gate</div>
+                  <div className="rcpt-item-label">Pickup Counter</div>
+                  <div className="rcpt-item-val" style={{ fontSize: "12.5px" }}>
+                    {receiptData.pickupCounter}
+                  </div>
                 </div>
                 <div>
                   <div className="rcpt-item-label">Recorded At</div>
-                  <div className="rcpt-item-val">{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div>
+                  <div className="rcpt-item-val" style={{ fontSize: "12.5px" }}>
+                    {receiptData.date}
+                  </div>
                 </div>
               </div>
 
-              <div className="rcpt-total-box">
-                <span className="rcpt-total-label">Tithe Offering</span>
-                <span className="rcpt-total-val">$66.00 USD</span>
+              {/* Itemized Manifest */}
+              <div className="rcpt-manifest-header">Order Manifest ({receiptData.items.length} Items)</div>
+              <div className="rcpt-items-list">
+                {receiptData.items.map((item, idx) => (
+                  <div key={idx} className="rcpt-item-row">
+                    <div className="rcpt-item-info">
+                      <span className="rcpt-item-name">{item.name || item.title}</span>
+                      <span className="rcpt-item-specs">
+                        Qty: {item.quantity || item.qty || 1} {item.specs ? `• ${item.specs}` : ""}
+                      </span>
+                    </div>
+                    <span className="rcpt-item-cost">
+                      ₹{((item.price || 0) * (item.quantity || item.qty || 1)).toFixed(0)}
+                    </span>
+                  </div>
+                ))}
               </div>
 
+              {/* Total Summary */}
+              <div className="rcpt-total-box">
+                <div>
+                  <div className="rcpt-total-label">Total Offering Paid</div>
+                  <div style={{ fontSize: "11px", color: "#8da496", marginTop: "2px" }}>
+                    {receiptData.paymentMethod}
+                  </div>
+                </div>
+                <span className="rcpt-total-val">₹{receiptData.total}</span>
+              </div>
+
+              {/* Action Buttons */}
               <div className="rcpt-actions">
                 <button
                   className="rcpt-btn-primary"
-                  onClick={() => window.print()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.print();
+                  }}
                 >
-                  PRINT COVENANT RECORD
+                  PRINT RECEIPT / PDF
                 </button>
                 <button
                   className="rcpt-btn-primary"
                   style={{ background: "#0e3520", color: "#e8fff0", border: "1.5px solid #5fe291" }}
-                  onClick={() => navigate("/student")}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate("/student");
+                  }}
                 >
-                  RETURN TO SANCTUM
+                  ← RETURN TO BASECAMP
                 </button>
               </div>
             </div>
