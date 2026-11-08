@@ -18,11 +18,20 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 | Element | Geometry / Styling Constraints |
 | :--- | :--- |
-| **Main Glass Card** | Width: `660px`, Height: locked at `505px` (`min-height: 505px, max-height: 505px`), `border: 4px solid #0D0D0D`, `box-shadow: 6px 6px 0px #000`, `backdrop-filter: blur(20px)`. |
-| **Carousel Row** | 3-column layout: Left Circular Arrow (`58×58px`, `border: 3.5px solid #0D0D0D`, `box-shadow: 4px 4px 0px #0D0D0D`) + Center Active Card + Right Circular Arrow (`58×58px`). |
+| **Main Glass Card (Catalog)** | Width: `660px`, Height: locked at `505px` (`min-height: 505px, max-height: 505px`), `border: 4px solid #0D0D0D`, `box-shadow: 6px 6px 0px #000`, `backdrop-filter: blur(20px)`. |
+| **Central Terminal Card (Payment)** | Max-width: `440px`, `border: 4px solid #0D0D0D`, `box-shadow: 8px 8px 0px #0D0D0D`, `backdrop-filter: blur(20px)`, `background: rgba(20, 27, 32, 0.93)`. |
+| **Carousel Row (Catalog)** | 3-column layout: Left Circular Arrow (`58×58px`, `border: 3.5px solid #0D0D0D`, `box-shadow: 4px 4px 0px #0D0D0D`) + Center Active Card + Right Circular Arrow (`58×58px`). |
 | **Keyboard Navigation** | `ArrowLeft` / `ArrowRight` cycles through current category items; `Escape` returns to previous page / basecamp (`navigate(-1)`). |
 | **Top Action Pills** | Minimal top-right action pills (`← BACK TO BASE` and `CART (N)`) with hard offset comic drop shadows (`3px 3px 0px rgba(0,0,0,0.4)`). |
 | **Category Switcher** | Centered hero title (`Titan One`, `34px`) with pill tabs directly beneath it (`tab1`, `tab2`, `tab3`). Active tab gets solid accent background with black text. |
+
+### Payment Page Terminal Architecture (`/payment`)
+- **Vector Backdrop**: Gothic church in fog, winding moonlit cobblestone road, skull lantern post with fiery red glow, and pure `#0D0D0D` Void Black framing (`/graveyard-gate-landscape.svg?v=15`).
+- **Central Neo-Brutalist Terminal**:
+  - Locked 440px glass card (`rgba(20, 27, 32, 0.93)`), `4px solid #0D0D0D`, `8px 8px 0px #0D0D0D` hard shadow, `backdrop-filter: blur(20px)`.
+- **Order Dossier**: Item count badge + `₹{total}` formatted in `Archivo Black, 'Plus Jakarta Sans', sans-serif`.
+- **QR Frame**: High-contrast white box (`180×180px` UPI QR) + GPay, PhonePe, Paytm, BHIM, Cred pills.
+- **Dispatch CTA**: Full-width `#FF3B2B` button with `4px solid #0D0D0D` and 4px comic offset shadow (`box-shadow: 4px 4px 0px #0D0D0D`).
 
 ---
 
@@ -64,30 +73,36 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 ## 5. Palette Harmonization Table
 
-| Role | Toxic Green Page ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx)) | Purple Twilight Page ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx)) | Blood Crimson Graveyard Page ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx)) |
-| :--- | :--- | :--- | :--- |
-| **Background Fill** | `#019E70` (Seafoam Green) | `#2D114D` (Night Purple) | `#140507` (Gothic Velvet Abyss) |
-| **Glass Card Fill** | `rgba(10, 24, 18, 0.84)` | `rgba(28, 12, 44, 0.86)` | `rgba(18, 10, 12, 0.88)` |
-| **Memo / Dossier Box**| `#CCFB9A` (Moon Lime) | `#C899EB` (Twilight Lilac) | `#C4A8AC` (Weathered Stone Mauve) |
-| **Option Button Fill**| `#B2F069` | `#B078DD` | `#886E71` (hover `#72585B`) |
-| **Primary Action CTA**| `#9DE869` (Toxic Lime) | `#FFA012` (Pumpkin Orange) | `#FF3B47` (Hazard Blood Crimson) |
-| **Comic Borders** | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) |
+| Role | Toxic Green Page ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx)) | Purple Twilight Page ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx)) | Blood Crimson Graveyard Page ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx)) | Gothic Steel Slate & Church Fog ([PaymentPage.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/PaymentPage.jsx)) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Background Fill** | `#019E70` (Seafoam Green) | `#2D114D` (Night Purple) | `#140507` (Gothic Velvet Abyss) | `#192024` / `#4C585E` (Night Mist) |
+| **Glass Card Fill** | `rgba(10, 24, 18, 0.84)` | `rgba(28, 12, 44, 0.86)` | `rgba(18, 10, 12, 0.88)` | `rgba(20, 27, 32, 0.93)` |
+| **Memo / Dossier Box**| `#CCFB9A` (Moon Lime) | `#C899EB` (Twilight Lilac) | `#C4A8AC` (Weathered Stone Mauve) | `#172126` (Steel Inset Dossier) |
+| **Option Button Fill**| `#B2F069` | `#B078DD` | `#886E71` (hover `#72585B`) | `#0D0D0D` (UPI App Pills) |
+| **Primary Action CTA**| `#9DE869` (Toxic Lime) | `#FFA012` (Pumpkin Orange) | `#FF3B47` (Hazard Blood Crimson) | `#FF3B2B` (Fiery Crimson) |
+| **Comic Borders** | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) | `#0D0D0D` (Void Black) |
 
 ---
 
 ## 6. Critical Technical Lessons & Rules
 
-1. **Backdrop Vectorization (Never use naive disjoint K-Means rings)**:
+1. **Backdrop Vectorization (Cumulative Stacking over Naive Rings)**:
    - When converting reference paintings to SVG, **do NOT** trace disjoint contour slices with `fill-rule="evenodd"`. That inverts solid shapes into hollow wireframe ribbons and looks like an X-ray / MRI scan.
    - **Always use cumulative back-to-front threshold stacking**:
      1. Base sky gradient (`<linearGradient>` or `<radialGradient>`)
-     2. Cumulative masks: `gray < threshold_distant`, `gray < threshold_mid`, `gray < threshold_near`
-     3. Solid foreground silhouettes: `gray < threshold_black` rendered as **100% solid, opaque Void Black (`#0D0D0D`)** with standard non-zero fills.
-2. **Font Fallback for Rupee (`₹`) Symbol**:
+     2. Cumulative masks: progressive luminance paths (`gray < threshold_distant`, `gray < threshold_mid`, `gray < threshold_near`)
+     3. Solid foreground silhouettes: `gray < threshold_black` rendered as **100% solid, opaque Void Black (`#0D0D0D`)** with standard non-zero fills on top.
+2. **Zero Bounding-Box Crops for Atmospheric Effects**:
+   - Never use hard rectangular ROI slices for fog, mist, or lantern glows. Hard box slices create jarring seams against gradients.
+   - Instead, compute smooth radial / elliptical alpha falloffs or vector masks spanning natural atmospheric contours.
+3. **Mignola Black Inking**:
+   - Architectural masses, foreground walls, and structures framing intense light sources (e.g., skull lanterns, stained glass) must be preserved as solid Void Black (`#0D0D0D`).
+   - Avoid pale or washed-out compression artifacts by strictly clamping framing silhouettes to pure black.
+4. **Font Fallback for Rupee (`₹`) Symbol**:
    - `Archivo Black` lacks the Indian Rupee (`₹`) glyph.
    - Always define font fallbacks as: `font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;` so the Rupee symbol renders cleanly without substitution glitches.
-3. **Asset Cache Busting**:
-   - Always append version queries to SVG image backdrops in React (e.g. `src="/paper-landscape.svg?v=2"`).
+5. **Asset Cache Busting**:
+   - Always append version queries to SVG image backdrops in React (e.g. `src="/graveyard-gate-landscape.svg?v=15"`).
 
 ---
 
