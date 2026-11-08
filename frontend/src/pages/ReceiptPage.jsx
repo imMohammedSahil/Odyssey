@@ -286,110 +286,56 @@ export default function ReceiptPage() {
     }
 
     if (stage === 0.5 || stage === 1.5) {
-      // ✦ CLICK 1 & CLICK 2: Actual comic ink lines in the painting draw themselves outward from the wand tip!
-      const { originX, originY, renderW, renderH, offsetX, offsetY, scale } = getWandScreenPos(canvas.width, canvas.height);
+      // ✦ CLICK 1 & CLICK 2: Reveal the actual painting in the target zone with soft organic breathing
+      const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const isSecondClick = stage === 1.5;
-      const targetReach = isSecondClick ? 370 : 210; // In artwork units (1672x941)
+      const targetReach = (isSecondClick ? 360 : 210) * scale;
       const startTime = performance.now();
-      const durationMs = isSecondClick ? 1150 : 1000;
+      const durationMs = isSecondClick ? 1100 : 950;
 
       const animateTease = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Lines actively draw outward (0-44%), hold & pulse (44-68%), then un-draw/dissolve (68-100%)
-        let drawProg, lineAlpha;
-        if (progress < 0.44) {
-          drawProg = progress / 0.44;
+        // Wave expands out (0-42%), breathes softly (42-65%), then dissolves back to black (65-100%)
+        let drawProg, waveAlpha;
+        if (progress < 0.42) {
+          drawProg = progress / 0.42;
           drawProg = 1 - Math.pow(1 - drawProg, 2.0);
-          lineAlpha = 1.0;
-        } else if (progress < 0.68) {
+          waveAlpha = 1.0;
+        } else if (progress < 0.65) {
           drawProg = 1.0;
-          lineAlpha = 1.0 - 0.08 * Math.sin(((progress - 0.44) / 0.24) * Math.PI);
+          waveAlpha = 1.0 - 0.06 * Math.sin(((progress - 0.42) / 0.23) * Math.PI);
         } else {
           drawProg = 1.0;
-          lineAlpha = Math.max(0, (1.0 - progress) / 0.32);
+          waveAlpha = Math.max(0, (1.0 - progress) / 0.35);
         }
 
-        const currentDist = targetReach * drawProg;
+        const currentR = targetReach * drawProg;
 
         ctx.save();
-        // 1. Black canvas sheet
+        // 1. Black sheet
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        if (lineAlpha > 0) {
-          // 2. Carve out the artwork along the exact comic line paths
+        if (waveAlpha > 0 && currentR > 4) {
+          // 2. Carve out to reveal the actual painting in ONE clean, organic, feathered wave
           ctx.globalCompositeOperation = "destination-out";
 
-          // Luminous incandescent core at wand tip
-          const coreR = (32 + 22 * drawProg) * scale;
-          const coreGrad = ctx.createRadialGradient(originX, originY, 0, originX, originY, coreR);
-          coreGrad.addColorStop(0, `rgba(0, 0, 0, ${lineAlpha})`);
-          coreGrad.addColorStop(0.7, `rgba(0, 0, 0, ${lineAlpha * 0.9})`);
-          coreGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
-          ctx.fillStyle = coreGrad;
+          const featherW = Math.min(50 * scale, currentR * 0.4);
+          const waveGrad = ctx.createRadialGradient(
+            originX, originY, Math.max(0, currentR - featherW),
+            originX, originY, currentR
+          );
+          waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
+          waveGrad.addColorStop(0.75, `rgba(0, 0, 0, ${waveAlpha * 0.9})`);
+          waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+          ctx.fillStyle = waveGrad;
           ctx.beginPath();
-          ctx.arc(originX, originY, coreR, 0, Math.PI * 2);
+          ctx.arc(originX, originY, currentR, 0, Math.PI * 2);
           ctx.fill();
-
-          const activeTips = [];
-          const strokes = strokesRef.current;
-
-          // Carve along each exact comic stroke
-          for (let i = 0; i < strokes.length; i++) {
-            const s = strokes[i];
-            if (s.minD > currentDist) break; // Array is sorted by minD
-
-            const res = drawStrokeLine(ctx, s, currentDist, renderW, renderH, offsetX, offsetY);
-            if (res) {
-              ctx.lineWidth = Math.max(7 * scale, 16 * scale * (1 - (s.minD / 400) * 0.4));
-              ctx.lineCap = "round";
-              ctx.lineJoin = "round";
-              ctx.strokeStyle = `rgba(0, 0, 0, ${lineAlpha * 0.96})`;
-              ctx.stroke();
-
-              if (!res.isComplete) {
-                activeTips.push({ x: res.tipX, y: res.tipY, type: s.type });
-              }
-            }
-          }
-
-          // 3. Draw luminous white & mint tracing strokes + spark heads directly on the lines
-          ctx.globalCompositeOperation = "source-over";
-
-          for (let i = 0; i < strokes.length; i++) {
-            const s = strokes[i];
-            if (s.minD > currentDist) break;
-
-            const res = drawStrokeLine(ctx, s, currentDist, renderW, renderH, offsetX, offsetY);
-            if (res) {
-              const isPlume = s.type === "plume";
-              // Outer glow
-              ctx.lineWidth = isPlume ? 2.8 : 2.0;
-              ctx.strokeStyle = isPlume
-                ? `rgba(235, 255, 245, ${lineAlpha * 0.9})`
-                : `rgba(95, 226, 145, ${lineAlpha * 0.85})`;
-              ctx.stroke();
-
-              // Inner filament
-              ctx.lineWidth = 1.0;
-              ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha * 0.95})`;
-              ctx.stroke();
-            }
-          }
-
-          // Draw bright spark heads on the actively drawing tips
-          if (drawProg < 0.98) {
-            for (let t = 0; t < activeTips.length; t++) {
-              const tip = activeTips[t];
-              ctx.beginPath();
-              ctx.arc(tip.x, tip.y, 2.5 * scale, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(255, 255, 255, ${lineAlpha})`;
-              ctx.fill();
-            }
-          }
         }
         ctx.restore();
 
@@ -408,32 +354,31 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: ONE unified wave across the screen — lines and painting emerge together!
-      const { originX, originY, renderW, renderH, offsetX, offsetY, scale } = getWandScreenPos(canvas.width, canvas.height);
+      // ✦ CLICK 3: ONE single, continuous, luminous wave of the actual painting sweeping outward across the entire screen!
+      const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const maxCanvasDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
         Math.max(originY, canvas.height - originY)
-      ) / scale;
+      );
 
-      const durationMs = 3200; // Crisp, engaging cinematic pacing
+      const durationMs = 2800; // Crisp, cinematic reveal pacing
       const startTime = performance.now();
 
       const animateFormation = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Center line formation (0-48%), outer sweep acceleration (48-100%)
+        // Smooth cinematic ease: starts centered on wand tip, accelerates organically across the scene
         let ease;
-        if (progress <= 0.48) {
-          const u = progress / 0.48;
-          ease = 0.42 * Math.pow(u, 1.4);
+        if (progress <= 0.45) {
+          const u = progress / 0.45;
+          ease = 0.38 * Math.pow(u, 1.4);
         } else {
-          const v = (progress - 0.48) / 0.52;
-          ease = 0.42 + 0.58 * (1.0 - Math.pow(1.0 - v, 2.0));
+          const v = (progress - 0.45) / 0.55;
+          ease = 0.38 + 0.62 * (1.0 - Math.pow(1.0 - v, 2.0));
         }
 
-        const currentDist = maxCanvasDist * ease;
-        const waveR = currentDist * scale;
+        const waveR = maxCanvasDist * ease;
 
         ctx.save();
         // 1. Redraw black sheet
@@ -441,73 +386,23 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out the formed painting in ONE single unified wave
+        // 2. Carve out to reveal the actual painting in ONE single unified wave
         ctx.globalCompositeOperation = "destination-out";
 
-        if (waveR > 8) {
-          // Soft feathered expanding boundary — zero hard secondary circle cut!
-          const featherW = Math.min(36 * scale, waveR * 0.45);
+        if (waveR > 4) {
+          const featherW = Math.min(65 * scale, waveR * 0.35);
           const waveGrad = ctx.createRadialGradient(
             originX, originY, Math.max(0, waveR - featherW),
             originX, originY, waveR
           );
           waveGrad.addColorStop(0, "#000000");
-          waveGrad.addColorStop(0.75, "rgba(0, 0, 0, 0.9)");
+          waveGrad.addColorStop(0.8, "rgba(0, 0, 0, 0.92)");
           waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, waveR, 0, Math.PI * 2);
           ctx.fill();
-        }
-
-        const activeTips = [];
-        const strokes = strokesRef.current;
-
-        // Comic ink strokes carve naturally along the leading crest of the single wave
-        for (let i = 0; i < strokes.length; i++) {
-          const s = strokes[i];
-          if (s.minD > currentDist + 15) break;
-
-          const res = drawStrokeLine(ctx, s, currentDist + 12, renderW, renderH, offsetX, offsetY);
-          if (res) {
-            ctx.lineWidth = Math.max(8 * scale, 16 * scale);
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-            ctx.strokeStyle = "#000000";
-            ctx.stroke();
-
-            if (!res.isComplete) {
-              activeTips.push({ x: res.tipX, y: res.tipY, type: s.type });
-            }
-          }
-        }
-
-        // 3. Draw luminous white & mint tracer strokes + spark heads directly on the crest of the single wave
-        if (progress < 0.98) {
-          ctx.globalCompositeOperation = "source-over";
-
-          for (let i = 0; i < strokes.length; i++) {
-            const s = strokes[i];
-            if (s.minD > currentDist + 15) break;
-            // Only draw tracer highlight right at the active wavefront crest
-            if (s.maxD < currentDist - 45) continue;
-
-            const res = drawStrokeLine(ctx, s, currentDist + 12, renderW, renderH, offsetX, offsetY);
-            if (res) {
-              ctx.lineWidth = 2.2;
-              ctx.strokeStyle = s.type === "plume" ? "#FFFFFF" : "#5FE291";
-              ctx.stroke();
-            }
-          }
-
-          // Active drawing sparks right on the wave's leading tips
-          for (let t = 0; t < activeTips.length; t += 2) {
-            const tip = activeTips[t];
-            ctx.beginPath();
-            ctx.arc(tip.x, tip.y, 2.5, 0, Math.PI * 2);
-            ctx.fillStyle = "#FFFFFF";
-            ctx.fill();
-          }
         }
 
         ctx.restore();
@@ -515,7 +410,7 @@ export default function ReceiptPage() {
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateFormation);
         } else {
-          // Painting completely formed into view
+          // Painting completely revealed
           setStage(4);
         }
       };
