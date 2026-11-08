@@ -67,10 +67,17 @@ def build_accurate_gothic_chapel_svg():
     gray = cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY)
     b, g, r = smooth[:, :, 0], smooth[:, :, 1], smooth[:, :, 2]
 
+    # Red flame cores mask to protect lantern lights from being blackened
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    red_m1 = cv2.inRange(hsv, (0, 75, 95), (15, 255, 255))
+    red_m2 = cv2.inRange(hsv, (165, 75, 95), (180, 255, 255))
+    red_cores = (red_m1 | red_m2)
+
     # Super-sampled black lineart mask
     scale = 2.0
     w2, h2 = int(w * scale), int(h * scale)
     gray_2x = cv2.resize(gray, (w2, h2), interpolation=cv2.INTER_LANCZOS4)
+    red_cores_2x = cv2.resize(red_cores, (w2, h2), interpolation=cv2.INTER_NEAREST) > 0
     
     y_coords = np.arange(h2)[:, None]
     thresh_2x = np.clip(70 - (y_coords / h2) * 16, 52, 70)
@@ -84,6 +91,18 @@ def build_accurate_gothic_chapel_svg():
     edges_dil = cv2.dilate(edges_2x, k_edge)
     black_2x = cv2.bitwise_or(black_2x, edges_dil)
 
+    # USER REQUEST: Make the house / church surfaces framing the red glow SOLID BLACK
+    # This covers the church roof, eave overhangs, side wall, and low ground around the glow
+    church_glow_frame = np.zeros((h2, w2), dtype=bool)
+    # Church wall & roof above/left of glow:
+    church_glow_frame[int(180*scale):int(465*scale), int(510*scale):int(676*scale)] = True
+    # Low stone foundation / terrain around glow:
+    church_glow_frame[int(385*scale):int(465*scale), int(600*scale):int(710*scale)] = True
+
+    # Turn church surface into solid black Void Black (excluding the glowing red window/apertures)
+    solid_black_church = church_glow_frame & (gray_2x < 120) & (~red_cores_2x)
+    black_2x[solid_black_church] = 255
+
     defs = '''  <defs>
     <!-- Misty Gothic Atmosphere Gradient -->
     <linearGradient id="gothicFogSky" x1="0" y1="0" x2="0" y2="100%">
@@ -95,7 +114,7 @@ def build_accurate_gothic_chapel_svg():
       <stop offset="100%" stop-color="#4C585E" />
     </linearGradient>
 
-    <!-- Natural Ambient Red Mist Bloom around Right Lantern (No Hard Boxes) -->
+    <!-- Natural Ambient Red Mist Bloom around Right Lantern -->
     <radialGradient id="lanternRedMistBloom" cx="745" cy="395" r="160" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FF5538" stop-opacity="0.85" />
       <stop offset="25%" stop-color="#E03422" stop-opacity="0.55" />
@@ -165,8 +184,7 @@ def build_accurate_gothic_chapel_svg():
     if p2:
         svg_layers.append(f'  <!-- Layer 2: Midground Graveyard Hills & Tombstones -->\n  <path d="{" ".join(p2)}" fill="#54656D" />')
 
-    # Layer 3: Natural Atmospheric Valley Fog (Organic, zero rectangular cuts)
-    # This captures the luminous fog drifting between the church and right ridge
+    # Layer 3: Natural Atmospheric Valley Fog
     natural_mist = (gray >= 88) & (gray < 142) & (y_coords[:h, 0] > 300)[:, None] & (smooth[:, :, 2] > 70)
     p_mist = extract_paths(natural_mist.astype(np.uint8) * 255, min_area=15, approx_eps=0.5)
     if p_mist:
@@ -203,7 +221,7 @@ def build_accurate_gothic_chapel_svg():
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
 
-    # Layer 7: Realistic Atmospheric Red Lantern Glow over Mist (Completely Seamless Radial Bloom)
+    # Layer 7: Realistic Atmospheric Red Lantern Glow over Mist (Seamless Radial Bloom)
     svg_layers.append('  <!-- Layer 7: Seamless Atmospheric Red Mist Bloom -->')
     svg_layers.append('  <circle cx="745" cy="395" r="160" fill="url(#lanternRedMistBloom)" />')
     svg_layers.append('  <circle cx="348" cy="385" r="85" fill="url(#bloomLanternLeft)" />')
@@ -213,10 +231,6 @@ def build_accurate_gothic_chapel_svg():
     svg_layers.append('  <circle cx="658" cy="315" r="32" fill="url(#bloomTowerWindow)" />')
 
     # Layer 8: Intense Glowing Cores & Flames
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    red_m1 = cv2.inRange(hsv, (0, 75, 95), (15, 255, 255))
-    red_m2 = cv2.inRange(hsv, (165, 75, 95), (180, 255, 255))
-    red_cores = (red_m1 | red_m2)
     p_red = extract_paths(red_cores, min_area=4, approx_eps=0.35)
     if p_red:
         svg_layers.append(f'  <!-- Layer 8A: Lantern Glowing Red Cores -->\n  <path d="{" ".join(p_red)}" fill="#FF3B2B" />')
@@ -226,7 +240,7 @@ def build_accurate_gothic_chapel_svg():
     if p_hot:
         svg_layers.append(f'  <!-- Layer 8B: Lantern White-Hot Flame Centers -->\n  <path d="{" ".join(p_hot)}" fill="#FFE6B3" />')
 
-    # Layer 9: Razor-Sharp Comic Void Black Ink Lineart & Foreground Silhouettes
+    # Layer 9: Razor-Sharp Comic Void Black Ink Lineart, Solid Black Church Walls & Silhouettes
     black_contours, _ = cv2.findContours(black_2x, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
     black_paths = []
     for cnt in black_contours:
@@ -240,7 +254,7 @@ def build_accurate_gothic_chapel_svg():
         if p_str:
             black_paths.append(p_str)
 
-    svg_layers.append('  <!-- Layer 9: Razor-Sharp Comic Void Black Ink & Silhouettes -->')
+    svg_layers.append('  <!-- Layer 9: Razor-Sharp Comic Void Black Ink, Solid Black Church Walls & Silhouettes -->')
     svg_layers.append(f'  <path d="{" ".join(black_paths)}" fill="#0D0D0D" stroke="#0D0D0D" stroke-width="0.5" stroke-linejoin="miter" stroke-miterlimit="4" />')
 
     header = f'<svg viewBox="0 0 {w} {h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">\n{defs}\n'
@@ -251,7 +265,7 @@ def build_accurate_gothic_chapel_svg():
     with open(out_file, 'w', encoding='utf-8') as f:
         f.write(full_svg)
 
-    print(f"Generated realistic seamless red mist Gothic Chapel SVG at {out_file}! Size: {len(full_svg):,} bytes in {time.time()-t0:.2f}s")
+    print(f"Generated solid black church framed Gothic Chapel SVG at {out_file}! Size: {len(full_svg):,} bytes in {time.time()-t0:.2f}s")
 
 if __name__ == '__main__':
     build_accurate_gothic_chapel_svg()
