@@ -286,29 +286,30 @@ export default function ReceiptPage() {
     }
 
     if (stage === 0.5 || stage === 1.5) {
-      // ✦ CLICK 1 & CLICK 2: Reveal the actual painting in the target zone with soft organic breathing
+      // ✦ CLICK 1 & CLICK 2: Reveal the actual painting in a tight, focused radius around the wand tip
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const isSecondClick = stage === 1.5;
-      const targetReach = (isSecondClick ? 360 : 210) * scale;
+      // Tight, intimate radii (Click 1: tight wand tip spark; Click 2: hand + plume base)
+      const targetReach = (isSecondClick ? 145 : 88) * scale;
       const startTime = performance.now();
-      const durationMs = isSecondClick ? 1100 : 950;
+      const durationMs = isSecondClick ? 1000 : 880;
 
       const animateTease = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Wave expands out (0-42%), breathes softly (42-65%), then dissolves back to black (65-100%)
+        // Wave expands out (0-40%), breathes softly (40-62%), then dissolves back to black (62-100%)
         let drawProg, waveAlpha;
-        if (progress < 0.42) {
-          drawProg = progress / 0.42;
+        if (progress < 0.40) {
+          drawProg = progress / 0.40;
           drawProg = 1 - Math.pow(1 - drawProg, 2.0);
           waveAlpha = 1.0;
-        } else if (progress < 0.65) {
+        } else if (progress < 0.62) {
           drawProg = 1.0;
-          waveAlpha = 1.0 - 0.06 * Math.sin(((progress - 0.42) / 0.23) * Math.PI);
+          waveAlpha = 1.0 - 0.05 * Math.sin(((progress - 0.40) / 0.22) * Math.PI);
         } else {
           drawProg = 1.0;
-          waveAlpha = Math.max(0, (1.0 - progress) / 0.35);
+          waveAlpha = Math.max(0, (1.0 - progress) / 0.38);
         }
 
         const currentR = targetReach * drawProg;
@@ -323,13 +324,13 @@ export default function ReceiptPage() {
           // 2. Carve out to reveal the actual painting in ONE clean, organic, feathered wave
           ctx.globalCompositeOperation = "destination-out";
 
-          const featherW = Math.min(50 * scale, currentR * 0.4);
+          const featherW = Math.min(30 * scale, currentR * 0.45);
           const waveGrad = ctx.createRadialGradient(
             originX, originY, Math.max(0, currentR - featherW),
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.75, `rgba(0, 0, 0, ${waveAlpha * 0.9})`);
+          waveGrad.addColorStop(0.75, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
           waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
