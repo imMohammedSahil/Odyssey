@@ -376,28 +376,6 @@ export default function ReceiptPage() {
           }
         });
 
-        // 3. Highlight the wet leading edge of the liquid paint as it flows across the page
-        if (progress < 0.95 && points.length > 2) {
-          ctx.globalCompositeOperation = "source-over";
-          ctx.save();
-          ctx.beginPath();
-          const p0 = points[0];
-          const pLast = points[points.length - 1];
-          ctx.moveTo((p0.x + pLast.x) / 2, (p0.y + pLast.y) / 2);
-          for (let i = 0; i < points.length; i++) {
-            const curr = points[i];
-            const next = points[(i + 1) % points.length];
-            ctx.quadraticCurveTo(curr.x, curr.y, (curr.x + next.x) / 2, (curr.y + next.y) / 2);
-          }
-          ctx.closePath();
-          ctx.strokeStyle = `rgba(114, 255, 165, ${Math.max(0, 0.75 * (1 - progress * 0.85))})`;
-          ctx.lineWidth = 4;
-          ctx.shadowColor = "#5fe291";
-          ctx.shadowBlur = 18;
-          ctx.stroke();
-          ctx.restore();
-        }
-
         ctx.restore();
 
         if (progress < 1.0) {
