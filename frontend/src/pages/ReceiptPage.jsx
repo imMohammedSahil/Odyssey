@@ -408,32 +408,32 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: ALL comic ink lines across the painting draw themselves outward to completion!
+      // ✦ CLICK 3: ONE unified wave across the screen — lines and painting emerge together!
       const { originX, originY, renderW, renderH, offsetX, offsetY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const maxCanvasDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
         Math.max(originY, canvas.height - originY)
       ) / scale;
 
-      const durationMs = 3400; // Crisp, engaging cinematic pacing
+      const durationMs = 3200; // Crisp, engaging cinematic pacing
       const startTime = performance.now();
 
       const animateFormation = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Center line formation (0-50% detailed), outer sweep acceleration (50-100%)
+        // Center line formation (0-48%), outer sweep acceleration (48-100%)
         let ease;
-        if (progress <= 0.50) {
-          const u = progress / 0.50;
-          ease = 0.45 * Math.pow(u, 1.4);
+        if (progress <= 0.48) {
+          const u = progress / 0.48;
+          ease = 0.42 * Math.pow(u, 1.4);
         } else {
-          const v = (progress - 0.50) / 0.50;
-          ease = 0.45 + 0.55 * (1.0 - Math.pow(1.0 - v, 2.0));
+          const v = (progress - 0.48) / 0.52;
+          ease = 0.42 + 0.58 * (1.0 - Math.pow(1.0 - v, 2.0));
         }
 
         const currentDist = maxCanvasDist * ease;
-        const floodDist = Math.max(0, currentDist - 95); // Flood fill trails ~95 units behind the leading stroke fronts
+        const waveR = currentDist * scale;
 
         ctx.save();
         // 1. Redraw black sheet
@@ -441,28 +441,36 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out the formed painting
+        // 2. Carve out the formed painting in ONE single unified wave
         ctx.globalCompositeOperation = "destination-out";
 
-        // Flood fill circle trailing behind the lines
-        if (floodDist > 10) {
+        if (waveR > 8) {
+          // Soft feathered expanding boundary — zero hard secondary circle cut!
+          const featherW = Math.min(36 * scale, waveR * 0.45);
+          const waveGrad = ctx.createRadialGradient(
+            originX, originY, Math.max(0, waveR - featherW),
+            originX, originY, waveR
+          );
+          waveGrad.addColorStop(0, "#000000");
+          waveGrad.addColorStop(0.75, "rgba(0, 0, 0, 0.9)");
+          waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+          ctx.fillStyle = waveGrad;
           ctx.beginPath();
-          ctx.arc(originX, originY, floodDist * scale, 0, Math.PI * 2);
-          ctx.fillStyle = "#000000";
+          ctx.arc(originX, originY, waveR, 0, Math.PI * 2);
           ctx.fill();
         }
 
         const activeTips = [];
         const strokes = strokesRef.current;
 
-        // Carve along each exact comic stroke extending ahead of the flood front
+        // Comic ink strokes carve naturally along the leading crest of the single wave
         for (let i = 0; i < strokes.length; i++) {
           const s = strokes[i];
-          if (s.minD > currentDist) break;
+          if (s.minD > currentDist + 15) break;
 
-          const res = drawStrokeLine(ctx, s, currentDist, renderW, renderH, offsetX, offsetY);
+          const res = drawStrokeLine(ctx, s, currentDist + 12, renderW, renderH, offsetX, offsetY);
           if (res) {
-            ctx.lineWidth = Math.max(9 * scale, 16 * scale);
+            ctx.lineWidth = Math.max(8 * scale, 16 * scale);
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
             ctx.strokeStyle = "#000000";
@@ -474,16 +482,17 @@ export default function ReceiptPage() {
           }
         }
 
-        // 3. Draw luminous white & mint tracer strokes running on the lines ahead of flood front
+        // 3. Draw luminous white & mint tracer strokes + spark heads directly on the crest of the single wave
         if (progress < 0.98) {
           ctx.globalCompositeOperation = "source-over";
 
           for (let i = 0; i < strokes.length; i++) {
             const s = strokes[i];
-            if (s.minD > currentDist) break;
-            if (s.maxD < floodDist) continue; // Already submerged in revealed painting
+            if (s.minD > currentDist + 15) break;
+            // Only draw tracer highlight right at the active wavefront crest
+            if (s.maxD < currentDist - 45) continue;
 
-            const res = drawStrokeLine(ctx, s, currentDist, renderW, renderH, offsetX, offsetY);
+            const res = drawStrokeLine(ctx, s, currentDist + 12, renderW, renderH, offsetX, offsetY);
             if (res) {
               ctx.lineWidth = 2.2;
               ctx.strokeStyle = s.type === "plume" ? "#FFFFFF" : "#5FE291";
@@ -491,7 +500,7 @@ export default function ReceiptPage() {
             }
           }
 
-          // Draw active drawing sparks at line tips
+          // Active drawing sparks right on the wave's leading tips
           for (let t = 0; t < activeTips.length; t += 2) {
             const tip = activeTips[t];
             ctx.beginPath();
