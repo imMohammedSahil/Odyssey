@@ -21,7 +21,7 @@ const styles = `
     user-select: none;
   }
 
-  /* ── 100% PURE VECTOR BACKDROP ── */
+  /* ── 100% PURE VECTOR BACKDROP CANVAS LAYERS ── */
   .rcpt-bg-layer {
     position: fixed;
     inset: 0;
@@ -44,19 +44,46 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* Arcane Bloom Expansion originating precisely from Wand Flame (55.56% X, 34.86% Y) */
-  .rcpt-bg-layer.hidden-veil {
+  /* ✦ WAVE 1: INK OUTLINES & EMERALD UNDERCOAT BLEED (LEADS THE WAVE) */
+  .rcpt-bg-ink {
+    z-index: 2;
+    filter: contrast(1.5) brightness(1.25) drop-shadow(0 0 25px rgba(95, 226, 145, 0.45));
+    transition: clip-path 6.8s cubic-bezier(0.22, 0.95, 0.32, 1), opacity 0.4s ease-out;
+  }
+
+  .rcpt-bg-ink.hidden-veil {
     clip-path: circle(0% at 55.56% 34.86%);
     opacity: 0;
   }
 
-  .rcpt-bg-layer.blooming {
+  .rcpt-bg-ink.blooming {
     opacity: 1;
-    clip-path: circle(160% at 55.56% 34.86%);
-    transition: clip-path 2.4s cubic-bezier(0.12, 0.9, 0.25, 1), opacity 0.5s ease-out;
+    clip-path: circle(165% at 55.56% 34.86%);
   }
 
-  .rcpt-bg-layer.revealed {
+  .rcpt-bg-ink.revealed {
+    clip-path: circle(180% at 55.56% 34.86%);
+    opacity: 0; /* Fades out smoothly into full final painting */
+    transition: opacity 1s ease;
+  }
+
+  /* ✦ WAVE 2: FULL SATURATED OIL / COLOR PAINTING (FOLLOWS WITH RICH TONES) */
+  .rcpt-bg-color {
+    z-index: 3;
+    transition: clip-path 7.6s cubic-bezier(0.25, 0.96, 0.35, 1) 0.35s, opacity 0.5s ease-out;
+  }
+
+  .rcpt-bg-color.hidden-veil {
+    clip-path: circle(0% at 55.56% 34.86%);
+    opacity: 0;
+  }
+
+  .rcpt-bg-color.blooming {
+    opacity: 1;
+    clip-path: circle(165% at 55.56% 34.86%);
+  }
+
+  .rcpt-bg-color.revealed {
     clip-path: circle(180% at 55.56% 34.86%);
     opacity: 1;
   }
@@ -68,17 +95,17 @@ const styles = `
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 2;
-    background: radial-gradient(circle at 55.56% 34.86%, rgba(2, 11, 7, 0.08) 0%, rgba(0, 0, 0, 0.75) 100%);
+    z-index: 4;
+    background: radial-gradient(circle at 55.56% 34.86%, rgba(2, 11, 7, 0.05) 0%, rgba(0, 0, 0, 0.72) 100%);
     opacity: 0;
-    transition: opacity 2s ease;
+    transition: opacity 3s ease 2s;
   }
 
   .rcpt-bg-vignette.active {
     opacity: 1;
   }
 
-  /* ── REALISTIC ORGANIC WAND SPARK FLAME (CLICK 1) ── */
+  /* ── ORGANIC WAND SPARK FLAME (CLICK 1 & ANCHOR) ── */
   .wand-spark-layer {
     position: fixed;
     inset: 0;
@@ -112,47 +139,47 @@ const styles = `
   @keyframes realisticFlameTease {
     0% {
       opacity: 0;
-      transform: scale(0.6);
-      filter: brightness(2.5) drop-shadow(0 0 6px #ffffff);
+      transform: scale(0.65);
+      filter: brightness(2.2);
     }
-    14% {
+    18% {
       opacity: 1;
-      transform: scale(1.08);
-      filter: brightness(1.9) drop-shadow(0 0 24px #72ffa5);
+      transform: scale(1.04);
+      filter: brightness(1.7);
     }
-    28% {
-      opacity: 0.88;
-      transform: scale(0.96);
-      filter: brightness(1.4) drop-shadow(0 0 16px #5fe291);
+    38% {
+      opacity: 0.9;
+      transform: scale(0.99);
+      filter: brightness(1.3);
     }
-    45% {
+    55% {
       opacity: 1;
-      transform: scale(1.03);
-      filter: brightness(1.7) drop-shadow(0 0 22px #72ffa5);
+      transform: scale(1.02);
+      filter: brightness(1.6);
     }
-    65% {
+    75% {
       opacity: 0.85;
-      transform: scale(0.97);
+      transform: scale(0.98);
       filter: brightness(1.2);
     }
     100% {
       opacity: 0;
-      transform: scale(0.78);
-      filter: brightness(0.4) drop-shadow(0 0 0px transparent);
+      transform: scale(0.85);
+      filter: brightness(0.4);
     }
   }
 
   @keyframes flamePulse {
     0%, 100% {
-      filter: brightness(1.2) drop-shadow(0 0 25px rgba(114, 255, 165, 0.6));
+      filter: brightness(1.2) drop-shadow(0 0 25px rgba(114, 255, 165, 0.7));
     }
     50% {
-      filter: brightness(1.5) drop-shadow(0 0 45px rgba(95, 226, 145, 0.9));
+      filter: brightness(1.5) drop-shadow(0 0 45px rgba(95, 226, 145, 0.95));
     }
   }
 
-  /* ── COLOR EXPANSION WAVE (CLICK 2) ── */
-  .wand-bloom-wave {
+  /* ── SLOW LIVING CANVAS PAINTERLY BLEED RIPPLE ── */
+  .painterly-wash-wave {
     position: fixed;
     left: 55.56%;
     top: 34.86%;
@@ -160,27 +187,37 @@ const styles = `
     pointer-events: none;
     z-index: 5;
     border-radius: 50%;
-    animation: expandWave 2.4s cubic-bezier(0.12, 0.9, 0.25, 1) forwards;
+    animation: slowPaintExpansion 7.5s cubic-bezier(0.22, 0.95, 0.32, 1) forwards;
   }
 
-  @keyframes expandWave {
+  @keyframes slowPaintExpansion {
     0% {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       opacity: 1;
       border: 4px solid #ffffff;
-      box-shadow: 0 0 40px #72ffa5, inset 0 0 20px #5fe291;
+      box-shadow: 0 0 45px #72ffa5, inset 0 0 25px #5fe291;
     }
-    35% {
-      opacity: 0.9;
+    15% {
+      opacity: 0.95;
       border: 6px solid #72ffa5;
-      box-shadow: 0 0 90px #5fe291, 0 0 160px #1d6d44;
+      box-shadow: 0 0 80px #5fe291, 0 0 140px #1d6d44;
+    }
+    55% {
+      opacity: 0.75;
+      border: 5px solid rgba(114, 255, 165, 0.75);
+      box-shadow: 0 0 120px rgba(95, 226, 145, 0.6), 0 0 220px rgba(29, 109, 68, 0.4);
+    }
+    85% {
+      opacity: 0.35;
+      border: 2px solid rgba(114, 255, 165, 0.3);
+      box-shadow: 0 0 140px rgba(95, 226, 145, 0.2);
     }
     100% {
-      width: 280vw;
-      height: 280vw;
+      width: 290vw;
+      height: 290vw;
       opacity: 0;
-      border: 2px solid transparent;
+      border: 1px solid transparent;
       box-shadow: 0 0 180px transparent;
     }
   }
@@ -257,7 +294,7 @@ const styles = `
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
-  // 0 = pitch black | 1 = sparked (waiting click 2) | 2 = blooming | 3 = fully revealed
+  // 0 = pitch black | 1 = sparked (waiting click 2) | 2 = slow canvas painting | 3 = fully revealed
   const [stage, setStage] = useState(0);
   const [sparkKey, setSparkKey] = useState(0);
   const [showSpark, setShowSpark] = useState(false);
@@ -305,11 +342,11 @@ export default function ReceiptPage() {
         setStage(1); // Ready for click 2
       }, 950);
     } else if (stage === 1) {
-      // ✦ SECOND CLICK: Flame ignites & color bloom paints outward from the wand
+      // ✦ SECOND CLICK: Slow living canvas painting begins originating from the spark
       setStage(2);
       setTimeout(() => {
-        setStage(3); // Fully painted & revealed
-      }, 2400);
+        setStage(3); // Fully painted & settled
+      }, 7600);
     }
   };
 
@@ -317,9 +354,10 @@ export default function ReceiptPage() {
     <>
       <style>{styles}</style>
       <div className="rcpt-root" onClick={handleScreenClick}>
-        {/* 100% PURE VECTOR BACKDROP (Radial Bloom Transition from Wand Tip) */}
+        
+        {/* WAVE 1: Inked outlines & light wash bleeding out first */}
         <div
-          className={`rcpt-bg-layer ${
+          className={`rcpt-bg-layer rcpt-bg-ink ${
             stage === 0 || stage === 1
               ? "hidden-veil"
               : stage === 2
@@ -330,7 +368,25 @@ export default function ReceiptPage() {
         >
           <img
             src="/wizard-enchanted-greenlight.svg"
-            alt="Enchanted Greenlight Pure Vector Backdrop"
+            alt="Enchanted Greenlight Inked Canvas"
+            className="rcpt-bg-vector"
+          />
+        </div>
+
+        {/* WAVE 2: Full saturated gothic color painting expanding right behind */}
+        <div
+          className={`rcpt-bg-layer rcpt-bg-color ${
+            stage === 0 || stage === 1
+              ? "hidden-veil"
+              : stage === 2
+              ? "blooming"
+              : "revealed"
+          }`}
+          aria-hidden="true"
+        >
+          <img
+            src="/wizard-enchanted-greenlight.svg"
+            alt="Enchanted Greenlight Color Canvas"
             className="rcpt-bg-vector"
           />
         </div>
@@ -349,7 +405,7 @@ export default function ReceiptPage() {
           </div>
         )}
 
-        {/* Click 2+: Permanent Vector Flame Anchor while blooming */}
+        {/* Click 2+: Permanent Vector Flame Anchor while painting spreads */}
         {stage >= 2 && (
           <div className="wand-spark-layer ignited" aria-hidden="true">
             <img
@@ -360,8 +416,8 @@ export default function ReceiptPage() {
           </div>
         )}
 
-        {/* Click 2: Arcane Color Expansion Shockwave */}
-        {stage >= 2 && <div className="wand-bloom-wave" aria-hidden="true" />}
+        {/* Click 2: Slow Living Canvas Paint Bleed Ripple (7.5s) */}
+        {stage === 2 && <div className="painterly-wash-wave" aria-hidden="true" />}
 
         {/* Awwwards Cursor Follower Pill (Only shown before second click) */}
         {stage < 2 && (
