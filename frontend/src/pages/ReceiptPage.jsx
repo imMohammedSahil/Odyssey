@@ -166,7 +166,7 @@ function getWandScreenPos(width, height) {
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
-  // 0 = pitch black | 0.5 = teasing circled zone | 1 = waiting click 2 | 2 = paint spill flowing | 3 = fully revealed
+  // 0 = pitch black | 0.5 = tease 1 | 1 = waiting click 2 | 1.5 = tease 2 | 2 = waiting click 3 | 3 = paint spill flowing | 4 = fully revealed
   const [stage, setStage] = useState(0);
 
   // Awwwards cursor follower
@@ -212,7 +212,7 @@ export default function ReceiptPage() {
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      if (stage < 2) {
+      if (stage < 3) {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
@@ -221,17 +221,18 @@ export default function ReceiptPage() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    if (stage === 0 || stage === 1) {
+    if (stage === 0 || stage === 1 || stage === 2) {
       // Solid black sheet
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       return () => window.removeEventListener("resize", resizeCanvas);
     }
 
-    if (stage === 0.5) {
-      // ✦ CLICK 1: Reveal the exact circled zone of the real artwork, breathe, then dim to black
+    if (stage === 0.5 || stage === 1.5) {
+      // ✦ CLICK 1 & CLICK 2: Tease reveal of the circled artwork zone, breathe, then dim to black
       const { originX, originY, renderW } = getWandScreenPos(canvas.width, canvas.height);
-      const teaseRadius = 215 * (renderW / 1672); // Precisely matches the user's circled zone across all screens
+      const baseRadius = stage === 0.5 ? 215 : 235;
+      const teaseRadius = baseRadius * (renderW / 1672);
       const startTime = performance.now();
       const durationMs = 1200;
 
@@ -273,8 +274,8 @@ export default function ReceiptPage() {
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateTease);
         } else {
-          // Dimmed back to black, ready for Click 2
-          setStage(1);
+          // Dimmed back to black: 0.5 -> 1 (ready for click 2); 1.5 -> 2 (ready for click 3)
+          setStage(stage === 0.5 ? 1 : 2);
         }
       };
 
@@ -285,8 +286,8 @@ export default function ReceiptPage() {
       };
     }
 
-    if (stage === 2) {
-      // ✦ CLICK 2: Organic paint spill starts at the exact wand tip and flows across the entire page
+    if (stage === 3) {
+      // ✦ CLICK 3: Organic paint spill starts at the exact wand tip and flows across the entire page
       const { originX, originY } = getWandScreenPos(canvas.width, canvas.height);
 
       const maxDist = Math.hypot(
@@ -359,7 +360,7 @@ export default function ReceiptPage() {
           animationId = requestAnimationFrame(animateSpill);
         } else {
           // Finished flowing across entire page
-          setStage(3);
+          setStage(4);
         }
       };
 
@@ -379,8 +380,11 @@ export default function ReceiptPage() {
       // ✦ FIRST CLICK: Trigger the tease reveal of the circled artwork zone
       setStage(0.5);
     } else if (stage === 1) {
-      // ✦ SECOND CLICK: Organic liquid paint spills across the sheet
-      setStage(2);
+      // ✦ SECOND CLICK: Same tease reveal of the circled artwork zone
+      setStage(1.5);
+    } else if (stage === 2) {
+      // ✦ THIRD CLICK: Organic liquid paint spills across the sheet to reveal the entire page
+      setStage(3);
     }
   };
 
@@ -399,13 +403,13 @@ export default function ReceiptPage() {
         </div>
 
         {/* Dynamic Organic Paint Spill Canvas */}
-        {stage < 3 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
+        {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
 
         {/* Ambient depth vignette */}
-        <div className={`rcpt-bg-vignette ${stage >= 2 ? "active" : ""}`} aria-hidden="true" />
+        <div className={`rcpt-bg-vignette ${stage >= 3 ? "active" : ""}`} aria-hidden="true" />
 
-        {/* Awwwards Cursor Follower Pill (Only shown before second click) */}
-        {stage < 2 && (
+        {/* Awwwards Cursor Follower Pill (Shown before third click) */}
+        {stage < 3 && (
           <div ref={cursorRef} className="awwwards-cursor-pill">
             <span className="awwwards-cursor-dot" />
             {stage === 0 || stage === 0.5 ? "CLICK TO ENTER" : "CLICK AGAIN"}
