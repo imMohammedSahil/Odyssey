@@ -290,7 +290,6 @@ const styles = `
     transform: translateY(-2px);
   }
 `;
-`;
 
 function getWandScreenPos(width, height) {
   const imgAspect = 1672 / 941;
@@ -579,10 +578,6 @@ export default function ReceiptPage() {
           // Painting completely revealed
           setStage(4);
         }
-      };
-
-      animationId = requestAnimationFrame(animateFormation);
-    }
       };
 
       animationId = requestAnimationFrame(animateFormation);
