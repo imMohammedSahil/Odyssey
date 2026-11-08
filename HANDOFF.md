@@ -27,11 +27,20 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 ### Payment Page Terminal Architecture (`/payment`)
 - **Vector Backdrop**: Gothic church in fog, winding moonlit cobblestone road, skull lantern post with fiery red glow, and pure `#0D0D0D` Void Black framing (`/graveyard-gate-landscape.svg?v=24`).
-- **Central Neo-Brutalist Terminal**:
-  - Locked 440px glass card (`rgba(20, 27, 32, 0.93)`), `4px solid #0D0D0D`, `8px 8px 0px #0D0D0D` hard shadow, `backdrop-filter: blur(20px)`.
-- **Order Dossier**: Item count badge + `₹{total}` formatted in `Archivo Black, 'Plus Jakarta Sans', sans-serif`.
-- **QR Frame**: High-contrast white box (`180×180px` UPI QR) + GPay, PhonePe, Paytm, BHIM, Cred pills.
-- **Dispatch CTA**: Full-width `#FF3B2B` button with `4px solid #0D0D0D` and 4px comic offset shadow (`box-shadow: 4px 4px 0px #0D0D0D`).
+- **Interactive Grim Reaper Ritual Shrine (`/grim-reaper-ritual-board.svg`)**:
+  - **Character & Board**: Vectorized gothic Grim Reaper looming over a massive rustic timber ritual notice board (`viewBox="0 0 935 1024"`). Pure transparent background outside the character and rocks, standing naturally on the cobblestone road.
+  - **Dynamic Scannable UPI QR Code**: Live scannable QR code generated client-side for `₹{total}` via `qrcode` SVG. Positioned precisely inside the center parchment occult sigil circle (`left: 39.36%`, `top: 37.89%`, `width: 22.89%`, `height: 19.92%`) with `mix-blend-mode: multiply` onto the torn parchment.
+  - **Occult Ritual Sigil**: Surrounding red sigil circle with triquetra crest, celestial tick marks, and runes (`#A8281E`).
+  - **Carved Typography**: Relief wood-carved gothic texts: "MAKE YOUR OFFERING" (`#B8281E`), "TO COMPLETE THE RITUAL" (`#DDD0BF`), and "✦ Present your tribute through the sacred sigil below. ✦".
+  - **Animations**:
+    - Floating idle breathing: `@keyframes shrineIdleFloat` (gentle 6s vertical sway).
+    - Glowing emerald eyes: `@keyframes reaperEyePulse` (`#38E54D` radial glow).
+    - Atmospheric fire: `@keyframes ritualFlameGlow` flickering lantern and candle flames.
+    - Hover aura: `@keyframes rotateAura` spinning occult runic halo on parchment hover with tooltip `✦ CLICK TO OFFER TRIBUTE • ₹{total} ✦`.
+- **Payment Interaction**:
+  - Clicking either the dynamic QR parchment or the carved wooden plaque confirms the ritual offering and triggers `handlePaymentComplete()`.
+  - Full-screen ritual transition ceremony (`TRIBUTE ACCEPTED • ENTERING THE SANCTUARY`) before redirecting to `/receipt`.
+  - Minimalist bottom control bar with instant UPI verification badge, supported app pills (GPay, PhonePe, Paytm, BHIM, CRED), and direct action button.
 
 ---
 

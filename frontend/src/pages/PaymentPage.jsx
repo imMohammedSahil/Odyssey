@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import QRCode from "qrcode";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -23,6 +24,8 @@ const styles = `
     --grave-slate: #2B363C;
     --grave-dark: #192024;
     --border-dark: #0D0D0D;
+    --occult-red: #D93B2F;
+    --emerald-eye: #38E54D;
   }
 
   .pay-root {
@@ -62,7 +65,7 @@ const styles = `
   .pay-bg-vignette {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at 50% 20%, transparent 45%, rgba(13, 17, 20, 0.38) 90%);
+    background: radial-gradient(circle at 50% 25%, transparent 40%, rgba(13, 17, 20, 0.42) 85%);
     pointer-events: none;
     z-index: 1;
   }
@@ -70,7 +73,7 @@ const styles = `
   /* ── TOP HEADER / NAVIGATION ── */
   .pay-header-bar {
     width: 100%;
-    padding: 18px 4%;
+    padding: 16px 4%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -116,6 +119,27 @@ const styles = `
     gap: 12px;
   }
 
+  .pay-cart-summary-pill {
+    background: rgba(20, 27, 32, 0.88);
+    color: var(--parchment);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border: 2.5px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: 2px 2px 0px var(--border-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(8px);
+  }
+
+  .pay-cart-total-badge {
+    color: var(--hazard-gold);
+    font-weight: 900;
+  }
+
   .pay-btn-pill {
     background: var(--parchment);
     color: var(--void-black);
@@ -139,248 +163,342 @@ const styles = `
     box-shadow: 1px 1px 0px var(--border-dark);
   }
 
-  .pay-secure-pill {
-    background: rgba(16, 33, 27, 0.85);
-    color: var(--slime-green);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 7px 12px;
-    border: 2.5px solid var(--border-dark);
-    border-radius: 8px;
-    box-shadow: 2px 2px 0px var(--border-dark);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .pay-secure-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--slime-green);
-    box-shadow: 0 0 8px var(--slime-green);
-    animation: pulseDot 1.5s infinite;
-  }
-
-  @keyframes pulseDot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.85); }
-  }
-
-  /* ── CENTRAL PAYMENT & QR TERMINAL BOX ── */
+  /* ── CENTRAL RITUAL SHRINE (GRIM REAPER & BOARD) ── */
   .pay-center-container {
     flex: 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
-    z-index: 50;
-    padding: 24px 20px 40px;
+    z-index: 20;
+    padding: 10px 16px 24px;
   }
 
-  .pay-central-card {
-    background: rgba(20, 27, 32, 0.93);
-    border: 4px solid var(--border-dark);
-    border-radius: 18px;
-    box-shadow: 8px 8px 0px var(--border-dark);
+  .ritual-shrine-stage {
+    position: relative;
     width: 100%;
-    max-width: 440px;
-    padding: 24px 26px 22px;
-    backdrop-filter: blur(20px);
+    max-width: 580px;
+    aspect-ratio: 935 / 1024;
+    max-height: 74vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    animation: paySlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    justify-content: center;
+    animation: shrineEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .pay-card-top-row {
+  @keyframes shrineEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0px) scale(1);
+    }
+  }
+
+  /* Idle floating & breathing animation */
+  .ritual-floating-wrapper {
+    position: relative;
     width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    justify-content: center;
+    animation: shrineIdleFloat 6s ease-in-out infinite;
   }
 
-  .pay-terminal-badge {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: var(--lantern-yellow);
-    text-transform: uppercase;
+  @keyframes shrineIdleFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
 
-  .pay-card-title {
-    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
-    font-size: 24px;
-    color: var(--parchment);
-    letter-spacing: 0.5px;
-    text-shadow: 2px 2px 0px var(--border-dark);
-    margin-bottom: 2px;
-    text-align: center;
+  /* Soft ground shadow cast onto cobblestone road */
+  .ritual-ground-shadow {
+    position: absolute;
+    bottom: -6px;
+    left: 12%;
+    right: 12%;
+    height: 38px;
+    background: radial-gradient(ellipse at 50% 50%, rgba(13, 15, 18, 0.75) 0%, rgba(13, 15, 18, 0.3) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: -1;
   }
 
-  .pay-card-subtitle {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--slime-green);
-    margin-bottom: 14px;
-    letter-spacing: 0.4px;
-    text-align: center;
-  }
-
-  .pay-dossier-box {
+  /* The 100% Pure Vector SVG Asset */
+  .ritual-vector-svg {
     width: 100%;
-    background: #172126;
-    border: 3px solid var(--border-dark);
-    border-radius: 12px;
-    box-shadow: 4px 4px 0px var(--border-dark);
-    padding: 12px 16px;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.55));
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* ── INTERACTIVE DYNAMIC UPI QR SLOT ── */
+  .ritual-qr-interactive-anchor {
+    position: absolute;
+    top: 37.89%;
+    left: 39.36%;
+    width: 22.89%;
+    height: 19.92%;
+    cursor: pointer;
+    z-index: 30;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    justify-content: center;
+    border-radius: 6px;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
   }
 
-  .pay-dossier-left {
+  .ritual-qr-interactive-anchor:hover {
+    transform: scale(1.035);
+  }
+
+  /* Scannable Real UPI QR Container */
+  .ritual-live-qr-box {
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 2px;
+    align-items: center;
+    justify-content: center;
+    mix-blend-mode: multiply; /* Inks directly onto torn parchment */
+    position: relative;
+    opacity: 0.96;
+    transition: opacity 0.2s ease;
   }
 
-  .pay-dossier-label {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 10px;
-    color: #8C9EA7;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
+  .ritual-live-qr-box svg {
+    width: 96%;
+    height: 96%;
+    object-fit: contain;
+    shape-rendering: crispEdges;
   }
 
-  .pay-dossier-count {
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--parchment);
+  /* Occult aura pulse on hover */
+  .ritual-qr-hover-aura {
+    position: absolute;
+    inset: -8%;
+    border-radius: 50%;
+    border: 2px dashed rgba(217, 59, 47, 0);
+    pointer-events: none;
+    transition: all 0.3s ease;
   }
 
-  .pay-dossier-price {
-    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 26px;
+  .ritual-qr-interactive-anchor:hover .ritual-qr-hover-aura {
+    border-color: rgba(217, 59, 47, 0.7);
+    box-shadow: 0 0 20px rgba(217, 59, 47, 0.45);
+    animation: rotateAura 10s linear infinite;
+  }
+
+  @keyframes rotateAura {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Floating Tooltip Pill */
+  .ritual-qr-tooltip {
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: rgba(13, 13, 13, 0.92);
     color: var(--hazard-gold);
-    display: flex;
-    align-items: baseline;
-    gap: 2px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1.5px solid var(--hazard-gold);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 40;
   }
 
-  .pay-dossier-currency {
-    font-size: 18px;
-    color: var(--lantern-yellow);
+  .ritual-qr-interactive-anchor:hover .ritual-qr-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0px);
   }
 
-  .pay-qr-frame {
-    background: #FFFFFF;
+  /* Secondary Click Zone: Carved Plaque */
+  .ritual-plaque-click-zone {
+    position: absolute;
+    top: 61.5%;
+    left: 23.5%;
+    width: 55.5%;
+    height: 15.5%;
+    cursor: pointer;
+    z-index: 30;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  .ritual-plaque-click-zone:hover {
+    background: rgba(217, 59, 47, 0.08);
+  }
+
+  /* ── BOTTOM TRIBUTE CONTROL BAR ── */
+  .ritual-tribute-bar {
+    width: 100%;
+    max-width: 620px;
+    background: rgba(17, 24, 28, 0.94);
     border: 3.5px solid var(--border-dark);
     border-radius: 14px;
-    box-shadow: 5px 5px 0px var(--border-dark);
-    padding: 10px;
+    box-shadow: 6px 6px 0px var(--border-dark);
+    padding: 12px 18px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
+    gap: 16px;
+    backdrop-filter: blur(14px);
+    margin-top: 6px;
+    z-index: 50;
+    animation: paySlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  .pay-apps-row {
+  .ritual-tribute-info {
     display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ritual-tribute-headline {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    color: var(--parchment);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+  }
+
+  .ritual-tribute-headline .bolt {
+    color: var(--lantern-yellow);
+  }
+
+  .ritual-upi-badges {
+    display: flex;
+    align-items: center;
     gap: 6px;
     flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 16px;
   }
 
-  .pay-app-pill {
-    background: var(--void-black);
-    color: var(--parchment);
+  .ritual-upi-pill {
+    background: #0D1316;
+    color: var(--slime-green);
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    font-weight: 800;
-    padding: 4px 8px;
-    border-radius: 6px;
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    font-weight: 700;
+    padding: 2px 7px;
+    border: 1.5px solid #28363E;
+    border-radius: 4px;
     letter-spacing: 0.5px;
   }
 
-  .pay-cta-btn {
-    width: 100%;
-    background: var(--brain-pink);
-    color: var(--void-black);
-    font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px;
+  .ritual-confirm-btn {
+    background: var(--hazard-gold);
+    color: #FFF;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 14px 20px;
-    border: 3.5px solid var(--border-dark);
-    border-radius: 12px;
-    box-shadow: 4px 4px 0px var(--border-dark);
+    padding: 11px 22px;
+    border: 3px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px var(--border-dark);
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+    white-space: nowrap;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
   }
 
-  .pay-cta-btn:hover:not(:disabled) {
+  .ritual-confirm-btn:hover:not(:disabled) {
     transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px var(--border-dark);
-    background: #FF5445;
+    box-shadow: 1px 1px 0px var(--border-dark);
+    filter: brightness(1.08);
   }
 
-  .pay-cta-btn:disabled {
+  .ritual-confirm-btn:disabled {
     opacity: 0.65;
     cursor: not-allowed;
   }
 
-  .pay-spinner {
-    width: 16px;
-    height: 16px;
-    border: 3px solid var(--void-black);
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* ── FOOTER BAR ── */
-  .pay-footer-strip {
-    background: rgba(10, 20, 16, 0.88);
-    border-top: 3px solid var(--border-dark);
-    padding: 12px 4%;
+  /* ── RITUAL OFFERING ACTIVE TRANSITION OVERLAY ── */
+  .ritual-offering-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 14, 16, 0.82);
+    backdrop-filter: blur(12px);
+    z-index: 100;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #7DA697;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    position: relative;
-    z-index: 50;
+    gap: 20px;
+    animation: fadeIn 0.25s ease both;
   }
 
-  .pay-footer-tag {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .ritual-spinner-sigil {
+    width: 64px;
+    height: 64px;
+    border: 5px solid rgba(217, 59, 47, 0.2);
+    border-top-color: var(--hazard-gold);
+    border-right-color: var(--emerald-eye);
+    border-radius: 50%;
+    animation: rotateAura 0.8s linear infinite;
   }
 
-  @media (max-width: 600px) {
-    .pay-card-body { padding: 18px; gap: 16px; }
-    .pay-total-amount { font-size: 28px; }
-    .pay-card-title { font-size: 17px; }
-    .pay-header-bar { padding: 14px 4%; }
+  .ritual-offering-text {
+    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+    font-size: 24px;
+    color: var(--parchment);
+    letter-spacing: 1px;
+    text-shadow: 3px 3px 0px var(--border-dark);
+    text-align: center;
+  }
+
+  .ritual-offering-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--slime-green);
+    letter-spacing: 0.5px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes paySlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .ritual-shrine-stage { max-height: 62vh; }
+    .ritual-tribute-bar {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 12px 14px;
+      gap: 10px;
+    }
+    .ritual-confirm-btn {
+      justify-content: center;
+      width: 100%;
+    }
   }
 `;
 
@@ -388,7 +506,8 @@ export default function PaymentPage() {
   const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [showQr, setShowQr] = useState(false);
+  const [qrSvg, setQrSvg] = useState("");
+  const [offeringAccepted, setOfferingAccepted] = useState(false);
 
   // Compute live cart total
   const calculatedTotal = cartItems.reduce(
@@ -408,8 +527,30 @@ export default function PaymentPage() {
   const total = isDemo ? 150 : calculatedTotal;
   const totalItemCount = effectiveItems.reduce((acc, it) => acc + (it.quantity || 1), 0);
 
+  // Generate dynamic scannable UPI QR code SVG whenever total changes
+  useEffect(() => {
+    const upiUri = `upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`;
+    QRCode.toString(upiUri, {
+      type: "svg",
+      margin: 0,
+      color: {
+        dark: "#0D0D0D",
+        light: "#00000000", // Transparent background so parchment shows through
+      },
+    })
+      .then((svgString) => {
+        setQrSvg(svgString);
+      })
+      .catch((err) => {
+        console.error("Failed to generate UPI QR code:", err);
+      });
+  }, [total]);
+
   const handlePaymentComplete = async () => {
+    if (loading) return;
     setLoading(true);
+    setOfferingAccepted(true);
+
     try {
       let mongoOrderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
 
@@ -450,12 +591,15 @@ export default function PaymentPage() {
         clearCart();
       }
 
-      navigate("/receipt");
+      // Small dramatic delay for the ritual ceremony
+      setTimeout(() => {
+        navigate("/receipt");
+      }, 1200);
     } catch (err) {
       console.error("Order completion failed", err);
       alert("Payment processing encountered an error. Please try again.");
-    } finally {
       setLoading(false);
+      setOfferingAccepted(false);
     }
   };
 
@@ -483,6 +627,12 @@ export default function PaymentPage() {
           </Link>
 
           <div className="pay-header-actions">
+            <div className="pay-cart-summary-pill">
+              <span>{totalItemCount} Items</span>
+              <span>•</span>
+              <span className="pay-cart-total-badge">₹{total}</span>
+            </div>
+
             <Link to="/cart" className="pay-btn-pill">
               <span>←</span>
               <span>Back To Cart</span>
@@ -490,12 +640,98 @@ export default function PaymentPage() {
           </div>
         </header>
 
-        {/* ── CENTRAL PAYMENT & QR TERMINAL BOX (REMOVED FOR USER'S NEW IDEA) ── */}
+        {/* ── CENTRAL FLOATING RITUAL SHRINE (GRIM REAPER & NOTICE BOARD) ── */}
         <main className="pay-center-container">
-          {/* Box removed temporarily per user request */}
+          <div className="ritual-shrine-stage">
+            <div className="ritual-floating-wrapper">
+              {/* Soft Cobblestone Ground Shadow */}
+              <div className="ritual-ground-shadow" aria-hidden="true" />
+
+              {/* 100% Pure Vector Grim Reaper Ritual Shrine SVG */}
+              <img
+                src="/grim-reaper-ritual-board.svg?v=1"
+                alt="Grim Reaper Ritual Offering Notice Board"
+                className="ritual-vector-svg"
+              />
+
+              {/* Scannable Real Dynamic UPI QR Code mounted on Parchment */}
+              <div
+                className="ritual-qr-interactive-anchor"
+                onClick={handlePaymentComplete}
+                title={`Click to complete ritual offering of ₹${total}`}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handlePaymentComplete();
+                  }
+                }}
+              >
+                <div className="ritual-qr-hover-aura" aria-hidden="true" />
+                <div
+                  className="ritual-live-qr-box"
+                  dangerouslySetInnerHTML={{ __html: qrSvg }}
+                  aria-label={`UPI QR Code for payment of ₹${total}`}
+                />
+                <div className="ritual-qr-tooltip">
+                  ✦ Click To Offer Tribute • ₹{total} ✦
+                </div>
+              </div>
+
+              {/* Carved Plaque Secondary Click Zone ('MAKE YOUR OFFERING') */}
+              <div
+                className="ritual-plaque-click-zone"
+                onClick={handlePaymentComplete}
+                title={`Click to complete ritual offering of ₹${total}`}
+                role="button"
+                tabIndex={0}
+              />
+            </div>
+          </div>
+
+          {/* ── BOTTOM TRIBUTE CONTROL BAR ── */}
+          <div className="ritual-tribute-bar">
+            <div className="ritual-tribute-info">
+              <div className="ritual-tribute-headline">
+                <span className="bolt">⚡</span>
+                <span>Scan QR Or Click Shrine To Offer Tribute</span>
+              </div>
+              <div className="ritual-upi-badges">
+                <span className="ritual-upi-pill">GPAY</span>
+                <span className="ritual-upi-pill">PHONEPE</span>
+                <span className="ritual-upi-pill">PAYTM</span>
+                <span className="ritual-upi-pill">BHIM UPI</span>
+                <span className="ritual-upi-pill">CRED</span>
+              </div>
+            </div>
+
+            <button
+              className="ritual-confirm-btn"
+              onClick={handlePaymentComplete}
+              disabled={loading}
+            >
+              {loading ? (
+                <span>Offering Tribute...</span>
+              ) : (
+                <>
+                  <span>Confirm Offering (₹{total})</span>
+                  <span>→</span>
+                </>
+              )}
+            </button>
+          </div>
         </main>
 
-
+        {/* ── RITUAL OFFERING ACTIVE TRANSITION CEREMONY ── */}
+        {offeringAccepted && (
+          <div className="ritual-offering-overlay">
+            <div className="ritual-spinner-sigil" />
+            <div className="ritual-offering-text">TRIBUTE ACCEPTED</div>
+            <div className="ritual-offering-sub">
+              ENTERING THE SANCTUARY • GENERATING SACRED RECEIPT...
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
