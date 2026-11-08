@@ -40,7 +40,7 @@ The payment gateway has been transformed into a fully interactive gothic ritual 
 
 | Layer / Element | Implementation & Visual Details |
 | :--- | :--- |
-| **Vector Backdrop** | Pure SVG `/graveyard-gate-landscape.svg?v=27` (`1024×576`, viewBox `0 0 1024 576`). Multi-tiered realistic optical lantern bloom & ground cast across all red light sources, brightened gothic house masonry (`#253138`), deep shadow slate restricted strictly to marked under-eave area (`#111619`), gothic church spire in mist, moonlit cobblestones. |
+| **Vector Backdrop** | Pure SVG `/graveyard-gate-landscape.svg?v=28` (`1024×576`, viewBox `0 0 1024 576`). Deep moody gothic atmosphere, multi-tiered realistic optical lantern bloom & ground cast, dark gothic slate masonry (`#1D262B`), selective under-eave shadow (`#111619`), gothic church spire in mist, moonlit cobblestones. |
 | **Grim Reaper Shrine Asset** | Pure SVG `/grim-reaper-ritual-board.svg?v=5` (`935×1024`, viewBox `0 0 935 1024`). Minimized (`max-width: 300px`, `max-height: 46vh`) on path verge (`~37%` screen width). Seamlessly color-graded with the moonlit gothic graveyard palette: deeper dark timber, darkened slate-moss boulders, atmospheric antique vellum, matched lantern fire, and soft ground mist feathering. |
 | **Dynamic Scannable UPI QR** | Generated client-side via `qrcode` SVG for the exact current cart total (`₹{total}`). Formatted as `upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`. Mounted at `left: 39.36%`, `top: 37.89%`, `width: 22.89%`, `height: 19.92%` with `mix-blend-mode: multiply` onto the torn parchment. |
 | **Occult Ritual Sigil** | Sacred red circle with Celtic triquetra crest, celestial radial hash marks, and astrological runes (`#A8281E` / `#D93B2F`). |
