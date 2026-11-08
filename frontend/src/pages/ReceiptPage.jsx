@@ -301,15 +301,22 @@ export default function ReceiptPage() {
         rays.push({ theta, speedVar });
       }
 
-      const durationMs = 9500; // 9.5s smooth, engaging painterly flow
+      const durationMs = 11000; // 11s total: slow deliberate center reveal, then accelerates outward
       const startTime = performance.now();
 
       const animateSpill = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Smooth liquid crawl curve
-        const ease = 1 - Math.pow(1 - progress, 2.2);
+        // Slow & time-consuming at center (0-60%), then rapidly sweeps across outer edges (60-100%)
+        let ease;
+        if (progress <= 0.6) {
+          const u = progress / 0.6;
+          ease = 0.55 * (0.4 * u + 0.6 * Math.pow(u, 1.6));
+        } else {
+          const v = (progress - 0.6) / 0.4;
+          ease = 0.55 + 0.45 * (1.0 - Math.pow(1.0 - v, 2.0));
+        }
 
         // 1. Redraw black sheet
         ctx.save();
