@@ -30,7 +30,7 @@ const styles = `
 
   /* ── 100% PURE VECTOR BACKDROP ── */
   .rcpt-bg-layer {
-    position: fixed;
+    position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
@@ -38,7 +38,6 @@ const styles = `
     pointer-events: none;
     overflow: hidden;
     background: #000000;
-    contain: strict;
   }
 
   .rcpt-bg-vector {
