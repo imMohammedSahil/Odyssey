@@ -229,9 +229,6 @@ def build_wizard_svg():
         svg_layers.append('  <!-- Layer 10E: Floating Arcane Motes & Spark Embers -->')
         svg_layers.append(f'  <path d="{" ".join(p_motes)}" fill="#8AFFBA" fill-rule="evenodd" />')
 
-    # Layer 11: Wand Bloom Core Flare
-    svg_layers.append(f'  <!-- Layer 11: Wand Tip Radiant Core Bloom -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="150" fill="url(#wandBloomCore)" />')
-
     # Assemble complete SVG
     header = f'<svg viewBox="0 0 {w} {h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">\n{defs}\n'
     footer = '</svg>\n'

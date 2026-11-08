@@ -44,7 +44,7 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* ── ORGANIC PAINT SPILL CANVAS MASK (Single fluid wave spreading randomly) ── */
+  /* ── ORGANIC PAINT CANVAS MASK (Controls black sheet, Click 1 tease & Click 2 spill) ── */
   .rcpt-paint-canvas {
     position: fixed;
     inset: 0;
@@ -70,75 +70,6 @@ const styles = `
 
   .rcpt-bg-vignette.active {
     opacity: 1;
-  }
-
-  /* ── ORGANIC WAND SPARK FLAME (CLICK 1 & ANCHOR) ── */
-  .wand-spark-layer {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10;
-    pointer-events: none;
-    overflow: hidden;
-    contain: strict;
-  }
-
-  .wand-spark-layer.tease {
-    animation: realisticFlameTease 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  .wand-spark-layer.ignited {
-    opacity: 1;
-    animation: flamePulse 2s infinite ease-in-out;
-  }
-
-  .wand-spark-vector {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center center;
-    display: block;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-
-  @keyframes realisticFlameTease {
-    0% {
-      opacity: 0;
-      transform: scale(0.7);
-    }
-    18% {
-      opacity: 1;
-      transform: scale(1.02);
-    }
-    38% {
-      opacity: 0.92;
-      transform: scale(0.99);
-    }
-    55% {
-      opacity: 1;
-      transform: scale(1.01);
-    }
-    75% {
-      opacity: 0.88;
-      transform: scale(0.98);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.85);
-    }
-  }
-
-  @keyframes flamePulse {
-    0%, 100% {
-      opacity: 0.95;
-      transform: scale(1.0);
-    }
-    50% {
-      opacity: 1.0;
-      transform: scale(1.02);
-    }
   }
 
   /* ── AWWWARDS MAGNETIC CURSOR FOLLOWER PILL ── */
@@ -210,20 +141,40 @@ const styles = `
   }
 `;
 
+function getWandScreenPos(width, height) {
+  const imgAspect = 1672 / 941;
+  const screenAspect = width / height;
+  let renderW, renderH, offsetX, offsetY;
+
+  if (screenAspect > imgAspect) {
+    renderW = width;
+    renderH = width / imgAspect;
+    offsetX = 0;
+    offsetY = (height - renderH) / 2;
+  } else {
+    renderH = height;
+    renderW = height * imgAspect;
+    offsetX = (width - renderW) / 2;
+    offsetY = 0;
+  }
+
+  const originX = offsetX + (928 / 1672) * renderW;
+  const originY = offsetY + (328 / 941) * renderH;
+  return { originX, originY, renderW, renderH };
+}
+
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
-  // 0 = pitch black | 1 = sparked (waiting click 2) | 2 = paint spill flowing | 3 = fully revealed
+  // 0 = pitch black | 0.5 = teasing circled zone | 1 = waiting click 2 | 2 = paint spill flowing | 3 = fully revealed
   const [stage, setStage] = useState(0);
-  const [sparkKey, setSparkKey] = useState(0);
-  const [showSpark, setShowSpark] = useState(false);
 
   // Awwwards cursor follower
   const cursorRef = useRef(null);
   const targetPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
   const currentPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
 
-  // Canvas ref for the organic fluid paint spill
+  // Canvas ref for both Click 1 tease and Click 2 paint spill
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -251,7 +202,7 @@ export default function ReceiptPage() {
     };
   }, []);
 
-  // ✦ SINGLE ORGANIC PAINT SPILL FLOW (LIQUID WATERCOLOR ACROSS BLACK SHEET)
+  // ✦ CANVAS LIFECYCLE FOR CLICK 1 TEASE & CLICK 2 SPILL
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -270,51 +221,88 @@ export default function ReceiptPage() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    if (stage < 2) {
+    if (stage === 0 || stage === 1) {
       // Solid black sheet
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       return () => window.removeEventListener("resize", resizeCanvas);
     }
 
+    if (stage === 0.5) {
+      // ✦ CLICK 1: Reveal the exact circled zone of the real artwork, breathe, then dim to black
+      const { originX, originY, renderW } = getWandScreenPos(canvas.width, canvas.height);
+      const teaseRadius = 215 * (renderW / 1672); // Precisely matches the user's circled zone across all screens
+      const startTime = performance.now();
+      const durationMs = 1200;
+
+      const animateTease = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(1.0, elapsed / durationMs);
+
+        // Teasing breath curve
+        let opacity;
+        if (progress < 0.28) {
+          opacity = progress / 0.28;
+        } else if (progress < 0.65) {
+          opacity = 1.0 - 0.08 * Math.sin(((progress - 0.28) / 0.37) * Math.PI);
+        } else {
+          opacity = (1.0 - progress) / 0.35;
+        }
+        opacity = Math.max(0, Math.min(1.0, opacity));
+
+        ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (opacity > 0) {
+          ctx.globalCompositeOperation = "destination-out";
+          const grad = ctx.createRadialGradient(originX, originY, 0, originX, originY, teaseRadius);
+          grad.addColorStop(0, `rgba(0, 0, 0, ${opacity})`);
+          grad.addColorStop(0.68, `rgba(0, 0, 0, ${opacity * 0.95})`);
+          grad.addColorStop(0.88, `rgba(0, 0, 0, ${opacity * 0.4})`);
+          grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(originX, originY, teaseRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+
+        if (progress < 1.0) {
+          animationId = requestAnimationFrame(animateTease);
+        } else {
+          // Dimmed back to black, ready for Click 2
+          setStage(1);
+        }
+      };
+
+      animationId = requestAnimationFrame(animateTease);
+      return () => {
+        window.removeEventListener("resize", resizeCanvas);
+        if (animationId) cancelAnimationFrame(animationId);
+      };
+    }
+
     if (stage === 2) {
-      // Calculate the exact screen coordinates of the wand spark point (928, 328) taking object-fit: cover into account
-      const imgAspect = 1672 / 941;
-      const screenAspect = canvas.width / canvas.height;
-      let renderW, renderH, offsetX, offsetY;
+      // ✦ CLICK 2: Organic paint spill starts at the exact wand tip and flows across the entire page
+      const { originX, originY } = getWandScreenPos(canvas.width, canvas.height);
 
-      if (screenAspect > imgAspect) {
-        renderW = canvas.width;
-        renderH = canvas.width / imgAspect;
-        offsetX = 0;
-        offsetY = (canvas.height - renderH) / 2;
-      } else {
-        renderH = canvas.height;
-        renderW = canvas.height * imgAspect;
-        offsetX = (canvas.width - renderW) / 2;
-        offsetY = 0;
-      }
-
-      const originX = offsetX + (928 / 1672) * renderW;
-      const originY = offsetY + (328 / 941) * renderH;
-
-      // Max radius to cover all screen corners comfortably
       const maxDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
         Math.max(originY, canvas.height - originY)
       ) * 1.35;
 
-      // Low-amplitude, buttery-smooth organic liquid lobes (NO sharp saw-teeth or jagged spikes)
       const numRays = 180;
       const rays = [];
       for (let i = 0; i < numRays; i++) {
         const theta = (i / numRays) * Math.PI * 2;
-        // Gentle, rolling low-amplitude variation (±12% total max swing)
         const speedVar = 1.0 + 0.07 * Math.sin(theta * 2 + 0.7) + 0.04 * Math.cos(theta * 3 - 0.4) + 0.02 * Math.sin(theta * 5 + 1.2);
         rays.push({ theta, speedVar });
       }
 
-      const durationMs = 7800; // 7.8s: balanced pacing with slow center and accelerated finish
+      const durationMs = 6200; // Faster, punchy liquid pacing as requested
       const startTime = performance.now();
 
       const animateSpill = (now) => {
@@ -331,16 +319,13 @@ export default function ReceiptPage() {
           ease = 0.55 + 0.45 * (1.0 - Math.pow(1.0 - v, 2.0));
         }
 
-        // 1. Redraw black sheet
         ctx.save();
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out the organic flowing paint spill from the black sheet
         ctx.globalCompositeOperation = "destination-out";
 
-        // Generate fluid spill boundary vertices with gentle rolling curves
         const points = [];
         for (let i = 0; i < numRays; i++) {
           const { theta, speedVar } = rays[i];
@@ -350,7 +335,6 @@ export default function ReceiptPage() {
           points.push({ x: px, y: py });
         }
 
-        // Draw smooth, rolling liquid boundary using midpoint quadratic curves
         if (points.length > 2) {
           ctx.beginPath();
           const p0 = points[0];
@@ -392,15 +376,10 @@ export default function ReceiptPage() {
     if (e.target.closest(".rcpt-nav-back")) return;
 
     if (stage === 0) {
-      // ✦ FIRST CLICK: Organic vector flame flares precisely at wand tip, then dims to black
-      setShowSpark(true);
-      setSparkKey((prev) => prev + 1);
-      setTimeout(() => {
-        setShowSpark(false);
-        setStage(1); // Ready for click 2
-      }, 1050);
+      // ✦ FIRST CLICK: Trigger the tease reveal of the circled artwork zone
+      setStage(0.5);
     } else if (stage === 1) {
-      // ✦ SECOND CLICK: Organic liquid paint spills randomly across the sheet
+      // ✦ SECOND CLICK: Organic liquid paint spills across the sheet
       setStage(2);
     }
   };
@@ -410,7 +389,7 @@ export default function ReceiptPage() {
       <style>{styles}</style>
       <div className="rcpt-root" onClick={handleScreenClick}>
         
-        {/* 100% PURE VECTOR BACKDROP (Revealed along the path of the flowing paint) */}
+        {/* 100% PURE VECTOR BACKDROP */}
         <div className="rcpt-bg-layer" aria-hidden="true">
           <img
             src="/wizard-enchanted-greenlight.svg"
@@ -419,28 +398,17 @@ export default function ReceiptPage() {
           />
         </div>
 
-        {/* Dynamic Organic Paint Spill Canvas (Carves away black sheet organically) */}
+        {/* Dynamic Organic Paint Spill Canvas */}
         {stage < 3 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
 
         {/* Ambient depth vignette */}
         <div className={`rcpt-bg-vignette ${stage >= 2 ? "active" : ""}`} aria-hidden="true" />
 
-        {/* Click 1: Precise Concentrated Wand Tip Spark Tease */}
-        {showSpark && (
-          <div key={sparkKey} className="wand-spark-layer tease" aria-hidden="true">
-            <img
-              src="/wand-spark-flame.svg"
-              alt="Wand Spark Core"
-              className="wand-spark-vector"
-            />
-          </div>
-        )}
-
         {/* Awwwards Cursor Follower Pill (Only shown before second click) */}
         {stage < 2 && (
           <div ref={cursorRef} className="awwwards-cursor-pill">
             <span className="awwwards-cursor-dot" />
-            {stage === 0 ? "CLICK TO ENTER" : "CLICK AGAIN"}
+            {stage === 0 || stage === 0.5 ? "CLICK TO ENTER" : "CLICK AGAIN"}
           </div>
         )}
 
