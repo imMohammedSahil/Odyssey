@@ -85,7 +85,7 @@ const styles = `
   }
 
   .wand-spark-layer.tease {
-    animation: realisticFlameTease 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: realisticFlameTease 1.05s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .wand-spark-layer.ignited {
@@ -398,7 +398,7 @@ export default function ReceiptPage() {
       setTimeout(() => {
         setShowSpark(false);
         setStage(1); // Ready for click 2
-      }, 950);
+      }, 1050);
     } else if (stage === 1) {
       // ✦ SECOND CLICK: Organic liquid paint spills randomly across the sheet
       setStage(2);

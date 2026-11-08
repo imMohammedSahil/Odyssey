@@ -1,24 +1,59 @@
 <svg viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
   <defs>
-    <!-- Concentrated Wand Tip Incandescent Spark (Tight, pure light core) -->
-    <radialGradient id="pureTipCore" cx="928" cy="328" r="38" gradientUnits="userSpaceOnUse">
+    <!-- Crisp Smooth Falloff Mask -->
+    <mask id="sparkAlphaFade">
+      <radialGradient id="fadeGrad" cx="928" cy="328" r="150" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
+        <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.95" />
+        <stop offset="65%" stop-color="#FFFFFF" stop-opacity="0.45" />
+        <stop offset="90%" stop-color="#FFFFFF" stop-opacity="0.08" />
+        <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+      </radialGradient>
+      <rect width="1672" height="941" fill="url(#fadeGrad)" />
+    </mask>
+
+    <!-- Rich Incandescent Core Bloom (r=75 like 7ee34fc) -->
+    <radialGradient id="seamlessBulbGlow" cx="928" cy="328" r="75" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
-      <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.98" />
-      <stop offset="60%" stop-color="#D4FFE0" stop-opacity="0.85" />
-      <stop offset="82%" stop-color="#46F887" stop-opacity="0.5" />
-      <stop offset="95%" stop-color="#14A84D" stop-opacity="0.15" />
+      <stop offset="25%" stop-color="#FFFFFF" stop-opacity="0.98" />
+      <stop offset="50%" stop-color="#E2FFF0" stop-opacity="0.85" />
+      <stop offset="72%" stop-color="#5EFF9A" stop-opacity="0.55" />
+      <stop offset="90%" stop-color="#18B856" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#021C0A" stop-opacity="0.0" />
+    </radialGradient>
+
+    <!-- Broad Ambient Green Glow (r=135) -->
+    <radialGradient id="broadAtmosphere" cx="928" cy="328" r="135" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#56FFA0" stop-opacity="0.65" />
+      <stop offset="35%" stop-color="#1EB859" stop-opacity="0.38" />
+      <stop offset="68%" stop-color="#0E652F" stop-opacity="0.14" />
+      <stop offset="92%" stop-color="#04200E" stop-opacity="0.02" />
       <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
     </radialGradient>
 
-    <!-- Tight Soft Corona (r=62) -->
-    <radialGradient id="tightTipCorona" cx="928" cy="328" r="62" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#72FFA5" stop-opacity="0.65" />
-      <stop offset="45%" stop-color="#24C862" stop-opacity="0.30" />
-      <stop offset="78%" stop-color="#0E7836" stop-opacity="0.08" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
-    </radialGradient>
+    <!-- Anamorphic Lens Flare Star Rays -->
+    <linearGradient id="rayH" x1="858" y1="328" x2="998" y2="328" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#46F887" stop-opacity="0.0" />
+      <stop offset="35%" stop-color="#A6FFC8" stop-opacity="0.5" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="65%" stop-color="#A6FFC8" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#46F887" stop-opacity="0.0" />
+    </linearGradient>
+
+    <linearGradient id="rayV" x1="928" y1="258" x2="928" y2="398" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#46F887" stop-opacity="0.0" />
+      <stop offset="35%" stop-color="#A6FFC8" stop-opacity="0.5" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="65%" stop-color="#A6FFC8" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#46F887" stop-opacity="0.0" />
+    </linearGradient>
   </defs>
-  <circle cx="928" cy="328" r="62" fill="url(#tightTipCorona)" />
-  <circle cx="928" cy="328" r="38" fill="url(#pureTipCore)" />
-  <circle cx="928" cy="328" r="15" fill="#FFFFFF" opacity="0.98" />
+  <!-- Teasing Wand Spark Flare (Rich, Big, Zero Blurs) -->
+  <g mask="url(#sparkAlphaFade)">
+    <circle cx="928" cy="328" r="135" fill="url(#broadAtmosphere)" />
+    <path d="M 858 328 Q 928 326 998 328 Q 928 330 858 328 Z" fill="url(#rayH)" />
+    <path d="M 928 258 Q 926 328 928 398 Q 930 328 928 258 Z" fill="url(#rayV)" />
+    <circle cx="928" cy="328" r="75" fill="url(#seamlessBulbGlow)" />
+    <circle cx="928" cy="328" r="24" fill="#FFFFFF" opacity="0.98" />
+  </g>
 </svg>
