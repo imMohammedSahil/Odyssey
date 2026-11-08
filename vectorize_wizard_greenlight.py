@@ -232,23 +232,23 @@ def build_wizard_svg():
     # Layer 11: Wand Bloom Core Flare
     svg_layers.append(f'  <!-- Layer 11: Wand Tip Radiant Core Incandescence -->\n  <circle cx="{wand_x}" cy="{wand_y}" r="80" fill="url(#wandBloomCore)" />')
 
-    # Layer 12: Inscribed Door Prompt - DESCEND ↓ (Matched to Mignola comic environment)
-    door_inscription = '''  <!-- Layer 12: Inscribed Door Prompt - DESCEND ↓ (Matched to Mignola comic environment) -->
-  <g id="doorInscription" transform="translate(1305, 705)">
-    <text x="2.5" y="2.5" text-anchor="middle"
+    # Layer 12: Inscribed Door Prompt - DESCEND ↓ (Centered on actual door lower panel)
+    door_inscription = '''  <!-- Layer 12: Inscribed Door Prompt - DESCEND ↓ (Centered on actual door lower panel) -->
+  <g id="doorInscription" transform="translate(1135, 615)">
+    <text x="2" y="2" text-anchor="middle"
           font-family="'Cinzel', 'Plus Jakarta Sans', Georgia, serif"
-          font-size="28" font-weight="900" letter-spacing="6"
+          font-size="21" font-weight="900" letter-spacing="4"
           fill="#020a05" opacity="0.95">DESCEND</text>
     <text x="0" y="0" text-anchor="middle"
           font-family="'Cinzel', 'Plus Jakarta Sans', Georgia, serif"
-          font-size="28" font-weight="900" letter-spacing="6"
-          fill="#8AFFBA" stroke="#04160b" stroke-width="1.8"
+          font-size="21" font-weight="900" letter-spacing="4"
+          fill="#8AFFBA" stroke="#04160b" stroke-width="1.5"
           stroke-linejoin="round">DESCEND</text>
-    <g transform="translate(0, 36)">
-      <path d="M 0,20 L -11,5 L -4,5 L -4,-12 L 4,-12 L 4,5 L 11,5 Z"
-            fill="#020a05" transform="translate(2.5, 2.5)" opacity="0.95" />
-      <path d="M 0,20 L -11,5 L -4,5 L -4,-12 L 4,-12 L 4,5 L 11,5 Z"
-            fill="#8AFFBA" stroke="#04160b" stroke-width="1.8"
+    <g transform="translate(0, 26)">
+      <path d="M 0,16 L -8,4 L -3,4 L -3,-9 L 3,-9 L 3,4 L 8,4 Z"
+            fill="#020a05" transform="translate(2, 2)" opacity="0.95" />
+      <path d="M 0,16 L -8,4 L -3,4 L -3,-9 L 3,-9 L 3,4 L 8,4 Z"
+            fill="#8AFFBA" stroke="#04160b" stroke-width="1.5"
             stroke-linejoin="round" />
     </g>
   </g>'''

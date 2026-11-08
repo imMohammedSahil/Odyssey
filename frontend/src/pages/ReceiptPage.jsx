@@ -514,14 +514,14 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: ONE unified wave — concentrated at center, heavy atmospheric blur at expanding perimeter
+      // ✦ CLICK 3: Full Screen Reveal — Crisp, vibrant vector painting with ZERO blur and ZERO vignette
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const maxCanvasDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
         Math.max(originY, canvas.height - originY)
       );
 
-      const durationMs = 2800;
+      const durationMs = 2600; // Crisp cinematic pacing
       const startTime = performance.now();
 
       const animateFormation = (now) => {
@@ -545,30 +545,23 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out with concentrated center & heavily blurred perimeter
+        // 2. Carve out to reveal pure, crystal-clear artwork (NO blur)
         ctx.globalCompositeOperation = "destination-out";
 
         if (waveR > 4) {
-          const blurPx = Math.max(16, Math.min(32 * scale, waveR * 0.16));
-          ctx.filter = `blur(${blurPx}px)`;
-
-          const innerSolidR = Math.max(0, waveR * 0.38);
+          const featherW = Math.min(35 * scale, waveR * 0.25);
           const waveGrad = ctx.createRadialGradient(
-            originX, originY, innerSolidR,
+            originX, originY, Math.max(0, waveR - featherW),
             originX, originY, waveR
           );
-          waveGrad.addColorStop(0, "#000000"); // 100% concentrated core
-          waveGrad.addColorStop(0.25, "#000000");
-          waveGrad.addColorStop(0.50, "rgba(0, 0, 0, 0.85)");
-          waveGrad.addColorStop(0.72, "rgba(0, 0, 0, 0.48)");
-          waveGrad.addColorStop(0.88, "rgba(0, 0, 0, 0.18)");
-          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Deep blurred boundary
+          waveGrad.addColorStop(0, "#000000"); // 100% crisp revealed artwork
+          waveGrad.addColorStop(0.75, "rgba(0, 0, 0, 0.9)");
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, waveR, 0, Math.PI * 2);
           ctx.fill();
-          ctx.filter = "none";
         }
 
         ctx.restore();
@@ -576,7 +569,7 @@ export default function ReceiptPage() {
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateFormation);
         } else {
-          // Painting completely revealed
+          // Painting completely revealed — 100% pure crisp vector artwork
           setStage(4);
         }
       };
@@ -624,8 +617,8 @@ export default function ReceiptPage() {
           {/* Dynamic Organic Paint Spill Canvas */}
           {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
 
-          {/* Ambient depth vignette */}
-          <div className={`rcpt-bg-vignette ${stage > 0 ? "active" : ""}`} aria-hidden="true" />
+          {/* Ambient depth vignette (Active ONLY during tease reveals, completely OFF on full screen) */}
+          <div className={`rcpt-bg-vignette ${(stage === 0.5 || stage === 1.5) ? "active" : ""}`} aria-hidden="true" />
 
           {/* Awwwards Cursor Follower Pill (Shown before third click) */}
           {stage < 3 && (
