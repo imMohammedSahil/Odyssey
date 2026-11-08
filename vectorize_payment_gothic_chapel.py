@@ -104,12 +104,12 @@ def build_accurate_gothic_chapel_svg():
       <stop offset="100%" stop-color="#4C585E" />
     </linearGradient>
 
-    <!-- Natural Ambient Red Mist Bloom around Right Lantern -->
-    <radialGradient id="lanternRedMistBloom" cx="745" cy="395" r="160" gradientUnits="userSpaceOnUse">
+    <!-- Natural Ambient Red Mist Bloom around Right Lantern (Organically centered around lantern, r=90) -->
+    <radialGradient id="lanternRedMistBloom" cx="745" cy="395" r="90" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FF5538" stop-opacity="0.85" />
-      <stop offset="25%" stop-color="#E03422" stop-opacity="0.55" />
-      <stop offset="55%" stop-color="#9C241C" stop-opacity="0.30" />
-      <stop offset="80%" stop-color="#6B1812" stop-opacity="0.10" />
+      <stop offset="30%" stop-color="#E03422" stop-opacity="0.55" />
+      <stop offset="65%" stop-color="#9C241C" stop-opacity="0.25" />
+      <stop offset="85%" stop-color="#6B1812" stop-opacity="0.08" />
       <stop offset="100%" stop-color="#6B1812" stop-opacity="0" />
     </radialGradient>
 
@@ -187,14 +187,7 @@ def build_accurate_gothic_chapel_svg():
     if p3:
         svg_layers.append(f'  <!-- Layer 4: Church Masonry & Solid Ground -->\n  <path d="{" ".join(p3)}" fill="#38474F" />')
 
-    # Layer 5: Deep Shadow Slate, Under-eaves, Church Shingles & Foreground Ground (gray < 95)
-    m4 = (gray < 95).astype(np.uint8) * 255
-    m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
-    p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
-    if p4:
-        svg_layers.append(f'  <!-- Layer 5: Deep Slate Stone, Shingles & Foreground Ground -->\n  <path d="{" ".join(p4)}" fill="#253137" />')
-
-    # Layer 6: Cobblestone Path Moonlit Highlights
+    # Layer 5 (Part A): Cobblestone Path Highlights & Atmospheric Moonlit Path Glow
     cobble_roi = np.zeros((h, w), dtype=bool)
     cobble_roi[370:576, 230:720] = True
     cobble_bright = cobble_roi & (gray >= 145) & (g > 140) & (b > 130)
@@ -211,9 +204,22 @@ def build_accurate_gothic_chapel_svg():
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
 
-    # Layer 7: Realistic Atmospheric Red Lantern Glow over Mist (Seamless Radial Bloom)
-    svg_layers.append('  <!-- Layer 7: Seamless Atmospheric Red Mist Bloom -->')
-    svg_layers.append('  <circle cx="745" cy="395" r="160" fill="url(#lanternRedMistBloom)" />')
+    # Layer 6: Realistic Atmospheric Red Lantern Glow over Mist (Seamless Radial Bloom, r=90)
+    svg_layers.append('  <!-- Layer 6: Seamless Atmospheric Red Mist Bloom -->')
+    svg_layers.append('  <circle cx="745" cy="395" r="90" fill="url(#lanternRedMistBloom)" />')
+    svg_layers.append('  <circle cx="348" cy="385" r="85" fill="url(#bloomLanternLeft)" />')
+    svg_layers.append('  <circle cx="505" cy="318" r="50" fill="url(#bloomChurchDoor)" />')
+    svg_layers.append('  <circle cx="414" cy="342" r="28" fill="url(#bloomShrineAperture)" />')
+    svg_layers.append('  <circle cx="651" cy="77" r="32" fill="url(#bloomTowerBelfry)" />')
+    svg_layers.append('  <circle cx="658" cy="315" r="32" fill="url(#bloomTowerWindow)" />')
+
+    # Layer 7: Deep Gothic Shadow Slate, Church Under-eaves, Wall & Shingles (gray < 95)
+    # Renders in rich gothic dark slate (#182226 - dark, not pitch black) on top of mist bloom
+    m4 = (gray < 95).astype(np.uint8) * 255
+    m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
+    p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
+    if p4:
+        svg_layers.append(f'  <!-- Layer 7: Deep Gothic Shadow Slate, Church Wall & Under-eaves (Dark Slate, Not Pitch Black) -->\n  <path d="{" ".join(p4)}" fill="#182226" />')
     svg_layers.append('  <circle cx="348" cy="385" r="85" fill="url(#bloomLanternLeft)" />')
     svg_layers.append('  <circle cx="505" cy="318" r="50" fill="url(#bloomChurchDoor)" />')
     svg_layers.append('  <circle cx="414" cy="342" r="28" fill="url(#bloomShrineAperture)" />')
