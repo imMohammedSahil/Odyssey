@@ -83,12 +83,10 @@ const styles = `
     align-items: center;
     gap: 8px;
     padding: 10px 22px;
-    background: rgba(2, 11, 7, 0.85);
+    background: #0e3520;
     border: 1.5px solid #5fe291;
     border-radius: 9999px;
-    box-shadow: 0 0 24px rgba(95, 226, 145, 0.35), 0 8px 30px rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
     color: #e8fff0;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12px;
@@ -104,7 +102,6 @@ const styles = `
     height: 7px;
     border-radius: 50%;
     background: #5fe291;
-    box-shadow: 0 0 8px #5fe291;
     animation: dotPulse 1.2s infinite ease-in-out;
   }
 
