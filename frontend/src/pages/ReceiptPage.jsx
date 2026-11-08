@@ -528,8 +528,8 @@ function drawStrokeLine(ctx, stroke, currentDist, renderW, renderH, offsetX, off
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
-  // 0 = pitch black | 0.5 = tease 1 | 1 = waiting click 2 | 1.5 = tease 2 | 2 = waiting click 3 | 3 = paint spill flowing | 4 = fully revealed
-  const [stage, setStage] = useState(0);
+  // 0 = pitch black (prod reveal) | 4 = fully revealed (dev mode bypass)
+  const [stage, setStage] = useState(4);
   const [copied, setCopied] = useState(false);
 
   // Load real order data from localStorage with graceful fallback
