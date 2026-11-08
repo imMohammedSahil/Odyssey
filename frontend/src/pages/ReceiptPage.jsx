@@ -461,25 +461,29 @@ export default function ReceiptPage() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (waveAlpha > 0 && currentR > 4) {
-          // 2. Center is 100% clear and visible; only the outer extremes (outer 24% rim) are blurred into black
+          // Center is clear & visible; outer extremes carry heavy, pronounced optical blur
           ctx.globalCompositeOperation = "destination-out";
-          ctx.filter = "none";
 
-          const featherStart = currentR * 0.76;
+          const blurPx = Math.max(10, 18 * scale);
+          ctx.filter = `blur(${blurPx}px)`;
+
+          const featherStart = currentR * 0.48;
           const waveGrad = ctx.createRadialGradient(
             originX, originY, featherStart,
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
-          waveGrad.addColorStop(0.65, `rgba(0, 0, 0, ${waveAlpha * 0.52})`);
-          waveGrad.addColorStop(0.86, `rgba(0, 0, 0, ${waveAlpha * 0.20})`);
-          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
+          waveGrad.addColorStop(0.25, `rgba(0, 0, 0, ${waveAlpha * 0.94})`);
+          waveGrad.addColorStop(0.50, `rgba(0, 0, 0, ${waveAlpha * 0.72})`);
+          waveGrad.addColorStop(0.72, `rgba(0, 0, 0, ${waveAlpha * 0.40})`);
+          waveGrad.addColorStop(0.88, `rgba(0, 0, 0, ${waveAlpha * 0.15})`);
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Deep heavy blur at extremes
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, currentR, 0, Math.PI * 2);
           ctx.fill();
+          ctx.filter = "none";
         }
         ctx.restore();
 
