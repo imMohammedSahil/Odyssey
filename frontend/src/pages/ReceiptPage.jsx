@@ -77,10 +77,10 @@ const styles = `
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 2;
-    background: radial-gradient(circle at 55.56% 34.86%, rgba(2, 11, 7, 0.05) 0%, rgba(0, 0, 0, 0.72) 100%);
+    z-index: 4;
+    background: radial-gradient(circle at 55.56% 34.86%, rgba(0, 0, 0, 0) 15%, rgba(2, 10, 6, 0.45) 45%, rgba(0, 0, 0, 0.88) 85%, #000000 100%);
     opacity: 0;
-    transition: opacity 3s ease 1s;
+    transition: opacity 0.4s ease;
   }
 
   .rcpt-bg-vignette.active {
@@ -473,10 +473,10 @@ export default function ReceiptPage() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (waveAlpha > 0 && currentR > 4) {
-          // 2. Carve out with concentrated center & dreamy blurred ends
+          // 2. Carve out with concentrated center & heavy, dreamy optical blur at ends
           ctx.globalCompositeOperation = "destination-out";
 
-          const blurPx = Math.max(4, 7 * scale);
+          const blurPx = Math.max(12, 22 * scale);
           ctx.filter = `blur(${blurPx}px)`;
 
           const waveGrad = ctx.createRadialGradient(
@@ -484,11 +484,12 @@ export default function ReceiptPage() {
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha})`); // Concentrated sharp center
-          waveGrad.addColorStop(0.58, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
-          waveGrad.addColorStop(0.76, `rgba(0, 0, 0, ${waveAlpha * 0.55})`);
-          waveGrad.addColorStop(0.90, `rgba(0, 0, 0, ${waveAlpha * 0.22})`);
-          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Ethereal blur falloff at ends
+          waveGrad.addColorStop(0.20, `rgba(0, 0, 0, ${waveAlpha})`); // Concentrated sharp center
+          waveGrad.addColorStop(0.42, `rgba(0, 0, 0, ${waveAlpha * 0.90})`);
+          waveGrad.addColorStop(0.62, `rgba(0, 0, 0, ${waveAlpha * 0.60})`);
+          waveGrad.addColorStop(0.80, `rgba(0, 0, 0, ${waveAlpha * 0.28})`);
+          waveGrad.addColorStop(0.92, `rgba(0, 0, 0, ${waveAlpha * 0.08})`);
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Deep ethereal blur falloff at ends
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
@@ -513,7 +514,7 @@ export default function ReceiptPage() {
     }
 
     if (stage === 3) {
-      // ✦ CLICK 3: ONE unified wave — concentrated at center, organically blurred at expanding perimeter
+      // ✦ CLICK 3: ONE unified wave — concentrated at center, heavy atmospheric blur at expanding perimeter
       const { originX, originY, scale } = getWandScreenPos(canvas.width, canvas.height);
       const maxCanvasDist = Math.hypot(
         Math.max(originX, canvas.width - originX),
@@ -544,24 +545,24 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out with concentrated center & blurred edge front
+        // 2. Carve out with concentrated center & heavily blurred perimeter
         ctx.globalCompositeOperation = "destination-out";
 
         if (waveR > 4) {
-          const blurPx = Math.max(6, Math.min(18 * scale, waveR * 0.1));
+          const blurPx = Math.max(16, Math.min(32 * scale, waveR * 0.16));
           ctx.filter = `blur(${blurPx}px)`;
 
-          const innerSolidR = Math.max(0, waveR * 0.55);
+          const innerSolidR = Math.max(0, waveR * 0.38);
           const waveGrad = ctx.createRadialGradient(
             originX, originY, innerSolidR,
             originX, originY, waveR
           );
           waveGrad.addColorStop(0, "#000000"); // 100% concentrated core
-          waveGrad.addColorStop(0.35, "#000000");
-          waveGrad.addColorStop(0.65, "rgba(0, 0, 0, 0.88)");
-          waveGrad.addColorStop(0.85, "rgba(0, 0, 0, 0.48)");
-          waveGrad.addColorStop(0.96, "rgba(0, 0, 0, 0.15)");
-          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Soft blurred boundary at ends
+          waveGrad.addColorStop(0.25, "#000000");
+          waveGrad.addColorStop(0.50, "rgba(0, 0, 0, 0.85)");
+          waveGrad.addColorStop(0.72, "rgba(0, 0, 0, 0.48)");
+          waveGrad.addColorStop(0.88, "rgba(0, 0, 0, 0.18)");
+          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Deep blurred boundary
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
@@ -624,7 +625,7 @@ export default function ReceiptPage() {
           {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
 
           {/* Ambient depth vignette */}
-          <div className={`rcpt-bg-vignette ${stage >= 3 ? "active" : ""}`} aria-hidden="true" />
+          <div className={`rcpt-bg-vignette ${stage > 0 ? "active" : ""}`} aria-hidden="true" />
 
           {/* Awwwards Cursor Follower Pill (Shown before third click) */}
           {stage < 3 && (
