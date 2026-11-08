@@ -171,6 +171,7 @@ const styles = `
     padding: 80px 24px 100px;
     background: #000000;
     border-top: none;
+    cursor: default;
   }
 
   .rcpt-card {
@@ -183,6 +184,22 @@ const styles = `
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(95, 226, 145, 0.15);
     color: #e8fff0;
     font-family: 'Plus Jakarta Sans', sans-serif;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    cursor: text;
+  }
+
+  .rcpt-card * {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+  }
+
+  .rcpt-card button,
+  .rcpt-copy-pill,
+  .rcpt-btn-primary {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    cursor: pointer !important;
   }
 
   .rcpt-card-header {
@@ -789,7 +806,7 @@ export default function ReceiptPage() {
         {/* BELOW-THE-FOLD ORDER RECEIPT SECTION (Scroll Down Target) */}
         {stage >= 3 && (
           <section className="rcpt-record-section">
-            <div className="rcpt-card">
+            <div className="rcpt-card" onClick={(e) => e.stopPropagation()}>
               <div className="rcpt-card-header">
                 <span className="rcpt-badge">OFFICIAL DISPATCH DOSSIER</span>
                 <h1 className="rcpt-title">CAMPUS ORDER RECEIPT</h1>
