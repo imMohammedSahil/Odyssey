@@ -59,6 +59,26 @@ const styles = `
     z-index: 5;
   }
 
+  /* Smooth outward environmental floor fade to black on scroll */
+  .rcpt-hero-fold::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 380px;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(1, 6, 3, 0.15) 25%,
+      rgba(1, 6, 3, 0.50) 55%,
+      rgba(0, 0, 0, 0.85) 80%,
+      #000000 100%
+    );
+    pointer-events: none;
+    z-index: 6;
+  }
+
   /* ── ORGANIC PAINT CANVAS MASK (Controls black sheet & reveal waves) ── */
   .rcpt-paint-canvas {
     position: fixed;
@@ -149,10 +169,9 @@ const styles = `
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 24px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, #030d07 35%, #010603 100%);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(95, 226, 145, 0.2);
+    padding: 80px 24px 100px;
+    background: #000000;
+    border-top: none;
   }
 
   .rcpt-card {
