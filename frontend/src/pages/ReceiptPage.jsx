@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&family=Sora:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 
   body, html {
     margin: 0;
@@ -44,24 +44,24 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* Arcane Bloom Expansion from Wand Tip (54.5% X, 36.5% Y) */
+  /* Arcane Bloom Expansion originating precisely from Wand Flame (54.54% X, 36.56% Y) */
   .rcpt-bg-layer.hidden-veil {
-    clip-path: circle(0% at 54.5% 36.5%);
+    clip-path: circle(0% at 54.54% 36.56%);
     opacity: 0;
   }
 
   .rcpt-bg-layer.blooming {
     opacity: 1;
-    clip-path: circle(160% at 54.5% 36.5%);
+    clip-path: circle(160% at 54.54% 36.56%);
     transition: clip-path 2.4s cubic-bezier(0.12, 0.9, 0.25, 1), opacity 0.5s ease-out;
   }
 
   .rcpt-bg-layer.revealed {
-    clip-path: circle(180% at 54.5% 36.5%);
+    clip-path: circle(180% at 54.54% 36.56%);
     opacity: 1;
   }
 
-  /* Ambient light vignette after reveal */
+  /* Ambient depth vignette */
   .rcpt-bg-vignette {
     position: fixed;
     inset: 0;
@@ -69,7 +69,7 @@ const styles = `
     height: 100%;
     pointer-events: none;
     z-index: 2;
-    background: radial-gradient(circle at 54.5% 36.5%, rgba(2, 11, 7, 0.1) 0%, rgba(0, 0, 0, 0.75) 100%);
+    background: radial-gradient(circle at 54.54% 36.56%, rgba(2, 11, 7, 0.08) 0%, rgba(0, 0, 0, 0.75) 100%);
     opacity: 0;
     transition: opacity 2s ease;
   }
@@ -78,51 +78,79 @@ const styles = `
     opacity: 1;
   }
 
-  /* ── WAND SPARK TEASE (CLICK 1) ── */
-  .wand-spark-flare {
+  /* ── REALISTIC ORGANIC WAND SPARK FLAME (CLICK 1) ── */
+  .wand-spark-layer {
     position: fixed;
-    left: 54.5%;
-    top: 36.5%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: 10;
-    border-radius: 50%;
-    animation: sparkFlash 0.75s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+    pointer-events: none;
+    overflow: hidden;
+    contain: strict;
   }
 
-  @keyframes sparkFlash {
+  .wand-spark-layer.tease {
+    animation: realisticFlameTease 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .wand-spark-layer.ignited {
+    opacity: 1;
+    animation: flamePulse 2s infinite ease-in-out;
+  }
+
+  .wand-spark-vector {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  @keyframes realisticFlameTease {
     0% {
-      width: 0px;
-      height: 0px;
       opacity: 0;
-      background: radial-gradient(circle, #ffffff 0%, #72ffa5 40%, rgba(35, 185, 90, 0) 70%);
-      box-shadow: 0 0 0px #72ffa5;
+      transform: scale(0.95);
+      filter: brightness(2.2) drop-shadow(0 0 10px #72ffa5);
     }
-    30% {
-      width: 180px;
-      height: 180px;
+    18% {
       opacity: 1;
-      background: radial-gradient(circle, #ffffff 0%, #72ffa5 45%, rgba(35, 185, 90, 0.4) 70%, transparent 100%);
-      box-shadow: 0 0 60px #5fe291, 0 0 120px #229c52;
+      transform: scale(1.02);
+      filter: brightness(1.7) drop-shadow(0 0 35px #5fe291);
     }
-    60% {
-      width: 190px;
-      height: 190px;
-      opacity: 0.85;
+    38% {
+      opacity: 0.9;
+      transform: scale(0.99);
+      filter: brightness(1.3) drop-shadow(0 0 20px #5fe291);
+    }
+    55% {
+      opacity: 0.95;
+      transform: scale(1.01);
+      filter: brightness(1.5) drop-shadow(0 0 30px #72ffa5);
     }
     100% {
-      width: 60px;
-      height: 60px;
       opacity: 0;
-      box-shadow: 0 0 0px transparent;
+      transform: scale(0.96);
+      filter: brightness(0.6) drop-shadow(0 0 0px transparent);
+    }
+  }
+
+  @keyframes flamePulse {
+    0%, 100% {
+      filter: brightness(1.2) drop-shadow(0 0 25px rgba(114, 255, 165, 0.6));
+    }
+    50% {
+      filter: brightness(1.5) drop-shadow(0 0 45px rgba(95, 226, 145, 0.9));
     }
   }
 
   /* ── COLOR EXPANSION WAVE (CLICK 2) ── */
   .wand-bloom-wave {
     position: fixed;
-    left: 54.5%;
-    top: 36.5%;
+    left: 54.54%;
+    top: 36.56%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 5;
@@ -138,7 +166,7 @@ const styles = `
       border: 4px solid #ffffff;
       box-shadow: 0 0 40px #72ffa5, inset 0 0 20px #5fe291;
     }
-    40% {
+    35% {
       opacity: 0.9;
       border: 6px solid #72ffa5;
       box-shadow: 0 0 90px #5fe291, 0 0 160px #1d6d44;
@@ -264,19 +292,19 @@ export default function ReceiptPage() {
     if (e.target.closest(".rcpt-nav-back")) return;
 
     if (stage === 0) {
-      // ✦ FIRST CLICK: Flash brief spark at wand tip, then back to pitch black
+      // ✦ FIRST CLICK: Organic vector flame flares precisely at wand tip, then dims to black
       setShowSpark(true);
       setSparkKey((prev) => prev + 1);
       setTimeout(() => {
         setShowSpark(false);
         setStage(1); // Ready for click 2
-      }, 750);
+      }, 950);
     } else if (stage === 1) {
-      // ✦ SECOND CLICK: Wand ignites, color bloom expands outward like a painting
+      // ✦ SECOND CLICK: Flame ignites & color bloom paints outward from the wand
       setStage(2);
       setTimeout(() => {
         setStage(3); // Fully painted & revealed
-      }, 2500);
+      }, 2400);
     }
   };
 
@@ -305,8 +333,27 @@ export default function ReceiptPage() {
         {/* Ambient depth vignette */}
         <div className={`rcpt-bg-vignette ${stage >= 2 ? "active" : ""}`} aria-hidden="true" />
 
-        {/* Click 1: Brief Wand Spark Flare */}
-        {showSpark && <div key={sparkKey} className="wand-spark-flare" aria-hidden="true" />}
+        {/* Click 1: Precise Organic Vector Flame Tease at Wand Tip */}
+        {showSpark && (
+          <div key={sparkKey} className="wand-spark-layer tease" aria-hidden="true">
+            <img
+              src="/wand-spark-flame.svg"
+              alt="Organic Wand Spark Flame"
+              className="wand-spark-vector"
+            />
+          </div>
+        )}
+
+        {/* Click 2+: Permanent Vector Flame Anchor while blooming */}
+        {stage >= 2 && (
+          <div className="wand-spark-layer ignited" aria-hidden="true">
+            <img
+              src="/wand-spark-flame.svg"
+              alt="Organic Wand Spark Flame"
+              className="wand-spark-vector"
+            />
+          </div>
+        )}
 
         {/* Click 2: Arcane Color Expansion Shockwave */}
         {stage >= 2 && <div className="wand-bloom-wave" aria-hidden="true" />}
