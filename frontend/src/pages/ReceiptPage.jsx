@@ -425,7 +425,7 @@ export default function ReceiptPage() {
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       if (bgImgRef.current) {
-        bgImgRef.current.style.filter = "blur(18px)";
+        bgImgRef.current.style.filter = "blur(24px)";
       }
       return () => window.removeEventListener("resize", resizeCanvas);
     }
@@ -458,7 +458,7 @@ export default function ReceiptPage() {
 
         // Dynamically unblur the background image as the reveal expands!
         if (bgImgRef.current) {
-          const blurVal = Math.max(0, (1 - drawProg) * 16 + (1 - waveAlpha) * 16);
+          const blurVal = Math.max(0, (1 - drawProg) * 24 + (1 - waveAlpha) * 24);
           bgImgRef.current.style.filter = blurVal > 0.3 ? `blur(${blurVal.toFixed(1)}px)` : "none";
         }
 
@@ -473,16 +473,14 @@ export default function ReceiptPage() {
         if (waveAlpha > 0 && currentR > 4) {
           ctx.globalCompositeOperation = "destination-out";
 
-          // Feathered perimeter so the portal fades cleanly into black
-          const featherStart = currentR * 0.72;
+          // Fixed, sharp circular boundary (anti-aliased 3px edge, not a spreaded vignette)
+          const featherStart = Math.max(0, currentR - 3);
           const waveGrad = ctx.createRadialGradient(
             originX, originY, featherStart,
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.35, `rgba(0, 0, 0, ${waveAlpha * 0.88})`);
-          waveGrad.addColorStop(0.68, `rgba(0, 0, 0, ${waveAlpha * 0.50})`);
-          waveGrad.addColorStop(0.88, `rgba(0, 0, 0, ${waveAlpha * 0.18})`);
+          waveGrad.addColorStop(0.85, `rgba(0, 0, 0, ${waveAlpha})`);
           waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
@@ -495,7 +493,7 @@ export default function ReceiptPage() {
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateTease);
         } else {
-          if (bgImgRef.current) bgImgRef.current.style.filter = "blur(18px)";
+          if (bgImgRef.current) bgImgRef.current.style.filter = "blur(24px)";
           setStage(stage === 0.5 ? 1 : 2);
         }
       };
@@ -522,9 +520,9 @@ export default function ReceiptPage() {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Dynamically unblur the background image from 18px down to 0px!
+        // Dynamically unblur the background image from 24px down to 0px!
         if (bgImgRef.current) {
-          const blurVal = Math.max(0, (1 - progress) * 18);
+          const blurVal = Math.max(0, (1 - progress) * 24);
           bgImgRef.current.style.filter = blurVal > 0.2 ? `blur(${blurVal.toFixed(1)}px)` : "none";
         }
 
@@ -545,17 +543,17 @@ export default function ReceiptPage() {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Carve out to reveal pure, crystal-clear artwork
+        // 2. Carve out to reveal pure, crystal-clear artwork with crisp leading edge
         ctx.globalCompositeOperation = "destination-out";
 
         if (waveR > 4) {
-          const featherW = Math.min(35 * scale, waveR * 0.25);
+          const featherW = Math.min(6 * scale, waveR * 0.05);
           const waveGrad = ctx.createRadialGradient(
             originX, originY, Math.max(0, waveR - featherW),
             originX, originY, waveR
           );
           waveGrad.addColorStop(0, "#000000"); // 100% revealed artwork
-          waveGrad.addColorStop(0.75, "rgba(0, 0, 0, 0.9)");
+          waveGrad.addColorStop(0.85, "#000000");
           waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
