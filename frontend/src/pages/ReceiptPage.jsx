@@ -6,36 +6,60 @@ const styles = `
 
   .rcpt-root {
     min-height: 100vh;
-    background: #0d0d10;
+    background: #020b07;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     font-family: 'Sora', sans-serif;
     padding: 40px 16px 60px;
     position: relative;
+    overflow-x: hidden;
   }
 
-  .rcpt-root::before {
-    content: '';
+  /* ── 100% PURE VECTOR BACKDROP ── */
+  .rcpt-bg-layer {
     position: fixed;
-    top: -30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 700px;
-    height: 500px;
-    background: radial-gradient(ellipse, rgba(109, 86, 210, 0.07) 0%, transparent 70%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: #020b07;
+    contain: strict;
+  }
+
+  .rcpt-bg-vector {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  /* Ambient light overlay for natural UI integration */
+  .rcpt-bg-vignette {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(2, 11, 7, 0.25) 0%, rgba(2, 11, 7, 0.72) 100%);
   }
 
   .rcpt-card {
     width: 100%;
     max-width: 500px;
-    background: #13131a;
-    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(13, 21, 17, 0.90);
+    border: 1.5px solid rgba(95, 226, 145, 0.22);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(109,86,210,0.07);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.75), 0 0 0 1px rgba(95, 226, 145, 0.12);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     position: relative;
     z-index: 1;
     animation: rcptFadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -375,9 +399,19 @@ export default function ReceiptPage() {
       <>
         <style>{styles}</style>
         <div className="rcpt-root">
+          {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
+          <div className="rcpt-bg-layer" aria-hidden="true">
+            <img
+              src="/wizard-enchanted-greenlight.svg"
+              alt="Enchanted Greenlight Pure Vector Backdrop"
+              className="rcpt-bg-vector"
+            />
+          </div>
+          <div className="rcpt-bg-vignette" aria-hidden="true" />
+
           <div className="rcpt-card">
             <div className="rcpt-body">
-              <h2 style={{ color: "#5a5870", fontFamily: "'Sora', sans-serif", textAlign: "center", padding: "20px 0" }}>
+              <h2 style={{ color: "#a8d8ba", fontFamily: "'Sora', sans-serif", textAlign: "center", padding: "20px 0" }}>
                 No receipt found.
               </h2>
             </div>
@@ -394,6 +428,16 @@ export default function ReceiptPage() {
     <>
       <style>{styles}</style>
       <div className="rcpt-root">
+        {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
+        <div className="rcpt-bg-layer" aria-hidden="true">
+          <img
+            src="/wizard-enchanted-greenlight.svg"
+            alt="Enchanted Greenlight Pure Vector Backdrop"
+            className="rcpt-bg-vector"
+          />
+        </div>
+        <div className="rcpt-bg-vignette" aria-hidden="true" />
+
         <div className="rcpt-card">
 
           {/* Success Banner */}
