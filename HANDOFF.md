@@ -8,7 +8,7 @@
   1. **Writing Essentials**: `/writing` ([Writing.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Writing.jsx), backdrop: `/halloween-reference-landscape.svg`) — *Toxic Lime & Seafoam Green*
   2. **Correction & Marking**: `/stationery/correction` ([Correction.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Correction.jsx), backdrop: `/correction-landscape.svg`) — *Twilight Purple & Pumpkin Orange*
   3. **Paper & Reams**: `/stationery/paper` and `/paper` ([Paper.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/Paper.jsx), backdrop: `/paper-landscape.svg`) — *Midnight Slate & Electric Cyan*
-  4. **Payment Gateway & Checkout**: `/payment` ([PaymentPage.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/PaymentPage.jsx), backdrop: `/graveyard-gate-landscape.svg?v=22`) — *Gothic Steel Slate, Void Black & Fiery Crimson*
+  4. **Payment Gateway & Checkout**: `/payment` ([PaymentPage.jsx](file:///c:/Holidays/Odyssey/frontend/src/pages/PaymentPage.jsx), backdrop: `/graveyard-gate-landscape.svg?v=23`) — *Gothic Steel Slate, Void Black & Fiery Crimson*
 
 ---
 
@@ -26,7 +26,7 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 | **Category Switcher** | Centered hero title (`Titan One`, `34px`) with pill tabs directly beneath it (`tab1`, `tab2`, `tab3`). Active tab gets solid accent background with black text. |
 
 ### Payment Page Terminal Architecture (`/payment`)
-- **Vector Backdrop**: Gothic church in fog, winding moonlit cobblestone road, skull lantern post with fiery red glow, and pure `#0D0D0D` Void Black framing (`/graveyard-gate-landscape.svg?v=22`).
+- **Vector Backdrop**: Gothic church in fog, winding moonlit cobblestone road, skull lantern post with fiery red glow, and pure `#0D0D0D` Void Black framing (`/graveyard-gate-landscape.svg?v=23`).
 - **Central Neo-Brutalist Terminal**:
   - Locked 440px glass card (`rgba(20, 27, 32, 0.93)`), `4px solid #0D0D0D`, `8px 8px 0px #0D0D0D` hard shadow, `backdrop-filter: blur(20px)`.
 - **Order Dossier**: Item count badge + `₹{total}` formatted in `Archivo Black, 'Plus Jakarta Sans', sans-serif`.
@@ -102,7 +102,7 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
    - `Archivo Black` lacks the Indian Rupee (`₹`) glyph.
    - Always define font fallbacks as: `font-family: 'Archivo Black', 'Plus Jakarta Sans', sans-serif;` so the Rupee symbol renders cleanly without substitution glitches.
 5. **Asset Cache Busting**:
-   - Always append version queries to SVG image backdrops in React (e.g. `src="/graveyard-gate-landscape.svg?v=22"`).
+   - Always append version queries to SVG image backdrops in React (e.g. `src="/graveyard-gate-landscape.svg?v=23"`).
 
 ---
 
