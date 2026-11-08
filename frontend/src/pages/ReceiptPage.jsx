@@ -70,21 +70,9 @@ const styles = `
     display: block;
   }
 
-  /* Ambient depth vignette */
+  /* Ambient depth vignette (disabled to keep pristine solid contrast) */
   .rcpt-bg-vignette {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 4;
-    background: radial-gradient(circle at 55.56% 34.86%, rgba(0, 0, 0, 0) 15%, rgba(2, 10, 6, 0.45) 45%, rgba(0, 0, 0, 0.88) 85%, #000000 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .rcpt-bg-vignette.active {
-    opacity: 1;
+    display: none;
   }
 
   /* ── AWWWARDS MAGNETIC CURSOR FOLLOWER PILL ── */
@@ -473,29 +461,23 @@ export default function ReceiptPage() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         if (waveAlpha > 0 && currentR > 4) {
-          // 2. Carve out with concentrated center & heavy, dreamy optical blur at ends
+          // 2. Clean, fixed circular border — no hazy spread-out blur
           ctx.globalCompositeOperation = "destination-out";
+          ctx.filter = "none";
 
-          const blurPx = Math.max(12, 22 * scale);
-          ctx.filter = `blur(${blurPx}px)`;
-
+          // Crisp, fixed circular edge with a subtle 3px anti-aliased perimeter
+          const edgeFeather = Math.min(3 * scale, 3);
           const waveGrad = ctx.createRadialGradient(
-            originX, originY, 0,
+            originX, originY, Math.max(0, currentR - edgeFeather),
             originX, originY, currentR
           );
           waveGrad.addColorStop(0, `rgba(0, 0, 0, ${waveAlpha})`);
-          waveGrad.addColorStop(0.20, `rgba(0, 0, 0, ${waveAlpha})`); // Concentrated sharp center
-          waveGrad.addColorStop(0.42, `rgba(0, 0, 0, ${waveAlpha * 0.90})`);
-          waveGrad.addColorStop(0.62, `rgba(0, 0, 0, ${waveAlpha * 0.60})`);
-          waveGrad.addColorStop(0.80, `rgba(0, 0, 0, ${waveAlpha * 0.28})`);
-          waveGrad.addColorStop(0.92, `rgba(0, 0, 0, ${waveAlpha * 0.08})`);
-          waveGrad.addColorStop(1.0, "rgba(0, 0, 0, 0)"); // Deep ethereal blur falloff at ends
+          waveGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
 
           ctx.fillStyle = waveGrad;
           ctx.beginPath();
           ctx.arc(originX, originY, currentR, 0, Math.PI * 2);
           ctx.fill();
-          ctx.filter = "none";
         }
         ctx.restore();
 
