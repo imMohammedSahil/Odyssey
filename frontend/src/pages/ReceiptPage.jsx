@@ -312,16 +312,15 @@ export default function ReceiptPage() {
         droplets.push({ angle, distRatio, radius, delay: Math.random() * 0.4 });
       }
 
-      const durationMs = 7200; // 7.2s smooth painterly flow
+      const durationMs = 16000; // 16s ultra-slow painterly liquid creep
       const startTime = performance.now();
 
       const animateSpill = (now) => {
         const elapsed = now - startTime;
         const progress = Math.min(1.0, elapsed / durationMs);
 
-        // Natural liquid deceleration curve: fast initial spill, gentle creeping finish
-        // Cubic ease-out
-        const ease = 1 - Math.pow(1 - progress, 2.6);
+        // Smooth liquid crawl curve: slow organic expansion across 16 seconds
+        const ease = 1 - Math.pow(1 - progress, 2.2);
 
         // 1. Redraw black sheet
         ctx.save();
