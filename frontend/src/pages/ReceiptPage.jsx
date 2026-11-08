@@ -167,8 +167,8 @@ const styles = `
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 60px 16px 90px;
+    justify-content: flex-start;
+    padding: 140px 16px 120px;
     background: #000000;
     cursor: default;
   }
@@ -177,6 +177,7 @@ const styles = `
     position: relative;
     width: 100%;
     max-width: 580px;
+    margin-top: 20px;
     aspect-ratio: 683 / 1024;
     user-select: text !important;
     -webkit-user-select: text !important;
