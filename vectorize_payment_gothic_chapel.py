@@ -103,29 +103,29 @@ def build_accurate_gothic_chapel_svg():
     </linearGradient>
 
     <!-- Multi-tiered Realistic Lantern Illumination -->
-    <!-- 1. Outer Atmospheric Red Mist Halo (Organic scattering in fog, r=68) -->
-    <radialGradient id="lanternMistHalo" cx="755" cy="405" r="68" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FF5A36" stop-opacity="0.75" />
-      <stop offset="35%" stop-color="#E62E18" stop-opacity="0.48" />
-      <stop offset="65%" stop-color="#A81C0E" stop-opacity="0.22" />
-      <stop offset="85%" stop-color="#6B0E07" stop-opacity="0.06" />
-      <stop offset="100%" stop-color="#6B0E07" stop-opacity="0" />
+    <!-- 1. Outer Atmospheric Red Mist Halo (Organic scattering in fog, r=72) -->
+    <radialGradient id="lanternMistHalo" cx="755" cy="405" r="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF5226" stop-opacity="0.85" />
+      <stop offset="30%" stop-color="#E62810" stop-opacity="0.65" />
+      <stop offset="60%" stop-color="#A8190A" stop-opacity="0.35" />
+      <stop offset="85%" stop-color="#6B0E06" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#6B0E06" stop-opacity="0" />
     </radialGradient>
 
-    <!-- 2. Vibrant Inner Core Flame & Glass Glow (Incandescent core, r=36) -->
-    <radialGradient id="lanternCoreGlow" cx="755" cy="405" r="36" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFF2A3" stop-opacity="1.0" />
-      <stop offset="20%" stop-color="#FFA834" stop-opacity="0.95" />
-      <stop offset="50%" stop-color="#FF3814" stop-opacity="0.85" />
-      <stop offset="80%" stop-color="#C41408" stop-opacity="0.5" />
+    <!-- 2. Vibrant Inner Core Flame & Glass Glow (Incandescent core, r=40) -->
+    <radialGradient id="lanternCoreGlow" cx="755" cy="405" r="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF6B8" stop-opacity="1.0" />
+      <stop offset="20%" stop-color="#FFA62B" stop-opacity="0.95" />
+      <stop offset="48%" stop-color="#FF3814" stop-opacity="0.90" />
+      <stop offset="78%" stop-color="#CC1608" stop-opacity="0.65" />
       <stop offset="100%" stop-color="#7A0B04" stop-opacity="0" />
     </radialGradient>
 
     <!-- 3. Ground Cast Light on Cobblestones Beneath Lantern -->
-    <radialGradient id="lanternGroundCast" cx="755" cy="446" rx="46" ry="16" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FF552B" stop-opacity="0.6" />
-      <stop offset="45%" stop-color="#CC2412" stop-opacity="0.3" />
-      <stop offset="80%" stop-color="#730E06" stop-opacity="0.08" />
+    <radialGradient id="lanternGroundCast" cx="755" cy="446" rx="52" ry="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF4C1C" stop-opacity="0.70" />
+      <stop offset="45%" stop-color="#CC2410" stop-opacity="0.38" />
+      <stop offset="80%" stop-color="#730E06" stop-opacity="0.10" />
       <stop offset="100%" stop-color="#730E06" stop-opacity="0" />
     </radialGradient>
 
@@ -216,27 +216,27 @@ def build_accurate_gothic_chapel_svg():
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
 
-    # Layer 6: Realistic Multi-tiered Lantern Illumination & Ground Cast
-    svg_layers.append('  <!-- Layer 6: Realistic Atmospheric Lantern Glows -->')
+    # Layer 6: Deep Gothic Shadow Slate, Church Under-eaves, Wall & Shingles (gray < 112)
+    # Renders background masonry before optical light sources
+    m4 = (gray < 112).astype(np.uint8) * 255
+    m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
+    p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
+    if p4:
+        svg_layers.append(f'  <!-- Layer 6: Deep Gothic Shadow Slate, Church Wall & Under-eaves (#141A1E) -->\n  <path d="{" ".join(p4)}" fill="#141A1E" />')
+
+    # Layer 7: Realistic Multi-tiered Lantern Illumination & Ground Cast (Shining on top of scenery)
+    svg_layers.append('  <!-- Layer 7: Realistic Multi-tiered Atmospheric Lantern Glows -->')
     svg_layers.append('  <!-- 1. Outer Atmospheric Mist Scattering Halo -->')
-    svg_layers.append('  <circle cx="755" cy="405" r="68" fill="url(#lanternMistHalo)" />')
+    svg_layers.append('  <circle cx="755" cy="405" r="72" fill="url(#lanternMistHalo)" />')
     svg_layers.append('  <!-- 2. Downward Ground Cast Light on Cobblestones -->')
-    svg_layers.append('  <ellipse cx="755" cy="446" rx="46" ry="16" fill="url(#lanternGroundCast)" />')
+    svg_layers.append('  <ellipse cx="755" cy="446" rx="52" ry="18" fill="url(#lanternGroundCast)" />')
     svg_layers.append('  <!-- 3. Incandescent Inner Core Flame & Glass Glow -->')
-    svg_layers.append('  <circle cx="755" cy="405" r="36" fill="url(#lanternCoreGlow)" />')
+    svg_layers.append('  <circle cx="755" cy="405" r="40" fill="url(#lanternCoreGlow)" />')
     svg_layers.append('  <circle cx="348" cy="385" r="52" fill="url(#bloomLanternLeft)" />')
     svg_layers.append('  <circle cx="505" cy="318" r="32" fill="url(#bloomChurchDoor)" />')
     svg_layers.append('  <circle cx="414" cy="342" r="22" fill="url(#bloomShrineAperture)" />')
     svg_layers.append('  <circle cx="651" cy="77" r="26" fill="url(#bloomTowerBelfry)" />')
     svg_layers.append('  <circle cx="658" cy="315" r="18" fill="url(#bloomTowerWindow)" />')
-
-    # Layer 7: Deep Gothic Shadow Slate, Church Under-eaves, Wall & Shingles (gray < 112)
-    # Renders in ultra-deep gothic dark slate (#141A1E - dark, seamlessly matching church masonry)
-    m4 = (gray < 112).astype(np.uint8) * 255
-    m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
-    p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
-    if p4:
-        svg_layers.append(f'  <!-- Layer 7: Deep Gothic Shadow Slate, Church Wall & Under-eaves (#141A1E) -->\n  <path d="{" ".join(p4)}" fill="#141A1E" />')
 
     # Layer 8: Intense Glowing Cores & Flames
     p_red = extract_paths(red_cores, min_area=4, approx_eps=0.35)
