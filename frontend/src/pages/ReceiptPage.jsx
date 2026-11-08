@@ -301,7 +301,7 @@ export default function ReceiptPage() {
         rays.push({ theta, speedVar });
       }
 
-      const durationMs = 16000; // 16s ultra-slow painterly liquid creep
+      const durationMs = 9500; // 9.5s smooth, engaging painterly flow
       const startTime = performance.now();
 
       const animateSpill = (now) => {
