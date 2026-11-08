@@ -58,7 +58,7 @@ const styles = `
     object-fit: cover;
     object-position: center center;
     display: block;
-    filter: brightness(1.05) contrast(1.02);
+    filter: brightness(1.08) contrast(1.02);
   }
 
   /* Ambient light overlay for extra depth */
@@ -464,7 +464,7 @@ export default function PaymentPage() {
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img
-            src="/graveyard-gate-landscape.svg?v=24"
+            src="/graveyard-gate-landscape.svg?v=25"
             alt="Checkout Gate Pure Vector Landscape"
             className="pay-bg-vector"
           />

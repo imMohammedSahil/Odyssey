@@ -96,10 +96,10 @@ def build_accurate_gothic_chapel_svg():
     defs = '''  <defs>
     <!-- Misty Gothic Night Atmosphere Gradient (Deep Moonlit Midnight) -->
     <linearGradient id="gothicFogSky" x1="0" y1="0" x2="0" y2="100%">
-      <stop offset="0%" stop-color="#445159" />
-      <stop offset="35%" stop-color="#55636C" />
-      <stop offset="70%" stop-color="#404D54" />
-      <stop offset="100%" stop-color="#273238" />
+      <stop offset="0%" stop-color="#4B5861" />
+      <stop offset="35%" stop-color="#5C6B75" />
+      <stop offset="70%" stop-color="#47555D" />
+      <stop offset="100%" stop-color="#2D3940" />
     </linearGradient>
 
     <!-- Multi-tiered Realistic Lantern Illumination -->
@@ -175,27 +175,27 @@ def build_accurate_gothic_chapel_svg():
     m1 = cv2.morphologyEx(m1, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p1 = extract_paths(m1, min_area=30, approx_eps=0.55)
     if p1:
-        svg_layers.append(f'  <!-- Layer 1: Distant Fog & Treeline Silhouette -->\n  <path d="{" ".join(p1)}" fill="#3C4951" opacity="0.85" />')
+        svg_layers.append(f'  <!-- Layer 1: Distant Fog & Treeline Silhouette -->\n  <path d="{" ".join(p1)}" fill="#44525B" opacity="0.85" />')
 
     # Layer 2: Midground Distant Graveyard Hills & Crosses (gray < 145)
     m2 = (gray < 145).astype(np.uint8) * 255
     m2 = cv2.morphologyEx(m2, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p2 = extract_paths(m2, min_area=25, approx_eps=0.5)
     if p2:
-        svg_layers.append(f'  <!-- Layer 2: Midground Graveyard Hills & Tombstones -->\n  <path d="{" ".join(p2)}" fill="#2D3840" />')
+        svg_layers.append(f'  <!-- Layer 2: Midground Graveyard Hills & Tombstones -->\n  <path d="{" ".join(p2)}" fill="#35424B" />')
 
     # Layer 3: Dark Atmospheric Valley Fog
     natural_mist = (gray >= 88) & (gray < 142) & (y_coords[:h, 0] > 300)[:, None] & (smooth[:, :, 2] > 70)
     p_mist = extract_paths(natural_mist.astype(np.uint8) * 255, min_area=15, approx_eps=0.5)
     if p_mist:
-        svg_layers.append(f'  <!-- Layer 3: Dark Valley Mist -->\n  <path d="{" ".join(p_mist)}" fill="#3F4E56" opacity="0.58" />')
+        svg_layers.append(f'  <!-- Layer 3: Dark Valley Mist -->\n  <path d="{" ".join(p_mist)}" fill="#465761" opacity="0.60" />')
 
     # Layer 4: Church Masonry, Shrine & Solid Ground Contours (gray < 125)
     m3 = (gray < 125).astype(np.uint8) * 255
     m3 = cv2.morphologyEx(m3, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p3 = extract_paths(m3, min_area=20, approx_eps=0.45)
     if p3:
-        svg_layers.append(f'  <!-- Layer 4: Church Masonry & Solid Ground (Deep Moody Slate) -->\n  <path d="{" ".join(p3)}" fill="#1D262C" />')
+        svg_layers.append(f'  <!-- Layer 4: Church Masonry & Solid Ground (Moonlit Slate) -->\n  <path d="{" ".join(p3)}" fill="#253138" />')
 
     # Layer 5 (Part A): Cobblestone Path Highlights & Atmospheric Moonlit Path Glow
     cobble_roi = np.zeros((h, w), dtype=bool)
@@ -207,11 +207,11 @@ def build_accurate_gothic_chapel_svg():
 
     p_cobble_mid = extract_paths(cobble_mid.astype(np.uint8) * 255, min_area=8, approx_eps=0.4)
     if p_cobble_mid:
-        svg_layers.append(f'  <!-- Layer 5A: Cobblestone Path Dark Tint Base -->\n  <path d="{" ".join(p_cobble_mid)}" fill="#455750" />')
+        svg_layers.append(f'  <!-- Layer 5A: Cobblestone Path Dark Tint Base -->\n  <path d="{" ".join(p_cobble_mid)}" fill="#4D6058" />')
 
     p_cobble_bright = extract_paths(cobble_bright.astype(np.uint8) * 255, min_area=6, approx_eps=0.35)
     if p_cobble_bright:
-        svg_layers.append(f'  <!-- Layer 5B: Cobblestone Moonlit Subdued Highlights -->\n  <path d="{" ".join(p_cobble_bright)}" fill="#6F8B82" />')
+        svg_layers.append(f'  <!-- Layer 5B: Cobblestone Moonlit Subdued Highlights -->\n  <path d="{" ".join(p_cobble_bright)}" fill="#7A978E" />')
 
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
@@ -222,7 +222,7 @@ def build_accurate_gothic_chapel_svg():
     m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
     if p4:
-        svg_layers.append(f'  <!-- Layer 6: Deep Gothic Shadow Slate, Church Wall & Under-eaves (#141A1E) -->\n  <path d="{" ".join(p4)}" fill="#141A1E" />')
+        svg_layers.append(f'  <!-- Layer 6: Deep Gothic Shadow Slate, Church Wall & Under-eaves (#1A2227) -->\n  <path d="{" ".join(p4)}" fill="#1A2227" />')
 
     # Layer 7: Realistic Multi-tiered Lantern Illumination & Ground Cast (Shining on top of scenery)
     svg_layers.append('  <!-- Layer 7: Realistic Multi-tiered Atmospheric Lantern Glows -->')
