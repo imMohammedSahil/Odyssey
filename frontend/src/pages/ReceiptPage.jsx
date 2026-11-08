@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
 
   body, html {
     margin: 0;
     padding: 0;
     background: #000000;
     overflow-x: hidden;
+    scroll-behavior: smooth;
   }
 
   .rcpt-root {
@@ -16,9 +17,15 @@ const styles = `
     width: 100vw;
     background: #000000;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     cursor: pointer;
     user-select: none;
+  }
+
+  .rcpt-root.revealed {
+    overflow-y: auto;
+    cursor: default;
   }
 
   /* ── 100% PURE VECTOR BACKDROP ── */
@@ -44,7 +51,15 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* ── ORGANIC PAINT CANVAS MASK (Controls black sheet, Click 1 tease & Click 2 spill) ── */
+  /* Hero Section Fold (100vh) */
+  .rcpt-hero-fold {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    z-index: 5;
+  }
+
+  /* ── ORGANIC PAINT CANVAS MASK (Controls black sheet & reveal waves) ── */
   .rcpt-paint-canvas {
     position: fixed;
     inset: 0;
@@ -136,6 +151,145 @@ const styles = `
     background: #145a37;
     transform: translate(-1px, -1px);
   }
+
+  /* ── BELOW-THE-FOLD COVENANT RECORD SECTION ── */
+  .rcpt-record-section {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, #030d07 35%, #010603 100%);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(95, 226, 145, 0.2);
+  }
+
+  .rcpt-card {
+    max-width: 580px;
+    width: 100%;
+    background: rgba(4, 18, 11, 0.92);
+    border: 1.5px solid #5fe291;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(95, 226, 145, 0.12);
+    color: #e8fff0;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .rcpt-card-header {
+    text-align: center;
+    margin-bottom: 32px;
+    border-bottom: 1px dashed rgba(95, 226, 145, 0.25);
+    padding-bottom: 24px;
+  }
+
+  .rcpt-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(95, 226, 145, 0.12);
+    border: 1px solid #5fe291;
+    border-radius: 9999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #5fe291;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .rcpt-title {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+  }
+
+  .rcpt-subtitle {
+    font-size: 13px;
+    color: #8da496;
+    margin: 0;
+  }
+
+  .rcpt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .rcpt-item-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #608570;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .rcpt-item-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #e8fff0;
+  }
+
+  .rcpt-total-box {
+    background: rgba(2, 10, 6, 0.7);
+    border: 1px solid rgba(95, 226, 145, 0.35);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+  }
+
+  .rcpt-total-label {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a4c9b3;
+  }
+
+  .rcpt-total-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    font-weight: 700;
+    color: #5fe291;
+  }
+
+  .rcpt-actions {
+    display: flex;
+    gap: 14px;
+  }
+
+  .rcpt-btn-primary {
+    flex: 1;
+    padding: 13px 20px;
+    background: #5fe291;
+    color: #020c06;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(95, 226, 145, 0.3);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .rcpt-btn-primary:hover {
+    background: #7ef2aa;
+    transform: translateY(-2px);
+  }
+`;
 `;
 
 function getWandScreenPos(width, height) {
@@ -443,38 +597,94 @@ export default function ReceiptPage() {
   return (
     <>
       <style>{styles}</style>
-      <div className="rcpt-root" onClick={handleScreenClick}>
+      <div className={`rcpt-root ${stage >= 3 ? "revealed" : ""}`} onClick={handleScreenClick}>
         
-        {/* 100% PURE VECTOR BACKDROP */}
-        <div className="rcpt-bg-layer" aria-hidden="true">
-          <img
-            src="/wizard-enchanted-greenlight.svg"
-            alt="Enchanted Greenlight Vector Canvas"
-            className="rcpt-bg-vector"
-          />
+        {/* HERO FOLD (100vh) */}
+        <div className="rcpt-hero-fold">
+          {/* 100% PURE VECTOR BACKDROP */}
+          <div className="rcpt-bg-layer" aria-hidden="true">
+            <img
+              src="/wizard-enchanted-greenlight.svg"
+              alt="Enchanted Greenlight Vector Canvas"
+              className="rcpt-bg-vector"
+            />
+          </div>
+
+          {/* Dynamic Organic Paint Spill Canvas */}
+          {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
+
+          {/* Ambient depth vignette */}
+          <div className={`rcpt-bg-vignette ${stage >= 3 ? "active" : ""}`} aria-hidden="true" />
+
+          {/* Awwwards Cursor Follower Pill (Shown before third click) */}
+          {stage < 3 && (
+            <div ref={cursorRef} className="awwwards-cursor-pill">
+              <span className="awwwards-cursor-dot" />
+              {stage === 0 || stage === 0.5 ? "CLICK TO ENTER" : "CLICK AGAIN"}
+            </div>
+          )}
+
+          {/* Minimal Nav to Return */}
+          <button
+            onClick={() => navigate("/student")}
+            className="rcpt-nav-back"
+          >
+            ← BACK TO HOME
+          </button>
         </div>
 
-        {/* Dynamic Organic Paint Spill Canvas */}
-        {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
+        {/* BELOW-THE-FOLD COVENANT RECORD SECTION (Scroll Down Target) */}
+        {stage >= 3 && (
+          <section className="rcpt-record-section">
+            <div className="rcpt-card">
+              <div className="rcpt-card-header">
+                <span className="rcpt-badge">SACRED COVENANT RECORD</span>
+                <h1 className="rcpt-title">TITHE OF SAFE PASSAGE</h1>
+                <p className="rcpt-subtitle">Inscribed within the arcane ledger of the Citadel</p>
+              </div>
 
-        {/* Ambient depth vignette */}
-        <div className={`rcpt-bg-vignette ${stage >= 3 ? "active" : ""}`} aria-hidden="true" />
+              <div className="rcpt-grid">
+                <div>
+                  <div className="rcpt-item-label">Covenant ID</div>
+                  <div className="rcpt-item-val">#ODY-9428-ARCANE</div>
+                </div>
+                <div>
+                  <div className="rcpt-item-label">Status</div>
+                  <div className="rcpt-item-val" style={{ color: "#5fe291" }}>SEALED &amp; BOUND</div>
+                </div>
+                <div>
+                  <div className="rcpt-item-label">Threshold</div>
+                  <div className="rcpt-item-val">The Wizard's Gate</div>
+                </div>
+                <div>
+                  <div className="rcpt-item-label">Recorded At</div>
+                  <div className="rcpt-item-val">{new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div>
+                </div>
+              </div>
 
-        {/* Awwwards Cursor Follower Pill (Shown before third click) */}
-        {stage < 3 && (
-          <div ref={cursorRef} className="awwwards-cursor-pill">
-            <span className="awwwards-cursor-dot" />
-            {stage === 0 || stage === 0.5 ? "CLICK TO ENTER" : "CLICK AGAIN"}
-          </div>
+              <div className="rcpt-total-box">
+                <span className="rcpt-total-label">Tithe Offering</span>
+                <span className="rcpt-total-val">$66.00 USD</span>
+              </div>
+
+              <div className="rcpt-actions">
+                <button
+                  className="rcpt-btn-primary"
+                  onClick={() => window.print()}
+                >
+                  PRINT COVENANT RECORD
+                </button>
+                <button
+                  className="rcpt-btn-primary"
+                  style={{ background: "#0e3520", color: "#e8fff0", border: "1.5px solid #5fe291" }}
+                  onClick={() => navigate("/student")}
+                >
+                  RETURN TO SANCTUM
+                </button>
+              </div>
+            </div>
+          </section>
         )}
-
-        {/* Minimal Nav to Return */}
-        <button
-          onClick={() => navigate("/student")}
-          className="rcpt-nav-back"
-        >
-          ← BACK TO HOME
-        </button>
       </div>
     </>
   );
