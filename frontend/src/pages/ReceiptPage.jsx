@@ -112,28 +112,33 @@ const styles = `
   @keyframes realisticFlameTease {
     0% {
       opacity: 0;
-      transform: scale(0.95);
-      filter: brightness(2.2) drop-shadow(0 0 10px #72ffa5);
+      transform: scale(0.6);
+      filter: brightness(2.5) drop-shadow(0 0 6px #ffffff);
     }
-    18% {
+    14% {
       opacity: 1;
-      transform: scale(1.02);
-      filter: brightness(1.7) drop-shadow(0 0 35px #5fe291);
+      transform: scale(1.08);
+      filter: brightness(1.9) drop-shadow(0 0 24px #72ffa5);
     }
-    38% {
-      opacity: 0.9;
-      transform: scale(0.99);
-      filter: brightness(1.3) drop-shadow(0 0 20px #5fe291);
+    28% {
+      opacity: 0.88;
+      transform: scale(0.96);
+      filter: brightness(1.4) drop-shadow(0 0 16px #5fe291);
     }
-    55% {
-      opacity: 0.95;
-      transform: scale(1.01);
-      filter: brightness(1.5) drop-shadow(0 0 30px #72ffa5);
+    45% {
+      opacity: 1;
+      transform: scale(1.03);
+      filter: brightness(1.7) drop-shadow(0 0 22px #72ffa5);
+    }
+    65% {
+      opacity: 0.85;
+      transform: scale(0.97);
+      filter: brightness(1.2);
     }
     100% {
       opacity: 0;
-      transform: scale(0.96);
-      filter: brightness(0.6) drop-shadow(0 0 0px transparent);
+      transform: scale(0.78);
+      filter: brightness(0.4) drop-shadow(0 0 0px transparent);
     }
   }
 

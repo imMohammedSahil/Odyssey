@@ -1,30 +1,78 @@
 <svg viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
   <defs>
-    <!-- Tight White-Hot Wand Tip Circular Core Orb -->
-    <radialGradient id="wandTipOrb" cx="929" cy="328" r="52" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
-      <stop offset="30%" stop-color="#FFFFFF" stop-opacity="0.98" />
-      <stop offset="55%" stop-color="#D4FFE0" stop-opacity="0.90" />
-      <stop offset="75%" stop-color="#46F887" stop-opacity="0.65" />
-      <stop offset="90%" stop-color="#14A84D" stop-opacity="0.18" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    <!-- Multi-tiered Realistic Optical Bloom Gradients -->
+    <radialGradient id="sparkHaze" cx="929" cy="328" r="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="25%" stop-color="#E4FFF0" stop-opacity="0.85" />
+      <stop offset="50%" stop-color="#60FFA0" stop-opacity="0.55" />
+      <stop offset="78%" stop-color="#14B052" stop-opacity="0.18" />
+      <stop offset="100%" stop-color="#021C0A" stop-opacity="0.0" />
     </radialGradient>
 
-    <!-- Outer Soft Halo tightly hugging the orb -->
-    <radialGradient id="wandTipOuterHalo" cx="929" cy="328" r="85" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#60FFA0" stop-opacity="0.55" />
-      <stop offset="45%" stop-color="#1EB859" stop-opacity="0.20" />
-      <stop offset="80%" stop-color="#085525" stop-opacity="0.04" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    <radialGradient id="sparkIncandescence" cx="929" cy="328" r="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1.0" />
+      <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.98" />
+      <stop offset="60%" stop-color="#C2FFD8" stop-opacity="0.88" />
+      <stop offset="85%" stop-color="#46F887" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#129E48" stop-opacity="0.0" />
     </radialGradient>
+
+    <!-- Thin Optical Diffraction Rays (Lens Spikes) -->
+    <linearGradient id="rayH" x1="857" y1="328" x2="1001" y2="328" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#46F887" stop-opacity="0.0" />
+      <stop offset="35%" stop-color="#A6FFC8" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="1.0" />
+      <stop offset="65%" stop-color="#A6FFC8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#46F887" stop-opacity="0.0" />
+    </linearGradient>
+
+    <linearGradient id="rayV" x1="929" y1="256" x2="929" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#46F887" stop-opacity="0.0" />
+      <stop offset="35%" stop-color="#A6FFC8" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="1.0" />
+      <stop offset="65%" stop-color="#A6FFC8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#46F887" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- Diagonal cross ray -->
+    <linearGradient id="rayDiag" x1="887" y1="286" x2="971" y2="370" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#46F887" stop-opacity="0.0" />
+      <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.75" />
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#46F887" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- Organic Plasma Bloom Filter -->
+    <filter id="plasmaBloom" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
   </defs>
 
-  <!-- 1. Tight Outer Soft Glow -->
-  <circle cx="929" cy="328" r="85" fill="url(#wandTipOuterHalo)" />
+  <!-- 1. Wooden Wand Tip Contact Silhouette -->
+  <path d="M 916.0,333.0 Q 914.0,334.0 912.5,335.5 Q 911.0,337.0 908.5,338.0 L 906.0,339.0 L 903.5,337.5 L 901.0,336.0 L 900.0,337.0 Q 899.0,338.0 894.0,348.5 Q 889.0,359.0 888.0,360.0 Q 887.0,361.0 884.5,366.5 L 882.0,372.0 L 883.5,373.5 L 885.0,375.0 L 886.0,374.0 Q 887.0,373.0 888.0,371.0 Q 889.0,369.0 891.0,367.0 Q 893.0,365.0 894.5,364.5 L 896.0,364.0 L 896.5,361.0 Q 897.0,358.0 897.5,357.0 Q 898.0,356.0 899.5,354.5 Q 901.0,353.0 902.0,350.5 Q 903.0,348.0 904.0,347.0 L 905.0,346.0 L 906.5,346.5 L 908.0,347.0 L 909.5,345.0 L 911.0,343.0 L 909.5,342.0 L 908.0,341.0 L 909.5,340.5 Q 911.0,340.0 914.5,336.5 L 918.0,333.0 L 918.5,338.5 Q 919.0,344.0 914.5,351.0 Q 910.0,358.0 908.0,360.0 Q 906.0,362.0 901.0,369.5 Q 896.0,377.0 895.5,378.5 Q 895.0,380.0 894.0,381.0 L 893.0,382.0 L 894.0,381.5 L 895.0,381.0 L 895.0,380.5 Q 895.0,380.0 900.5,372.0 Q 906.0,364.0 908.0,362.0 Q 910.0,360.0 914.0,354.0 Q 918.0,348.0 919.0,346.0 Q 920.0,344.0 920.0,339.5 Q 920.0,335.0 919.0,333.5 L 918.0,332.0 L 916.0,333.0 Z M 902.5,339.5 L 904.0,340.0 L 904.5,341.0 L 905.0,342.0 L 904.5,343.0 L 904.0,344.0 L 902.5,344.0 L 901.0,344.0 L 901.0,341.5 L 901.0,339.0 L 902.5,339.5 Z" fill="#020804" stroke="#020804" stroke-width="0.8" />
 
-  <!-- 2. Pure Incandescent Core Orb -->
-  <circle cx="929" cy="328" r="52" fill="url(#wandTipOrb)" />
+  <!-- 2. Optical Volumetric Bloom Halo -->
+  <circle cx="929" cy="328" r="64" fill="url(#sparkHaze)" />
 
-  <!-- 3. Brilliant White-Hot Filament Center -->
-  <circle cx="929" cy="328" r="22" fill="#FFFFFF" opacity="0.98" />
+  <!-- 3. Optical Diffraction Starburst Rays (Subtle lens glare) -->
+  <path d="M 857 328 Q 929 326.2 1001 328 Q 929 329.8 857 328 Z" fill="url(#rayH)" />
+  <path d="M 929 256 Q 927.2 328 929 400 Q 930.8 328 929 256 Z" fill="url(#rayV)" />
+  <path d="M 891 290 L 967 366" stroke="url(#rayDiag)" stroke-width="1.2" stroke-linecap="round" opacity="0.6" />
+  <path d="M 891 366 L 967 290" stroke="url(#rayDiag)" stroke-width="1.2" stroke-linecap="round" opacity="0.6" />
+
+  <!-- 4. Real Organic Plasma Corona Filaments from Artwork -->
+  <path d="M 900.5,365.5 L 899.0,367.0 L 900.5,366.5 L 902.0,366.0 L 902.0,365.0 L 902.0,364.0 L 900.5,365.5 Z M 888.0,347.0 Q 888.0,350.0 887.5,351.5 Q 887.0,353.0 884.5,357.0 L 882.0,361.0 L 883.0,362.5 L 884.0,364.0 L 885.0,361.5 Q 886.0,359.0 887.0,358.0 Q 888.0,357.0 889.0,355.0 Q 890.0,353.0 890.0,351.0 L 890.0,349.0 L 890.0,350.0 L 890.0,351.0 L 889.0,352.0 L 888.0,353.0 L 887.5,352.0 Q 887.0,351.0 887.5,347.5 L 888.0,344.0 L 888.0,347.0 Z M 914.0,340.0 L 912.0,342.0 L 913.0,341.5 L 914.0,341.0 L 915.0,342.0 L 916.0,343.0 L 915.0,344.0 Q 914.0,345.0 912.5,345.5 Q 911.0,346.0 910.5,346.5 Q 910.0,347.0 909.5,348.0 Q 909.0,349.0 909.0,350.5 L 909.0,352.0 L 907.0,354.0 L 905.0,356.0 L 906.5,357.0 L 908.0,358.0 L 912.5,351.0 Q 917.0,344.0 917.0,343.0 Q 917.0,342.0 916.5,340.0 L 916.0,338.0 L 914.0,340.0 Z M 895.0,336.0 Q 894.0,336.0 893.0,336.5 Q 892.0,337.0 891.0,338.0 L 890.0,339.0 L 891.0,338.0 L 892.0,337.0 L 893.0,338.0 L 894.0,339.0 L 892.5,340.5 Q 891.0,342.0 891.0,344.0 L 891.0,346.0 L 891.0,344.0 L 891.0,342.0 L 893.0,340.5 Q 895.0,339.0 895.5,337.5 L 896.0,336.0 L 895.0,336.0 Z M 974.5,331.0 Q 973.0,331.0 971.5,331.5 L 970.0,332.0 L 969.5,331.5 L 969.0,331.0 L 966.5,332.0 Q 964.0,333.0 963.0,334.0 Q 962.0,335.0 960.0,335.5 L 958.0,336.0 L 959.0,336.0 L 960.0,336.0 L 960.5,336.5 L 961.0,337.0 L 962.0,337.0 Q 963.0,337.0 964.5,336.5 Q 966.0,336.0 971.0,333.5 L 976.0,331.0 L 974.5,331.0 Z M 912.5,331.5 L 908.0,336.0 L 909.0,335.0 L 910.0,334.0 L 911.0,334.0 L 912.0,334.0 L 914.5,330.5 L 917.0,327.0 L 912.5,331.5 Z M 982.0,322.0 Q 978.0,326.0 977.0,326.5 L 976.0,327.0 L 977.0,326.5 L 978.0,326.0 L 979.0,327.0 L 980.0,328.0 L 979.0,329.0 L 978.0,330.0 L 979.0,329.5 Q 980.0,329.0 983.0,326.0 Q 986.0,323.0 986.0,320.5 L 986.0,318.0 L 982.0,322.0 Z M 929.0,318.0 Q 926.0,321.0 925.5,321.0 Q 925.0,321.0 923.5,322.5 L 922.0,324.0 L 923.0,324.0 L 924.0,324.0 L 924.5,322.5 L 925.0,321.0 L 926.5,321.0 L 928.0,321.0 L 930.0,318.0 L 932.0,315.0 L 929.0,318.0 Z M 973.0,300.0 L 970.0,303.0 L 972.0,302.5 L 974.0,302.0 L 973.0,301.5 L 972.0,301.0 L 974.0,299.0 L 976.0,297.0 L 973.0,300.0 Z M 958.5,283.0 L 957.0,284.0 L 957.5,284.5 L 958.0,285.0 L 956.5,285.5 L 955.0,286.0 L 955.5,287.0 L 956.0,288.0 L 957.0,288.0 L 958.0,288.0 L 958.0,286.5 Q 958.0,285.0 959.0,283.5 L 960.0,282.0 L 958.5,283.0 Z M 954.5,277.0 L 955.0,278.0 L 954.5,278.5 L 954.0,279.0 L 955.5,280.0 L 957.0,281.0 L 956.5,279.5 Q 956.0,278.0 955.0,277.0 L 954.0,276.0 L 954.5,277.0 Z" fill="#54F68C" opacity="0.9" filter="url(#plasmaBloom)" fill-rule="evenodd" />
+
+  <!-- 5. Incandescent Core Bloom -->
+  <circle cx="929" cy="328" r="38" fill="url(#sparkIncandescence)" />
+
+  <!-- 6. Real White-Hot Filaments -->
+  <path d="M 908.0,357.0 L 907.0,358.0 L 906.5,357.0 L 906.0,356.0 L 905.5,357.0 Q 905.0,358.0 904.0,359.0 Q 903.0,360.0 902.5,362.5 Q 902.0,365.0 899.5,368.0 Q 897.0,371.0 896.5,372.0 Q 896.0,373.0 896.0,374.0 L 896.0,375.0 L 896.5,373.5 Q 897.0,372.0 899.0,369.0 Q 901.0,366.0 904.0,362.5 Q 907.0,359.0 907.0,358.5 L 907.0,358.0 L 908.0,357.0 L 909.0,356.0 L 908.0,357.0 Z M 891.5,339.5 L 890.0,340.0 L 889.5,341.5 Q 889.0,343.0 889.0,346.5 Q 889.0,350.0 888.5,351.0 L 888.0,352.0 L 888.5,350.5 Q 889.0,349.0 889.5,348.5 L 890.0,348.0 L 890.0,345.0 Q 890.0,342.0 891.5,340.5 L 893.0,339.0 L 891.5,339.5 Z M 958.5,337.0 Q 957.0,337.0 955.5,338.0 Q 954.0,339.0 952.5,339.5 Q 951.0,340.0 949.5,340.0 Q 948.0,340.0 946.5,340.5 Q 945.0,341.0 942.0,342.5 Q 939.0,344.0 937.0,344.0 L 935.0,344.0 L 939.0,344.0 Q 943.0,344.0 944.5,343.5 Q 946.0,343.0 948.5,341.5 Q 951.0,340.0 953.0,340.0 Q 955.0,340.0 956.5,339.5 Q 958.0,339.0 959.0,338.0 L 960.0,337.0 L 958.5,337.0 Z M 915.0,338.0 L 913.0,340.0 L 914.5,338.5 L 916.0,337.0 L 916.5,339.0 L 917.0,341.0 L 917.0,338.5 L 917.0,336.0 L 915.0,338.0 Z M 977.0,328.0 Q 975.0,328.0 972.5,329.5 L 970.0,331.0 L 971.5,330.5 L 973.0,330.0 L 973.0,331.0 L 973.0,332.0 L 974.5,331.0 Q 976.0,330.0 976.5,330.0 L 977.0,330.0 L 978.0,329.0 L 979.0,328.0 L 977.0,328.0 Z M 981.0,303.5 L 979.0,300.0 L 978.5,301.0 L 978.0,302.0 L 976.5,302.0 L 975.0,302.0 L 974.0,303.0 L 973.0,304.0 L 971.0,303.5 L 969.0,303.0 L 973.0,299.5 L 977.0,296.0 L 976.0,295.0 L 975.0,294.0 L 975.0,293.5 Q 975.0,293.0 972.0,289.5 Q 969.0,286.0 966.5,284.0 Q 964.0,282.0 962.5,281.5 L 961.0,281.0 L 960.0,283.0 L 959.0,285.0 L 959.5,286.0 L 960.0,287.0 L 959.0,288.0 L 958.0,289.0 L 957.5,288.5 L 957.0,288.0 L 955.5,289.5 Q 954.0,291.0 952.5,293.5 Q 951.0,296.0 948.0,299.5 Q 945.0,303.0 935.5,312.5 Q 926.0,322.0 924.0,323.5 Q 922.0,325.0 920.5,325.5 Q 919.0,326.0 914.5,330.5 L 910.0,335.0 L 911.0,334.0 L 912.0,333.0 L 912.5,333.0 L 913.0,333.0 L 914.0,332.0 Q 915.0,331.0 916.5,330.5 L 918.0,330.0 L 919.0,331.0 L 920.0,332.0 L 921.0,332.0 Q 922.0,332.0 923.5,331.5 Q 925.0,331.0 928.5,329.0 Q 932.0,327.0 934.5,326.0 Q 937.0,325.0 939.5,324.5 Q 942.0,324.0 947.0,322.0 Q 952.0,320.0 955.5,318.0 Q 959.0,316.0 970.0,312.5 Q 981.0,309.0 982.0,309.0 L 983.0,309.0 L 983.0,308.0 Q 983.0,307.0 981.0,303.5 Z M 952.0,276.0 L 952.0,277.0 L 952.5,277.5 L 953.0,278.0 L 953.0,279.5 Q 953.0,281.0 954.5,282.5 L 956.0,284.0 L 956.5,283.0 L 957.0,282.0 L 955.0,280.5 L 953.0,279.0 L 953.5,278.5 L 954.0,278.0 L 953.0,276.5 L 952.0,275.0 L 952.0,276.0 Z" fill="#FFFFFF" fill-rule="evenodd" />
+
+  <!-- 7. Central White-Hot Filament Star Core -->
+  <circle cx="929" cy="328" r="14" fill="#FFFFFF" opacity="1.0" />
 </svg>
