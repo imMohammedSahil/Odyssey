@@ -44,20 +44,20 @@ const styles = `
     backface-visibility: hidden;
   }
 
-  /* Arcane Bloom Expansion originating precisely from Wand Flame (54.54% X, 36.56% Y) */
+  /* Arcane Bloom Expansion originating precisely from Wand Flame (55.56% X, 34.86% Y) */
   .rcpt-bg-layer.hidden-veil {
-    clip-path: circle(0% at 54.54% 36.56%);
+    clip-path: circle(0% at 55.56% 34.86%);
     opacity: 0;
   }
 
   .rcpt-bg-layer.blooming {
     opacity: 1;
-    clip-path: circle(160% at 54.54% 36.56%);
+    clip-path: circle(160% at 55.56% 34.86%);
     transition: clip-path 2.4s cubic-bezier(0.12, 0.9, 0.25, 1), opacity 0.5s ease-out;
   }
 
   .rcpt-bg-layer.revealed {
-    clip-path: circle(180% at 54.54% 36.56%);
+    clip-path: circle(180% at 55.56% 34.86%);
     opacity: 1;
   }
 
@@ -69,7 +69,7 @@ const styles = `
     height: 100%;
     pointer-events: none;
     z-index: 2;
-    background: radial-gradient(circle at 54.54% 36.56%, rgba(2, 11, 7, 0.08) 0%, rgba(0, 0, 0, 0.75) 100%);
+    background: radial-gradient(circle at 55.56% 34.86%, rgba(2, 11, 7, 0.08) 0%, rgba(0, 0, 0, 0.75) 100%);
     opacity: 0;
     transition: opacity 2s ease;
   }
@@ -149,8 +149,8 @@ const styles = `
   /* ── COLOR EXPANSION WAVE (CLICK 2) ── */
   .wand-bloom-wave {
     position: fixed;
-    left: 54.54%;
-    top: 36.56%;
+    left: 55.56%;
+    top: 34.86%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 5;

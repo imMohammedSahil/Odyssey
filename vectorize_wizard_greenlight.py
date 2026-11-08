@@ -69,7 +69,7 @@ def build_wizard_svg():
     gray = cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY)
 
     # Coords of focal points
-    wand_x, wand_y = 912, 344
+    wand_x, wand_y = 929, 328
     grimoire_x, grimoire_y = 1347, 813
     door_x, door_y = 1090, 480
 
