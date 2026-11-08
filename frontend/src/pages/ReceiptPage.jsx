@@ -314,7 +314,7 @@ export default function ReceiptPage() {
         rays.push({ theta, speedVar });
       }
 
-      const durationMs = 11000; // 11s total: slow deliberate center reveal, then accelerates outward
+      const durationMs = 7800; // 7.8s: balanced pacing with slow center and accelerated finish
       const startTime = performance.now();
 
       const animateSpill = (now) => {
