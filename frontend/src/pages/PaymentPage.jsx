@@ -13,21 +13,21 @@ const styles = `
   }
 
   :root {
-    --slime-green: #9DE869;
+    --slime-green: #A6C5BB;
     --void-black: #0D0D0D;
-    --seafoam: #45B89E;
-    --hazard-gold: #F7B919;
-    --lantern-yellow: #FDE465;
-    --brain-pink: #FF70A6;
-    --parchment: #F9F9F3;
-    --grave-slate: #1F3C34;
-    --grave-dark: #10211B;
+    --seafoam: #7C9890;
+    --hazard-gold: #FF482B;
+    --lantern-yellow: #FFA84A;
+    --brain-pink: #FF3B2B;
+    --parchment: #F2F5F4;
+    --grave-slate: #2B363C;
+    --grave-dark: #192024;
     --border-dark: #0D0D0D;
   }
 
   .pay-root {
     min-height: 100vh;
-    background-color: #12241D;
+    background-color: #192024;
     color: var(--parchment);
     font-family: 'Plus Jakarta Sans', sans-serif;
     position: relative;
@@ -46,7 +46,7 @@ const styles = `
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
-    background-color: #336F5F;
+    background-color: #4C585E;
   }
 
   .pay-bg-vector {
@@ -62,7 +62,7 @@ const styles = `
   .pay-bg-vignette {
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at 50% 20%, transparent 40%, rgba(10, 20, 16, 0.45) 85%);
+    background: radial-gradient(circle at 50% 20%, transparent 40%, rgba(13, 17, 20, 0.5) 85%);
     pointer-events: none;
     z-index: 1;
   }
@@ -180,7 +180,7 @@ const styles = `
   }
 
   .pay-dock {
-    background: rgba(16, 33, 27, 0.92);
+    background: rgba(22, 29, 34, 0.94);
     border: 3.5px solid var(--border-dark);
     border-radius: 14px;
     box-shadow: 6px 6px 0px var(--border-dark);
@@ -273,7 +273,7 @@ const styles = `
   .pay-dock-confirm-btn:hover:not(:disabled) {
     transform: translate(2px, 2px);
     box-shadow: 2px 2px 0px var(--border-dark);
-    background: #ff85b3;
+    background: #FF5445;
   }
 
   .pay-dock-confirm-btn:disabled {
@@ -471,7 +471,7 @@ export default function PaymentPage() {
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img
-            src="/graveyard-gate-landscape.svg?v=5"
+            src="/graveyard-gate-landscape.svg?v=11"
             alt="Checkout Gate Pure Vector Landscape"
             className="pay-bg-vector"
           />
