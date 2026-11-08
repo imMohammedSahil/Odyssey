@@ -178,9 +178,9 @@ const styles = `
   .ritual-shrine-stage {
     position: relative;
     width: 100%;
-    max-width: 580px;
+    max-width: 600px;
     aspect-ratio: 935 / 1024;
-    max-height: 74vh;
+    max-height: 78vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -347,95 +347,6 @@ const styles = `
     background: rgba(217, 59, 47, 0.08);
   }
 
-  /* ── BOTTOM TRIBUTE CONTROL BAR ── */
-  .ritual-tribute-bar {
-    width: 100%;
-    max-width: 620px;
-    background: rgba(17, 24, 28, 0.94);
-    border: 3.5px solid var(--border-dark);
-    border-radius: 14px;
-    box-shadow: 6px 6px 0px var(--border-dark);
-    padding: 12px 18px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    backdrop-filter: blur(14px);
-    margin-top: 6px;
-    z-index: 50;
-    animation: paySlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  .ritual-tribute-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .ritual-tribute-headline {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.8px;
-    color: var(--parchment);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    text-transform: uppercase;
-  }
-
-  .ritual-tribute-headline .bolt {
-    color: var(--lantern-yellow);
-  }
-
-  .ritual-upi-badges {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .ritual-upi-pill {
-    background: #0D1316;
-    color: var(--slime-green);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border: 1.5px solid #28363E;
-    border-radius: 4px;
-    letter-spacing: 0.5px;
-  }
-
-  .ritual-confirm-btn {
-    background: var(--hazard-gold);
-    color: #FFF;
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    padding: 11px 22px;
-    border: 3px solid var(--border-dark);
-    border-radius: 8px;
-    box-shadow: 3px 3px 0px var(--border-dark);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    white-space: nowrap;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
-  }
-
-  .ritual-confirm-btn:hover:not(:disabled) {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--border-dark);
-    filter: brightness(1.08);
-  }
-
-  .ritual-confirm-btn:disabled {
-    opacity: 0.65;
-    cursor: not-allowed;
-  }
-
   /* ── RITUAL OFFERING ACTIVE TRANSITION OVERLAY ── */
   .ritual-offering-overlay {
     position: fixed;
@@ -488,17 +399,7 @@ const styles = `
   }
 
   @media (max-width: 640px) {
-    .ritual-shrine-stage { max-height: 62vh; }
-    .ritual-tribute-bar {
-      flex-direction: column;
-      align-items: stretch;
-      padding: 12px 14px;
-      gap: 10px;
-    }
-    .ritual-confirm-btn {
-      justify-content: center;
-      width: 100%;
-    }
+    .ritual-shrine-stage { max-height: 68vh; }
   }
 `;
 
@@ -687,38 +588,6 @@ export default function PaymentPage() {
                 tabIndex={0}
               />
             </div>
-          </div>
-
-          {/* ── BOTTOM TRIBUTE CONTROL BAR ── */}
-          <div className="ritual-tribute-bar">
-            <div className="ritual-tribute-info">
-              <div className="ritual-tribute-headline">
-                <span className="bolt">⚡</span>
-                <span>Scan QR Or Click Shrine To Offer Tribute</span>
-              </div>
-              <div className="ritual-upi-badges">
-                <span className="ritual-upi-pill">GPAY</span>
-                <span className="ritual-upi-pill">PHONEPE</span>
-                <span className="ritual-upi-pill">PAYTM</span>
-                <span className="ritual-upi-pill">BHIM UPI</span>
-                <span className="ritual-upi-pill">CRED</span>
-              </div>
-            </div>
-
-            <button
-              className="ritual-confirm-btn"
-              onClick={handlePaymentComplete}
-              disabled={loading}
-            >
-              {loading ? (
-                <span>Offering Tribute...</span>
-              ) : (
-                <>
-                  <span>Confirm Offering (₹{total})</span>
-                  <span>→</span>
-                </>
-              )}
-            </button>
           </div>
         </main>
 

@@ -38,9 +38,9 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
     - Atmospheric fire: `@keyframes ritualFlameGlow` flickering lantern and candle flames.
     - Hover aura: `@keyframes rotateAura` spinning occult runic halo on parchment hover with tooltip `✦ CLICK TO OFFER TRIBUTE • ₹{total} ✦`.
 - **Payment Interaction**:
-  - Clicking either the dynamic QR parchment or the carved wooden plaque confirms the ritual offering and triggers `handlePaymentComplete()`.
+  - Direct minimalist shrine payment: clicking either the dynamic QR parchment or the carved wooden plaque confirms the ritual offering and triggers `handlePaymentComplete()`.
   - Full-screen ritual transition ceremony (`TRIBUTE ACCEPTED • ENTERING THE SANCTUARY`) before redirecting to `/receipt`.
-  - Minimalist bottom control bar with instant UPI verification badge, supported app pills (GPay, PhonePe, Paytm, BHIM, CRED), and direct action button.
+  - Zero bottom bar clutter: pure, unobstructed view of the standing Grim Reaper ritual notice board on the graveyard road.
 
 ---
 
