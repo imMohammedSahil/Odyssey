@@ -38,7 +38,7 @@ def pts_to_smooth_path(pts, sharp_angle_deg=45.0):
     d_parts.append("Z")
     return " ".join(d_parts)
 
-def extract_paths(mask, min_area=8, approx_eps=0.45, sharp_angle=45.0):
+def extract_paths(mask, min_area=6, approx_eps=0.45, sharp_angle=45.0):
     contours, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
     paths = []
     for cnt in contours:
@@ -63,30 +63,27 @@ def build_accurate_gothic_chapel_svg():
     h, w = img.shape[:2] # 576 x 1024
     print(f"Loaded {w}x{h} image in {time.time()-t0:.2f}s")
 
-    # Bilateral smoothing to preserve sharp ink edges while smoothing gradient noise
     smooth = cv2.bilateralFilter(img, d=5, sigmaColor=22, sigmaSpace=22)
     gray = cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY)
     b, g, r = smooth[:, :, 0], smooth[:, :, 1], smooth[:, :, 2]
 
-    # Super-sampled black lineart mask for razor-sharp branches, crosses & timber
+    # Super-sampled black lineart mask
     scale = 2.0
     w2, h2 = int(w * scale), int(h * scale)
     gray_2x = cv2.resize(gray, (w2, h2), interpolation=cv2.INTER_LANCZOS4)
     
-    # Adaptive threshold map for ink lines
     y_coords = np.arange(h2)[:, None]
     thresh_2x = np.clip(70 - (y_coords / h2) * 16, 52, 70)
     black_2x = (gray_2x < thresh_2x).astype(np.uint8) * 255
     black_2x[h2-4:h2, :] = 255
 
-    # Canny structural architectural lines to guarantee building corners and eaves are crisp
+    # Canny edges to preserve building corners and tombstone outlines
     edges_1x = cv2.Canny(smooth, 35, 90)
     edges_2x = cv2.resize(edges_1x, (w2, h2), interpolation=cv2.INTER_NEAREST)
     k_edge = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
     edges_dil = cv2.dilate(edges_2x, k_edge)
     black_2x = cv2.bitwise_or(black_2x, edges_dil)
 
-    # 1. Base Gradient Defs
     defs = '''  <defs>
     <!-- Misty Gothic Atmosphere Gradient -->
     <linearGradient id="gothicFogSky" x1="0" y1="0" x2="0" y2="100%">
@@ -98,50 +95,57 @@ def build_accurate_gothic_chapel_svg():
       <stop offset="100%" stop-color="#4C585E" />
     </linearGradient>
 
-    <!-- Radial Lantern Blooms (Atmospheric Fog Glow) -->
-    <radialGradient id="bloomLanternRight" cx="756" cy="400" r="130" gradientUnits="userSpaceOnUse">
+    <!-- Cemetery Valley Ground Fog Bank Gradient -->
+    <linearGradient id="valleyFogGrad" x1="0" y1="0" x2="100%" y2="0">
+      <stop offset="0%" stop-color="#76878F" stop-opacity="0.9" />
+      <stop offset="35%" stop-color="#94A6AE" stop-opacity="0.95" />
+      <stop offset="70%" stop-color="#A5B7BF" stop-opacity="0.92" />
+      <stop offset="100%" stop-color="#83949D" stop-opacity="0.88" />
+    </linearGradient>
+
+    <!-- Radial Lantern Blooms -->
+    <radialGradient id="bloomLanternRight" cx="756" cy="400" r="85" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFF2E6" stop-opacity="0.95" />
-      <stop offset="15%" stop-color="#FF5A36" stop-opacity="0.75" />
-      <stop offset="45%" stop-color="#D91E18" stop-opacity="0.35" />
-      <stop offset="75%" stop-color="#7D0C08" stop-opacity="0.1" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="20%" stop-color="#FF5A36" stop-opacity="0.8" />
+      <stop offset="55%" stop-color="#D91E18" stop-opacity="0.35" />
+      <stop offset="85%" stop-color="#7D0C08" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#7D0C08" stop-opacity="0" />
     </radialGradient>
 
-    <radialGradient id="bloomLanternLeft" cx="348" cy="385" r="95" gradientUnits="userSpaceOnUse">
+    <radialGradient id="bloomLanternLeft" cx="348" cy="385" r="80" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFF2E6" stop-opacity="0.9" />
-      <stop offset="15%" stop-color="#FF5A36" stop-opacity="0.7" />
-      <stop offset="45%" stop-color="#D91E18" stop-opacity="0.3" />
-      <stop offset="75%" stop-color="#7D0C08" stop-opacity="0.08" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="20%" stop-color="#FF5A36" stop-opacity="0.75" />
+      <stop offset="55%" stop-color="#D91E18" stop-opacity="0.3" />
+      <stop offset="85%" stop-color="#7D0C08" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#7D0C08" stop-opacity="0" />
     </radialGradient>
 
-    <radialGradient id="bloomChurchDoor" cx="505" cy="318" r="55" gradientUnits="userSpaceOnUse">
+    <radialGradient id="bloomChurchDoor" cx="505" cy="318" r="50" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFE8D6" stop-opacity="0.85" />
-      <stop offset="30%" stop-color="#FF4024" stop-opacity="0.5" />
-      <stop offset="70%" stop-color="#B3120A" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="35%" stop-color="#FF4024" stop-opacity="0.5" />
+      <stop offset="75%" stop-color="#B3120A" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#B3120A" stop-opacity="0" />
     </radialGradient>
 
-    <!-- Subtle, localized shrine aperture glow (does NOT wash out masonry) -->
-    <radialGradient id="bloomShrineAperture" cx="414" cy="342" r="32" gradientUnits="userSpaceOnUse">
+    <radialGradient id="bloomShrineAperture" cx="414" cy="342" r="28" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFF0DE" stop-opacity="0.95" />
       <stop offset="35%" stop-color="#FF482B" stop-opacity="0.8" />
-      <stop offset="75%" stop-color="#C4150C" stop-opacity="0.25" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="75%" stop-color="#C4150C" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#C4150C" stop-opacity="0" />
     </radialGradient>
 
-    <radialGradient id="bloomTowerBelfry" cx="651" cy="77" r="36" gradientUnits="userSpaceOnUse">
+    <radialGradient id="bloomTowerBelfry" cx="651" cy="77" r="32" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFE8D6" stop-opacity="0.9" />
       <stop offset="35%" stop-color="#FF381E" stop-opacity="0.65" />
       <stop offset="80%" stop-color="#A81008" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#A81008" stop-opacity="0" />
     </radialGradient>
 
-    <radialGradient id="bloomTowerWindow" cx="658" cy="315" r="36" gradientUnits="userSpaceOnUse">
+    <radialGradient id="bloomTowerWindow" cx="658" cy="315" r="32" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#FFE8D6" stop-opacity="0.85" />
       <stop offset="35%" stop-color="#FF381E" stop-opacity="0.6" />
       <stop offset="80%" stop-color="#A81008" stop-opacity="0.15" />
-      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+      <stop offset="100%" stop-color="#A81008" stop-opacity="0" />
     </radialGradient>
 
     <radialGradient id="pathMoonGlow" cx="540" cy="480" rx="260" ry="100" gradientUnits="userSpaceOnUse">
@@ -155,7 +159,6 @@ def build_accurate_gothic_chapel_svg():
     # Layer 0: Base Sky Mist
     svg_layers.append(f'  <!-- Layer 0: Deep Gothic Fog & Mist Sky -->\n  <rect width="{w}" height="{h}" fill="url(#gothicFogSky)" />')
 
-    # Cumulative Depth Layers (Back-to-Front Stacking):
     # Layer 1: Distant Background Hills & Distant Fog (gray < 172)
     m1 = (gray < 172).astype(np.uint8) * 255
     m1 = cv2.morphologyEx(m1, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
@@ -170,15 +173,23 @@ def build_accurate_gothic_chapel_svg():
     if p2:
         svg_layers.append(f'  <!-- Layer 2: Midground Graveyard Hills & Tombstones -->\n  <path d="{" ".join(p2)}" fill="#54656D" />')
 
-    # Layer 3: Solid Architectural Mass of Both Buildings (Shrine + Chapel) & Ground Base
+    # Building footprints precisely bounded:
     shrine_footprint = np.zeros((h, w), dtype=bool)
     shrine_footprint[285:465, 335:455] = True
     
+    # Chapel footprint accurately follows church geometry:
+    # Upper roof / tower spans x in [520, 816], but below y=290, the church right wall is at x=672!
     chapel_footprint = np.zeros((h, w), dtype=bool)
-    chapel_footprint[15:475, 455:840] = True
+    chapel_footprint[15:290, 520:825] = True # upper roof & turret
+    chapel_footprint[290:475, 455:674] = True # front nave & side wall
 
+    # Open Foggy Cemetery Valley between chapel and right hill (x in [670, 755], y in [325, 435])
+    valley_fog_roi = np.zeros((h, w), dtype=bool)
+    valley_fog_roi[325:435, 670:755] = True
+
+    # Layer 3: Solid Architectural Mass of Both Buildings & General Ground Base
     buildings_mass = (shrine_footprint | chapel_footprint) & (gray < 160)
-    general_terrain_mass = (gray < 125)
+    general_terrain_mass = (gray < 125) & (~valley_fog_roi) # keep valley fog illuminated
 
     m3 = (buildings_mass | general_terrain_mass).astype(np.uint8) * 255
     m3 = cv2.morphologyEx(m3, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
@@ -187,19 +198,33 @@ def build_accurate_gothic_chapel_svg():
         svg_layers.append(f'  <!-- Layer 3: Solid Architectural Mass (Chapel & Shrine) & Terrain -->\n  <path d="{" ".join(p3)}" fill="#38474F" />')
 
     # Layer 4: Deep Shadow Slate, Under-eaves, Church Masonry & Near Terrain (gray < 98)
-    m4 = (gray < 98).astype(np.uint8) * 255
+    m4 = (gray < 98) & (~valley_fog_roi)
+    m4 = m4.astype(np.uint8) * 255
     m4 = cv2.morphologyEx(m4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2)))
     p4 = extract_paths(m4, min_area=15, approx_eps=0.45)
     if p4:
         svg_layers.append(f'  <!-- Layer 4: Deep Slate Stone, Shingles & Foreground Ground -->\n  <path d="{" ".join(p4)}" fill="#253137" />')
 
-    # Layer 5: Shrine & Chapel Specific Masonry Highlights & Details
+    # Layer 5: Dedicated Realistic Cemetery Fog Valley (between chapel wall and skull post)
+    # 5A: Valley base mist bank
+    fog_base = valley_fog_roi & (gray >= 70)
+    p_fog_base = extract_paths(fog_base.astype(np.uint8)*255, min_area=15, approx_eps=0.45)
+    if p_fog_base:
+        svg_layers.append(f'  <!-- Layer 5A: Cemetery Valley Flowing Mist Bank -->\n  <path d="{" ".join(p_fog_base)}" fill="url(#valleyFogGrad)" />')
+
+    # 5B: Layered dense rolling fog wisps
+    fog_dense = valley_fog_roi & (gray >= 95) & (gray < 145)
+    p_fog_dense = extract_paths(fog_dense.astype(np.uint8)*255, min_area=8, approx_eps=0.4)
+    if p_fog_dense:
+        svg_layers.append(f'  <!-- Layer 5B: Dense Luminous Fog Streamers -->\n  <path d="{" ".join(p_fog_dense)}" fill="#B4C6CE" opacity="0.88" />')
+
+    # Layer 6: Shrine & Chapel Specific Masonry Highlights
     lit_stone = (shrine_footprint | chapel_footprint) & (gray >= 75) & (gray < 135) & (~(r > 150))
     p_lit = extract_paths(lit_stone.astype(np.uint8) * 255, min_area=10, approx_eps=0.4)
     if p_lit:
-        svg_layers.append(f'  <!-- Layer 5: Building Masonry Texture & Stone Midtones -->\n  <path d="{" ".join(p_lit)}" fill="#495A63" />')
+        svg_layers.append(f'  <!-- Layer 6: Building Masonry Texture & Stone Midtones -->\n  <path d="{" ".join(p_lit)}" fill="#495A63" />')
 
-    # Layer 6: Cobblestone Path Moonlit Highlights (cool mint-cyan stone flagstones)
+    # Layer 7: Cobblestone Path Moonlit Highlights
     cobble_roi = np.zeros((h, w), dtype=bool)
     cobble_roi[370:576, 230:720] = True
     cobble_bright = cobble_roi & (gray >= 145) & (g > 140) & (b > 130)
@@ -207,39 +232,39 @@ def build_accurate_gothic_chapel_svg():
 
     p_cobble_mid = extract_paths(cobble_mid.astype(np.uint8) * 255, min_area=8, approx_eps=0.4)
     if p_cobble_mid:
-        svg_layers.append(f'  <!-- Layer 6A: Cobblestone Path Cool Tint Base -->\n  <path d="{" ".join(p_cobble_mid)}" fill="#6E8A83" />')
+        svg_layers.append(f'  <!-- Layer 7A: Cobblestone Path Cool Tint Base -->\n  <path d="{" ".join(p_cobble_mid)}" fill="#6E8A83" />')
 
     p_cobble_bright = extract_paths(cobble_bright.astype(np.uint8) * 255, min_area=6, approx_eps=0.35)
     if p_cobble_bright:
-        svg_layers.append(f'  <!-- Layer 6B: Cobblestone Moonlit Highlights -->\n  <path d="{" ".join(p_cobble_bright)}" fill="#A6C5BB" />')
+        svg_layers.append(f'  <!-- Layer 7B: Cobblestone Moonlit Highlights -->\n  <path d="{" ".join(p_cobble_bright)}" fill="#A6C5BB" />')
 
     # Ambient moonlit glow on the path
     svg_layers.append('  <!-- Cobblestone Path Atmospheric Glow -->\n  <ellipse cx="530" cy="480" rx="260" ry="100" fill="url(#pathMoonGlow)" />')
 
-    # Layer 7: Atmospheric Lantern Blooms (Atmospheric Glow)
-    svg_layers.append('  <!-- Layer 7: Atmospheric Lantern & Door Glow Blooms -->')
-    svg_layers.append('  <circle cx="756" cy="400" r="130" fill="url(#bloomLanternRight)" />')
-    svg_layers.append('  <circle cx="348" cy="385" r="95" fill="url(#bloomLanternLeft)" />')
-    svg_layers.append('  <circle cx="505" cy="318" r="55" fill="url(#bloomChurchDoor)" />')
-    svg_layers.append('  <circle cx="414" cy="342" r="32" fill="url(#bloomShrineAperture)" />')
-    svg_layers.append('  <circle cx="651" cy="77" r="36" fill="url(#bloomTowerBelfry)" />')
-    svg_layers.append('  <circle cx="658" cy="315" r="36" fill="url(#bloomTowerWindow)" />')
+    # Layer 8: Atmospheric Lantern Blooms (Atmospheric Glow)
+    svg_layers.append('  <!-- Layer 8: Atmospheric Lantern & Door Glow Blooms -->')
+    svg_layers.append('  <circle cx="756" cy="400" r="85" fill="url(#bloomLanternRight)" />')
+    svg_layers.append('  <circle cx="348" cy="385" r="80" fill="url(#bloomLanternLeft)" />')
+    svg_layers.append('  <circle cx="505" cy="318" r="50" fill="url(#bloomChurchDoor)" />')
+    svg_layers.append('  <circle cx="414" cy="342" r="28" fill="url(#bloomShrineAperture)" />')
+    svg_layers.append('  <circle cx="651" cy="77" r="32" fill="url(#bloomTowerBelfry)" />')
+    svg_layers.append('  <circle cx="658" cy="315" r="32" fill="url(#bloomTowerWindow)" />')
 
-    # Layer 8: Intense Glowing Cores & Flames
+    # Layer 9: Intense Glowing Cores & Flames
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     red_m1 = cv2.inRange(hsv, (0, 75, 95), (15, 255, 255))
     red_m2 = cv2.inRange(hsv, (165, 75, 95), (180, 255, 255))
     red_cores = (red_m1 | red_m2)
     p_red = extract_paths(red_cores, min_area=4, approx_eps=0.35)
     if p_red:
-        svg_layers.append(f'  <!-- Layer 8A: Lantern Glowing Red Cores -->\n  <path d="{" ".join(p_red)}" fill="#FF3B2B" />')
+        svg_layers.append(f'  <!-- Layer 9A: Lantern Glowing Red Cores -->\n  <path d="{" ".join(p_red)}" fill="#FF3B2B" />')
 
     red_hot = cv2.inRange(hsv, (5, 110, 190), (28, 255, 255))
     p_hot = extract_paths(red_hot, min_area=3, approx_eps=0.3)
     if p_hot:
-        svg_layers.append(f'  <!-- Layer 8B: Lantern White-Hot Flame Centers -->\n  <path d="{" ".join(p_hot)}" fill="#FFE6B3" />')
+        svg_layers.append(f'  <!-- Layer 9B: Lantern White-Hot Flame Centers -->\n  <path d="{" ".join(p_hot)}" fill="#FFE6B3" />')
 
-    # Layer 9: Razor-Sharp Comic Void Black Ink Lineart & Foreground Silhouettes
+    # Layer 10: Razor-Sharp Comic Void Black Ink Lineart & Foreground Silhouettes
     black_contours, _ = cv2.findContours(black_2x, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_KCOS)
     black_paths = []
     for cnt in black_contours:
@@ -253,7 +278,7 @@ def build_accurate_gothic_chapel_svg():
         if p_str:
             black_paths.append(p_str)
 
-    svg_layers.append('  <!-- Layer 9: Razor-Sharp Comic Void Black Ink & Silhouettes -->')
+    svg_layers.append('  <!-- Layer 10: Razor-Sharp Comic Void Black Ink & Silhouettes -->')
     svg_layers.append(f'  <path d="{" ".join(black_paths)}" fill="#0D0D0D" stroke="#0D0D0D" stroke-width="0.5" stroke-linejoin="miter" stroke-miterlimit="4" />')
 
     header = f'<svg viewBox="0 0 {w} {h}" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">\n{defs}\n'
@@ -264,7 +289,7 @@ def build_accurate_gothic_chapel_svg():
     with open(out_file, 'w', encoding='utf-8') as f:
         f.write(full_svg)
 
-    print(f"Generated completely formed Gothic Chapel SVG at {out_file}! Size: {len(full_svg):,} bytes in {time.time()-t0:.2f}s")
+    print(f"Generated realistic fog Gothic Chapel SVG at {out_file}! Size: {len(full_svg):,} bytes in {time.time()-t0:.2f}s")
 
 if __name__ == '__main__':
     build_accurate_gothic_chapel_svg()
