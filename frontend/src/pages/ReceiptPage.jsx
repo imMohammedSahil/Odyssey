@@ -358,13 +358,11 @@ export default function ReceiptPage() {
         {/* Click 2: Arcane Color Expansion Shockwave */}
         {stage >= 2 && <div className="wand-bloom-wave" aria-hidden="true" />}
 
-        {/* Awwwards Cursor Follower Pill */}
-        {stage < 3 && (
+        {/* Awwwards Cursor Follower Pill (Only shown before second click) */}
+        {stage < 2 && (
           <div ref={cursorRef} className="awwwards-cursor-pill">
             <span className="awwwards-cursor-dot" />
-            {stage === 0 && "CLICK TO ENTER"}
-            {stage === 1 && "CLICK AGAIN"}
-            {stage === 2 && "ILLUMINATING..."}
+            {stage === 0 ? "CLICK TO ENTER" : "CLICK AGAIN"}
           </div>
         )}
 
