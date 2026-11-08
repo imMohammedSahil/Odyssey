@@ -176,9 +176,9 @@ const styles = `
   .rcpt-scroll-stage {
     position: relative;
     width: 100%;
-    max-width: 580px;
+    max-width: 670px;
     margin-top: 20px;
-    aspect-ratio: 1024 / 1535;
+    aspect-ratio: 1244 / 1535;
     user-select: text !important;
     -webkit-user-select: text !important;
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.95));
@@ -244,17 +244,20 @@ const styles = `
     letter-spacing: 0.02em;
     clip-path: polygon(0 0, 100% 0, 97% 50%, 100% 100%, 0 100%);
     box-shadow: 1px 2px 0px rgba(0, 0, 0, 0.25);
+    white-space: nowrap;
   }
 
   .rcpt-sc-val {
     position: absolute;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(9px, 1.45vw, 11.5px);
+    font-size: clamp(9px, 1.4vw, 11.5px);
     font-weight: 700;
     color: #121c16;
-    word-break: break-all;
+    text-align: right;
+    white-space: nowrap;
   }
 
   .rcpt-sc-status-box {
@@ -270,11 +273,12 @@ const styles = `
     border: 1.5px solid #1b4728;
     border-radius: 4px;
     letter-spacing: 0.06em;
+    white-space: nowrap;
   }
 
   .rcpt-sc-copy-btn {
     margin-left: 6px;
-    padding: 1px 6px;
+    padding: 2px 7px;
     border-radius: 4px;
     background: #1b4728;
     color: #d6eac7;
@@ -283,6 +287,8 @@ const styles = `
     font-weight: 800;
     cursor: pointer !important;
     user-select: none !important;
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: transform 0.1s ease;
   }
 
@@ -824,10 +830,10 @@ export default function ReceiptPage() {
                 </div>
 
                 {/* 1. Order Reference */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "37.5%", width: "20.2%", height: "2.44%" }}>
+                <div className="rcpt-sc-ribbon" style={{ left: "18.5%", top: "37.5%", width: "18%", height: "2.44%" }}>
                   Order Reference
                 </div>
-                <div className="rcpt-sc-val" style={{ left: "42.8%", top: "37.3%", width: "36%" }}>
+                <div className="rcpt-sc-val" style={{ left: "38%", top: "37.3%", width: "42%" }}>
                   <span>{receiptData.orderId}</span>
                   <button
                     className="rcpt-sc-copy-btn"
@@ -844,36 +850,36 @@ export default function ReceiptPage() {
                 </div>
 
                 {/* 2. Sanctum Status */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "41.8%", width: "20.2%", height: "2.44%" }}>
+                <div className="rcpt-sc-ribbon" style={{ left: "18.5%", top: "41.8%", width: "18%", height: "2.44%" }}>
                   Sanctum Status
                 </div>
-                <div className="rcpt-sc-status-box" style={{ left: "45.7%", top: "41.0%", width: "27.8%", height: "3.12%" }}>
+                <div className="rcpt-sc-status-box" style={{ left: "47%", top: "41.0%", width: "26%", height: "3.12%" }}>
                   {receiptData.status}
                 </div>
 
                 {/* 3. Pickup Counter */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "46.1%", width: "20.2%", height: "2.44%" }}>
+                <div className="rcpt-sc-ribbon" style={{ left: "18.5%", top: "46.1%", width: "18%", height: "2.44%" }}>
                   Pickup Counter
                 </div>
-                <div className="rcpt-sc-val" style={{ left: "42.8%", top: "45.7%", width: "36%", lineHeight: "1.25" }}>
+                <div className="rcpt-sc-val" style={{ left: "38%", top: "45.7%", width: "42%", lineHeight: "1.25" }}>
                   {receiptData.pickupCounter}
                 </div>
 
                 {/* 4. Recorded At */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "50.4%", width: "20.2%", height: "2.44%" }}>
+                <div className="rcpt-sc-ribbon" style={{ left: "18.5%", top: "50.4%", width: "18%", height: "2.44%" }}>
                   Recorded At
                 </div>
-                <div className="rcpt-sc-val" style={{ left: "42.8%", top: "50.4%", width: "36%" }}>
+                <div className="rcpt-sc-val" style={{ left: "38%", top: "50.4%", width: "42%" }}>
                   {receiptData.date}
                 </div>
 
                 {/* 5. Order Manifest Header */}
-                <div className="rcpt-sc-ribbon" style={{ left: "23.7%", top: "55.5%", width: "36.6%", height: "2.44%" }}>
+                <div className="rcpt-sc-ribbon" style={{ left: "21%", top: "55.5%", width: "38%", height: "2.44%" }}>
                   Order Manifest ({receiptData.items.length} Items)
                 </div>
 
                 {/* 6. Manifest Items Box */}
-                <div className="rcpt-sc-manifest-box" style={{ left: "20.8%", top: "58.4%", width: "57.8%", height: "11.2%" }}>
+                <div className="rcpt-sc-manifest-box" style={{ left: "18.5%", top: "58.4%", width: "61.5%", height: "11.2%" }}>
                   {receiptData.items.map((item, idx) => (
                     <div key={idx} className="rcpt-sc-item-row">
                       <div>
@@ -888,10 +894,10 @@ export default function ReceiptPage() {
                 </div>
 
                 {/* 7. Total Offering Paid Ribbon & Starburst */}
-                <div className="rcpt-sc-ribbon" style={{ left: "20.8%", top: "72.8%", width: "33%", height: "3.52%", fontSize: "clamp(10px, 1.7vw, 13px)" }}>
+                <div className="rcpt-sc-ribbon" style={{ left: "18.5%", top: "72.8%", width: "31%", height: "3.52%", fontSize: "clamp(10px, 1.7vw, 13px)" }}>
                   Total Offering Paid
                 </div>
-                <div className="rcpt-sc-total-val" style={{ left: "55.9%", top: "72.2%", width: "22.7%", height: "4.7%" }}>
+                <div className="rcpt-sc-total-val" style={{ left: "53.5%", top: "72.2%", width: "26.5%", height: "4.7%" }}>
                   ₹{receiptData.total}
                 </div>
 
@@ -903,7 +909,7 @@ export default function ReceiptPage() {
                 {/* 9. Action Buttons */}
                 <button
                   className="rcpt-sc-btn"
-                  style={{ left: "21.2%", top: "82.2%", width: "26.4%", height: "5.1%" }}
+                  style={{ left: "18.5%", top: "82.2%", width: "29.5%", height: "5.1%" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     window.print();
@@ -913,7 +919,7 @@ export default function ReceiptPage() {
                 </button>
                 <button
                   className="rcpt-sc-btn"
-                  style={{ left: "50.5%", top: "82.2%", width: "27.1%", height: "5.1%", fontSize: "clamp(9.5px, 1.55vw, 12px)" }}
+                  style={{ left: "50.5%", top: "82.2%", width: "29.5%", height: "5.1%", fontSize: "clamp(9.5px, 1.55vw, 12px)" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate("/student");
