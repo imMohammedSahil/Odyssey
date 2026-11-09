@@ -199,7 +199,7 @@ const styles = `
       8px 10px 8px rgba(0, 0, 0, 0.3),
       11px 15px 18px rgba(0, 0, 0, 0.2);
     transform: translateY(4.8rem);
-    animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1);
+    animation: hideAndSeek 1s alternate 4 cubic-bezier(0.86, 0, 0.07, 1) forwards;
     display: inline-block;
     line-height: 1;
     user-select: none;
@@ -690,17 +690,16 @@ export default function IntroPage() {
   const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
-    // Oscillate the hideAndSeek loader, then reveal Odyssey left-to-right
+    // ✦ 4 hideAndSeek wave iterations (up -> down -> up -> down).
+    // As the final letter 'G' finishes dipping beneath the cutoff line at 4450ms,
+    // LOADING is 100% hidden, and Odyssey immediately emerges from left to right.
     const minLoadTimer = setTimeout(() => {
-      setLoadingState("revealing");
+      setLoadingState("ready");
+      // Smoothly glide in subtitle & CTA after Odyssey finishes letter-by-letter arrival
       setTimeout(() => {
-        setLoadingState("ready");
-        // Smoothly glide in subtitle & CTA after Odyssey finishes letter-by-letter arrival
-        setTimeout(() => {
-          setShowRest(true);
-        }, 850);
-      }, 400);
-    }, 3200);
+        setShowRest(true);
+      }, 850);
+    }, 4450);
 
     return () => clearTimeout(minLoadTimer);
   }, []);
