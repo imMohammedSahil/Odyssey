@@ -3,6 +3,7 @@ import { useCart } from "../context/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import QRCode from "qrcode";
+import OccultCursorFumes from "../components/OccultCursorFumes";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -563,6 +564,9 @@ export default function PaymentPage() {
     <>
       <style>{styles}</style>
       <div className="pay-root">
+        {/* Dynamic Occult Black Glowing Fumes & Reaper Proximity Life Drain */}
+        <OccultCursorFumes />
+
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img

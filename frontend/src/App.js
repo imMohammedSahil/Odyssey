@@ -172,10 +172,10 @@ const getCursorConfig = (pathname) => {
     return {
       color: "#FF2A1B", // Fiery Lantern Ember / Occult Crimson Ruby
       material: "chrome",
-      size: 46,
+      size: 34, // Compact and agile per user request
       morph: 0.35,
       morphSpeed: 0.45,
-      wobble: 0.9,
+      wobble: 0.85,
       goo: 1,
       stretch: 0.52,
       trail: 14,
@@ -237,24 +237,60 @@ const getCursorConfig = (pathname) => {
 function GlobalBlobCursor() {
   const { pathname } = useLocation();
   const cfg = getCursorConfig(pathname);
+  const [drain, setDrain] = useState(0);
+
+  useEffect(() => {
+    setDrain(0);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!pathname.startsWith("/payment")) return;
+    const onDrain = (e) => {
+      if (typeof e.detail?.drain === "number") {
+        setDrain(e.detail.drain);
+      }
+    };
+    window.addEventListener("odyssey_cursor_drain", onDrain);
+    return () => window.removeEventListener("odyssey_cursor_drain", onDrain);
+  }, [pathname]);
+
+  // When on payment page, modulate color, shine, size, and wobble based on proximity to Grim Reaper
+  let activeColor = cfg.color;
+  let activeShine = cfg.shine ?? 1;
+  let activeSize = cfg.size || 42;
+  let activeWobble = cfg.wobble ?? 0.8;
+  let activeStretch = cfg.stretch ?? 0.4;
+
+  if (pathname.startsWith("/payment") && drain > 0) {
+    // Lerp from Fiery Crimson #FF2A1B (255, 42, 27) to Lifeless Ashen Tombstone Grey #4E585E (78, 88, 94)
+    const t = Math.min(1, Math.max(0, drain));
+    const r = Math.round(255 + (78 - 255) * t);
+    const g = Math.round(42 + (88 - 42) * t);
+    const b = Math.round(27 + (94 - 27) * t);
+    activeColor = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+    activeShine = Math.max(0.06, 1.0 - t * 0.92); // Dims to dead matte as life leaves
+    activeSize = Math.max(22, 34 - t * 10); // Shrinks from 34 to 24 when drained
+    activeWobble = Math.max(0.2, 0.85 - t * 0.65); // Stiffens as vitality is siphoned
+    activeStretch = Math.max(0.18, 0.52 - t * 0.32);
+  }
 
   return (
     <BlobCursor
       key={pathname}
       material={cfg.material || "chrome"}
-      color={cfg.color}
+      color={activeColor}
       blend={cfg.blend || "normal"}
-      size={cfg.size || 42}
+      size={activeSize}
       morph={cfg.morph ?? 0}
       morphSpeed={cfg.morphSpeed ?? 0.4}
       depth={1}
       trail={cfg.trail ?? 12}
       lag={cfg.lag ?? 0.35}
       goo={cfg.goo ?? 1}
-      stretch={cfg.stretch ?? 0.4}
-      wobble={cfg.wobble ?? 0.8}
+      stretch={activeStretch}
+      wobble={activeWobble}
       drip={cfg.drip ?? 0}
-      shine={cfg.shine ?? 1}
+      shine={activeShine}
       splash={true}
       splashCount={cfg.splashCount ?? 6}
       splashSpeed={cfg.splashSpeed ?? 0.5}
