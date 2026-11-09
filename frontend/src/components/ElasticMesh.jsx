@@ -218,12 +218,16 @@ void main() {
   vec3 base = mix(uColor, paint, uPaintMix);
   vec3 color;
   if (uMaterial < 0.5) {
-    vec3 env = studio(reflected, 0.04 + footprint * 0.6);
+    vec3 env = studio(reflected, 0.05 + footprint * 0.6);
     float reflectance = 0.045 + 0.955 * fresnel;
-    vec3 deep = base * base * 0.55;
-    vec3 body = mix(deep, base * 1.08, wrap) * occlusion;
-    body += base * pow(1.0 - facing, 2.0) * 0.18;
-    color = body * (1.0 - reflectance) + tone(env * reflectance * 0.9);
+    vec3 deep = base * base * 0.52;
+    vec3 body = mix(deep, base * 1.12, wrap) * occlusion;
+    body += base * pow(1.0 - facing, 2.0) * 0.22;
+    vec3 halfVec = normalize(lightDir + vec3(0.0, 0.0, 1.0));
+    float gloss = pow(max(dot(turned, halfVec), 0.0), 30.0) * 0.42;
+    float sss = pow(max(dot(-turned, lightDir), 0.0), 2.5) * 0.16;
+    body += base * sss;
+    color = body * (1.0 - reflectance) + tone(env * reflectance * 0.95) + vec3(gloss);
   } else if (uMaterial < 1.5) {
     vec3 env = studio(reflected, footprint * 0.6);
     vec3 tint = mix(vec3(1.0), base, 0.6) * 0.92;
@@ -933,14 +937,14 @@ const ElasticMesh = ({
         part.delay = rank * gap;
       });
       const owners = parts.length <= 64 ? nearestLabels(labels, fw, fh) : new Float32Array(count);
-      const solution = blurField(inflateField(binary, fw, fh), fw, fh, 3.5);
-      const edges = blurField(signed, fw, fh, 4.0);
+      const solution = blurField(inflateField(binary, fw, fh), fw, fh, 4.2);
+      const edges = blurField(signed, fw, fh, 4.2);
       const shadowMask = blurField(binary, fw, fh, Math.max(4, Math.min(fw, fh) * 0.045));
       const rawHeights = new Float32Array(count);
       for (let i = 0; i < count; i++) {
         rawHeights[i] = Math.sqrt(Math.max(0, 2 * solution[i])) / scale;
       }
-      const heights = blurField(rawHeights, fw, fh, 2.5);
+      const heights = blurField(rawHeights, fw, fh, 3.2);
       const field = new Float32Array(count * 4);
       const sdf = new Float32Array(count);
       for (let i = 0; i < count; i++) {
@@ -970,9 +974,9 @@ const ElasticMesh = ({
             (heights[yp1 + xp1] - heights[ym1 + xp1])
           ) * 0.125 * scale;
           const steep = Math.hypot(gx, gy);
-          if (steep > 6.0) {
-            gx *= 6.0 / steep;
-            gy *= 6.0 / steep;
+          if (steep > 5.2) {
+            gx *= 5.2 / steep;
+            gy *= 5.2 / steep;
           }
           const i = y0 + x;
           slopes[i * 2] = gx;
