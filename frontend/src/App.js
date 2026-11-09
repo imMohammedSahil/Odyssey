@@ -23,18 +23,23 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import BlobCursor from "./components/BlobCursor";
 
 const getCursorColor = (pathname) => {
-  if (pathname === "/") return "#FF70A6"; // Intro: Brain Pink
-  if (pathname.startsWith("/ritual-offering")) return "#9DE869"; // Ghost green
-  if (pathname.startsWith("/printing")) return "#9DE869"; // Slime green
-  if (pathname.startsWith("/writing")) return "#45B89E"; // Seafoam / teal
-  if (pathname.startsWith("/stationery/correction")) return "#FFA012"; // Pumpkin orange
-  if (pathname.startsWith("/paper") || pathname.startsWith("/stationery/paper")) return "#FF3B47"; // Electric Crimson
-  if (pathname.startsWith("/measuring") || pathname.startsWith("/stationery/measuring")) return "#F56234"; // Electric Amber / Orange
-  if (pathname.startsWith("/office") || pathname.startsWith("/stationery/office")) return "#C89F72"; // Desert Sand / Bronze
-  if (pathname.startsWith("/stationery")) return "#9DE869"; // Stationery index
-  if (pathname.startsWith("/student")) return "#9DE869"; // Basecamp student upload: Slime Green
-  if (pathname.startsWith("/payment")) return "#FFA84A"; // Gothic chapel lantern gold
-  if (pathname.startsWith("/receipt")) return "#FF70A6"; // Raven receipt pink
+  // 1. Intro Screen
+  if (pathname === "/") return "#FF70A6"; // Brain Pink
+
+  // 2. The 6 Requisition Aisle Pages
+  if (pathname.startsWith("/printing")) return "#00E599"; // Electric Emerald (matches #019E70 Print Lab)
+  if (pathname.startsWith("/writing")) return "#45B89E"; // Seafoam Jade (matches Writing Weaponry)
+  if (pathname.startsWith("/paper") || pathname.startsWith("/stationery/paper")) return "#FF3B47"; // Electric Crimson (matches Paper Reams)
+  if (pathname.startsWith("/measuring") || pathname.startsWith("/stationery/measuring")) return "#F56234"; // Electric Amber (matches Measuring & Drafting)
+  if (pathname.startsWith("/ritual-offering")) return "#BE2E2E"; // Occult Crimson Blood (matches Raven Altar)
+  if (pathname.startsWith("/student")) return "#9DE869"; // Slime Green (matches Basecamp Desk 04)
+
+  // Other Campus Operations
+  if (pathname.startsWith("/stationery/correction")) return "#FFA012"; // Pumpkin Orange
+  if (pathname.startsWith("/office") || pathname.startsWith("/stationery/office")) return "#C89F72"; // Desert Sand Bronze
+  if (pathname.startsWith("/stationery")) return "#00E599";
+  if (pathname.startsWith("/payment")) return "#FFA84A"; // Gothic Chapel Lantern Gold
+  if (pathname.startsWith("/receipt")) return "#FF70A6"; // Raven Receipt Pink
   if (pathname.startsWith("/cart")) return "#F7B919"; // Hazard Gold
   if (pathname.startsWith("/profile")) return "#45B89E"; // Seafoam
   if (pathname.startsWith("/admin")) return "#7C5CFC"; // Admin Violet
@@ -47,6 +52,7 @@ function GlobalBlobCursor() {
 
   return (
     <BlobCursor
+      key={pathname}
       material="chrome"
       color={color}
       blend="normal"
