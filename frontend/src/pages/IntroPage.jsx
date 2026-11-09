@@ -21,10 +21,6 @@ const styles = `
     padding: 0;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
-
   /* 🟢 MINIMAL SLIME GREEN CANVAS */
   .od-min-root {
     background-color: var(--bg-green);
@@ -685,7 +681,11 @@ export default function IntroPage() {
   const scrollToNext = () => {
     const el = document.getElementById("manifesto-section");
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      if (window.lenis) {
+        window.lenis.scrollTo(el, { duration: 2.4 });
+      } else {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 

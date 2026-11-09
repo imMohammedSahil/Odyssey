@@ -21,6 +21,7 @@ import RitualOfferingPage from "./pages/RitualOfferingPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import BlobCursor from "./components/BlobCursor";
+import SmoothScroll from "./components/SmoothScroll";
 
 const getCursorConfig = (pathname) => {
   // 1. Basecamp Student Desk 04 (/student) - Comic Zombie & Brain Pink Ambience
@@ -220,6 +221,22 @@ const getCursorConfig = (pathname) => {
     };
   }
 
+  // 13. Receipt & Manifest (/receipt) - Dark Obsidian Emerald morphing into Enchanted Wizard Green
+  if (pathname.startsWith("/receipt")) {
+    return {
+      color: "#0D2217", // Dark Obsidian Emerald (not pitch black, matches dark sheet before reveal)
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splash: false, // Disable mini droplet balls on click
+      splashCount: 0,
+    };
+  }
+
   return {
     color: "#FF70A6",
     material: "chrome",
@@ -238,9 +255,22 @@ function GlobalBlobCursor() {
   const { pathname } = useLocation();
   const cfg = getCursorConfig(pathname);
   const [drain, setDrain] = useState(0);
+  const [receiptColor, setReceiptColor] = useState(null);
 
   useEffect(() => {
     setDrain(0);
+    setReceiptColor(null);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!pathname.startsWith("/receipt")) return;
+    const onReceiptColor = (e) => {
+      if (typeof e.detail?.color === "string") {
+        setReceiptColor(e.detail.color);
+      }
+    };
+    window.addEventListener("odyssey_cursor_receipt_color", onReceiptColor);
+    return () => window.removeEventListener("odyssey_cursor_receipt_color", onReceiptColor);
   }, [pathname]);
 
   useEffect(() => {
@@ -268,6 +298,10 @@ function GlobalBlobCursor() {
   let activeSize = cfg.size || 42;
   let activeWobble = cfg.wobble ?? 0.8;
   let activeStretch = cfg.stretch ?? 0.4;
+
+  if (pathname.startsWith("/receipt") && receiptColor) {
+    activeColor = receiptColor;
+  }
 
   if (pathname.startsWith("/payment") && drain > 0) {
     // Lerp from Dark Blood Obsidian #2B0909 (43, 9, 9) to Lifeless Ashen Tombstone Grey #4E585E (78, 88, 94)
@@ -299,7 +333,7 @@ function GlobalBlobCursor() {
       wobble={activeWobble}
       drip={cfg.drip ?? 0}
       shine={activeShine}
-      splash={true}
+      splash={cfg.splash ?? true}
       splashCount={cfg.splashCount ?? 6}
       splashSpeed={cfg.splashSpeed ?? 0.5}
       splashSize={cfg.splashSize ?? 0.5}
@@ -324,7 +358,7 @@ function ScrollToTop() {
 function App() {
   return (
     <>
-      <ScrollToTop />
+      <SmoothScroll />
       <GlobalBlobCursor />
       <Routes>
       {/* Public Routes */}
