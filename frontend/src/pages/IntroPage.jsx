@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ElasticMesh from "../components/ElasticMesh";
 import BlobCursor from "../components/BlobCursor";
@@ -238,7 +238,7 @@ const styles = `
   }
 
   /* ──────────────────────────────────────────────────────────
-     3. MINIMALIST AISLE DIRECTORY
+     3. MINIMALIST AISLE DIRECTORY & EXPANDABLE DOSSIERS
   ────────────────────────────────────────────────────────── */
   .od-directory-section {
     max-width: 1140px;
@@ -252,7 +252,7 @@ const styles = `
     align-items: flex-end;
     border-bottom: 1.5px solid var(--border-line);
     padding-bottom: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
   }
 
   .od-dir-title {
@@ -263,20 +263,29 @@ const styles = `
     color: var(--text-sub);
   }
 
+  .od-dir-item-wrap {
+    border-bottom: 1.5px solid var(--border-line);
+    transition: border-color 0.25s ease;
+  }
+
+  .od-dir-item-wrap.is-expanded {
+    border-bottom-color: rgba(10, 10, 10, 0.4);
+  }
+
   .od-dir-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 28px 0;
-    border-bottom: 1.5px solid var(--border-line);
+    padding: 26px 8px;
     cursor: pointer;
     text-decoration: none;
-    transition: padding-left 0.2s ease, border-color 0.2s ease;
+    border-radius: 12px;
+    transition: padding-left 0.2s ease, background 0.2s ease;
   }
 
   .od-dir-row:hover {
-    padding-left: 12px;
-    border-color: var(--text-black);
+    padding-left: 14px;
+    background: rgba(10, 10, 10, 0.04);
   }
 
   .od-dir-left {
@@ -287,8 +296,9 @@ const styles = `
 
   .od-dir-num {
     font-size: 14px;
-    font-weight: 600;
-    color: rgba(10, 10, 10, 0.5);
+    font-weight: 700;
+    color: rgba(10, 10, 10, 0.45);
+    font-variant-numeric: tabular-nums;
   }
 
   .od-dir-name {
@@ -297,9 +307,11 @@ const styles = `
     letter-spacing: -0.02em;
     color: var(--text-black);
     transition: color 0.15s ease;
+    margin-bottom: 2px;
   }
 
-  .od-dir-row:hover .od-dir-name {
+  .od-dir-row:hover .od-dir-name,
+  .od-dir-item-wrap.is-expanded .od-dir-name {
     color: var(--brain-pink);
   }
 
@@ -309,16 +321,304 @@ const styles = `
     color: var(--text-sub);
   }
 
-  .od-dir-arrow {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-black);
-    transition: transform 0.2s ease, color 0.2s ease;
+  .od-dir-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
 
-  .od-dir-row:hover .od-dir-arrow {
-    color: var(--brain-pink);
-    transform: translate(4px, -4px);
+  .od-dir-pill-status {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-black);
+    background: rgba(10, 10, 10, 0.08);
+    padding: 5px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .od-dir-row:hover .od-dir-pill-status {
+    background: #0A0A0A;
+    color: #9DE869;
+    border-color: #0A0A0A;
+  }
+
+  .od-dir-item-wrap.is-expanded .od-dir-pill-status {
+    background: var(--brain-pink);
+    color: #0A0A0A;
+    border-color: var(--brain-pink);
+  }
+
+  .od-dir-toggle-icon {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 10, 10, 0.06);
+    color: var(--text-black);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .od-dir-row:hover .od-dir-toggle-icon {
+    background: #0A0A0A;
+    color: #FFFFFF;
+    transform: scale(1.08);
+  }
+
+  .od-dir-item-wrap.is-expanded .od-dir-toggle-icon {
+    background: #0A0A0A;
+    color: #9DE869;
+    transform: rotate(180deg);
+  }
+
+  /* EXPANDABLE DRAWER & DOSSIER CARD */
+  .od-dir-drawer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .od-dir-drawer.is-open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .od-dir-drawer-inner {
+    min-height: 0;
+  }
+
+  .od-dir-card {
+    background: #0A0A0A;
+    color: #F5F5F5;
+    border-radius: 18px;
+    padding: 30px 34px;
+    margin: 4px 0 28px 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(157, 232, 105, 0.1);
+  }
+
+  .od-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .od-card-badge-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .od-card-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #9DE869;
+    box-shadow: 0 0 10px #9DE869;
+    animation: odPulse 1.8s infinite;
+  }
+
+  @keyframes odPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .od-card-category {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #9DE869;
+    text-transform: uppercase;
+  }
+
+  .od-card-telemetry {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.08em;
+  }
+
+  .od-card-close-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #FFFFFF;
+    padding: 6px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .od-card-close-btn:hover {
+    background: #FF70A6;
+    border-color: #FF70A6;
+    color: #0A0A0A;
+    transform: scale(1.04);
+  }
+
+  .od-card-overview {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 22px;
+    max-width: 920px;
+  }
+
+  .od-card-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .od-spec-box {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .od-spec-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+  }
+
+  .od-spec-val {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #9DE869;
+  }
+
+  .od-card-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .od-feat-tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 5px 14px;
+  }
+
+  .od-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 18px;
+  }
+
+  .od-card-hint {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+  }
+
+  .od-card-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .od-card-secondary-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 9px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .od-card-secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .od-card-action-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #9DE869;
+    border: none;
+    color: #0A0A0A;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 9px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .od-card-action-btn:hover {
+    background: #FF70A6;
+    color: #0A0A0A;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 680px) {
+    .od-dir-card {
+      padding: 22px 18px;
+    }
+    .od-card-specs-grid {
+      grid-template-columns: 1fr;
+    }
+    .od-card-footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .od-card-btn-group {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .od-dir-left {
+      gap: 16px;
+    }
+    .od-dir-pill-status {
+      display: none;
+    }
   }
 
   /* ──────────────────────────────────────────────────────────
@@ -384,6 +684,21 @@ const styles = `
 
 export default function IntroPage() {
   const navigate = useNavigate();
+  const [expandedAisles, setExpandedAisles] = useState({});
+
+  const toggleAisle = (num) => {
+    setExpandedAisles((prev) => ({
+      ...prev,
+      [num]: !prev[num],
+    }));
+  };
+
+  const closeAisle = (num) => {
+    setExpandedAisles((prev) => ({
+      ...prev,
+      [num]: false,
+    }));
+  };
 
   const handleNavigate = (path = "/student") => {
     sessionStorage.setItem("role", "student");
@@ -401,12 +716,138 @@ export default function IntroPage() {
   };
 
   const directory = [
-    { num: "01", name: "Report & Thesis Print Lab", desc: "1200 DPI Duplex · Wire-O Spiral · Frosted Covers", route: "/printing" },
-    { num: "02", name: "Writing Weaponry", desc: "Archival 0.5mm Gel · Drafting Pencils · Highlighters", route: "/writing" },
-    { num: "03", name: "Parchment & Paper Reams", desc: "75 & 80 GSM High-Brightness A4 · Sticky Memos", route: "/paper" },
-    { num: "04", name: "Measuring & Drafting", desc: "Steel Non-Slip Rulers · Geometry Kits · Cutting Mats", route: "/measuring" },
-    { num: "05", name: "Raven Offering Altar", desc: "Contactless Mobile QR · Automated Receipt Sync", route: "/ritual-offering" },
-    { num: "06", name: "Archival Folio Receipts", desc: "Code 128 Barcode Verification · Express Desk 04 Pickup", route: "/student" },
+    {
+      num: "01",
+      name: "Report & Thesis Print Lab",
+      desc: "1200 DPI Duplex · Wire-O Spiral · Frosted Covers",
+      category: "HIGH-DENSITY HARDWARE // AISLE 01",
+      telemetry: "DESK 04 DUPLEX ENGINE · ONLINE",
+      overview:
+        "Calibrated specifically for university thesis defenses and engineering blueprint submissions. High-density duplex laser rendering guarantees razor-sharp mathematical formulae, circuit schematics, and rich black text without show-through.",
+      specs: [
+        { label: "RESOLUTION", value: "1200 × 1200 DPI Laser" },
+        { label: "BINDING RIG", value: "Wire-O Metal / Thermal Spine" },
+        { label: "QUEUE TIME", value: "3–5 Min Avg / 100 Pgs" },
+      ],
+      features: [
+        "Single & Duplex Monochrome/Color",
+        "80–100 GSM Acid-Free Archival Bond",
+        "Translucent Frosted Shield Covers",
+        "Edge-to-Edge Vector Output",
+      ],
+      actionLabel: "Enter Print Lab",
+      route: "/printing",
+    },
+    {
+      num: "02",
+      name: "Writing Weaponry",
+      desc: "Archival 0.5mm Gel · Drafting Pencils · Highlighters",
+      category: "TACTILE INSTRUMENTS // AISLE 02",
+      telemetry: "DISPENSER MATRIX · IN STOCK",
+      overview:
+        "Selected for marathon exam halls and uninterrupted drafting sessions. Featuring micro-precision needle tips with low-viscosity Japanese gel ink formulations that dry in under 1.2 seconds to eliminate sleeve smudge.",
+      specs: [
+        { label: "MICRO TIPS", value: "0.38mm & 0.5mm Archival" },
+        { label: "INK SYSTEM", value: "Waterproof / Non-Fading" },
+        { label: "DRAFTING LEADS", value: "HB & 2B Polymer-Infused" },
+      ],
+      features: [
+        "Knurled Ergonomic Metal Grips",
+        "Zero-Bleed Chisel Highlighters",
+        "Balanced Low-Center Pencils",
+        "Micro-Point Correction Mediums",
+      ],
+      actionLabel: "Enter Writing Aisle",
+      route: "/writing",
+    },
+    {
+      num: "03",
+      name: "Parchment & Paper Reams",
+      desc: "75 & 80 GSM High-Brightness A4 · Sticky Memos",
+      category: "FIBER & MEDIA // AISLE 03",
+      telemetry: "RAW STOCK REPOSITORY · CALIBRATED",
+      overview:
+        "Engineered elemental chlorine-free bond paper. Offers superior opacity for dense double-sided printing, blueprint sketching, and lab documentation with zero ink feathering.",
+      specs: [
+        { label: "BASIS WEIGHT", value: "75 GSM & 80 GSM Bond" },
+        { label: "WHITENESS", value: "98% ISO High-Reflectance" },
+        { label: "DIMENSIONS", value: "Standard A4 & A3 Formats" },
+      ],
+      features: [
+        "500-Sheet Moisture-Sealed Reams",
+        "Ultra-Smooth Matte Calendering",
+        "Repositionable Pastel Tab Flags",
+        "Archival Acid-Free Longevity",
+      ],
+      actionLabel: "Enter Paper Aisle",
+      route: "/paper",
+    },
+    {
+      num: "04",
+      name: "Measuring & Drafting",
+      desc: "Steel Non-Slip Rulers · Geometry Kits · Cutting Mats",
+      category: "METROLOGY & RIGS // AISLE 04",
+      telemetry: "PRECISION CALIPER · ±0.1MM TOLERANCE",
+      overview:
+        "Heavyweight laser-etched stainless steel measuring rules, 5-ply self-healing cutting mats, and precision brass geometry sets built for architects, engineers, and physical model fabricators.",
+      specs: [
+        { label: "ACCURACY", value: "±0.1mm Laser Engraved" },
+        { label: "CUTTING PAD", value: "5-Ply Self-Healing Polymer" },
+        { label: "COMPASS RIG", value: "Heavy Solid Brass Core" },
+      ],
+      features: [
+        "30cm & 60cm Non-Slip Backed Rulers",
+        "Precision Set Squares & Protractors",
+        "Heavy-Duty A3 & A4 Cutting Mats",
+        "Dual-Metric / Imperial Scale Grids",
+      ],
+      actionLabel: "Enter Drafting Aisle",
+      route: "/measuring",
+    },
+    {
+      num: "05",
+      name: "Raven Offering Altar",
+      desc: "Contactless Mobile QR · Automated Receipt Sync",
+      category: "TRANSACTION CRYPT // AISLE 05",
+      telemetry: "INSTANT SETTLEMENT · SYNCHRONIZED",
+      overview:
+        "The sacred checkout altar for campus dues redemption. Instant dynamic UPI QR reconciliation with automated ledger dispatch. Clears submission locks and prints your encrypted cryptographic checkout token.",
+      specs: [
+        { label: "CLEARANCE", value: "< 1.8s Instant Reconcile" },
+        { label: "PROTOCOL", value: "Dynamic QR + Campus ID" },
+        { label: "LEDGER SYNC", value: "Automated Campus Sync" },
+      ],
+      features: [
+        "Contactless Mobile QR Payment",
+        "Instant Dues & Thesis Clearance",
+        "Zero-Fee Campus Student Rate",
+        "Direct Barcode Folio Generation",
+      ],
+      actionLabel: "Visit Raven Altar",
+      route: "/ritual-offering",
+    },
+    {
+      num: "06",
+      name: "Archival Folio Receipts",
+      desc: "Code 128 Barcode Verification · Express Desk 04 Pickup",
+      category: "DISPATCH LOGISTICS // AISLE 06",
+      telemetry: "DISPATCH QUEUE · CODE 128 ACTIVE",
+      overview:
+        "Your cryptographic footprint at Desk 04. Scan or verify your Code 128 barcode slip to collect finished spiral thesis copies, review transaction history, and check real-time machine queue status.",
+      specs: [
+        { label: "VERIFICATION", value: "Code 128 Optical Barcode" },
+        { label: "COLLECTION", value: "Express Desk 04 Counter" },
+        { label: "DISPATCH TRACK", value: "Real-Time Print Telemetry" },
+      ],
+      features: [
+        "Physical Thermal Receipt Format",
+        "Instant Cloud Folio Backup",
+        "Live Queue ETA Indicators",
+        "One-Touch Re-Print Dispatch",
+      ],
+      actionLabel: "Open Folio Counter",
+      route: "/student",
+    },
   ];
 
   return (
@@ -527,27 +968,124 @@ export default function IntroPage() {
         <section className="od-directory-section">
           <div className="od-dir-header">
             <span className="od-dir-title">Requisition Aisles</span>
-            <span className="od-dir-title">Desk 04 Telemetry</span>
           </div>
 
           <div>
-            {directory.map((item) => (
-              <div
-                key={item.num}
-                className="od-dir-row"
-                onClick={() => handleNavigate(item.route)}
-              >
-                <div className="od-dir-left">
-                  <span className="od-dir-num">{item.num}</span>
-                  <div>
-                    <h3 className="od-dir-name">{item.name}</h3>
-                    <p className="od-dir-desc">{item.desc}</p>
+            {directory.map((item) => {
+              const isExpanded = !!expandedAisles[item.num];
+
+              return (
+                <div
+                  key={item.num}
+                  className={`od-dir-item-wrap ${isExpanded ? "is-expanded" : ""}`}
+                >
+                  <div
+                    className="od-dir-row"
+                    onClick={() => toggleAisle(item.num)}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isExpanded}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        toggleAisle(item.num);
+                      }
+                    }}
+                  >
+                    <div className="od-dir-left">
+                      <span className="od-dir-num">{item.num}</span>
+                      <div>
+                        <h3 className="od-dir-name">{item.name}</h3>
+                        <p className="od-dir-desc">{item.desc}</p>
+                      </div>
+                    </div>
+
+                    <div className="od-dir-right">
+                      <span className="od-dir-pill-status">
+                        {isExpanded ? "Open Dossier" : "Read Specs"}
+                      </span>
+                      <span className="od-dir-toggle-icon">
+                        {isExpanded ? "−" : "+"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Expandable Info Dossier Drawer */}
+                  <div
+                    className={`od-dir-drawer ${isExpanded ? "is-open" : ""}`}
+                    aria-hidden={!isExpanded}
+                  >
+                    <div className="od-dir-drawer-inner">
+                      <div className="od-dir-card">
+                        <div className="od-card-top">
+                          <div className="od-card-badge-wrap">
+                            <span className="od-card-dot" />
+                            <span className="od-card-category">{item.category}</span>
+                            <span className="od-card-telemetry">· {item.telemetry}</span>
+                          </div>
+                          <button
+                            className="od-card-close-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              closeAisle(item.num);
+                            }}
+                            aria-label={`Close ${item.name} info`}
+                          >
+                            <span>CLOSE</span>
+                            <span>✕</span>
+                          </button>
+                        </div>
+
+                        <p className="od-card-overview">{item.overview}</p>
+
+                        <div className="od-card-specs-grid">
+                          {item.specs.map((sp, idx) => (
+                            <div key={idx} className="od-spec-box">
+                              <span className="od-spec-label">{sp.label}</span>
+                              <span className="od-spec-val">{sp.value}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="od-card-features">
+                          {item.features.map((feat, idx) => (
+                            <span key={idx} className="od-feat-tag">
+                              ✓ {feat}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="od-card-footer">
+                          <span className="od-card-hint">
+                            Click to collapse or leave open while browsing next aisles.
+                          </span>
+                          <div className="od-card-btn-group">
+                            <button
+                              className="od-card-secondary-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                closeAisle(item.num);
+                              }}
+                            >
+                              Close
+                            </button>
+                            <button
+                              className="od-card-action-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleNavigate(item.route);
+                              }}
+                            >
+                              {item.actionLabel} →
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <span className="od-dir-arrow">↗</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
