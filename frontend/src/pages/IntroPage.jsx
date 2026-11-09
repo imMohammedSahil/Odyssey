@@ -336,22 +336,35 @@ const styles = `
     color: var(--text-sub);
   }
 
-  .od-dir-arrow {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text-black);
-    transition: transform 0.25s ease, color 0.2s ease, -webkit-text-stroke 0.2s ease;
+  .od-dir-toggle {
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid #0A0A0A;
+    background: #FFFFFF;
+    color: #0A0A0A;
+    box-shadow: 3px 3px 0px #0A0A0A;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .od-dir-row:hover .od-dir-arrow {
-    color: #FF1A8C;
-    -webkit-text-stroke: 1.4px #0A0A0A;
-    paint-order: stroke fill;
-    transform: translate(4px, -4px);
+  .od-dir-row:hover .od-dir-toggle {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #0A0A0A;
+    background: #FF1A8C;
+    color: #FFFFFF;
   }
 
-  .od-dir-item-wrap.is-expanded .od-dir-arrow {
-    transform: rotate(90deg);
+  .od-dir-item-wrap.is-expanded .od-dir-toggle {
+    background: #FF1A8C;
+    color: #FFFFFF;
+    transform: rotate(45deg);
+    box-shadow: 2px 2px 0px #0A0A0A;
   }
 
   /* MINIMALIST EXPANDABLE INFO (MATCHES GREEN BACKGROUND) */
@@ -751,7 +764,7 @@ export default function IntroPage() {
                       </div>
                     </div>
 
-                    <span className={`od-dir-arrow ${isExpanded ? "is-open" : ""}`}>↗</span>
+                    <span className="od-dir-toggle">+</span>
                   </div>
 
                   {/* Classic Comic Neomorphic Box & Tags */}
