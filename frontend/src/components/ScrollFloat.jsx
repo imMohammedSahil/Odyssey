@@ -176,6 +176,42 @@ const ScrollFloat = ({
     const mm = gsap.matchMedia();
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
+      if (splitBy === 'lines') {
+        const words = el.querySelectorAll('.scroll-float-word');
+        const linesMap = new Map();
+        words.forEach(word => {
+          const top = Math.round(word.offsetTop / 10) * 10;
+          if (!linesMap.has(top)) linesMap.set(top, []);
+          linesMap.get(top).push(word);
+        });
+        const lines = Array.from(linesMap.values());
+        lines.forEach(lineWords => {
+          const lead = lineWords[0];
+          gsap.fromTo(
+            lineWords,
+            {
+              opacity: 0,
+              y: sign * 65 * reach,
+              willChange: 'opacity, transform'
+            },
+            {
+              opacity: 1,
+              y: 0,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: lead,
+                scroller,
+                start: 'top 92%',
+                end: 'top 68%',
+                scrub: smoothing > 0 ? smoothing : true,
+                invalidateOnRefresh: true
+              }
+            }
+          );
+        });
+        return;
+      }
+
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: el,
