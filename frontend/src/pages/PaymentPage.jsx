@@ -374,6 +374,18 @@ export default function PaymentPage() {
   const [sessionId, setSessionId] = useState(() => "ritual_" + Date.now() + "_" + Math.floor(1000 + Math.random() * 9000));
   const [offerUrl, setOfferUrl] = useState("");
   const [localIp, setLocalIp] = useState("192.168.0.101");
+  const [reaperDrain, setReaperDrain] = useState(0);
+
+  // Sync cursor proximity drain to modulate Grim Reaper eyes
+  useEffect(() => {
+    const onDrain = (e) => {
+      if (typeof e.detail?.drain === "number") {
+        setReaperDrain(e.detail.drain);
+      }
+    };
+    window.addEventListener("odyssey_cursor_drain", onDrain);
+    return () => window.removeEventListener("odyssey_cursor_drain", onDrain);
+  }, []);
 
   // Lock body/window scrolling so page and elements stay strictly fixed in place
   useEffect(() => {
@@ -613,6 +625,46 @@ export default function PaymentPage() {
                 alt="Grim Reaper Ritual Offering Notice Board"
                 className="ritual-vector-svg"
               />
+
+              {/* Dynamic Evil Red Eyes Overlay (Ignites blood-red matching the blob as it approaches) */}
+              <svg
+                viewBox="0 0 935 1024"
+                className="reaper-red-eyes-overlay"
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  pointerEvents: "none",
+                  opacity: Math.min(1, reaperDrain * 1.4),
+                  transition: "opacity 0.12s ease",
+                  zIndex: 22,
+                }}
+                aria-hidden="true"
+              >
+                <defs>
+                  <filter id="reaperEvilRedEyePulse" x="-60%" y="-60%" width="220%" height="220%">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="outerGlow" />
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="coreGlow" />
+                    <feMerge>
+                      <feMergeNode in="outerGlow" />
+                      <feMergeNode in="coreGlow" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  <radialGradient id="reaperEvilRedEyeGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#FFF0EE" />
+                    <stop offset="30%" stop-color="#FF2A1B" />
+                    <stop offset="70%" stop-color="#B80E04" />
+                    <stop offset="100%" stop-color="#4A0201" />
+                  </radialGradient>
+                </defs>
+                <g filter="url(#reaperEvilRedEyePulse)">
+                  <path d="M 455.0,102.0 Q 454.0,102.0 450.0,105.0 L 446.0,108.0 L 446.0,107.0 L 446.0,106.0 L 445.0,107.0 L 444.0,108.0 L 444.5,108.5 L 445.0,109.0 L 444.0,110.0 L 443.0,111.0 L 442.5,111.0 L 442.0,111.0 L 441.0,113.5 Q 440.0,116.0 440.0,119.0 Q 440.0,122.0 441.5,123.5 L 443.0,125.0 L 443.0,124.0 Q 443.0,123.0 444.5,121.5 Q 446.0,120.0 446.5,118.5 Q 447.0,117.0 447.5,116.5 Q 448.0,116.0 449.0,115.5 Q 450.0,115.0 451.0,115.0 Q 452.0,115.0 456.0,112.5 L 460.0,110.0 L 459.5,109.0 Q 459.0,108.0 458.0,107.0 L 457.0,106.0 L 456.5,106.5 L 456.0,107.0 L 455.5,106.0 L 455.0,105.0 L 455.5,103.5 L 456.0,102.0 L 455.0,102.0 Z M 479.0,110.0 Q 479.0,111.0 480.0,112.5 L 481.0,114.0 L 482.5,113.0 Q 484.0,112.0 486.5,112.0 Q 489.0,112.0 490.5,111.0 Q 492.0,110.0 493.0,110.0 Q 494.0,110.0 495.0,109.5 L 496.0,109.0 L 497.0,110.0 L 498.0,111.0 L 495.5,107.0 Q 493.0,103.0 490.5,100.5 L 488.0,98.0 L 486.0,98.5 L 484.0,99.0 L 481.5,104.0 Q 479.0,109.0 479.0,110.0 Z" fill="url(#reaperEvilRedEyeGrad)" />
+                  <path d="M 452.5,103.5 Q 450.0,105.0 447.5,107.0 Q 445.0,109.0 443.0,111.0 L 441.0,113.0 L 441.0,115.0 L 441.0,117.0 L 440.5,117.5 L 440.0,118.0 L 440.0,119.5 Q 440.0,121.0 442.0,123.5 Q 444.0,126.0 445.5,126.5 L 447.0,127.0 L 448.5,126.0 Q 450.0,125.0 451.5,123.5 Q 453.0,122.0 453.5,122.0 L 454.0,122.0 L 457.5,118.0 L 461.0,114.0 L 460.5,112.5 Q 460.0,111.0 458.5,108.5 L 457.0,106.0 L 456.0,107.5 L 455.0,109.0 L 455.0,105.5 L 455.0,102.0 L 452.5,103.5 Z M 487.5,99.5 L 487.0,101.0 L 485.5,100.5 L 484.0,100.0 L 483.0,101.5 Q 482.0,103.0 481.5,105.0 Q 481.0,107.0 480.0,108.0 L 479.0,109.0 L 479.0,110.0 Q 479.0,111.0 482.5,114.5 Q 486.0,118.0 488.5,119.5 Q 491.0,121.0 492.0,121.0 L 493.0,121.0 L 494.0,120.0 Q 495.0,119.0 496.0,117.0 L 497.0,115.0 L 497.5,116.5 L 498.0,118.0 L 497.5,116.0 Q 497.0,114.0 497.5,112.5 L 498.0,111.0 L 496.0,108.0 Q 494.0,105.0 492.0,103.0 L 490.0,101.0 L 490.0,100.5 L 490.0,100.0 L 489.0,99.0 L 488.0,98.0 L 487.5,99.5 Z" fill="#FF5242" />
+                  <path d="M 442.0,123.5 Q 444.0,126.0 445.0,126.5 L 446.0,127.0 L 447.0,126.5 Q 448.0,126.0 451.5,123.5 Q 455.0,121.0 457.0,118.5 Q 459.0,116.0 459.5,115.0 Q 460.0,114.0 459.5,112.0 L 459.0,110.0 L 455.5,112.0 Q 452.0,114.0 449.0,114.0 L 446.0,114.0 L 446.5,113.0 L 447.0,112.0 L 446.0,111.0 L 445.0,110.0 L 443.5,111.0 Q 442.0,112.0 441.5,113.0 Q 441.0,114.0 440.5,116.5 Q 440.0,119.0 440.0,120.0 Q 440.0,121.0 442.0,123.5 Z M 481.5,105.0 L 479.0,110.0 L 479.5,111.0 Q 480.0,112.0 482.5,114.5 Q 485.0,117.0 489.0,118.5 Q 493.0,120.0 493.5,120.0 L 494.0,120.0 L 496.0,116.0 L 498.0,112.0 L 496.0,108.5 Q 494.0,105.0 493.0,104.0 L 492.0,103.0 L 490.5,103.0 Q 489.0,103.0 486.5,103.5 L 484.0,104.0 L 484.0,102.0 L 484.0,100.0 L 481.5,105.0 Z" fill="#FFE8E6" />
+                </g>
+              </svg>
 
               {/* Soft Atmospheric Ground Mist Feather */}
               <div className="ritual-ground-mist" aria-hidden="true" />
