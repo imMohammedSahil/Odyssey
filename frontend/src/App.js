@@ -40,7 +40,7 @@ const getCursorColor = (pathname) => {
   if (pathname.startsWith("/stationery")) return "#00E599";
   if (pathname.startsWith("/payment")) return "#FFA84A"; // Gothic Chapel Lantern Gold
   if (pathname.startsWith("/receipt")) return "#FF70A6"; // Raven Receipt Pink
-  if (pathname.startsWith("/cart")) return "#F7B919"; // Hazard Gold
+  if (pathname.startsWith("/cart")) return "#FF70A6"; // Cart Pink
   if (pathname.startsWith("/profile")) return "#45B89E"; // Seafoam
   if (pathname.startsWith("/admin")) return "#7C5CFC"; // Admin Violet
   return "#FF70A6";
