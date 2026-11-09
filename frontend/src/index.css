@@ -21,6 +21,18 @@ html, body, #root {
   width: 100%;
   overflow-x: hidden;
   background-color: #0D0D0D;
+  overscroll-behavior-y: none;
+}
+
+/* Prevent nested scroll containers from bleeding into window */
+.cb-messages,
+.neo-ps-messages,
+.ad-orders-col,
+.rcpt-root,
+.nb-items-list,
+[data-scroll-contain],
+.scroll-contain {
+  overscroll-behavior: contain;
 }
 
 body {

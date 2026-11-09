@@ -729,6 +729,8 @@ export default function UploadOrder() {
         const timer4 = setTimeout(() => {
           restore();
           isRestoringRef.current = false;
+          sessionStorage.removeItem("student_scroll_card");
+          sessionStorage.removeItem("student_scroll_y");
         }, 500);
         return () => {
           clearTimeout(timer1);
