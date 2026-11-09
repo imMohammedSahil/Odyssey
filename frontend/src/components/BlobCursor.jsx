@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import gsap from 'gsap';
 
 import './BlobCursor.css';
 
@@ -285,6 +286,8 @@ const BlobCursor = ({
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const view = { width: 1, height: 1 };
     const pointer = { x: 0, y: 0, inside: false, down: false, hover: false, seen: false };
+    const xTo = gsap.quickTo(pointer, "x", { duration: 0.65, ease: "power2.out" });
+    const yTo = gsap.quickTo(pointer, "y", { duration: 0.65, ease: "power2.out" });
     const anchor = createBody();
     const core = Array.from({ length: CORE }, (_, i) => ({
       ...createBody(),
@@ -413,13 +416,17 @@ const BlobCursor = ({
     const onMove = event => {
       if (event.pointerType === 'touch' && !pointer.down) return;
       const spot = locate(event);
-      if (spot.inside && (!pointer.inside || !pointer.seen) && swell.value < 0.05) place(spot.x, spot.y);
-      pointer.x = spot.x;
-      pointer.y = spot.y;
+      if (spot.inside && (!pointer.inside || !pointer.seen) && swell.value < 0.05) {
+        place(spot.x, spot.y);
+        pointer.x = spot.x;
+        pointer.y = spot.y;
+      }
       pointer.inside = spot.inside;
       pointer.seen = true;
       const target = event.target instanceof Element ? event.target : null;
       pointer.hover = spot.inside && !!target?.closest(INTERACTIVE);
+      xTo(spot.x);
+      yTo(spot.y);
       start();
     };
 
@@ -476,6 +483,8 @@ const BlobCursor = ({
       const spot = locate(event);
       if (!spot.inside) return;
       if (event.pointerType === 'touch' && swell.value < 0.05) place(spot.x, spot.y);
+      xTo(spot.x);
+      yTo(spot.y);
       pointer.x = spot.x;
       pointer.y = spot.y;
       pointer.inside = true;
@@ -871,6 +880,7 @@ const BlobCursor = ({
     return () => {
       alive = false;
       cancelAnimationFrame(raf);
+      gsap.killTweensOf(pointer);
       applyRef.current = null;
       restoreCursor?.();
       resizeObserver.disconnect();

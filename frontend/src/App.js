@@ -327,7 +327,7 @@ function GlobalBlobCursor() {
       morphSpeed={cfg.morphSpeed ?? 0.4}
       depth={1}
       trail={cfg.trail ?? 12}
-      lag={cfg.lag ?? 0.35}
+      lag={cfg.lag ?? 0.62}
       goo={cfg.goo ?? 1}
       stretch={activeStretch}
       wobble={activeWobble}
