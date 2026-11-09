@@ -177,7 +177,8 @@ const ScrollFloat = ({
 
     mm.add('(prefers-reduced-motion: no-preference)', () => {
       if (splitBy === 'lines') {
-        const words = el.querySelectorAll('.scroll-float-word');
+        const words = Array.from(el.querySelectorAll('.scroll-float-word'));
+        if (!words.length) return;
         const linesMap = new Map();
         words.forEach(word => {
           const top = Math.round(word.offsetTop / 10) * 10;
@@ -186,23 +187,33 @@ const ScrollFloat = ({
         });
         const lines = Array.from(linesMap.values());
         lines.forEach(lineWords => {
-          const lead = lineWords[0];
+          let inner = lineWords[0].parentElement;
+          if (!inner || !inner.classList.contains('scroll-float-line-inner')) {
+            const mask = document.createElement('span');
+            mask.className = 'scroll-float-line-mask';
+            inner = document.createElement('span');
+            inner.className = 'scroll-float-line-inner';
+            const parent = lineWords[0].parentNode;
+            parent.insertBefore(mask, lineWords[0]);
+            mask.appendChild(inner);
+            lineWords.forEach(w => inner.appendChild(w));
+          }
           gsap.fromTo(
-            lineWords,
+            inner,
             {
+              yPercent: 115 * sign,
               opacity: 0,
-              y: sign * 65 * reach,
-              willChange: 'opacity, transform'
+              willChange: 'transform, opacity'
             },
             {
+              yPercent: 0,
               opacity: 1,
-              y: 0,
               ease: 'power2.out',
               scrollTrigger: {
-                trigger: lead,
+                trigger: inner.parentElement,
                 scroller,
-                start: 'top 85%',
-                end: 'top 40%',
+                start: 'top 90%',
+                end: 'top 55%',
                 scrub: smoothing > 0 ? smoothing : true,
                 invalidateOnRefresh: true
               }

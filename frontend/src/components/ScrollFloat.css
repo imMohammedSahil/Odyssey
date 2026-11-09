@@ -1,6 +1,19 @@
 .scroll-float {
   margin: 0;
+  overflow: visible;
+}
+
+.scroll-float-line-mask {
+  display: block;
   overflow: hidden;
+  padding-bottom: 0.08em;
+  line-height: inherit;
+}
+
+.scroll-float-line-inner {
+  display: inline-block;
+  width: 100%;
+  line-height: inherit;
 }
 
 .scroll-float--open {
