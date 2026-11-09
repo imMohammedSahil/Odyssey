@@ -119,7 +119,39 @@ const getCursorConfig = (pathname) => {
     };
   }
 
-  // 7. Raven Altar (/ritual-offering) - Dark Occult Crypt
+  // 7. Correction & Marking (/stationery/correction) - Twilight Purple & Pumpkin Flame
+  if (pathname.startsWith("/stationery/correction") || pathname.startsWith("/correction")) {
+    return {
+      color: "#FFA012", // Pumpkin Orange
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 8. Office & Desk Utilities (/stationery/office, /office) - Midnight Slate & Desert Bronze
+  if (pathname.startsWith("/office") || pathname.startsWith("/stationery/office")) {
+    return {
+      color: "#C89F72", // Warm Bronze Gold
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 9. Raven Altar (/ritual-offering) - Dark Occult Crypt
   if (pathname.startsWith("/ritual-offering")) {
     return {
       color: "#BE2E2E", // Occult Crimson Blood
