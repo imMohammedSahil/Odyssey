@@ -13,15 +13,15 @@ export default function SmoothScroll() {
   const location = useLocation();
 
   useEffect(() => {
-    // Enhanced heavy fluid momentum with deep viscous resistance
+    // Enhanced heavy fluid momentum with deep viscous resistance matching the glob cursor
     const lenis = new Lenis({
-      duration: 1.4, // Deeper, heavier glide
+      duration: 1.65, // Deeper, heavier fluid mass glide
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Viscous exponential deceleration
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.70, // Increased resistance for a noticeably heavier feel
-      touchMultiplier: 1.2,
+      wheelMultiplier: 0.58, // Heavier fluid resistance matching liquid glob physics
+      touchMultiplier: 1.1,
       infinite: false,
       prevent: (node) => {
         // Prevent Lenis from intercepting scroll events on nested scrollable elements
