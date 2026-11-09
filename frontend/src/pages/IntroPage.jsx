@@ -54,12 +54,50 @@ const styles = `
     pointer-events: none;
     transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   .od-top-right-wrap.is-visible {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+
+  .od-sound-btn {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    background: var(--pill-dark);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    user-select: none;
+  }
+
+  .od-sound-btn:hover {
+    background: #000000;
+    color: #FFFFFF;
+    transform: translateY(-2px) scale(1.05);
+    border-color: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+  }
+
+  .od-sound-btn.is-active {
+    color: var(--brain-pink);
+    border-color: rgba(255, 112, 166, 0.45);
   }
 
   .od-top-btn {
@@ -649,6 +687,7 @@ export default function IntroPage() {
   const [openAisle, setOpenAisle] = useState(null);
   const [loadingState, setLoadingState] = useState("loading"); // "loading" | "revealing" | "ready"
   const [showRest, setShowRest] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
     // Oscillate the hideAndSeek loader, then reveal Odyssey left-to-right
@@ -763,8 +802,30 @@ export default function IntroPage() {
       <style>{styles}</style>
 
       <div className="od-min-root">
-        {/* ── TOP RIGHT ENTER BASECAMP PILL ── */}
+        {/* ── TOP RIGHT CONTROLS: SOUND TOGGLE & ENTER BASECAMP PILL ── */}
         <div className={`od-top-right-wrap ${showRest ? "is-visible" : ""}`}>
+          <button
+            className={`od-sound-btn ${soundEnabled ? "is-active" : ""}`}
+            onClick={() => setSoundEnabled((prev) => !prev)}
+            aria-label={soundEnabled ? "Mute audio" : "Enable audio"}
+            title={soundEnabled ? "Sound: ON" : "Sound: OFF"}
+          >
+            {soundEnabled ? (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+              </svg>
+            ) : (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            )}
+            <span>{soundEnabled ? "SOUND ON" : "SOUND OFF"}</span>
+          </button>
+
           <button className="od-top-btn" onClick={() => handleNavigate("/student")}>
             ENTER BASECAMP →
           </button>
