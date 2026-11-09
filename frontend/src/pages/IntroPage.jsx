@@ -119,7 +119,7 @@ const styles = `
     font-weight: 600;
     color: #171E12;
     letter-spacing: 0.04em;
-    margin-top: -18px;
+    margin-top: -32px;
     position: relative;
     z-index: 10;
     display: inline-flex;
