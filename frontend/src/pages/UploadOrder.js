@@ -704,7 +704,7 @@ export default function UploadOrder() {
       setTimeout(() => {
         smoothScrollToKits(1300);
       }, 150);
-    } else if (navType === "POP" || savedCard !== null || savedY !== null) {
+    } else if (navType === "POP" && (savedCard !== null || savedY !== null)) {
       if (savedCard || savedY) {
         isRestoringRef.current = true;
         const restore = () => {

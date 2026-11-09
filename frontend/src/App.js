@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
 import LoginPage from "./pages/LoginPage";
@@ -21,9 +22,21 @@ import RitualOfferingPage from "./pages/RitualOfferingPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
-    <Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
       {/* Public Routes */}
       <Route path="/" element={<IntroPage />} />
       <Route path="/login" element={<LoginPage />} />
@@ -184,6 +197,7 @@ function App() {
         }
       />
     </Routes>
+    </>
   );
 }
 

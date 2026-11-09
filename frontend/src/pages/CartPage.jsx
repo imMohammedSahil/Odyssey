@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -594,6 +594,16 @@ export default function CartPage() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleExitToStudent = () => {
+    sessionStorage.removeItem("student_scroll_y");
+    sessionStorage.removeItem("student_scroll_card");
+    navigate("/student");
+  };
+
   return (
     <>
       <style>{css}</style>
@@ -601,7 +611,7 @@ export default function CartPage() {
         {/* Slime Green Top Header */}
         <div className="nb-cart-header-wrapper">
           <nav className="nb-cart-nav">
-            <button className="nb-back-btn" onClick={() => navigate("/student")}>
+            <button className="nb-back-btn" onClick={handleExitToStudent}>
               ← BASECAMP
             </button>
           </nav>
@@ -635,7 +645,7 @@ export default function CartPage() {
               </p>
               <button
                 className="nb-empty-btn"
-                onClick={() => navigate("/student", { state: { scrollToKits: true } })}
+                onClick={handleExitToStudent}
               >
                 RESTOCK GEAR →
               </button>
@@ -735,7 +745,7 @@ export default function CartPage() {
 
                 <button
                   className="nb-continue-link"
-                  onClick={() => navigate("/student", { state: { scrollToKits: true } })}
+                  onClick={handleExitToStudent}
                 >
                   ← ADD MORE GEAR
                 </button>
