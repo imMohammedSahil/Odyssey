@@ -299,16 +299,8 @@ const styles = `
     transition: color 0.15s ease, -webkit-text-stroke 0.15s ease;
   }
 
-  .od-dir-row:hover .od-dir-num,
-  .od-dir-item-wrap.is-expanded .od-dir-num {
+  .od-dir-row:hover .od-dir-num {
     color: #FF1A8C;
-    -webkit-text-stroke: 1.6px #0A0A0A;
-    paint-order: stroke fill;
-    text-shadow:
-      -1px -1px 0 #0A0A0A,
-       1px -1px 0 #0A0A0A,
-      -1px  1px 0 #0A0A0A,
-       1px  1px 0 #0A0A0A;
   }
 
   .od-dir-name {
@@ -319,8 +311,7 @@ const styles = `
     transition: color 0.15s ease, -webkit-text-stroke 0.15s ease, text-shadow 0.15s ease;
   }
 
-  .od-dir-row:hover .od-dir-name,
-  .od-dir-item-wrap.is-expanded .od-dir-name {
+  .od-dir-row:hover .od-dir-name {
     color: #FF1A8C;
     -webkit-text-stroke: 3px #0A0A0A;
     paint-order: stroke fill;
@@ -356,9 +347,6 @@ const styles = `
   }
 
   .od-dir-item-wrap.is-expanded .od-dir-arrow {
-    color: #FF1A8C;
-    -webkit-text-stroke: 1.4px #0A0A0A;
-    paint-order: stroke fill;
     transform: rotate(90deg);
   }
 
