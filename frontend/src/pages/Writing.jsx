@@ -618,32 +618,38 @@ const styles = `
     transform: translateY(-1px);
   }
 
-  /* TOAST (BOTTOM-RIGHT COMIC POPUP WITH SMOOTH FADE & SLIDE) */
+  /* TOAST (CENTERED COMIC CARD) */
   .writing-toast {
     position: fixed;
-    bottom: 28px;
-    right: 28px;
+    bottom: 40px;
+    left: 50%;
+    transform: translate(-50%, 20px) scale(0.95);
     background: var(--slime-green);
     color: var(--void-black);
     border: 3.5px solid var(--void-black);
-    border-radius: 12px;
-    padding: 12px 22px;
+    border-radius: 14px;
+    padding: 16px 26px;
     font-family: 'Archivo Black', sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.4px;
+    font-size: 13.5px;
+    letter-spacing: 0.3px;
+    text-align: center;
     box-shadow: 5px 5px 0px var(--void-black);
     z-index: 1000;
-    max-width: 440px;
-    line-height: 1.4;
+    width: auto;
+    max-width: 360px;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.45;
     opacity: 0;
-    transform: translateY(24px) scale(0.95);
     pointer-events: none;
     transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .writing-toast.visible {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate(-50%, 0) scale(1);
     pointer-events: auto;
   }
 
