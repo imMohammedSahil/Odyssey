@@ -5,7 +5,7 @@ import BlobCursor from "../components/BlobCursor";
 import ScrollFloat from "../components/ScrollFloat";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Titan+One&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Titan+One&display=swap');
 
   :root {
     --bg-green: #9DE869;
@@ -481,24 +481,27 @@ const styles = `
   }
 
   .od-cta-btn {
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-style: italic;
-    font-size: clamp(48px, 8vw, 96px);
+    font-family: 'Bangers', cursive;
+    font-style: normal;
+    font-size: clamp(52px, 8.5vw, 108px);
+    letter-spacing: 0.05em;
     color: var(--text-black);
     background: transparent;
     border: none;
     cursor: pointer;
     line-height: 1;
-    letter-spacing: -0.02em;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease, -webkit-text-stroke 0.15s ease;
     display: inline-flex;
     align-items: center;
     gap: 16px;
   }
 
   .od-cta-btn:hover {
-    color: var(--brain-pink);
-    transform: translateX(8px);
+    color: #FF1A8C;
+    -webkit-text-stroke: 3.5px #0A0A0A;
+    paint-order: stroke fill;
+    text-shadow: 4px 4px 0px #0A0A0A;
+    transform: translateX(8px) rotate(-1deg);
   }
 
   .od-footer {
