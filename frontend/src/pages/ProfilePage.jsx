@@ -922,11 +922,13 @@ const css = `
     to { transform: scale(1); opacity: 1; }
   }
 
-  .rcpt-modal-floating-close {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-    z-index: 25;
+  .rcpt-modal-floating-close,
+  .rcpt-modal-ticket-card .rcpt-modal-floating-close {
+    position: absolute !important;
+    top: 14px !important;
+    right: 16px !important;
+    left: auto !important;
+    z-index: 50 !important;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -1021,7 +1023,7 @@ const css = `
     z-index: 1;
   }
 
-  .rcpt-modal-ticket-card * {
+  .rcpt-modal-ticket-card > *:not(.rcpt-modal-floating-close) {
     position: relative;
     z-index: 2;
   }
