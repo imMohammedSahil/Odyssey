@@ -516,7 +516,7 @@ export default function IntroPage() {
             scrollEnd="bottom bottom-=40%"
             stagger={0.03}
             distance={80}
-            stretch={1.8}
+            stretch={1}
             smoothing={0.2}
           >
             I’m Odyssey, a campus survival armory that prints project theses, stocks precision stationery, and settles dues at the raven altar. Deadlines that feel like child’s play. Tools that give you your sleep back. Survive the deadline.
