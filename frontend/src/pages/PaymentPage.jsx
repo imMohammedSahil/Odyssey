@@ -518,7 +518,6 @@ export default function PaymentPage() {
   const handlePaymentComplete = async () => {
     if (loading) return;
     setLoading(true);
-    setOfferingAccepted(true);
 
     try {
       let mongoOrderId = "ORD-" + Math.floor(100000 + Math.random() * 900000);
@@ -560,15 +559,11 @@ export default function PaymentPage() {
         clearCart();
       }
 
-      // Small dramatic delay for the ritual ceremony
-      setTimeout(() => {
-        navigate("/receipt");
-      }, 1200);
+      navigate("/receipt");
     } catch (err) {
       console.error("Order completion failed", err);
       alert("Payment processing encountered an error. Please try again.");
       setLoading(false);
-      setOfferingAccepted(false);
     }
   };
 
@@ -675,17 +670,6 @@ export default function PaymentPage() {
             </div>
           </div>
         </main>
-
-        {/* ── RITUAL OFFERING ACTIVE TRANSITION CEREMONY ── */}
-        {offeringAccepted && (
-          <div className="ritual-offering-overlay">
-            <div className="ritual-spinner-sigil" />
-            <div className="ritual-offering-text">TRIBUTE ACCEPTED</div>
-            <div className="ritual-offering-sub">
-              ENTERING THE SANCTUARY • GENERATING SACRED RECEIPT...
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

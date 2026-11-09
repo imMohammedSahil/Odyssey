@@ -393,7 +393,7 @@ export default function RitualOfferingPage() {
 
           {/* Consecrated Tribute Box (Evil Dark Red Blood-Obsidian) */}
           <div className="ritual-amount-slab">
-            <span className="ritual-amount-slab-tag">Tribute Consecrated</span>
+            <span className="ritual-amount-slab-tag">Offering Sealed</span>
             <div className="ritual-amount-row">
               <span className="ritual-amount-cur">₹</span>
               <span className="ritual-amount-val">{total}</span>
