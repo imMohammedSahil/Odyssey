@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import ElasticMesh from "../components/ElasticMesh";
 import BlobCursor from "../components/BlobCursor";
+import ScrollFloat from "../components/ScrollFloat";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Titan+One&display=swap');
@@ -502,12 +503,24 @@ export default function IntroPage() {
 
         {/* ── 2. EDITORIAL MANIFESTO SECTION (Screenshot 2 Match) ── */}
         <section className="od-manifesto-section" id="manifesto-section">
-          <p className="od-manifesto-text">
-            I’m Odyssey, a <em>campus survival armory</em> that prints project theses, stocks precision stationery, 
-            and settles dues at the raven altar. <em>Deadlines that feel like child’s play. Tools that give you 
-            your sleep back.</em> Survive the deadline
-            <span className="od-dot" style={{ fontSize: "1.1em" }}>.</span>
-          </p>
+          <ScrollFloat
+            containerClassName="od-manifesto-scroll-wrap"
+            textClassName="od-manifesto-text"
+            effect="float"
+            splitBy="words"
+            direction="up"
+            order="start"
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+            distance={80}
+            stretch={1.8}
+            smoothing={0.2}
+          >
+            I’m Odyssey, a campus survival armory that prints project theses, stocks precision stationery, and settles dues at the raven altar. Deadlines that feel like child’s play. Tools that give you your sleep back. Survive the deadline.
+          </ScrollFloat>
         </section>
 
         {/* ── 3. MINIMALIST AISLE DIRECTORY ── */}
