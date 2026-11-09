@@ -924,30 +924,32 @@ const css = `
 
   .rcpt-modal-floating-close {
     position: absolute;
-    top: -12px;
-    right: -8px;
+    top: 14px;
+    right: 16px;
     z-index: 25;
-    width: 38px;
-    height: 38px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #0f1c13;
-    color: #e3f2dc;
-    border: 2px solid rgba(82, 227, 137, 0.6);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+    color: #dcebd7;
+    border: 1.5px solid rgba(35, 133, 75, 0.45);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: 800;
-    transition: transform 0.12s ease, background 0.12s ease;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 900;
+    transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   }
 
   .rcpt-modal-floating-close:hover {
-    transform: scale(1.1);
-    background: var(--brain-pink);
-    color: var(--void-black);
-    border-color: var(--border-dark);
+    transform: scale(1.08);
+    background: #182e20;
+    color: #ffffff;
+    border-color: #52e389;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
   }
 
   .rcpt-modal-raven-wrap {
@@ -1247,33 +1249,45 @@ const css = `
     font-weight: 900;
     font-size: 11px;
     letter-spacing: 0.12em;
-    color: #0e1a12;
-    background: rgba(255, 255, 255, 0.35);
-    border: 1.5px solid #0f1c13;
-    border-radius: 2px;
-    box-shadow: 2px 2px 0px rgba(15, 28, 19, 0.35);
     cursor: pointer;
-    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
-  }
-
-  .rcpt-modal-btn:hover {
-    background: #0f1c13;
-    color: #e5f2de;
-    transform: translateY(-1px);
-    box-shadow: 2px 3px 0px rgba(15, 28, 19, 0.5);
+    border-radius: 2px;
+    user-select: none;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
 
   .rcpt-modal-btn.primary {
     background: #0e1911;
     color: #e3f2dc;
     border: 1.5px solid #0e1911;
-    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
   }
 
   .rcpt-modal-btn.primary:hover {
-    background: #1a2f21;
-    border-color: #1a2f21;
+    background: #1a3022;
+    border-color: #1a3022;
     color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 2px 3px 0px rgba(0, 0, 0, 0.55);
+  }
+
+  .rcpt-modal-btn.secondary {
+    background: rgba(15, 28, 19, 0.08);
+    color: #0e1911;
+    border: 1.5px solid #0f1c13;
+    box-shadow: 2px 2px 0px rgba(15, 28, 19, 0.3);
+  }
+
+  .rcpt-modal-btn.secondary:hover {
+    background: #0f1c13;
+    color: #e3f2dc;
+    border-color: #0f1c13;
+    transform: translateY(-1px);
+    box-shadow: 2px 3px 0px rgba(15, 28, 19, 0.5);
+  }
+
+  .rcpt-modal-btn:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0px rgba(15, 28, 19, 0.35);
   }
 `;
 
@@ -1750,18 +1764,17 @@ export default function ProfilePage() {
               }}
             >
               <div className="rcpt-modal-container">
-                {/* Floating Close Button */}
-                <button
-                  className="rcpt-modal-floating-close"
-                  onClick={() => setActiveReceiptModal(null)}
-                  title="Close Receipt"
-                  aria-label="Close Receipt"
-                >
-                  ✕
-                </button>
-
                 {/* Authentic Engraved Vellum Paper Card Body */}
                 <div className="rcpt-modal-ticket-card">
+                  {/* Seal Close Button */}
+                  <button
+                    className="rcpt-modal-floating-close"
+                    onClick={() => setActiveReceiptModal(null)}
+                    title="Close Receipt"
+                    aria-label="Close Receipt"
+                  >
+                    ✕
+                  </button>
                   {/* Receipt Header */}
                   <div className="rcpt-modal-tkt-head">
                     <div style={{ width: 52, height: 52, margin: "0 auto 4px" }}>
@@ -1895,7 +1908,7 @@ export default function ProfilePage() {
                       🖨 PRINT / DOWNLOAD PDF
                     </button>
                     <button
-                      className="rcpt-modal-btn"
+                      className="rcpt-modal-btn secondary"
                       onClick={() => setActiveReceiptModal(null)}
                     >
                       CLOSE RECEIPT
