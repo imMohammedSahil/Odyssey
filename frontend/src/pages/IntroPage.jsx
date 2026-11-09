@@ -250,7 +250,7 @@ const styles = `
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    border-bottom: 1.5px solid var(--border-line);
+    border-bottom: 2px dashed rgba(10, 10, 10, 0.3);
     padding-bottom: 20px;
     margin-bottom: 20px;
   }
@@ -264,12 +264,16 @@ const styles = `
   }
 
   .od-dir-item-wrap {
-    border-bottom: 1.5px solid var(--border-line);
-    transition: border-color 0.2s ease;
+    border-bottom: 2px dashed rgba(10, 10, 10, 0.22);
+    transition: border-color 0.2s ease, border-bottom 0.2s ease;
   }
 
   .od-dir-item-wrap:hover {
-    border-color: var(--text-black);
+    border-bottom: 2px dashed #0A0A0A;
+  }
+
+  .od-dir-item-wrap.is-expanded {
+    border-bottom: 2.5px solid #0A0A0A;
   }
 
   .od-dir-row {
