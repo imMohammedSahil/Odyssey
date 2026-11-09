@@ -380,32 +380,76 @@ const styles = `
     min-height: 0;
   }
 
-  .od-dir-info-wrap {
-    padding: 0 0 24px 44px;
-    max-width: 820px;
+  /* COMIC NEOMORPHISM BOXES */
+  .od-comic-box-wrap {
+    padding: 6px 0 28px 44px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 860px;
   }
 
-  .od-dir-info-text {
+  .od-comic-card {
+    background: #FFFFFF;
+    color: #0A0A0A;
+    border: 2.5px solid #0A0A0A;
+    border-radius: 16px;
+    padding: 18px 22px;
+    box-shadow: 4px 4px 0px #0A0A0A;
     font-size: 15px;
-    font-weight: 500;
-    line-height: 1.65;
-    color: var(--text-black);
+    font-weight: 600;
+    line-height: 1.6;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .od-dir-info-specs {
-    margin-top: 8px;
+  .od-comic-card:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0px #0A0A0A;
+  }
+
+  .od-comic-tag-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 16px;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--text-sub);
-    letter-spacing: 0.02em;
+    gap: 10px;
+  }
+
+  .od-comic-chip {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #0A0A0A;
+    padding: 6px 14px;
+    border: 2px solid #0A0A0A;
+    border-radius: 999px;
+    box-shadow: 3px 3px 0px #0A0A0A;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFFFF;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .od-comic-chip:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px #0A0A0A;
+  }
+
+  .od-comic-chip.pink {
+    background: #FF70A6;
+  }
+
+  .od-comic-chip.yellow {
+    background: #FFE853;
+  }
+
+  .od-comic-chip.white {
+    background: #FFFFFF;
   }
 
   @media (max-width: 680px) {
-    .od-dir-info-wrap {
-      padding: 0 0 20px 0;
+    .od-comic-box-wrap {
+      padding: 4px 0 22px 0;
     }
     .od-dir-left {
       gap: 16px;
@@ -501,37 +545,67 @@ export default function IntroPage() {
       num: "01",
       name: "Report & Thesis Print Lab",
       desc: "1200 DPI Duplex · Wire-O Spiral · Frosted Covers",
-      info: "High-speed duplex laser thesis printing with Wire-O binding, thermal tape, and scratch-resistant frosted covers.",
+      info: "High-speed duplex laser thesis printing calibrated for university defenses. Finished with Wire-O binding, thermal tape, and scratch-resistant frosted covers.",
+      tags: [
+        { label: "1200 DPI Duplex", variant: "pink" },
+        { label: "Wire-O Metal Spiral", variant: "yellow" },
+        { label: "Frosted Shield Covers", variant: "white" },
+      ],
     },
     {
       num: "02",
       name: "Writing Weaponry",
       desc: "Archival 0.5mm Gel · Drafting Pencils · Highlighters",
-      info: "Japanese micro-tip archival gel inks, balanced drafting leads, and quick-drying highlighters designed to eliminate sleeve smudging.",
+      info: "Japanese micro-tip archival gel inks, balanced drafting leads, and quick-drying highlighters designed to eliminate sleeve smudging during marathon exams.",
+      tags: [
+        { label: "0.5mm Archival Gel", variant: "pink" },
+        { label: "Knurled Drafting Lead", variant: "yellow" },
+        { label: "Zero Smudge Mediums", variant: "white" },
+      ],
     },
     {
       num: "03",
       name: "Parchment & Paper Reams",
       desc: "75 & 80 GSM High-Brightness A4 · Sticky Memos",
-      info: "High-brightness chlorine-free bond paper reams with zero-bleed opacity for double-sided prints and blueprint schematics.",
+      info: "High-brightness chlorine-free bond paper reams with zero-bleed opacity for double-sided prints, lab notes, and blueprint schematics.",
+      tags: [
+        { label: "75 & 80 GSM Bond", variant: "pink" },
+        { label: "98% ISO High-White", variant: "yellow" },
+        { label: "A4 & A3 Formats", variant: "white" },
+      ],
     },
     {
       num: "04",
       name: "Measuring & Drafting",
       desc: "Steel Non-Slip Rulers · Geometry Kits · Cutting Mats",
-      info: "Laser-etched stainless steel scales, heavy brass compass rigs, and self-healing cutting mats with ±0.1mm tolerance.",
+      info: "Laser-etched stainless steel scales, heavy brass compass rigs, and 5-ply self-healing cutting mats with ±0.1mm drafting tolerance.",
+      tags: [
+        { label: "±0.1mm Precision", variant: "pink" },
+        { label: "5-Ply Self-Healing", variant: "yellow" },
+        { label: "Solid Brass Rig", variant: "white" },
+      ],
     },
     {
       num: "05",
       name: "Raven Offering Altar",
       desc: "Contactless Mobile QR · Automated Receipt Sync",
-      info: "Contactless UPI terminal for campus dues clearance, automated ghost ledger sync, and express submission tokens.",
+      info: "Contactless UPI terminal for campus dues clearance, automated ghost ledger sync, and instant cryptographic submission tokens.",
+      tags: [
+        { label: "Dynamic UPI QR", variant: "pink" },
+        { label: "Zero-Fee Student Rate", variant: "yellow" },
+        { label: "Instant Ledger Sync", variant: "white" },
+      ],
     },
     {
       num: "06",
       name: "Archival Folio Receipts",
       desc: "Code 128 Barcode Verification · Express Desk 04 Pickup",
-      info: "Optical Code 128 barcode receipts for queue tracking and express dispatch verification at Desk 04.",
+      info: "Optical Code 128 barcode receipts for queue tracking and express dispatch verification at Desk 04 express locker.",
+      tags: [
+        { label: "Code 128 Barcode", variant: "pink" },
+        { label: "Express Desk 04", variant: "yellow" },
+        { label: "Live Queue Telemetry", variant: "white" },
+      ],
     },
   ];
 
@@ -688,14 +762,25 @@ export default function IntroPage() {
                     <span className={`od-dir-arrow ${isExpanded ? "is-open" : ""}`}>↗</span>
                   </div>
 
-                  {/* Minimalist Info on Green Canvas */}
+                  {/* Classic Comic Neomorphic Box & Tags */}
                   <div
                     className={`od-dir-drawer ${isExpanded ? "is-open" : ""}`}
                     aria-hidden={!isExpanded}
                   >
                     <div className="od-dir-drawer-inner">
-                      <div className="od-dir-info-wrap">
-                        <p className="od-dir-info-text">{item.info}</p>
+                      <div className="od-comic-box-wrap">
+                        <div className="od-comic-card">
+                          {item.info}
+                        </div>
+                        {item.tags && (
+                          <div className="od-comic-tag-group">
+                            {item.tags.map((tag, idx) => (
+                              <span key={idx} className={`od-comic-chip ${tag.variant}`}>
+                                ★ {tag.label}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
