@@ -514,7 +514,7 @@ export default function IntroPage() {
             ease="back.inOut(2)"
             scrollStart="center bottom+=50%"
             scrollEnd="bottom bottom-=40%"
-            stagger={0}
+            stagger={0.025}
             distance={80}
             stretch={1.8}
             smoothing={0.2}
