@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ElasticMesh from "../components/ElasticMesh";
 import ScrollFloat from "../components/ScrollFloat";
@@ -53,6 +53,17 @@ const styles = `
     top: 28px;
     right: 32px;
     z-index: 100;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.15s;
+  }
+
+  .od-top-right-wrap.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .od-top-btn {
@@ -100,6 +111,108 @@ const styles = `
     user-select: none;
   }
 
+  /* ──────────────────────────────────────────────────────────
+     UIVERSE HIDE-AND-SEEK LOADER (THEMED TO ODYSSEY HERO PALETTE)
+  ────────────────────────────────────────────────────────── */
+  .od-loader-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out;
+  }
+
+  .od-loader-overlay.loader-fade-out {
+    opacity: 0;
+  }
+
+  .loader {
+    --ANIMATION-DELAY-MULTIPLIER: 70ms;
+    padding: 0 16px;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 4.8rem;
+    position: relative;
+  }
+
+  .loader span {
+    padding: 0 5px;
+    margin: 0;
+    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--brain-pink);
+    -webkit-text-stroke: 1.8px var(--text-black);
+    paint-order: stroke fill;
+    text-shadow:
+      1px 1px 0px var(--text-black),
+      2px 2px 0px var(--text-black),
+      3px 3px 0px var(--text-black),
+      4px 4px 0px var(--text-black),
+      5px 5px 0px var(--text-black),
+      6px 6px 0px var(--text-black),
+      7px 8px 0px rgba(10, 10, 10, 0.35),
+      8px 10px 8px rgba(0, 0, 0, 0.3),
+      11px 15px 18px rgba(0, 0, 0, 0.2);
+    transform: translateY(4.8rem);
+    animation: hideAndSeek 1s alternate infinite cubic-bezier(0.86, 0, 0.07, 1);
+    display: inline-block;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .loader .l {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 0);
+  }
+  .loader .o {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 1);
+  }
+  .loader .a {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 2);
+  }
+  .loader .d {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 3);
+  }
+  .loader .ispan {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 4);
+  }
+  .loader .n {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 5);
+  }
+  .loader .g {
+    animation-delay: calc(var(--ANIMATION-DELAY-MULTIPLIER) * 6);
+  }
+
+  .letter {
+    width: fit-content;
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .i {
+    margin-inline: 4px;
+  }
+
+  @keyframes hideAndSeek {
+    0% {
+      transform: translateY(4.8rem);
+    }
+    100% {
+      transform: translateY(0rem);
+    }
+  }
+
   .od-mesh-wrap {
     width: 100%;
     max-width: 950px;
@@ -108,6 +221,17 @@ const styles = `
     margin: 0 auto;
     cursor: grab;
     touch-action: none;
+    transition: opacity 0.5s ease-out;
+  }
+
+  .od-mesh-wrap.mesh-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .od-mesh-wrap.mesh-revealed {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .od-mesh-wrap:active {
@@ -125,6 +249,17 @@ const styles = `
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.05s;
+  }
+
+  .od-subtitle.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .od-cursor {
@@ -147,7 +282,7 @@ const styles = `
     position: absolute;
     bottom: 28px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(12px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -156,10 +291,19 @@ const styles = `
     background: transparent;
     border: none;
     padding: 8px;
-    transition: opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.28s;
   }
 
-  .od-scroll-down-indicator:hover {
+  .od-scroll-down-indicator.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .od-scroll-down-indicator.is-visible:hover {
     opacity: 0.75;
   }
 
@@ -518,6 +662,30 @@ const styles = `
 export default function IntroPage() {
   const navigate = useNavigate();
   const [openAisle, setOpenAisle] = useState(null);
+  const [loadingState, setLoadingState] = useState("loading"); // "loading" | "revealing" | "ready"
+  const [showRest, setShowRest] = useState(false);
+  const meshIsReadyRef = useRef(false);
+
+  const handleOdysseyReady = () => {
+    meshIsReadyRef.current = true;
+  };
+
+  useEffect(() => {
+    // ✦ Oscillate the hideAndSeek loader, then seamlessly reveal 3D Odyssey from the cutoff line
+    const minLoadTimer = setTimeout(() => {
+      setLoadingState("revealing");
+      // Seamless handover: Odyssey emerges right from inside the cutoff line
+      setTimeout(() => {
+        setLoadingState("ready");
+        // Then smoothly glide in the rest of the elements
+        setTimeout(() => {
+          setShowRest(true);
+        }, 400);
+      }, 450);
+    }, 1800);
+
+    return () => clearTimeout(minLoadTimer);
+  }, []);
 
   const toggleAisle = (num) => {
     setOpenAisle((prev) => (prev === num ? null : num));
@@ -613,7 +781,7 @@ export default function IntroPage() {
 
       <div className="od-min-root">
         {/* ── TOP RIGHT ENTER BASECAMP PILL ── */}
-        <div className="od-top-right-wrap">
+        <div className={`od-top-right-wrap ${showRest ? "is-visible" : ""}`}>
           <button className="od-top-btn" onClick={() => handleNavigate("/student")}>
             ENTER BASECAMP →
           </button>
@@ -621,7 +789,22 @@ export default function IntroPage() {
 
         {/* ── 1. HERO SCREEN WITH 3D ELASTIC MESH ── */}
         <section className="od-hero-screen">
-          <div className="od-mesh-wrap">
+          {/* ✦ SEAMLESS CUTOFF LOADER STAGE (Subaashbala hideAndSeek) ✦ */}
+          {loadingState !== "ready" && (
+            <div className={`od-loader-overlay ${loadingState === "revealing" ? "loader-fade-out" : ""}`}>
+              <div className="loader">
+                <span className="l letter">L</span>
+                <span className="o letter">O</span>
+                <span className="a letter">A</span>
+                <span className="d letter">D</span>
+                <span className="ispan letter i">I</span>
+                <span className="n letter">N</span>
+                <span className="g letter">G</span>
+              </div>
+            </div>
+          )}
+
+          <div className={`od-mesh-wrap ${loadingState === "ready" ? "mesh-revealed" : "mesh-hidden"}`}>
             <ElasticMesh
               text="Odyssey"
               fontFamily="'Titan One', 'Archivo Black', cursive, sans-serif"
@@ -637,15 +820,16 @@ export default function IntroPage() {
               shadow={0.5}
               intro={true}
               theme="dark"
+              onReady={handleOdysseyReady}
             />
           </div>
 
-          <div className="od-subtitle">
+          <div className={`od-subtitle ${showRest ? "is-visible" : ""}`}>
             Survive the deadline. <span className="od-cursor" />
           </div>
 
           {/* Falling Comet Scroll Indicator */}
-          <button className="od-scroll-down-indicator" onClick={scrollToNext} aria-label="Scroll down">
+          <button className={`od-scroll-down-indicator ${showRest ? "is-visible" : ""}`} onClick={scrollToNext} aria-label="Scroll down">
             <span className="od-scroll-text">Scroll</span>
             <div className="od-scroll-comet-track">
               <div className="od-scroll-comet-stream">
