@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
