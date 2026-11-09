@@ -236,6 +236,15 @@ const getCursorConfig = (pathname) => {
 
 function GlobalBlobCursor() {
   const { pathname } = useLocation();
+
+  // Disable heavy 3D blob cursor on ritual offering page and on touch/mobile screens to save battery & GPU resources
+  const isTouchDevice =
+    typeof window !== "undefined" &&
+    (window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window);
+  if (pathname.startsWith("/ritual-offering") || isTouchDevice) {
+    return null;
+  }
+
   const cfg = getCursorConfig(pathname);
   const [drain, setDrain] = useState(0);
 
