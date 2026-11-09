@@ -977,7 +977,10 @@ const css = `
       radial-gradient(ellipse at 50% 15%, rgba(255, 255, 255, 0.35) 0%, rgba(218, 234, 212, 0.2) 60%, rgba(185, 206, 177, 0.45) 100%),
       linear-gradient(180deg, #daead4 0%, #d2e4cb 40%, #c8dcbf 100%);
     color: #0f1a13;
-    padding: 24px 30px 42px;
+    border: 1px solid rgba(18, 30, 21, 0.45);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    padding: 30px 30px 42px;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -1756,15 +1759,6 @@ export default function ProfilePage() {
                 >
                   ✕
                 </button>
-
-                {/* SVG Raven Scroll Rod Top Header */}
-                <div className="rcpt-modal-raven-wrap" aria-hidden="true">
-                  <img
-                    src="/raven-receipt-top.svg?v=4"
-                    alt="Hooded Crow Perched on Scroll Header"
-                    className="rcpt-modal-raven-svg"
-                  />
-                </div>
 
                 {/* Authentic Engraved Vellum Paper Card Body */}
                 <div className="rcpt-modal-ticket-card">
