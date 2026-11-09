@@ -50,7 +50,7 @@ const styles = `
      TOP RIGHT "ENTER BASECAMP" PILL
   ────────────────────────────────────────────────────────── */
   .od-top-right-wrap {
-    position: fixed;
+    position: absolute;
     top: 28px;
     right: 32px;
     z-index: 100;
