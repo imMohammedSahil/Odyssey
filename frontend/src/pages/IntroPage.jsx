@@ -416,7 +416,7 @@ export default function IntroPage() {
         {/* ── LIQUID METAL BLOB CURSOR ── */}
         <BlobCursor
           material="chrome"
-          color="#3B82F6"
+          color="#FF70A6"
           blend="normal"
           size={42}
           morph={0}
