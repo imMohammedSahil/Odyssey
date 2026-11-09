@@ -221,17 +221,6 @@ const styles = `
     margin: 0 auto;
     cursor: grab;
     touch-action: none;
-    transition: opacity 0.5s ease-out;
-  }
-
-  .od-mesh-wrap.mesh-hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .od-mesh-wrap.mesh-revealed {
-    opacity: 1;
-    pointer-events: auto;
   }
 
   .od-mesh-wrap:active {
@@ -664,24 +653,18 @@ export default function IntroPage() {
   const [openAisle, setOpenAisle] = useState(null);
   const [loadingState, setLoadingState] = useState("loading"); // "loading" | "revealing" | "ready"
   const [showRest, setShowRest] = useState(false);
-  const meshIsReadyRef = useRef(false);
-
-  const handleOdysseyReady = () => {
-    meshIsReadyRef.current = true;
-  };
 
   useEffect(() => {
-    // ✦ Oscillate the hideAndSeek loader, then seamlessly reveal 3D Odyssey from the cutoff line
+    // Oscillate the hideAndSeek loader, then reveal Odyssey left-to-right
     const minLoadTimer = setTimeout(() => {
       setLoadingState("revealing");
-      // Seamless handover: Odyssey emerges right from inside the cutoff line
       setTimeout(() => {
         setLoadingState("ready");
-        // Then smoothly glide in the rest of the elements
+        // Smoothly glide in subtitle & CTA after Odyssey finishes letter-by-letter arrival
         setTimeout(() => {
           setShowRest(true);
-        }, 400);
-      }, 450);
+        }, 850);
+      }, 350);
     }, 1800);
 
     return () => clearTimeout(minLoadTimer);
@@ -804,24 +787,25 @@ export default function IntroPage() {
             </div>
           )}
 
-          <div className={`od-mesh-wrap ${loadingState === "ready" ? "mesh-revealed" : "mesh-hidden"}`}>
-            <ElasticMesh
-              text="Odyssey"
-              fontFamily="'Titan One', 'Archivo Black', cursive, sans-serif"
-              fontWeight={900}
-              color="#FF70A6"
-              material="balloon"
-              inflate={1.02}
-              stiffness={0.46}
-              wobble={0.6}
-              grabRadius={80}
-              stretch={0.6}
-              press={0.6}
-              shadow={0.5}
-              intro={true}
-              theme="dark"
-              onReady={handleOdysseyReady}
-            />
+          <div className="od-mesh-wrap">
+            {loadingState === "ready" && (
+              <ElasticMesh
+                text="Odyssey"
+                fontFamily="'Titan One', 'Archivo Black', cursive, sans-serif"
+                fontWeight={900}
+                color="#FF70A6"
+                material="balloon"
+                inflate={1.02}
+                stiffness={0.46}
+                wobble={0.6}
+                grabRadius={80}
+                stretch={0.6}
+                press={0.6}
+                shadow={0.5}
+                intro={true}
+                theme="dark"
+              />
+            )}
           </div>
 
           <div className={`od-subtitle ${showRest ? "is-visible" : ""}`}>
