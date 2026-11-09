@@ -125,50 +125,49 @@ const styles = `
     100% { transform: scale(1.04); filter: drop-shadow(0 0 16px rgba(217, 38, 38, 0.65)); }
   }
 
-  .ritual-source-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: #C89F72;
-    margin-bottom: 6px;
-  }
-
   .ritual-headline {
     font-family: 'Cinzel', serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 900;
     letter-spacing: 0.08em;
     color: #F8F5EE;
     text-transform: uppercase;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    margin-bottom: 18px;
+    margin-bottom: 22px;
   }
 
-  /* Hero Consecrated Tribute Box */
+  /* Consecrated Tribute Box (Evil Dark Red Blood-Obsidian) */
   .ritual-amount-slab {
     width: 100%;
-    background: rgba(10, 14, 18, 0.9);
-    border: 2px solid #0D0D0D;
-    border-radius: 12px;
-    padding: 16px 14px;
-    margin-bottom: 18px;
+    background: linear-gradient(180deg, #2D0808 0%, #180404 100%);
+    border: 2.5px solid #0D0D0D;
+    border-radius: 14px;
+    padding: 20px 14px 18px;
+    margin-bottom: 22px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.7);
+    box-shadow: inset 0 0 22px rgba(217, 38, 38, 0.25), 0 6px 18px rgba(0, 0, 0, 0.75);
     position: relative;
+  }
+
+  .ritual-amount-slab::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border: 1px solid rgba(220, 45, 45, 0.4);
+    border-radius: 10px;
+    pointer-events: none;
   }
 
   .ritual-amount-slab-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #8C8477;
-    margin-bottom: 6px;
+    color: #E8A8A8;
+    margin-bottom: 8px;
   }
 
   .ritual-amount-row {
@@ -187,62 +186,27 @@ const styles = `
 
   .ritual-amount-val {
     font-family: 'Cinzel', serif;
-    font-size: 42px;
+    font-size: 44px;
     font-weight: 900;
     color: #FFFFFF;
     letter-spacing: 0.02em;
-    text-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
-  }
-
-  /* Terminal Sync Status Pill */
-  .ritual-status-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(14, 28, 22, 0.9);
-    border: 1.5px solid rgba(0, 229, 153, 0.45);
-    border-radius: 20px;
-    padding: 6px 14px;
-    margin-bottom: 16px;
-    box-shadow: 0 0 14px rgba(0, 229, 153, 0.15);
-  }
-
-  .ritual-status-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: #00E599;
-    box-shadow: 0 0 8px #00E599;
-    animation: statusPulse 1.8s infinite alternate;
-  }
-
-  @keyframes statusPulse {
-    0% { opacity: 0.45; transform: scale(0.85); }
-    100% { opacity: 1; transform: scale(1.15); }
-  }
-
-  .ritual-status-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #00E599;
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.3), 0 0 32px rgba(217, 38, 38, 0.4);
   }
 
   /* Single clean narrative sentence */
   .ritual-narrative {
-    font-size: 13px;
-    line-height: 1.55;
-    color: #B5AEA4;
-    margin-bottom: 18px;
-    padding: 0 8px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #C2BBB0;
+    margin-bottom: 22px;
+    padding: 0 10px;
+    font-style: italic;
   }
 
   /* Ledger Metadata Seal */
   .ritual-meta-bar {
     width: 100%;
-    padding-top: 14px;
+    padding-top: 16px;
     border-top: 1px dashed rgba(200, 160, 114, 0.22);
     display: flex;
     justify-content: space-between;
@@ -250,7 +214,7 @@ const styles = `
     font-family: 'JetBrains Mono', monospace;
     font-size: 9.5px;
     color: #6C747A;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
@@ -378,10 +342,9 @@ export default function RitualOfferingPage() {
             </svg>
           </div>
 
-          <span className="ritual-source-badge">ODYSSEY SANCTUARY • DESK 04</span>
           <h1 className="ritual-headline">Offering Sealed</h1>
 
-          {/* Consecrated Tribute Box */}
+          {/* Consecrated Tribute Box (Evil Dark Red Blood-Obsidian) */}
           <div className="ritual-amount-slab">
             <span className="ritual-amount-slab-tag">Tribute Consecrated</span>
             <div className="ritual-amount-row">
@@ -390,21 +353,15 @@ export default function RitualOfferingPage() {
             </div>
           </div>
 
-          {/* Terminal Sync Status */}
-          <div className="ritual-status-pill">
-            <div className="ritual-status-dot" aria-hidden="true" />
-            <span className="ritual-status-label">Terminal Synchronized</span>
-          </div>
-
-          {/* Clean Focused Narrative */}
+          {/* Atmospheric Narrative */}
           <p className="ritual-narrative">
-            The ritual ledger is updated. Your dossier receipt is generating on the basecamp terminal.
+            The blood pact is sealed. Look upon your station terminal as the sacred parchment manifests.
           </p>
 
-          {/* Metadata Ledger Bar */}
+          {/* Altar Covenant Bar */}
           <div className="ritual-meta-bar">
-            <span>SIGIL <span className="ritual-meta-sigil">#{sigilCode}</span></span>
-            <span>SECURE ESCROW</span>
+            <span>COVENANT <span className="ritual-meta-sigil">#{sigilCode}</span></span>
+            <span>COMMUNION SEALED</span>
           </div>
         </div>
       </div>
