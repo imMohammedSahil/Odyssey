@@ -22,6 +22,16 @@
   }
 }
 
+@media print {
+  .blob-cursor,
+  .blob-cursor-canvas,
+  [class*="blob-cursor"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
 /* Prevent rapid double-clicks for cursor droplet bursts from accidentally highlighting text */
 body, body *:not(input):not(textarea):not([contenteditable="true"]) {
   -webkit-user-select: none;

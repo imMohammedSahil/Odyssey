@@ -651,9 +651,14 @@ const styles = `
       cursor: default !important;
     }
 
-    /* Hide entire web interactive flow in print */
-    .rcpt-screen-view {
+    /* Hide entire web interactive flow and cursor in print */
+    .rcpt-screen-view,
+    .blob-cursor,
+    .blob-cursor-canvas,
+    [class*="blob-cursor"] {
       display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
     }
 
     .rcpt-pdf-document-group {

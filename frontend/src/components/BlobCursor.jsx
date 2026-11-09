@@ -850,6 +850,15 @@ const BlobCursor = ({
     };
     window.addEventListener('odyssey_blob_color_direct', onBlobColorDirect);
 
+    const onBeforePrint = () => {
+      if (root) root.style.display = 'none';
+    };
+    const onAfterPrint = () => {
+      if (root) root.style.display = '';
+    };
+    window.addEventListener('beforeprint', onBeforePrint);
+    window.addEventListener('afterprint', onAfterPrint);
+
     applyRef.current = apply;
     resize();
     apply();
@@ -867,6 +876,8 @@ const BlobCursor = ({
       window.removeEventListener('pointercancel', onUp);
       document.removeEventListener('pointerout', onLeave);
       window.removeEventListener('blur', onBlur);
+      window.removeEventListener('beforeprint', onBeforePrint);
+      window.removeEventListener('afterprint', onAfterPrint);
       window.removeEventListener('mousedown', preventMultiClickSelection);
       window.removeEventListener('odyssey_blob_color_direct', onBlobColorDirect);
       blob.geometry.dispose();

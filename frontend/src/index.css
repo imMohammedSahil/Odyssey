@@ -37,6 +37,19 @@ html, body, #root {
   overscroll-behavior: contain !important;
 }
 
+/* 🖨️ PDF & PRINT CLEANUP - NEVER RENDER LIQUID GLOB OR WEB MESH IN PRINT */
+@media print {
+  .blob-cursor,
+  .blob-cursor-canvas,
+  [class*="blob-cursor"],
+  .elastic-mesh,
+  .elastic-mesh-canvas {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
