@@ -302,23 +302,37 @@ const styles = `
   .od-dir-row:hover .od-dir-num,
   .od-dir-item-wrap.is-expanded .od-dir-num {
     color: #FF1A8C;
-    -webkit-text-stroke: 0.6px #0A0A0A;
+    -webkit-text-stroke: 2.5px #0A0A0A;
     paint-order: stroke fill;
+    text-shadow:
+      -1.5px -1.5px 0 #0A0A0A,
+       1.5px -1.5px 0 #0A0A0A,
+      -1.5px  1.5px 0 #0A0A0A,
+       1.5px  1.5px 0 #0A0A0A;
   }
 
   .od-dir-name {
     font-size: clamp(20px, 3vw, 32px);
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.02em;
     color: var(--text-black);
-    transition: color 0.15s ease, -webkit-text-stroke 0.15s ease;
+    transition: color 0.15s ease, -webkit-text-stroke 0.15s ease, text-shadow 0.15s ease;
   }
 
   .od-dir-row:hover .od-dir-name,
   .od-dir-item-wrap.is-expanded .od-dir-name {
     color: #FF1A8C;
-    -webkit-text-stroke: 1.2px #0A0A0A;
+    -webkit-text-stroke: 4.5px #0A0A0A;
     paint-order: stroke fill;
+    text-shadow:
+      -2px -2px 0 #0A0A0A,
+       2px -2px 0 #0A0A0A,
+      -2px  2px 0 #0A0A0A,
+       2px  2px 0 #0A0A0A,
+      -3px  0   0 #0A0A0A,
+       3px  0   0 #0A0A0A,
+       0   -3px 0 #0A0A0A,
+       0    3px 0 #0A0A0A;
   }
 
   .od-dir-desc {
@@ -336,14 +350,14 @@ const styles = `
 
   .od-dir-row:hover .od-dir-arrow {
     color: #FF1A8C;
-    -webkit-text-stroke: 0.8px #0A0A0A;
+    -webkit-text-stroke: 2px #0A0A0A;
     paint-order: stroke fill;
     transform: translate(4px, -4px);
   }
 
   .od-dir-item-wrap.is-expanded .od-dir-arrow {
     color: #FF1A8C;
-    -webkit-text-stroke: 0.8px #0A0A0A;
+    -webkit-text-stroke: 2px #0A0A0A;
     paint-order: stroke fill;
     transform: rotate(90deg);
   }
