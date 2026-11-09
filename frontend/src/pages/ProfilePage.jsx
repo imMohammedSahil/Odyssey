@@ -623,12 +623,12 @@ const css = `
     background: var(--void-black);
   }
 
-  /* Order Items Body - clean seamless strips without horizontal lines */
+  /* Order Items Body - unboxed clean items */
   .pf-order-items-table {
-    padding: 10px 22px;
+    padding: 6px 22px 14px;
     display: flex;
     flex-direction: column;
-    gap: 9px;
+    gap: 8px;
   }
 
   .pf-item-row {
@@ -636,19 +636,9 @@ const css = `
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 11px 16px;
-    background: #F4F4F8;
+    padding: 6px 0;
+    background: transparent;
     border: none;
-    border-left: 5px solid var(--slime-green);
-    border-radius: 8px;
-  }
-
-  .pf-item-row:nth-child(even) {
-    border-left-color: var(--brain-pink);
-  }
-
-  .pf-item-row:nth-child(3n) {
-    border-left-color: var(--hazard-gold);
   }
 
   .pf-item-info {
