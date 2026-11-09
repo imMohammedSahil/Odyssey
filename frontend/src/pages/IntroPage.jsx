@@ -190,7 +190,7 @@ const styles = `
     top: 0;
     left: 50%;
     transform: translate(-50%, -42px);
-    animation: cometFall 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    animation: cometFall 3.4s cubic-bezier(0.45, 0.05, 0.25, 1) infinite;
     will-change: transform, opacity;
   }
 
@@ -199,10 +199,10 @@ const styles = `
       transform: translate(-50%, -42px);
       opacity: 0;
     }
-    18% {
+    22% {
       opacity: 1;
     }
-    70% {
+    72% {
       opacity: 1;
     }
     100% {
