@@ -834,8 +834,9 @@ export default function UploadOrder() {
               <button
                 className="neo-btn-pill neo-btn-logout"
                 onClick={() => {
-                  sessionStorage.clear();
-                  window.location.href = "/";
+                  sessionStorage.removeItem("role");
+                  sessionStorage.removeItem("user");
+                  navigate("/");
                 }}
               >
                 EXIT
