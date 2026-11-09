@@ -169,8 +169,8 @@ export default function OccultCursorFumes() {
 
       // 1. Hot Liquid Core Glow Aura (only at the origin where smoke is born from the metal)
       if (mouse.active && mouse.x > 0 && mouse.y > 0 && currentDrain < 0.85) {
-        const glowRadius = 22 + Math.sin(tick * 0.12) * 3;
-        const glowAlpha = (1 - currentDrain) * 0.38;
+        const glowRadius = 18 + Math.sin(tick * 0.12) * 2;
+        const glowAlpha = (1 - currentDrain) * 0.28;
         const glow = ctx.createRadialGradient(
           mouse.x,
           mouse.y,
@@ -179,9 +179,9 @@ export default function OccultCursorFumes() {
           mouse.y,
           glowRadius
         );
-        glow.addColorStop(0, `rgba(255, 45, 20, ${glowAlpha})`);
-        glow.addColorStop(0.5, `rgba(200, 25, 14, ${glowAlpha * 0.4})`);
-        glow.addColorStop(1, "rgba(160, 15, 8, 0)");
+        glow.addColorStop(0, `rgba(45, 10, 10, ${glowAlpha})`);
+        glow.addColorStop(0.5, `rgba(32, 6, 6, ${glowAlpha * 0.4})`);
+        glow.addColorStop(1, "rgba(20, 4, 4, 0)");
         ctx.fillStyle = glow;
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, glowRadius, 0, Math.PI * 2);

@@ -167,10 +167,10 @@ const getCursorConfig = (pathname) => {
     };
   }
 
-  // 10. Payment Gateway (/payment) - Gothic Chapel Crypt, Fiery Lantern Core & Blood Ruby Chrome
+  // 10. Payment Gateway (/payment) - Gothic Chapel Crypt, Dark Blood Obsidian Chrome (matches smoke trail)
   if (pathname.startsWith("/payment")) {
     return {
-      color: "#FF2A1B", // Fiery Lantern Ember / Occult Crimson Ruby
+      color: "#2B0909", // Dark Blood Obsidian (matches evil smoke trail)
       material: "chrome",
       size: 34, // Compact and agile per user request
       morph: 0.35,
@@ -262,11 +262,11 @@ function GlobalBlobCursor() {
   let activeStretch = cfg.stretch ?? 0.4;
 
   if (pathname.startsWith("/payment") && drain > 0) {
-    // Lerp from Fiery Crimson #FF2A1B (255, 42, 27) to Lifeless Ashen Tombstone Grey #4E585E (78, 88, 94)
+    // Lerp from Dark Blood Obsidian #2B0909 (43, 9, 9) to Lifeless Ashen Tombstone Grey #4E585E (78, 88, 94)
     const t = Math.min(1, Math.max(0, drain));
-    const r = Math.round(255 + (78 - 255) * t);
-    const g = Math.round(42 + (88 - 42) * t);
-    const b = Math.round(27 + (94 - 27) * t);
+    const r = Math.round(43 + (78 - 43) * t);
+    const g = Math.round(9 + (88 - 9) * t);
+    const b = Math.round(9 + (94 - 9) * t);
     activeColor = `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
     activeShine = Math.max(0.06, 1.0 - t * 0.92); // Dims to dead matte as life leaves
     activeSize = Math.max(22, 34 - t * 10); // Shrinks from 34 to 24 when drained
