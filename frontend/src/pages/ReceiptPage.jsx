@@ -173,27 +173,52 @@ const styles = `
     cursor: default;
   }
 
-  .rcpt-ticket-card {
+  .rcpt-ticket-assembly {
     position: relative;
     width: 100%;
     max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95));
+  }
+
+  .rcpt-raven-top-wrap {
+    position: relative;
+    width: calc(100% * (1024 / 554));
+    max-width: 960px;
+    margin-bottom: -3px;
+    z-index: 5;
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+  }
+
+  .rcpt-raven-top-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .rcpt-ticket-card {
+    position: relative;
+    width: 100%;
     background: #d5e5cf;
     background: linear-gradient(180deg, #daead4 0%, #d1e2cb 100%);
     color: #121c16;
-    padding: 44px 34px 42px;
+    padding: 24px 34px 42px;
     display: flex;
     flex-direction: column;
     gap: 16px;
     user-select: text !important;
     -webkit-user-select: text !important;
-    filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.95));
-    /* Thermal paper jagged serrated sawtooth tear edges on top and bottom */
+    z-index: 4;
+    /* Thermal paper jagged serrated sawtooth tear edge ONLY at bottom; top connects flush to raven rod */
     clip-path: polygon(
-      0% 12px, 2.5% 0px, 5% 12px, 7.5% 0px, 10% 12px, 12.5% 0px, 15% 12px, 17.5% 0px,
-      20% 12px, 22.5% 0px, 25% 12px, 27.5% 0px, 30% 12px, 32.5% 0px, 35% 12px, 37.5% 0px,
-      40% 12px, 42.5% 0px, 45% 12px, 47.5% 0px, 50% 12px, 52.5% 0px, 55% 12px, 57.5% 0px,
-      60% 12px, 62.5% 0px, 65% 12px, 67.5% 0px, 70% 12px, 72.5% 0px, 75% 12px, 77.5% 0px,
-      80% 12px, 82.5% 0px, 85% 12px, 87.5% 0px, 90% 12px, 92.5% 0px, 95% 12px, 97.5% 0px, 100% 12px,
+      0% 0px, 100% 0px,
       100% calc(100% - 12px), 97.5% 100%, 95% calc(100% - 12px), 92.5% 100%, 90% calc(100% - 12px), 87.5% 100%,
       85% calc(100% - 12px), 82.5% 100%, 80% calc(100% - 12px), 77.5% 100%, 75% calc(100% - 12px), 72.5% 100%,
       70% calc(100% - 12px), 67.5% 100%, 65% calc(100% - 12px), 62.5% 100%, 60% calc(100% - 12px), 57.5% 100%,
@@ -886,17 +911,29 @@ export default function ReceiptPage() {
           </button>
         </div>
 
-        {/* BELOW-THE-FOLD BESPOKE GOTHIC CAMPUS RECEIPT (100% PURE DOM, NO SVG) */}
+        {/* BELOW-THE-FOLD BESPOKE GOTHIC CAMPUS RECEIPT WITH RAVEN PERCH HEADER */}
         {stage >= 3 && (
           <section className="rcpt-record-section">
-            <div className="rcpt-ticket-card" onClick={(e) => e.stopPropagation()}>
+            <div className="rcpt-ticket-assembly" onClick={(e) => e.stopPropagation()}>
               
-              {/* Receipt Header */}
-              <div className="rcpt-tkt-head">
-                <span className="rcpt-tkt-pretitle">✦ ODYSSEY CAMPUS PRINT ARCHIVES ✦</span>
-                <h2 className="rcpt-tkt-title">CAMPUS ORDER RECEIPT</h2>
-                <div className="rcpt-tkt-divider-double" />
+              {/* SVG Raven Scroll Rod Top Header */}
+              <div className="rcpt-raven-top-wrap" aria-hidden="true">
+                <img
+                  src="/raven-receipt-top.svg"
+                  alt="Hooded Crow Perched on Scroll Header"
+                  className="rcpt-raven-top-svg"
+                />
               </div>
+
+              {/* Dynamic Gothic Receipt Card Body */}
+              <div className="rcpt-ticket-card">
+                
+                {/* Receipt Header */}
+                <div className="rcpt-tkt-head">
+                  <span className="rcpt-tkt-pretitle">✦ ODYSSEY CAMPUS PRINT ARCHIVES ✦</span>
+                  <h2 className="rcpt-tkt-title">CAMPUS ORDER RECEIPT</h2>
+                  <div className="rcpt-tkt-divider-double" />
+                </div>
 
               {/* Order Metadata */}
               <div className="rcpt-tkt-meta-group">
@@ -1020,8 +1057,9 @@ export default function ReceiptPage() {
               </div>
 
             </div>
-          </section>
-        )}
+          </div>
+        </section>
+      )}
       </div>
     </>
   );
