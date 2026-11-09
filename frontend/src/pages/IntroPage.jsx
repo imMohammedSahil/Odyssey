@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ElasticMesh from "../components/ElasticMesh";
-import BlobCursor from "../components/BlobCursor";
 import ScrollFloat from "../components/ScrollFloat";
 
 const styles = `
@@ -613,32 +612,6 @@ export default function IntroPage() {
       <style>{styles}</style>
 
       <div className="od-min-root">
-        {/* ── LIQUID METAL BLOB CURSOR ── */}
-        <BlobCursor
-          material="chrome"
-          color="#FF70A6"
-          blend="normal"
-          size={42}
-          morph={0}
-          morphSpeed={0.4}
-          depth={1}
-          trail={12}
-          lag={0.35}
-          goo={1}
-          stretch={0.4}
-          wobble={0.8}
-          drip={0}
-          shine={1}
-          splash={true}
-          splashCount={6}
-          splashSpeed={0.5}
-          splashSize={0.5}
-          splashGravity={0}
-          regrow={0.5}
-          shadow={false}
-          hideCursor={true}
-        />
-
         {/* ── TOP RIGHT ENTER BASECAMP PILL ── */}
         <div className="od-top-right-wrap">
           <button className="od-top-btn" onClick={() => handleNavigate("/student")}>
