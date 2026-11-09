@@ -217,8 +217,8 @@ const styles = `
   ────────────────────────────────────────────────────────── */
   .od-manifesto-section {
     max-width: 1140px;
-    margin: 80px auto 140px;
-    padding: 0 32px;
+    margin: 180px auto 140px;
+    padding: 60px 32px 0;
   }
 
   .od-manifesto-text {
