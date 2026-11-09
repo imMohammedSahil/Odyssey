@@ -1614,7 +1614,7 @@ export default function ReceiptPage() {
                     <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" strokeWidth="0.5" />
                     <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
                     <circle cx="43" cy="28" r="1.8" fill="#52e389" />
-                    <path d="M40 5 L41.2 9 L45 10 L41.2 11 L40 15 L38.8 11 L35 10 L38.8 9 Z" fill="#23854b" />
+                    <path d="M40 8.2 L41.1 12 L44.5 13 L41.1 14 L40 17.5 L38.9 14 L35.5 13 L38.9 12 Z" fill="#23854b" />
                   </svg>
                 </div>
                 <span className="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
