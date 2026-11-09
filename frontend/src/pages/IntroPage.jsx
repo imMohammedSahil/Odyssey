@@ -503,7 +503,7 @@ export default function IntroPage() {
         {/* ── 2. EDITORIAL MANIFESTO SECTION (Screenshot 2 Match) ── */}
         <section className="od-manifesto-section" id="manifesto-section">
           <p className="od-manifesto-text">
-            We’re Odyssey, a <em>campus survival armory</em> that prints project theses, stocks precision stationery, 
+            I’m Odyssey, a <em>campus survival armory</em> that prints project theses, stocks precision stationery, 
             and settles dues at the raven altar. <em>Deadlines that feel like child’s play. Tools that give you 
             your sleep back.</em> Survive the deadline
             <span className="od-dot" style={{ fontSize: "1.1em" }}>.</span>
