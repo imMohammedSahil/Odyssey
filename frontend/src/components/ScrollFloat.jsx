@@ -196,7 +196,12 @@ const ScrollFloat = ({
             const parent = lineWords[0].parentNode;
             parent.insertBefore(mask, lineWords[0]);
             mask.appendChild(inner);
-            lineWords.forEach(w => inner.appendChild(w));
+            lineWords.forEach((w, idx) => {
+              inner.appendChild(w);
+              if (idx < lineWords.length - 1) {
+                inner.appendChild(document.createTextNode(' '));
+              }
+            });
           }
           gsap.fromTo(
             inner,

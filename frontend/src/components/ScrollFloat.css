@@ -30,6 +30,7 @@
 .scroll-float-word {
   display: inline-block;
   white-space: nowrap;
+  margin-right: 0.28em;
 }
 
 .scroll-float-sentence {
