@@ -808,7 +808,6 @@ export default function IntroPage() {
             className={`od-sound-btn ${soundEnabled ? "is-active" : ""}`}
             onClick={() => setSoundEnabled((prev) => !prev)}
             aria-label={soundEnabled ? "Mute audio" : "Enable audio"}
-            title={soundEnabled ? "Sound: ON" : "Sound: OFF"}
           >
             {soundEnabled ? (
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">

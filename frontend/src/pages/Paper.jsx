@@ -971,7 +971,6 @@ export default function Paper() {
               type="button"
               className="writing-btn-pill"
               onClick={() => navigate(-1)}
-              title="Return to base (Esc)"
             >
               ← BACK TO BASE
             </button>
@@ -1019,7 +1018,6 @@ export default function Paper() {
               className="writing-nav-arrow-btn"
               onClick={() => setActiveId(prevItem.id)}
               aria-label={`Previous: ${prevItem.modelName}`}
-              title={`Previous: ${prevItem.modelName} (← key)`}
             >
               ←
             </button>
@@ -1220,7 +1218,6 @@ export default function Paper() {
               className="writing-nav-arrow-btn"
               onClick={() => setActiveId(nextItem.id)}
               aria-label={`Next: ${nextItem.modelName}`}
-              title={`Next: ${nextItem.modelName} (→ key)`}
             >
               →
             </button>

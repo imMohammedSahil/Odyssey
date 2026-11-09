@@ -154,7 +154,7 @@ const css = `
     color: var(--void-black);
   }
 
-  .pf-nav-logout {
+  .pf-nav-exit {
     background: var(--hazard-gold);
     color: var(--void-black);
   }
@@ -527,12 +527,14 @@ const css = `
   }
 
   .pf-order-card {
-    background: #FFFFFF; /* Pure white card */
-    border: 3.5px solid var(--border-dark);
+    background: #FFFFFF;
+    border: 3px solid var(--border-dark);
     border-radius: 16px;
     box-shadow: 5px 5px 0px var(--border-dark);
     overflow: hidden;
     transition: transform 0.12s ease, box-shadow 0.12s ease;
+    display: flex;
+    flex-direction: column;
   }
 
   .pf-order-card:hover {
@@ -540,11 +542,11 @@ const css = `
     box-shadow: 7px 7px 0px var(--border-dark);
   }
 
-  /* Order Card Header - seamless white, no horizontal line */
+  /* ── Order Card Header (Meta & Status) ── */
   .pf-order-card-header {
-    background: #FFFFFF;
-    border-bottom: none;
-    padding: 18px 22px 10px;
+    background: #FAF9F5;
+    border-bottom: 2.5px solid var(--border-dark);
+    padding: 14px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -555,46 +557,70 @@ const css = `
   .pf-order-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     flex-wrap: wrap;
   }
 
-  .pf-order-id-badge {
-    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 13.5px;
-    letter-spacing: 0.8px;
-    background: var(--void-black);
-    color: var(--slime-green);
-    padding: 5px 12px;
-    border-radius: 6px;
-    border: 2px solid var(--border-dark);
+  .pf-order-id-group {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    background: var(--void-black);
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 2px solid var(--border-dark);
+    box-shadow: 2px 2px 0px var(--border-dark);
+  }
+
+  .pf-order-id-prefix {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #94A3B8;
+    text-transform: uppercase;
+  }
+
+  .pf-order-id-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--slime-green);
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .pf-order-date {
     font-size: 12.5px;
     font-weight: 700;
-    color: #666677;
+    color: #555566;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .pf-order-date svg {
+    color: #888899;
+    flex-shrink: 0;
   }
 
   /* Status Badges */
   .pf-status-badge {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 11px;
+    font-size: 11.5px;
     letter-spacing: 0.8px;
     text-transform: uppercase;
     padding: 6px 14px;
     border-radius: 999px;
-    border: 2.5px solid var(--border-dark);
+    border: 2px solid var(--border-dark);
     box-shadow: 2px 2px 0px var(--border-dark);
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
   }
 
   .pf-status-badge.ready {
@@ -605,6 +631,15 @@ const css = `
   .pf-status-badge.printing {
     background: var(--seafoam);
     color: var(--void-black);
+  }
+
+  .pf-status-badge.confirmed {
+    background: var(--seafoam);
+    color: var(--void-black);
+  }
+
+  .pf-status-badge.confirmed .pf-status-indicator {
+    display: none;
   }
 
   .pf-status-badge.pending {
@@ -622,14 +657,21 @@ const css = `
     height: 8px;
     border-radius: 50%;
     background: var(--void-black);
+    animation: pf-pulse 2s infinite ease-in-out;
   }
 
-  /* Order Items Body - unboxed clean items */
+  @keyframes pf-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.65; }
+  }
+
+  /* ── Order Items Body ── */
   .pf-order-items-table {
-    padding: 6px 22px 14px;
+    padding: 14px 20px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+    background: #FFFFFF;
   }
 
   .pf-item-row {
@@ -637,80 +679,119 @@ const css = `
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 6px 0;
+    padding: 10px 0;
     background: transparent;
-    border: none;
+    border-bottom: 1.5px dashed #E5E7EB;
+  }
+
+  .pf-item-row:last-child {
+    border-bottom: none;
+    padding-bottom: 4px;
   }
 
   .pf-item-info {
     display: flex;
     align-items: center;
-    gap: 12px;
     flex: 1;
+    min-width: 0;
   }
 
-  .pf-item-icon-tag {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: var(--slime-green);
-    border: 2px solid var(--border-dark);
+  .pf-item-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pf-item-title-row {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .pf-item-name {
-    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14.5px;
+    font-weight: 800;
     color: var(--void-black);
-    line-height: 1.2;
+    line-height: 1.3;
+    letter-spacing: -0.2px;
   }
 
   .pf-item-qty-pill {
-    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
+    font-weight: 800;
     background: var(--hazard-gold);
     color: var(--void-black);
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 6px;
     border: 1.5px solid var(--border-dark);
-    margin-left: 8px;
+    box-shadow: 1.5px 1.5px 0px var(--border-dark);
     white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  .pf-item-variant {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #64748B;
+    line-height: 1.3;
+  }
+
+  .pf-item-unit-rate {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #888899;
   }
 
   .pf-item-pricing {
     text-align: right;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 8px;
+    flex-shrink: 0;
   }
 
   .pf-item-total {
-    font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 800;
     color: var(--void-black);
     white-space: nowrap;
+    letter-spacing: -0.2px;
   }
 
-  /* Order Footer - seamless bottom without horizontal divider line */
+  /* ── Order Footer (Total & Actions) ── */
   .pf-order-card-footer {
-    background: #FFFFFF;
-    border-top: none;
-    padding: 10px 22px 18px;
+    background: #FAF9F5;
+    border-top: 2.5px solid var(--border-dark);
+    padding: 14px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
+    gap: 16px;
     flex-wrap: wrap;
   }
 
   .pf-order-total-block {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
+  }
+
+  .pf-order-item-count {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #71717A;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .pf-order-total-line {
@@ -720,17 +801,19 @@ const css = `
   }
 
   .pf-total-label {
-    font-size: 12px;
+    font-size: 12.5px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: #666677;
+    color: #4B5563;
+    font-family: 'Plus Jakarta Sans', sans-serif;
   }
 
   .pf-total-val {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 22px;
+    font-size: 24px;
     color: var(--void-black);
+    letter-spacing: 0.3px;
   }
 
   .pf-order-actions {
@@ -742,46 +825,49 @@ const css = `
 
   .pf-btn-receipt {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 12px;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    padding: 9px 18px;
-    background: var(--brain-pink);
+    padding: 9px 16px;
+    background: #FFFFFF;
     color: var(--void-black);
-    border: 2.5px solid var(--border-dark);
+    border: 2px solid var(--border-dark);
     border-radius: 8px;
     box-shadow: var(--shadow-comic-sm);
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    gap: 7px;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
   }
 
   .pf-btn-receipt:hover {
-    transform: translate(2px, 2px);
+    background: var(--brain-pink);
+    transform: translate(1.5px, 1.5px);
     box-shadow: 1px 1px 0px var(--border-dark);
   }
 
   .pf-btn-reorder {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 12px;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
     padding: 9px 18px;
     background: var(--slime-green);
     color: var(--void-black);
-    border: 2.5px solid var(--border-dark);
+    border: 2px solid var(--border-dark);
     border-radius: 8px;
     box-shadow: var(--shadow-comic-sm);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     transition: transform 0.1s ease, box-shadow 0.1s ease;
   }
 
   .pf-btn-reorder:hover {
-    transform: translate(2px, 2px);
+    transform: translate(1.5px, 1.5px);
     box-shadow: 1px 1px 0px var(--border-dark);
   }
 
@@ -869,7 +955,7 @@ const css = `
   .pf-toast {
     position: fixed;
     bottom: 28px;
-    right: 28px;
+    right: 50px;
     background: var(--slime-green);
     color: var(--void-black);
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
@@ -886,6 +972,17 @@ const css = `
     animation: toastSlideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   }
 
+  @keyframes toastSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* ── RECEIPT MODAL POPUP (MATCHES AUTHENTIC PAPER RECEIPT DESIGN) ── */
   .rcpt-modal-overlay {
     position: fixed;
@@ -899,6 +996,20 @@ const css = `
     padding: 24px 14px;
     overflow-y: auto;
     animation: rcptFadeIn 0.18s ease-out;
+  }
+
+  .rcpt-modal-overlay::-webkit-scrollbar {
+    width: 8px;
+  }
+  .rcpt-modal-overlay::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .rcpt-modal-overlay::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+  .rcpt-modal-overlay::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
   }
 
   @keyframes rcptFadeIn {
@@ -1296,8 +1407,9 @@ const css = `
 function getStatusBadgeClass(status) {
   if (!status) return "pending";
   const s = String(status).toUpperCase();
+  if (s === "CONFIRMED") return "confirmed";
   if (s === "READY" || s === "COMPLETED") return "ready";
-  if (s === "PRINTING" || s === "PROCESSING") return "printing";
+  if (s === "PRINTING" || s === "PROCESSING" || s === "IN PRINT QUEUE") return "printing";
   if (s === "PENDING" || s === "AWAITING PAYMENT") return "pending";
   return "other";
 }
@@ -1305,6 +1417,18 @@ function getStatusBadgeClass(status) {
 function formatStatusText(status) {
   if (!status) return "PENDING";
   return String(status).toUpperCase();
+}
+
+function parseItemDetails(rawName = "") {
+  if (!rawName) return { title: "Stationery Item", variant: null };
+  // Split title and parentheses e.g. "Camlin Exam Geometry Box (Standard Student, 0.5mm Fine)"
+  const match = rawName.match(/^([^(]+)(?:\((.*)\))?$/);
+  if (match) {
+    const title = match[1].trim();
+    const variant = match[2] ? match[2].trim() : null;
+    return { title, variant };
+  }
+  return { title: rawName, variant: null };
 }
 
 export default function ProfilePage() {
@@ -1342,8 +1466,27 @@ export default function ProfilePage() {
       setDisplayName(storedUser);
     }
 
-    // 2. Load stored orders from localStorage
-    const localOrders = JSON.parse(localStorage.getItem("odysseyOrders")) || [];
+    // 2. Load stored orders from localStorage with guaranteed odysseyReceipt sync
+    let localOrders = JSON.parse(localStorage.getItem("odysseyOrders")) || [];
+    try {
+      const storedReceipt = JSON.parse(localStorage.getItem("odysseyReceipt"));
+      if (storedReceipt && storedReceipt.orderId) {
+        const cleanReceiptId = String(storedReceipt.orderId).replace(/^#/, "");
+        const alreadyInLocal = localOrders.some(
+          (o) => String(o.orderId || o._id || "").replace(/^#/, "") === cleanReceiptId
+        );
+        if (!alreadyInLocal) {
+          localOrders.unshift({
+            orderId: cleanReceiptId,
+            items: storedReceipt.items || [],
+            total: storedReceipt.total || 0,
+            date: storedReceipt.date || new Date().toLocaleString(),
+            status: storedReceipt.status || "IN PRINT QUEUE",
+          });
+          localStorage.setItem("odysseyOrders", JSON.stringify(localOrders));
+        }
+      }
+    } catch (e) {}
 
     // 3. Try to sync with server orders
     const fetchServerOrders = async () => {
@@ -1366,7 +1509,7 @@ export default function ProfilePage() {
           // Normalize server orders
           const normalizedServerOrders = ordersRes.data.map((o) => ({
             orderId: o.orderNumber || o._id,
-            mongoId: o._id,
+            mongoId: String(o._id || ""),
             date: o.createdAt
               ? new Date(o.createdAt).toLocaleString("en-IN", {
                   dateStyle: "medium",
@@ -1392,29 +1535,35 @@ export default function ProfilePage() {
             status: (o.status || "PENDING").toUpperCase(),
           }));
 
-          // Merge server orders with localOrders preventing duplicates
+          // Merge: local orders take precedence because they contain full item details, prices, specs & correct total!
           const merged = [...localOrders];
           normalizedServerOrders.forEach((so) => {
-            const exists = merged.some(
-              (lo) =>
-                lo.orderId === so.orderId ||
-                lo.orderId === so.mongoId ||
-                lo._id === so.mongoId
-            );
+            const cleanSoId = String(so.orderId || "").replace(/^#/, "");
+            const cleanSoMongo = String(so.mongoId || "").replace(/^#/, "");
+
+            const exists = merged.some((lo) => {
+              const cleanLoId = String(lo.orderId || lo._id || "").replace(/^#/, "");
+              const cleanLoMongo = String(lo.mongoId || "").replace(/^#/, "");
+              return (
+                cleanLoId === cleanSoId ||
+                cleanLoId === cleanSoMongo ||
+                (cleanLoMongo && cleanLoMongo === cleanSoMongo)
+              );
+            });
             if (!exists) {
               merged.push(so);
             }
           });
 
-          // Sort descending by date if available
-          setOrders(merged.reverse());
+          // Most recent orders first
+          setOrders(merged);
           return;
         }
       } catch (err) {
         console.warn("Could not fetch remote orders, using local:", err.message);
       }
 
-      setOrders(localOrders.slice().reverse());
+      setOrders(localOrders);
     };
 
     fetchServerOrders();
@@ -1424,7 +1573,14 @@ export default function ProfilePage() {
   const filteredOrders = orders.filter((order) => {
     const s = String(order.status || "").toUpperCase();
     if (activeTab === "ACTIVE") {
-      return s === "PRINTING" || s === "PROCESSING" || s === "PENDING" || s === "AWAITING PAYMENT";
+      return (
+        s === "PRINTING" ||
+        s === "PROCESSING" ||
+        s === "PENDING" ||
+        s === "AWAITING PAYMENT" ||
+        s === "IN PRINT QUEUE" ||
+        s === "CONFIRMED"
+      );
     }
     if (activeTab === "READY") {
       return s === "READY" || s === "COMPLETED";
@@ -1437,7 +1593,14 @@ export default function ProfilePage() {
   const totalSpent = orders.reduce((sum, ord) => sum + (Number(ord.total) || 0), 0);
   const activeOrdersCount = orders.filter((o) => {
     const s = String(o.status || "").toUpperCase();
-    return s === "PRINTING" || s === "PROCESSING" || s === "PENDING" || s === "AWAITING PAYMENT";
+    return (
+      s === "PRINTING" ||
+      s === "PROCESSING" ||
+      s === "PENDING" ||
+      s === "AWAITING PAYMENT" ||
+      s === "IN PRINT QUEUE" ||
+      s === "CONFIRMED"
+    );
   }).length;
 
   // View Receipt handler - opens receipt modal popup directly on the page
@@ -1493,13 +1656,12 @@ export default function ProfilePage() {
               </button>
 
               <button
-                className="pf-nav-btn pf-nav-logout"
+                className="pf-nav-btn pf-nav-exit"
                 onClick={() => {
-                  sessionStorage.clear();
-                  window.location.replace("/");
+                  navigate("/");
                 }}
               >
-                LOGOUT
+                EXIT TO MAIN
               </button>
             </div>
           </nav>
@@ -1535,7 +1697,7 @@ export default function ProfilePage() {
                   <span className="pf-avatar-fallback" style={{ display: "none" }}>
                     {displayName.charAt(0)}
                   </span>
-                  <div className="pf-avatar-online-dot" title="Operative Online" />
+                  <div className="pf-avatar-online-dot" />
                 </div>
 
                 <div className="pf-identity-title-area">
@@ -1661,19 +1823,31 @@ export default function ProfilePage() {
                   const badgeClass = getStatusBadgeClass(order.status);
                   const statusLabel = formatStatusText(order.status);
                   const itemsList = order.items || [];
+                  const totalItemsCount = itemsList.reduce((acc, it) => acc + (Number(it.quantity) || 1), 0);
 
                   return (
                     <article key={order.orderId || order._id || idx} className="pf-order-card">
-                      {/* Order Card Top Bar */}
+                      {/* Order Card Top Bar (Meta & Status) */}
                       <div className="pf-order-card-header">
                         <div className="pf-order-meta">
-                          <span className="pf-order-id-badge">
-                            #{order.orderId || `OD-${1000 + idx}`}
+                          <div className="pf-order-id-group">
+                            <span className="pf-order-id-prefix">ORDER</span>
+                            <span className="pf-order-id-badge">
+                              #{String(order.orderId || `OD-${1000 + idx}`).replace(/^#/, "")}
+                            </span>
+                          </div>
+
+                          <span className="pf-order-date">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <circle cx="12" cy="12" r="10" />
+                              <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                            {order.date || "Recent Dispatch"}
                           </span>
                         </div>
 
                         <div className={`pf-status-badge ${badgeClass}`}>
-                          <span className="pf-status-indicator" />
+                          {statusLabel !== "CONFIRMED" && <span className="pf-status-indicator" />}
                           <span>{statusLabel}</span>
                         </div>
                       </div>
@@ -1683,44 +1857,61 @@ export default function ProfilePage() {
                         {itemsList.length === 0 ? (
                           <div className="pf-item-row">
                             <div className="pf-item-info">
-                              <span className="pf-item-name">Standard Stationery / Print Requisition</span>
+                              <div className="pf-item-details">
+                                <span className="pf-item-name">Standard Stationery / Print Requisition</span>
+                              </div>
                             </div>
                             <div className="pf-item-pricing">
                               <span className="pf-item-total">₹{order.total || 0}</span>
                             </div>
                           </div>
                         ) : (
-                          itemsList.map((item, itemIdx) => (
-                            <div key={itemIdx} className="pf-item-row">
-                              <div className="pf-item-info">
-                                <div>
-                                  <span className="pf-item-name">{item.name}</span>
-                                  <span className="pf-item-qty-pill">
-                                    QTY: {item.quantity || 1}
+                          itemsList.map((item, itemIdx) => {
+                            const details = parseItemDetails(item.name);
+                            const qty = Number(item.quantity) || 1;
+                            const unitPrice = Number(item.price) || 0;
+                            const itemRowTotal = unitPrice > 0 
+                              ? unitPrice * qty 
+                              : (itemsList.length === 1 ? (Number(order.total) || 0) : 0);
+
+                            return (
+                              <div key={itemIdx} className="pf-item-row">
+                                <div className="pf-item-info">
+                                  <div className="pf-item-details">
+                                    <div className="pf-item-title-row">
+                                      <span className="pf-item-name">{details.title}</span>
+                                      <span className="pf-item-qty-pill">QTY: {qty}</span>
+                                    </div>
+                                    {details.variant && (
+                                      <span className="pf-item-variant">{details.variant}</span>
+                                    )}
+                                    {unitPrice > 0 && qty > 1 && (
+                                      <span className="pf-item-unit-rate">₹{unitPrice} each</span>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <div className="pf-item-pricing">
+                                  <span className="pf-item-total">
+                                    ₹{itemRowTotal > 0 ? itemRowTotal : (Number(item.price) || 0) * qty}
                                   </span>
                                 </div>
                               </div>
-
-                              <div className="pf-item-pricing">
-                                <span className="pf-item-total">
-                                  ₹{(Number(item.price) || 0) * (Number(item.quantity) || 1)}
-                                </span>
-                              </div>
-                            </div>
-                          ))
+                            );
+                          })
                         )}
                       </div>
 
                       {/* Order Card Footer */}
                       <div className="pf-order-card-footer">
                         <div className="pf-order-total-block">
+                          <span className="pf-order-item-count">
+                            {totalItemsCount} {totalItemsCount === 1 ? "ITEM ORDERED" : "ITEMS ORDERED"}
+                          </span>
                           <div className="pf-order-total-line">
                             <span className="pf-total-label">Grand Total:</span>
                             <span className="pf-total-val">₹{order.total || 0}</span>
                           </div>
-                          <span className="pf-order-date">
-                            {order.date || "Recent Dispatch"}
-                          </span>
                         </div>
 
                         <div className="pf-order-actions">
@@ -1772,7 +1963,6 @@ export default function ProfilePage() {
                   <button
                     className="rcpt-modal-floating-close"
                     onClick={() => setActiveReceiptModal(null)}
-                    title="Close Receipt"
                     aria-label="Close Receipt"
                   >
                     ✕
@@ -1799,10 +1989,9 @@ export default function ProfilePage() {
                     <div className="rcpt-modal-tkt-row">
                       <span className="rcpt-modal-tkt-label">Order Reference</span>
                       <span className="rcpt-modal-tkt-val">
-                        <span>{activeReceiptModal.orderId}</span>
+                        <span>{String(activeReceiptModal.orderId).startsWith("#") ? activeReceiptModal.orderId : `#${activeReceiptModal.orderId}`}</span>
                         <button
                           className={`rcpt-modal-tkt-copy-btn ${copiedOrderId ? "copied" : ""}`}
-                          title="Copy Order ID"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigator.clipboard.writeText(activeReceiptModal.orderId);

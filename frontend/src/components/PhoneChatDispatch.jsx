@@ -563,7 +563,6 @@ export default function PhoneChatDispatch() {
                 className="neo-ps-send-btn"
                 onClick={sendMessage}
                 disabled={!message.trim()}
-                title="Send Message"
                 aria-label="Send Message"
               >
                 ➤

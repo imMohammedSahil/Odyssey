@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { chunkManifestItems } from "../utils/printReceipt";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -48,6 +49,23 @@ const styles = `
     display: block;
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  /* Stage 0 stealth protection: completely invisible until user performs the first click */
+  .rcpt-bg-vector.stage-zero-stealth {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* Pitch Black Shroud: Absolute safeguard against any FOUC / refresh bleed */
+  .rcpt-initial-shroud {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    z-index: 2;
+    pointer-events: none;
   }
 
   /* Hero Section Fold (100vh) */
@@ -117,9 +135,9 @@ const styles = `
     font-weight: 900;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    transform: translate(-50%, -50%);
+    transform: translate(20px, -100%);
     white-space: nowrap;
-    transition: opacity 0.4s ease, border-color 0.25s ease, background 0.25s ease, transform 0.1s ease-out;
+    transition: opacity 0.4s ease, border-color 0.25s ease, background 0.25s ease;
   }
 
   /* Top Return Button */
@@ -417,6 +435,23 @@ const styles = `
     border-radius: 2px;
     background: rgba(255, 255, 255, 0.18);
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.03);
+    max-height: 380px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(18, 30, 21, 0.4) transparent;
+  }
+
+  .rcpt-tkt-manifest-box::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .rcpt-tkt-manifest-box::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .rcpt-tkt-manifest-box::-webkit-scrollbar-thumb {
+    background: rgba(18, 30, 21, 0.35);
+    border-radius: 3px;
   }
 
   .rcpt-tkt-item-row {
@@ -602,12 +637,9 @@ const styles = `
       margin: 0 !important;
       padding: 0 !important;
       width: 210mm !important;
-      height: 297mm !important;
-      max-height: 297mm !important;
       background: #000000 !important;
       background-color: #000000 !important;
       color: #0b140e !important;
-      overflow: hidden !important;
     }
 
     .rcpt-root {
@@ -616,14 +648,7 @@ const styles = `
       margin: 0 !important;
       padding: 0 !important;
       width: 210mm !important;
-      height: 297mm !important;
-      max-height: 297mm !important;
-      overflow: hidden !important;
       cursor: default !important;
-      page-break-after: avoid !important;
-      page-break-before: avoid !important;
-      break-after: avoid !important;
-      break-inside: avoid !important;
     }
 
     /* Hide entire web interactive flow in print */
@@ -631,7 +656,13 @@ const styles = `
       display: none !important;
     }
 
-    /* Bespoke 1-Page Archival PDF Document */
+    .rcpt-pdf-document-group {
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* Bespoke Multi-Page Archival PDF Document */
     .rcpt-pdf-document {
       display: flex !important;
       flex-direction: column !important;
@@ -639,6 +670,7 @@ const styles = `
       align-items: center !important;
       width: 210mm !important;
       height: 297mm !important;
+      min-height: 297mm !important;
       max-height: 297mm !important;
       margin: 0 !important;
       padding: 9mm 12mm 7mm !important;
@@ -646,11 +678,15 @@ const styles = `
       background-color: #000000 !important;
       box-sizing: border-box !important;
       overflow: hidden !important;
-      page-break-after: avoid !important;
-      page-break-before: avoid !important;
+      page-break-after: always !important;
+      break-after: page !important;
       page-break-inside: avoid !important;
-      break-after: avoid !important;
       break-inside: avoid !important;
+    }
+
+    .rcpt-pdf-document:last-child {
+      page-break-after: avoid !important;
+      break-after: avoid !important;
     }
 
     .rcpt-pdf-frame {
@@ -960,6 +996,16 @@ const styles = `
       color: #122116 !important;
     }
 
+    .rcpt-pdf-head.continuation {
+      gap: 1px !important;
+    }
+
+    .rcpt-pdf-head.continuation .rcpt-pdf-emblem-wrap {
+      width: 30px !important;
+      height: 30px !important;
+      margin-bottom: 0 !important;
+    }
+
     .rcpt-pdf-card-stamp {
       font-family: 'Cinzel', serif !important;
       font-size: 6.5px !important;
@@ -968,6 +1014,21 @@ const styles = `
       text-align: center !important;
       font-weight: 700 !important;
       text-transform: uppercase !important;
+    }
+
+    .rcpt-pdf-continuation-banner {
+      width: 100% !important;
+      text-align: center !important;
+      font-family: 'Cinzel', serif !important;
+      font-size: 8px !important;
+      letter-spacing: 0.22em !important;
+      font-weight: 700 !important;
+      color: #2e4a36 !important;
+      padding: 6px 10px !important;
+      background: rgba(15, 28, 19, 0.05) !important;
+      border: 1px dashed rgba(15, 28, 19, 0.25) !important;
+      margin-top: auto !important;
+      box-sizing: border-box !important;
     }
 
     /* True Bottom Page Footer (Strictly at the footer of Page 1) */
@@ -1124,6 +1185,30 @@ function generateCode128Svg(rawText) {
   return { bars, totalWidth: x };
 }
 
+// ✦ DYNAMIC BLOB COLOR INTERPOLATION (Dark Obsidian Green -> Vibrant Enchanted Wizard Green)
+const DARK_BLOB_RGB = [13, 34, 23]; // #0D2217: Dark occult obsidian green, not pitch black
+const GREEN_BLOB_RGB = [47, 227, 132]; // #2FE384: Radiant enchanted green matching the background vector
+
+function getInterpolatedBlobColor(t) {
+  const clampedT = Math.max(0, Math.min(1, t));
+  const r = Math.round(DARK_BLOB_RGB[0] + (GREEN_BLOB_RGB[0] - DARK_BLOB_RGB[0]) * clampedT);
+  const g = Math.round(DARK_BLOB_RGB[1] + (GREEN_BLOB_RGB[1] - DARK_BLOB_RGB[1]) * clampedT);
+  const b = Math.round(DARK_BLOB_RGB[2] + (GREEN_BLOB_RGB[2] - DARK_BLOB_RGB[2]) * clampedT);
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
+
+let lastDispatchedBlobT = -1;
+function dispatchBlobColor(t, force = false) {
+  const hex = getInterpolatedBlobColor(t);
+  // 1. Instantaneous 60fps Three.js update directly to Three.js Blob Cursor
+  window.dispatchEvent(new CustomEvent("odyssey_blob_color_direct", { detail: { color: hex } }));
+  // 2. Throttled update to React state in App.js
+  if (force || Math.abs(t - lastDispatchedBlobT) > 0.03) {
+    lastDispatchedBlobT = t;
+    window.dispatchEvent(new CustomEvent("odyssey_cursor_receipt_color", { detail: { color: hex } }));
+  }
+}
+
 export default function ReceiptPage() {
   const navigate = useNavigate();
 
@@ -1167,6 +1252,29 @@ export default function ReceiptPage() {
     };
   });
 
+  // Ensure current receipt order is persisted to odysseyOrders history
+  useEffect(() => {
+    try {
+      if (receiptData && receiptData.orderId) {
+        const cleanId = String(receiptData.orderId).replace(/^#/, "");
+        const currentOrders = JSON.parse(localStorage.getItem("odysseyOrders")) || [];
+        const exists = currentOrders.some(
+          (o) => String(o.orderId || o._id || "").replace(/^#/, "") === cleanId
+        );
+        if (!exists) {
+          currentOrders.unshift({
+            orderId: cleanId,
+            items: receiptData.items || [],
+            total: receiptData.total || 0,
+            date: receiptData.date || new Date().toLocaleString(),
+            status: receiptData.status || "IN PRINT QUEUE",
+          });
+          localStorage.setItem("odysseyOrders", JSON.stringify(currentOrders));
+        }
+      }
+    } catch (e) {}
+  }, [receiptData]);
+
   // Awwwards cursor follower
   const cursorRef = useRef(null);
   const targetPos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
@@ -1197,7 +1305,16 @@ export default function ReceiptPage() {
       currentPos.current.y += (targetPos.current.y - currentPos.current.y) * 0.16;
 
       if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) translate(-50%, -50%)`;
+        // Position pill top-right of the 3D blob cursor with screen boundary edge detection
+        const isNearRight = currentPos.current.x > window.innerWidth - 240;
+        const isNearTop = currentPos.current.y < 65;
+
+        const transX = isNearRight ? "-100%" : "0%";
+        const transY = isNearTop ? "0%" : "-100%";
+        const posX = currentPos.current.x + (isNearRight ? -20 : 20);
+        const posY = currentPos.current.y + (isNearTop ? 20 : -20);
+
+        cursorRef.current.style.transform = `translate3d(${posX}px, ${posY}px, 0) translate(${transX}, ${transY})`;
       }
       animId = requestAnimationFrame(updateCursor);
     };
@@ -1211,8 +1328,16 @@ export default function ReceiptPage() {
     };
   }, []);
 
+  // ✦ ENSURE PAGE IS SYNCHRONOUSLY LOCKED AT THE TOP ON REFRESH (NO RESTORATION SCROLL)
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   // ✦ CANVAS LIFECYCLE FOR CLICK 1 TEASE & CLICK 2 SPILL
-  useEffect(() => {
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -1231,6 +1356,7 @@ export default function ReceiptPage() {
     window.addEventListener("resize", resizeCanvas);
 
     if (stage === 0 || stage === 1 || stage === 2) {
+      dispatchBlobColor(0, true);
       // Solid black sheet & background stays 100% crystal-clear underneath (zero blur)
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -1240,7 +1366,14 @@ export default function ReceiptPage() {
       return () => window.removeEventListener("resize", resizeCanvas);
     }
 
+    if (stage >= 4) {
+      dispatchBlobColor(1.0, true);
+      return () => window.removeEventListener("resize", resizeCanvas);
+    }
+
     if (stage === 0.5 || stage === 1.5) {
+      // 1st and 2nd clicks: blob stays dark (does not glow)
+      dispatchBlobColor(0, true);
       // ✦ CLICK 1 & CLICK 2: 100% Crystal-Clear Sharp Tease Reveal!
       if (bgImgRef.current) {
         bgImgRef.current.style.filter = "none";
@@ -1299,6 +1432,7 @@ export default function ReceiptPage() {
         if (progress < 1.0) {
           animationId = requestAnimationFrame(animateTease);
         } else {
+          dispatchBlobColor(0, true);
           setStage(stage === 0.5 ? 1 : 2);
         }
       };
@@ -1340,6 +1474,9 @@ export default function ReceiptPage() {
           ease = 0.38 + 0.62 * (1.0 - Math.pow(1.0 - v, 2.0));
         }
 
+        // ✦ Click 3: As wave expands slowly across the sheet, blob goes slowly from dark to radiant green!
+        dispatchBlobColor(ease);
+
         const waveR = maxCanvasDist * ease;
 
         ctx.save();
@@ -1376,6 +1513,7 @@ export default function ReceiptPage() {
         } else {
           // Painting completely revealed — 100% crisp, zero blur!
           if (bgImgRef.current) bgImgRef.current.style.filter = "none";
+          dispatchBlobColor(1.0, true);
           setStage(4);
         }
       };
@@ -1419,9 +1557,12 @@ export default function ReceiptPage() {
                 ref={bgImgRef}
                 src="/wizard-enchanted-greenlight.svg"
                 alt="Enchanted Greenlight Vector Canvas"
-                className="rcpt-bg-vector"
+                className={`rcpt-bg-vector ${stage === 0 ? "stage-zero-stealth" : ""}`}
               />
             </div>
+
+            {/* Pitch black shroud guarding stage 0 against any refresh bleed */}
+            {stage === 0 && <div className="rcpt-initial-shroud" aria-hidden="true" />}
 
             {/* Dynamic Organic Paint Spill Canvas */}
             {stage < 4 && <canvas ref={canvasRef} className="rcpt-paint-canvas" aria-hidden="true" />}
@@ -1474,7 +1615,6 @@ export default function ReceiptPage() {
                         <span>{receiptData.orderId}</span>
                         <button
                           className={`rcpt-tkt-copy-btn ${copied ? "copied" : ""}`}
-                          title="Copy Order ID"
                           onClick={(e) => {
                             e.stopPropagation();
                             navigator.clipboard.writeText(receiptData.orderId);
@@ -1545,7 +1685,7 @@ export default function ReceiptPage() {
                     const codeString = `ODY-${receiptData.orderId?.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12).toUpperCase()}`;
                     const { bars, totalWidth } = generateCode128Svg(codeString);
                     return (
-                      <div className="rcpt-tkt-barcode-wrap" title={`Scannable Order Barcode: ${codeString}`}>
+                      <div className="rcpt-tkt-barcode-wrap">
                         <svg
                           viewBox={`0 0 ${totalWidth} 44`}
                           preserveAspectRatio="none"
@@ -1598,135 +1738,172 @@ export default function ReceiptPage() {
           )}
         </div>
 
-        {/* ── BESPOKE 1-PAGE ARCHIVAL PDF / PRINT DOCUMENT ── */}
-        <div className="rcpt-pdf-document" aria-hidden="true">
-          <div className="rcpt-pdf-frame">
-            
-            {/* Central Parchment Certificate Card */}
-            <div className="rcpt-pdf-card">
-              
-              {/* Scriptorium Crest & Headers */}
-              <div className="rcpt-pdf-head">
-                <div className="rcpt-pdf-emblem-wrap">
-                  <svg className="rcpt-pdf-emblem-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="40" cy="40" r="37" stroke="#0e1a12" strokeWidth="1.5" strokeDasharray="3 2" />
-                    <circle cx="40" cy="40" r="33" stroke="#0e1a12" strokeWidth="0.8" />
-                    <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" strokeWidth="0.5" />
-                    <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
-                    <circle cx="43" cy="28" r="1.8" fill="#52e389" />
-                    <path d="M40 11.2 L40.8 13.3 L43.5 14 L40.8 14.7 L40 16.8 L39.2 14.7 L36.5 14 L39.2 13.3 Z" fill="#23854b" />
-                  </svg>
-                </div>
-                <span className="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
-                <h1 className="rcpt-pdf-title">SUPPLY ORDER RECEIPT</h1>
-                <span className="rcpt-pdf-subtitle">AUTHENTICATED CAMPUS SCRIPTORIUM DISPATCH RECORD</span>
-                <div className="rcpt-pdf-divider-ornate">
-                  <span className="rcpt-pdf-ornate-diamond">❖</span>
-                </div>
-              </div>
-
-              {/* Minimalist 4-Quadrant Metadata Grid */}
-              <div className="rcpt-pdf-meta-grid">
-                <div className="rcpt-pdf-meta-cell">
-                  <span className="rcpt-pdf-meta-label">ORDER REFERENCE</span>
-                  <span className="rcpt-pdf-meta-val mono">{receiptData.orderId}</span>
-                </div>
-                <div className="rcpt-pdf-meta-cell">
-                  <span className="rcpt-pdf-meta-label">DISPATCH STATUS</span>
-                  <span className="rcpt-pdf-meta-val status-badge">{receiptData.status}</span>
-                </div>
-                <div className="rcpt-pdf-meta-cell">
-                  <span className="rcpt-pdf-meta-label">COLLECTION POINT</span>
-                  <span className="rcpt-pdf-meta-val">{receiptData.pickupCounter}</span>
-                </div>
-                <div className="rcpt-pdf-meta-cell">
-                  <span className="rcpt-pdf-meta-label">RECORDED AT</span>
-                  <span className="rcpt-pdf-meta-val">{receiptData.date}</span>
-                </div>
-              </div>
-
-              <div className="rcpt-pdf-divider-dashed" />
-
-              {/* Order Manifest Table */}
-              <div className="rcpt-pdf-manifest">
-                <div className="rcpt-pdf-table-head">
-                  <span className="rcpt-pdf-th desc">ITEM DESCRIPTION</span>
-                  <span className="rcpt-pdf-th qty">QTY</span>
-                  <span className="rcpt-pdf-th price">AMOUNT</span>
-                </div>
-
-                <div className="rcpt-pdf-table-body">
-                  {(receiptData.items || []).map((item, idx) => (
-                    <div key={idx} className="rcpt-pdf-table-row">
-                      <div className="rcpt-pdf-td desc">
-                        <div className="rcpt-pdf-item-name">{item.name || item.title}</div>
-                        {item.specs && <div className="rcpt-pdf-item-specs">{item.specs}</div>}
+        {/* ── BESPOKE MULTI-PAGE ARCHIVAL PDF / PRINT DOCUMENT ── */}
+        <div className="rcpt-pdf-document-group" aria-hidden="true">
+          {chunkManifestItems(receiptData.items).map((folio, fIdx) => (
+            <div key={fIdx} className="rcpt-pdf-document">
+              <div className="rcpt-pdf-frame">
+                
+                {/* Central Parchment Certificate Card */}
+                <div className="rcpt-pdf-card">
+                  {folio.isFirst ? (
+                    <>
+                      {/* Scriptorium Crest & Headers */}
+                      <div className="rcpt-pdf-head">
+                        <div className="rcpt-pdf-emblem-wrap">
+                          <svg className="rcpt-pdf-emblem-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="40" r="37" stroke="#0e1a12" strokeWidth="1.5" strokeDasharray="3 2" />
+                            <circle cx="40" cy="40" r="33" stroke="#0e1a12" strokeWidth="0.8" />
+                            <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" strokeWidth="0.5" />
+                            <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
+                            <circle cx="43" cy="28" r="1.8" fill="#52e389" />
+                            <path d="M40 11.2 L40.8 13.3 L43.5 14 L40.8 14.7 L40 16.8 L39.2 14.7 L36.5 14 L39.2 13.3 Z" fill="#23854b" />
+                          </svg>
+                        </div>
+                        <span className="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
+                        <h1 className="rcpt-pdf-title">SUPPLY ORDER RECEIPT</h1>
+                        <span className="rcpt-pdf-subtitle">AUTHENTICATED CAMPUS SCRIPTORIUM DISPATCH RECORD</span>
+                        <div className="rcpt-pdf-divider-ornate">
+                          <span className="rcpt-pdf-ornate-diamond">❖</span>
+                        </div>
                       </div>
-                      <div className="rcpt-pdf-td qty">
-                        ×{item.quantity || item.qty || 1}
+
+                      {/* Minimalist 4-Quadrant Metadata Grid */}
+                      <div className="rcpt-pdf-meta-grid">
+                        <div className="rcpt-pdf-meta-cell">
+                          <span className="rcpt-pdf-meta-label">ORDER REFERENCE</span>
+                          <span className="rcpt-pdf-meta-val mono">{receiptData.orderId}</span>
+                        </div>
+                        <div className="rcpt-pdf-meta-cell">
+                          <span className="rcpt-pdf-meta-label">DISPATCH STATUS</span>
+                          <span className="rcpt-pdf-meta-val status-badge">{receiptData.status}</span>
+                        </div>
+                        <div className="rcpt-pdf-meta-cell">
+                          <span className="rcpt-pdf-meta-label">COLLECTION POINT</span>
+                          <span className="rcpt-pdf-meta-val">{receiptData.pickupCounter}</span>
+                        </div>
+                        <div className="rcpt-pdf-meta-cell">
+                          <span className="rcpt-pdf-meta-label">RECORDED AT</span>
+                          <span className="rcpt-pdf-meta-val">{receiptData.date}</span>
+                        </div>
                       </div>
-                      <div className="rcpt-pdf-td price">
-                        ₹{((item.price || 0) * (item.quantity || item.qty || 1)).toFixed(0)}
+
+                      <div className="rcpt-pdf-divider-dashed" />
+                    </>
+                  ) : (
+                    <div className="rcpt-pdf-head continuation">
+                      <div className="rcpt-pdf-emblem-wrap">
+                        <svg className="rcpt-pdf-emblem-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="40" cy="40" r="37" stroke="#0e1a12" strokeWidth="1.5" strokeDasharray="3 2" />
+                          <circle cx="40" cy="40" r="33" stroke="#0e1a12" strokeWidth="0.8" />
+                          <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
+                          <circle cx="43" cy="28" r="1.8" fill="#52e389" />
+                        </svg>
+                      </div>
+                      <span className="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • {folio.isLast ? "FINAL DISPATCH MANIFEST" : "MANIFEST CONTINUATION"} —</span>
+                      <h2 className="rcpt-pdf-title" style={{ fontSize: "15px", margin: 0 }}>SUPPLY ORDER RECEIPT</h2>
+                      <span className="rcpt-pdf-subtitle">ORDER REF: {receiptData.orderId} • FOLIO {folio.page} OF {folio.totalPages}</span>
+                      <div className="rcpt-pdf-divider-ornate">
+                        <span className="rcpt-pdf-ornate-diamond">❖</span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
+                  )}
 
-              {/* Total Offering Paid Box */}
-              <div className="rcpt-pdf-total-box">
-                <div className="rcpt-pdf-total-left">
-                  <span className="rcpt-pdf-total-label">TOTAL OFFERING PAID</span>
-                  <span className="rcpt-pdf-total-sub">OFFICIALLY TENDERED & SETTLED</span>
-                </div>
-                <span className="rcpt-pdf-total-amount">₹{receiptData.total}</span>
-              </div>
+                  {/* Order Manifest Table */}
+                  <div className="rcpt-pdf-manifest">
+                    <div className="rcpt-pdf-table-head">
+                      <span className="rcpt-pdf-th desc">ITEM DESCRIPTION</span>
+                      <span className="rcpt-pdf-th qty">QTY</span>
+                      <span className="rcpt-pdf-th price">AMOUNT</span>
+                    </div>
 
-              {/* Scannable Code 128 Barcode Section */}
-              {(() => {
-                const codeString = `ODY-${receiptData.orderId?.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12).toUpperCase()}`;
-                const { bars, totalWidth } = generateCode128Svg(codeString);
-                return (
-                  <div className="rcpt-pdf-barcode-section">
-                    <svg
-                      viewBox={`0 0 ${totalWidth} 32`}
-                      preserveAspectRatio="none"
-                      className="rcpt-pdf-barcode-svg"
-                      aria-label={`Code 128 Barcode for ${codeString}`}
-                    >
-                      {bars.map((bar, idx) => (
-                        <rect
-                          key={idx}
-                          x={bar.x}
-                          y="0"
-                          width={bar.w}
-                          height="32"
-                          fill="#0b160e"
-                        />
+                    <div className="rcpt-pdf-table-body">
+                      {(folio.items || []).map((item, idx) => (
+                        <div key={idx} className="rcpt-pdf-table-row">
+                          <div className="rcpt-pdf-td desc">
+                            <div className="rcpt-pdf-item-name">{item.name || item.title}</div>
+                            {item.specs && <div className="rcpt-pdf-item-specs">{item.specs}</div>}
+                          </div>
+                          <div className="rcpt-pdf-td qty">
+                            ×{item.quantity || item.qty || 1}
+                          </div>
+                          <div className="rcpt-pdf-td price">
+                            ₹{((item.price || 0) * (item.quantity || item.qty || 1)).toFixed(0)}
+                          </div>
+                        </div>
                       ))}
-                    </svg>
-                    <span className="rcpt-pdf-barcode-text">* {codeString} *</span>
+                    </div>
                   </div>
-                );
-              })()}
 
-              <div className="rcpt-pdf-card-stamp">
-                ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+                  {folio.isLast ? (
+                    <>
+                      {/* Total Offering Paid Box */}
+                      <div className="rcpt-pdf-total-box">
+                        <div className="rcpt-pdf-total-left">
+                          <span className="rcpt-pdf-total-label">TOTAL OFFERING PAID</span>
+                          <span className="rcpt-pdf-total-sub">OFFICIALLY TENDERED & SETTLED</span>
+                        </div>
+                        <span className="rcpt-pdf-total-amount">₹{receiptData.total}</span>
+                      </div>
+
+                      {/* Scannable Code 128 Barcode Section */}
+                      {(() => {
+                        const codeString = `ODY-${receiptData.orderId?.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12).toUpperCase()}`;
+                        const { bars, totalWidth } = generateCode128Svg(codeString);
+                        return (
+                          <div className="rcpt-pdf-barcode-section">
+                            <svg
+                              viewBox={`0 0 ${totalWidth} 32`}
+                              preserveAspectRatio="none"
+                              className="rcpt-pdf-barcode-svg"
+                              aria-label={`Code 128 Barcode for ${codeString}`}
+                            >
+                              {bars.map((bar, idx) => (
+                                <rect
+                                  key={idx}
+                                  x={bar.x}
+                                  y="0"
+                                  width={bar.w}
+                                  height="32"
+                                  fill="#0b160e"
+                                />
+                              ))}
+                            </svg>
+                            <span className="rcpt-pdf-barcode-text">* {codeString} *</span>
+                          </div>
+                        );
+                      })()}
+
+                      <div className="rcpt-pdf-card-stamp">
+                        ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="rcpt-pdf-continuation-banner">
+                        <span>— MANIFEST CONTINUED ON FOLIO {folio.page + 1} OF {folio.totalPages} —</span>
+                      </div>
+                      <div className="rcpt-pdf-card-stamp">
+                        ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+                      </div>
+                    </>
+                  )}
+
+                </div>
+
+                {/* True Bottom Page Footer */}
+                <div className="rcpt-pdf-page-footer">
+                  <div className="rcpt-pdf-footer-rule" />
+                  <div className="rcpt-pdf-footer-row">
+                    <span>ODYSSEY CAMPUS PRINT ARCHIVES</span>
+                    <span>FOLIO {folio.page} OF {folio.totalPages}{folio.isLast ? "" : ` • CONTINUED ON FOLIO ${folio.page + 1}`}</span>
+                    <span>RECORD REF: {receiptData.orderId}</span>
+                  </div>
+                </div>
+
               </div>
-
             </div>
-
-            {/* True Bottom Page Footer (Strictly at the footer of Page 1) */}
-            <div className="rcpt-pdf-page-footer">
-              <div className="rcpt-pdf-footer-rule" />
-              <div className="rcpt-pdf-footer-row">
-                <span>ODYSSEY CAMPUS PRINT ARCHIVES</span>
-                <span>FOLIO 1 OF 1</span>
-                <span>RECORD REF: {receiptData.orderId}</span>
-              </div>
-            </div>
-
-          </div>
+          ))}
         </div>
 
       </div>

@@ -1401,7 +1401,6 @@ function Print() {
               onClick={() => navigate(-1)}
               className="print-brand"
               style={{ background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left", font: "inherit", color: "inherit" }}
-              title="Return to Base"
             >
               ODYSSEY
               <span className="print-badge">PRINT STATION</span>
@@ -1546,7 +1545,7 @@ function Print() {
                         </svg>
                       </div>
 
-                      <h3 className="print-file-name" title={file.name}>
+                      <h3 className="print-file-name">
                         {file.name}
                       </h3>
 
