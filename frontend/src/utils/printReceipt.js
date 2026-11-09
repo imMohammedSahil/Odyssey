@@ -56,7 +56,7 @@ export function downloadOrPrintReceipt(order) {
     total: order.total || 0,
     date: order.date || new Date().toLocaleString(),
     status: (order.status || "CONFIRMED").toUpperCase(),
-    pickupCounter: "SCRIPTORIUM COUNTER 04",
+    pickupCounter: "MAIN LIBRARY BASECAMP • PICKUP DESK 04",
   };
 
   const codeString = `ODY-${receiptData.orderId.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12).toUpperCase()}`;
@@ -546,3 +546,4 @@ export function downloadOrPrintReceipt(order) {
     }, 2500);
   }, 350);
 }
+
