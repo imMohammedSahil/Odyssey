@@ -44,21 +44,21 @@ export default function OccultCursorFumes() {
     const spawnSmokePuff = (x, y, drainVal, density = 1) => {
       if (smokes.length >= MAX_SMOKES) smokes.shift();
       const angle = Math.random() * Math.PI * 2;
-      const spread = 2 + Math.random() * 8;
+      const spread = 1 + Math.random() * 5;
 
       smokes.push({
         x: x + Math.cos(angle) * spread,
         y: y + Math.sin(angle) * spread,
-        vx: (Math.random() - 0.5) * 0.8 - mouse.vx * 0.04,
-        vy: -0.6 - Math.random() * 1.2 - mouse.vy * 0.04,
-        size: 14 + Math.random() * 10,
-        maxSize: 55 + Math.random() * 30,
+        vx: (Math.random() - 0.5) * 0.7 - mouse.vx * 0.04,
+        vy: -0.5 - Math.random() * 1.0 - mouse.vy * 0.04,
+        size: 8 + Math.random() * 6,
+        maxSize: 26 + Math.random() * 12, // Compact & agile size
         rotation: Math.random() * Math.PI * 2,
-        vRot: (Math.random() - 0.5) * 0.02,
+        vRot: (Math.random() - 0.5) * 0.025,
         curvePhase: Math.random() * Math.PI * 2,
         curveFreq: 0.05 + Math.random() * 0.05,
         age: 0,
-        maxAge: Math.floor(45 + Math.random() * 25),
+        maxAge: Math.floor(40 + Math.random() * 20),
         drain: drainVal,
         density,
       });
@@ -221,13 +221,16 @@ export default function OccultCursorFumes() {
         const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, currentSize);
 
         if (p.drain < 0.5) {
-          // Deep Pitch Obsidian Black Smoke
-          grad.addColorStop(0, `rgba(8, 10, 14, ${alpha * 0.92})`);
-          grad.addColorStop(0.45, `rgba(14, 17, 22, ${alpha * 0.65})`);
-          grad.addColorStop(0.78, `rgba(22, 26, 32, ${alpha * 0.22})`);
-          grad.addColorStop(1, "rgba(25, 30, 36, 0)");
+          // Evil Supernatural Red Energy Smoke:
+          // Dark cursed blood-obsidian core blending outward into evil red mist
+          const evilRed = (1 - p.drain * 2);
+          grad.addColorStop(0, `rgba(45, 8, 8, ${alpha * 0.95})`);
+          grad.addColorStop(0.38, `rgba(165, 22, 16, ${alpha * 0.68 * evilRed})`);
+          grad.addColorStop(0.72, `rgba(95, 14, 12, ${alpha * 0.35 * evilRed})`);
+          grad.addColorStop(1, "rgba(70, 10, 10, 0)");
         } else {
-          // Cold Ashen Death Mist near the Grim Reaper
+          // Cold Ashen Death Mist near the Grim Reaper:
+          // Drained of all evil red vitality into dead tombstone grey
           grad.addColorStop(0, `rgba(45, 54, 60, ${alpha * 0.72})`);
           grad.addColorStop(0.5, `rgba(65, 76, 84, ${alpha * 0.42})`);
           grad.addColorStop(0.8, `rgba(80, 92, 100, ${alpha * 0.14})`);
@@ -290,8 +293,8 @@ export default function OccultCursorFumes() {
         height: "100vh",
         pointerEvents: "none",
         zIndex: 99998,
-        // Gaussian blur filter seamlessly merges all smoke puffs into a silky continuous volumetric plume
-        filter: "blur(6px)",
+        // Seamless volumetric blur tuned for compact evil energy fumes
+        filter: "blur(3.5px)",
       }}
       aria-hidden="true"
     />
