@@ -33,13 +33,13 @@ export default function OccultCursorFumes() {
     let targetDrain = 0;
     let lastDispatchedDrain = -1;
 
-    // Organic smoke puff particles
+    // Organic volumetric smoke particles
     const smokes = [];
-    const MAX_SMOKES = 85;
+    const MAX_SMOKES = 95;
 
-    // Occasional glowing ember sparks escaping the hot liquid metal
+    // Occasional glowing ember sparks escaping the molten chrome droplet
     const embers = [];
-    const MAX_EMBERS = 25;
+    const MAX_EMBERS = 30;
 
     const spawnSmokePuff = (x, y, drainVal, density = 1) => {
       if (smokes.length >= MAX_SMOKES) smokes.shift();
@@ -49,16 +49,16 @@ export default function OccultCursorFumes() {
       smokes.push({
         x: x + Math.cos(angle) * spread,
         y: y + Math.sin(angle) * spread,
-        vx: (Math.random() - 0.5) * 0.8 - mouse.vx * 0.04,
-        vy: -0.6 - Math.random() * 1.2 - mouse.vy * 0.04,
-        size: 14 + Math.random() * 10,
-        maxSize: 55 + Math.random() * 30,
+        vx: (Math.random() - 0.5) * 0.7 - mouse.vx * 0.04,
+        vy: -0.6 - Math.random() * 1.1 - mouse.vy * 0.04,
+        size: 16 + Math.random() * 12,
+        maxSize: 58 + Math.random() * 28,
         rotation: Math.random() * Math.PI * 2,
-        vRot: (Math.random() - 0.5) * 0.02,
+        vRot: (Math.random() - 0.5) * 0.025,
         curvePhase: Math.random() * Math.PI * 2,
-        curveFreq: 0.05 + Math.random() * 0.05,
+        curveFreq: 0.04 + Math.random() * 0.05,
         age: 0,
-        maxAge: Math.floor(45 + Math.random() * 25),
+        maxAge: Math.floor(48 + Math.random() * 24),
         drain: drainVal,
         density,
       });
@@ -67,16 +67,16 @@ export default function OccultCursorFumes() {
     const spawnEmber = (x, y) => {
       if (embers.length >= MAX_EMBERS) embers.shift();
       const angle = Math.random() * Math.PI * 2;
-      const speed = 0.8 + Math.random() * 1.8;
+      const speed = 1.0 + Math.random() * 2.2;
       embers.push({
         x,
         y,
-        vx: Math.cos(angle) * speed - mouse.vx * 0.06,
-        vy: Math.sin(angle) * speed - 1.2,
-        size: 1.2 + Math.random() * 1.8,
+        vx: Math.cos(angle) * speed - mouse.vx * 0.05,
+        vy: Math.sin(angle) * speed - 1.4,
+        size: 1.5 + Math.random() * 2.0,
         age: 0,
-        maxAge: 20 + Math.random() * 18,
-        color: Math.random() > 0.4 ? "#FF3B1E" : "#FFA22E",
+        maxAge: 22 + Math.random() * 18,
+        color: Math.random() > 0.35 ? "#FF3B1E" : "#FFA42E",
       });
     };
 
@@ -88,7 +88,7 @@ export default function OccultCursorFumes() {
         mouse.vx = px - mouse.x;
         mouse.vy = py - mouse.y;
 
-        // Smooth continuous path interpolation so there are zero gaps or separate circles
+        // Continuous path interpolation: eliminates gaps so smoke forms an unbroken fluid trail
         const dist = Math.hypot(px - mouse.x, py - mouse.y);
         const steps = Math.min(8, Math.max(1, Math.floor(dist / 6)));
         for (let s = 1; s <= steps; s++) {
@@ -98,8 +98,8 @@ export default function OccultCursorFumes() {
           spawnSmokePuff(ix, iy, currentDrain, 1);
         }
 
-        // Spawn occasional ember sparks only when living (drain < 0.4)
-        if (currentDrain < 0.4 && Math.random() < 0.28) {
+        // Spawn burning ember sparks when moving
+        if (currentDrain < 0.4 && Math.random() < 0.32) {
           spawnEmber(px, py);
         }
       }
@@ -159,7 +159,7 @@ export default function OccultCursorFumes() {
       // Idle smoke puff when hovering
       if (mouse.active && mouse.x > 0 && mouse.y > 0 && tick % 4 === 0) {
         spawnSmokePuff(mouse.x, mouse.y, currentDrain, 0.7);
-        if (currentDrain < 0.4 && Math.random() < 0.15) {
+        if (currentDrain < 0.4 && Math.random() < 0.2) {
           spawnEmber(mouse.x, mouse.y);
         }
       }
@@ -167,10 +167,10 @@ export default function OccultCursorFumes() {
       mouse.vx *= 0.55;
       mouse.vy *= 0.55;
 
-      // 1. Hot Liquid Core Glow Aura (only at the origin where smoke is born from the metal)
-      if (mouse.active && mouse.x > 0 && mouse.y > 0 && currentDrain < 0.85) {
-        const glowRadius = 24 + Math.sin(tick * 0.12) * 3;
-        const glowAlpha = (1 - currentDrain) * 0.38;
+      // 1. Hot Liquid Core Glow Aura (illuminates dark houses and surroundings)
+      if (mouse.active && mouse.x > 0 && mouse.y > 0 && currentDrain < 0.9) {
+        const glowRadius = 38 + Math.sin(tick * 0.12) * 5;
+        const glowAlpha = (1 - currentDrain) * 0.46;
         const glow = ctx.createRadialGradient(
           mouse.x,
           mouse.y,
@@ -179,8 +179,8 @@ export default function OccultCursorFumes() {
           mouse.y,
           glowRadius
         );
-        glow.addColorStop(0, `rgba(255, 50, 25, ${glowAlpha})`);
-        glow.addColorStop(0.5, `rgba(210, 30, 18, ${glowAlpha * 0.4})`);
+        glow.addColorStop(0, `rgba(255, 60, 25, ${glowAlpha})`);
+        glow.addColorStop(0.45, `rgba(215, 35, 18, ${glowAlpha * 0.55})`);
         glow.addColorStop(1, "rgba(180, 20, 10, 0)");
         ctx.fillStyle = glow;
         ctx.beginPath();
@@ -188,7 +188,8 @@ export default function OccultCursorFumes() {
         ctx.fill();
       }
 
-      // 2. Realistic Volumetric Smoke Plume (Seamlessly merged via gaussian falloff & CSS blur)
+      // 2. Realistic Volumetric Smoke Plume with dual illumination
+      // (Visible over BOTH light sky AND dark houses/walls)
       for (let i = smokes.length - 1; i >= 0; i--) {
         const p = smokes[i];
         p.age++;
@@ -208,9 +209,9 @@ export default function OccultCursorFumes() {
         p.vx *= 0.985;
         p.vy *= 0.985;
 
-        // Smooth cubic expansion (smoke expands as it cools into the air)
+        // Smooth cubic expansion
         const currentSize = p.size + (p.maxSize - p.size) * (1 - Math.pow(1 - progress, 2.2));
-        const alpha = Math.sin(progress * Math.PI) * 0.48 * (1 - p.drain * 0.35);
+        const alpha = Math.sin(progress * Math.PI) * (1 - p.drain * 0.3);
 
         if (alpha <= 0.005) continue;
 
@@ -221,17 +222,26 @@ export default function OccultCursorFumes() {
         const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, currentSize);
 
         if (p.drain < 0.5) {
-          // Deep Pitch Obsidian Black Smoke
-          grad.addColorStop(0, `rgba(8, 10, 14, ${alpha * 0.92})`);
-          grad.addColorStop(0.45, `rgba(14, 17, 22, ${alpha * 0.65})`);
-          grad.addColorStop(0.78, `rgba(22, 26, 32, ${alpha * 0.22})`);
-          grad.addColorStop(1, "rgba(25, 30, 36, 0)");
+          // Living Occult Fumes:
+          // Center: Deep obsidian smoke (visible against bright sky)
+          // Mid: Fiery crimson/amber inner glow (illuminates against dark houses)
+          // Edge: Moonlit mist rim (contrasts against pitch-black buildings)
+          const crimsonGlow = (1 - p.drain * 2) * 0.42 * alpha;
+          const moonlitRim = 0.28 * alpha;
+
+          grad.addColorStop(0, `rgba(12, 14, 18, ${alpha * 0.92})`);
+          grad.addColorStop(0.35, `rgba(220, 40, 20, ${crimsonGlow})`);
+          grad.addColorStop(0.68, `rgba(15, 18, 24, ${alpha * 0.65})`);
+          grad.addColorStop(0.88, `rgba(165, 185, 200, ${moonlitRim})`);
+          grad.addColorStop(1, "rgba(180, 200, 215, 0)");
         } else {
-          // Cold Ashen Death Mist near the Grim Reaper
-          grad.addColorStop(0, `rgba(45, 54, 60, ${alpha * 0.72})`);
-          grad.addColorStop(0.5, `rgba(65, 76, 84, ${alpha * 0.42})`);
-          grad.addColorStop(0.8, `rgba(80, 92, 100, ${alpha * 0.14})`);
-          grad.addColorStop(1, "rgba(90, 102, 110, 0)");
+          // Cold Ashen Death Mist near the Grim Reaper:
+          // Pale spectral fog clearly visible against dark church & house silhouettes
+          const ghostGlow = alpha * 0.52;
+          grad.addColorStop(0, `rgba(60, 72, 80, ${ghostGlow})`);
+          grad.addColorStop(0.5, `rgba(130, 150, 165, ${ghostGlow * 0.55})`);
+          grad.addColorStop(0.8, `rgba(175, 195, 208, ${ghostGlow * 0.22})`);
+          grad.addColorStop(1, "rgba(185, 205, 218, 0)");
         }
 
         ctx.fillStyle = grad;
@@ -241,7 +251,7 @@ export default function OccultCursorFumes() {
         ctx.restore();
       }
 
-      // 3. Tiny Occult Ember Sparks (drift and burn out quickly in the dark smoke)
+      // 3. Tiny Occult Ember Sparks (glowing dots clearly visible across dark buildings)
       for (let i = embers.length - 1; i >= 0; i--) {
         const em = embers[i];
         em.age++;
@@ -261,6 +271,16 @@ export default function OccultCursorFumes() {
         ctx.beginPath();
         ctx.arc(em.x, em.y, em.size, 0, Math.PI * 2);
         ctx.fill();
+
+        // Soft spark glow halo
+        const sparkGlow = ctx.createRadialGradient(em.x, em.y, 0, em.x, em.y, em.size * 3.5);
+        sparkGlow.addColorStop(0, "rgba(255, 60, 25, 0.4)");
+        sparkGlow.addColorStop(1, "rgba(255, 60, 25, 0)");
+        ctx.fillStyle = sparkGlow;
+        ctx.beginPath();
+        ctx.arc(em.x, em.y, em.size * 3.5, 0, Math.PI * 2);
+        ctx.fill();
+
         ctx.globalAlpha = 1;
       }
 
@@ -290,8 +310,7 @@ export default function OccultCursorFumes() {
         height: "100vh",
         pointerEvents: "none",
         zIndex: 99998,
-        // Gaussian blur filter seamlessly merges all smoke puffs into a silky continuous volumetric plume
-        filter: "blur(6px)",
+        filter: "blur(4px)",
       }}
       aria-hidden="true"
     />
