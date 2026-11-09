@@ -423,7 +423,7 @@ export default function IntroPage() {
           material="chrome"
           color="#3B82F6"
           blend="normal"
-          size={140}
+          size={42}
           morph={0}
           morphSpeed={0.4}
           depth={1}
