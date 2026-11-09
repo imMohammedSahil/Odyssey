@@ -29,12 +29,17 @@ const styles = `
   }
 
   .pay-root {
-    min-height: 100vh;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    width: 100vw;
     background-color: #192024;
     color: var(--parchment);
     font-family: 'Plus Jakarta Sans', sans-serif;
     position: relative;
-    overflow-x: hidden;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -49,7 +54,8 @@ const styles = `
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
-    background-color: #4C585E;
+    background: linear-gradient(180deg, #3B464E 0%, #2A343B 40%, #151C20 80%, #0D0D0D 100%);
+    contain: strict;
   }
 
   .pay-bg-vector {
@@ -173,6 +179,7 @@ const styles = `
     position: relative;
     z-index: 20;
     padding: 0 0 3.5vh max(24px, calc(37% - 150px)); /* Positions center of 300px shrine at exactly ~37% of screen width */
+    pointer-events: none;
   }
 
   .ritual-shrine-stage {
@@ -186,6 +193,7 @@ const styles = `
     justify-content: center;
     margin-bottom: -16px; /* Sits naturally on the road */
     animation: shrineEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    pointer-events: auto;
   }
 
   @keyframes shrineEntrance {
@@ -269,9 +277,9 @@ const styles = `
     display: flex;
     align-items: center;
     justify-content: center;
-    mix-blend-mode: multiply; /* Inks directly onto torn parchment */
+    mix-blend-mode: multiply; /* Inks directly onto torn antique parchment */
     position: relative;
-    opacity: 0.94;
+    opacity: 0.90;
   }
 
   .ritual-live-qr-box svg {
@@ -362,6 +370,21 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
   const [qrSvg, setQrSvg] = useState("");
   const [offeringAccepted, setOfferingAccepted] = useState(false);
+  const [sessionId, setSessionId] = useState(() => "ritual_" + Date.now() + "_" + Math.floor(1000 + Math.random() * 9000));
+  const [offerUrl, setOfferUrl] = useState("");
+  const [localIp, setLocalIp] = useState("192.168.0.101");
+
+  // Lock body/window scrolling so page and elements stay strictly fixed in place
+  useEffect(() => {
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, []);
 
   // Compute live cart total
   const calculatedTotal = cartItems.reduce(
@@ -381,24 +404,103 @@ export default function PaymentPage() {
   const total = isDemo ? 150 : calculatedTotal;
   const totalItemCount = effectiveItems.reduce((acc, it) => acc + (it.quantity || 1), 0);
 
-  // Generate dynamic scannable UPI QR code SVG whenever total changes
+  const detectedIp = localIp || (window.location.hostname === "localhost" ? "192.168.0.101" : window.location.hostname);
+  const targetUrl = offerUrl || `http://${detectedIp}:3000/ritual-offering?session=${sessionId}&total=${total}`;
+
+  // 1. Register ritual session with backend & retrieve local network IP for mobile scanning
   useEffect(() => {
-    const upiUri = `upi://pay?pa=odysseycampus@upi&pn=Odyssey%20Campus%20Print&am=${total}&cu=INR`;
-    QRCode.toString(upiUri, {
+    let isMounted = true;
+
+    axios
+      .post("http://localhost:5000/api/ritual/session", {
+        total,
+        items: effectiveItems,
+      })
+      .then((res) => {
+        if (isMounted && res.data) {
+          if (res.data.sessionId) setSessionId(res.data.sessionId);
+          if (res.data.offerUrl) setOfferUrl(res.data.offerUrl);
+          if (res.data.localIp) setLocalIp(res.data.localIp);
+        }
+      })
+      .catch(() => {
+        const fallbackUrl = `http://${detectedIp}:3000/ritual-offering?session=${sessionId}&total=${total}`;
+        if (isMounted) {
+          setOfferUrl(fallbackUrl);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [total]);
+
+  // 2. Generate dynamic scannable mobile QR code SVG pointing to targetUrl
+  useEffect(() => {
+    QRCode.toString(targetUrl, {
       type: "svg",
       margin: 0,
       color: {
-        dark: "#0D0D0D",
-        light: "#00000000", // Transparent background so parchment shows through
+        dark: "#141414", // Deep rich gothic charcoal ink
+        light: "#00000000", // Transparent background so antique parchment shows through
       },
     })
       .then((svgString) => {
         setQrSvg(svgString);
       })
       .catch((err) => {
-        console.error("Failed to generate UPI QR code:", err);
+        console.error("Failed to generate ritual QR code:", err);
       });
-  }, [total]);
+  }, [targetUrl]);
+
+  // 3. Real-time synchronization: Laptop listens for phone ritual completion
+  useEffect(() => {
+    if (loading || offeringAccepted) return;
+
+    let isPolling = true;
+
+    // A. Backend API polling
+    const interval = setInterval(async () => {
+      if (!isPolling) return;
+      try {
+        const res = await axios.get(`http://localhost:5000/api/ritual/status/${sessionId}`);
+        if (res.data && res.data.status === "completed") {
+          isPolling = false;
+          handlePaymentComplete();
+        }
+      } catch (err) {
+        // Silently retry polling
+      }
+    }, 1200);
+
+    // B. LocalStorage listener for same-device cross-tab testing
+    const handleStorageChange = (e) => {
+      if (e.key === "odyssey_ritual_completed_" + sessionId && e.newValue === "true") {
+        isPolling = false;
+        handlePaymentComplete();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    // C. BroadcastChannel listener for instant cross-tab sync
+    let bc;
+    try {
+      bc = new BroadcastChannel("odyssey_ritual");
+      bc.onmessage = (event) => {
+        if (event.data && event.data.sessionId === sessionId) {
+          isPolling = false;
+          handlePaymentComplete();
+        }
+      };
+    } catch (e) {}
+
+    return () => {
+      isPolling = false;
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorageChange);
+      if (bc) bc.close();
+    };
+  }, [sessionId, loading, offeringAccepted]);
 
   const handlePaymentComplete = async () => {
     if (loading) return;
@@ -464,7 +566,7 @@ export default function PaymentPage() {
         {/* 100% PURE VECTOR BACKDROP (NO RASTER ASSET) */}
         <div className="pay-bg-layer" aria-hidden="true">
           <img
-            src="/graveyard-gate-landscape.svg?v=28"
+            src="/graveyard-gate-landscape.svg?v=33"
             alt="Checkout Gate Pure Vector Landscape"
             className="pay-bg-vector"
           />
@@ -477,7 +579,7 @@ export default function PaymentPage() {
             <span className="pay-nav-logo">
               ODYSSEY
             </span>
-            <span className="pay-nav-badge">GATEWAY</span>
+            <span className="pay-nav-badge">OFFERING</span>
           </Link>
 
           <div className="pay-header-actions">
@@ -501,9 +603,9 @@ export default function PaymentPage() {
               {/* Cobblestone Ground Contact Shadow */}
               <div className="ritual-ground-shadow" aria-hidden="true" />
 
-              {/* 100% Pure Vector Grim Reaper Ritual Shrine SVG */}
+              {/* 100% Pure Vector Grim Reaper Ritual Shrine SVG with Pure Crimson Red Lantern */}
               <img
-                src="/grim-reaper-ritual-board.svg?v=5"
+                src="/grim-reaper-ritual-board.svg?v=26"
                 alt="Grim Reaper Ritual Offering Notice Board"
                 className="ritual-vector-svg"
               />
