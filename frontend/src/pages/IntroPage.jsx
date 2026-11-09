@@ -504,24 +504,6 @@ const styles = `
     transform: translateX(8px) rotate(-1deg);
   }
 
-  .od-footer {
-    border-top: 1.5px solid var(--border-line);
-    padding: 40px 32px;
-  }
-
-  .od-footer-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-sub);
-  }
-
   @media (max-width: 680px) {
     .od-top-right-wrap {
       top: 20px;
@@ -817,17 +799,6 @@ export default function IntroPage() {
             Enter Basecamp →
           </button>
         </section>
-
-        <footer className="od-footer">
-          <div className="od-footer-inner">
-            <div>
-              Odyssey · Desk 04 Online · All rights reserved.
-            </div>
-            <div>
-              Campus survival armory
-            </div>
-          </div>
-        </footer>
       </div>
     </>
   );
