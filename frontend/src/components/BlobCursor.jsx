@@ -147,8 +147,8 @@ const BlobCursor = ({
   stretch = 0.6,
   wobble = 1,
   drip = 0,
-  splash = true,
-  splashCount = 6,
+  splash = false,
+  splashCount = 0,
   splashSpeed = 0.5,
   splashSize = 0.5,
   splashGravity = 0,
@@ -435,47 +435,9 @@ const BlobCursor = ({
       const radius = (s.size / 2) * Math.cbrt(mass.value);
       for (const ball of core) {
         const angle = Math.random() * Math.PI * 2;
-        const push = radius * mix(4, 9, Math.random()) * mix(0.6, 1.2, s.wobble);
+        const push = radius * mix(2, 5, Math.random()) * mix(0.4, 0.8, s.wobble);
         ball.vx += Math.cos(angle) * push;
         ball.vy += Math.sin(angle) * push;
-      }
-      if (!s.splash) return;
-      const size = mix(0.12, 0.42, s.splashSize);
-      const speed = mix(320, 1600, s.splashSpeed);
-      const offset = Math.random() * Math.PI * 2;
-      const fresh = [];
-      let lost = 0;
-      for (let i = 0; i < s.splashCount; i++) {
-        const angle = offset + (i / s.splashCount) * Math.PI * 2 + (Math.random() - 0.5) * (Math.PI / s.splashCount);
-        const grain = Math.random();
-        const pace = speed * mix(1.3, 0.75, grain) * mix(0.85, 1.15, Math.random());
-        const r = (s.size / 2) * size * mix(0.65, 1.3, grain);
-        const vx = Math.cos(angle) * pace + anchor.vx * 0.4;
-        const vy = Math.sin(angle) * pace + anchor.vy * 0.4;
-        lost += Math.pow(r / (s.size / 2), 3);
-        fresh.push({
-          x: anchor.x + Math.cos(angle) * radius * 0.35,
-          y: anchor.y + Math.sin(angle) * radius * 0.35,
-          vx,
-          vy,
-          cx: vx * 0.45,
-          cy: vy * 0.45,
-          r,
-          share: 0,
-          age: 0,
-          life: DROP_LIFE,
-          drag: 0.6,
-          free: false,
-          sink: -1
-        });
-      }
-      const before = mass.value;
-      mass.value = Math.max(0.2, before - clamp(lost * 2.4, 0.25, 0.7));
-      mass.wait = 0.28;
-      for (const drop of fresh) {
-        drop.share = ((before - mass.value) * Math.pow(drop.r / (s.size / 2), 3)) / lost;
-        if (drops.length >= MAX_DROPS) drops.shift();
-        drops.push(drop);
       }
     };
 

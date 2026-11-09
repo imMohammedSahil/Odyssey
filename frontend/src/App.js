@@ -333,8 +333,8 @@ function GlobalBlobCursor() {
       wobble={activeWobble}
       drip={cfg.drip ?? 0}
       shine={activeShine}
-      splash={cfg.splash ?? true}
-      splashCount={cfg.splashCount ?? 6}
+      splash={false}
+      splashCount={0}
       splashSpeed={cfg.splashSpeed ?? 0.5}
       splashSize={cfg.splashSize ?? 0.5}
       splashGravity={cfg.splashGravity ?? 0}
