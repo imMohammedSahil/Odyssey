@@ -886,18 +886,19 @@ const css = `
     animation: toastSlideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   }
 
-  /* ── RECEIPT MODAL POPUP ── */
+  /* ── RECEIPT MODAL POPUP (MATCHES AUTHENTIC PAPER RECEIPT DESIGN) ── */
   .rcpt-modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 99999;
-    background: rgba(13, 13, 13, 0.88);
-    backdrop-filter: blur(8px);
+    background: rgba(6, 10, 7, 0.90);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
-    animation: rcptFadeIn 0.15s ease-out;
+    padding: 24px 14px;
+    overflow-y: auto;
+    animation: rcptFadeIn 0.18s ease-out;
   }
 
   @keyframes rcptFadeIn {
@@ -905,291 +906,371 @@ const css = `
     to { opacity: 1; }
   }
 
-  .rcpt-modal-dialog {
-    max-width: 540px;
+  .rcpt-modal-container {
+    position: relative;
+    max-width: 520px;
     width: 100%;
-    max-height: 92vh;
-    background: #0D0D0D;
-    border: 3.5px solid var(--border-dark);
-    border-radius: 16px;
-    box-shadow: 8px 8px 0px var(--slime-green);
+    margin: auto;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    animation: rcptScaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    align-items: center;
+    animation: rcptScaleUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   @keyframes rcptScaleUp {
-    from { transform: scale(0.95); opacity: 0; }
+    from { transform: scale(0.94); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
   }
 
-  .rcpt-modal-topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 18px;
-    background: #171720;
-    border-bottom: 2.5px solid #282836;
-  }
-
-  .rcpt-modal-title {
-    font-family: 'Titan One', 'Archivo Black', sans-serif;
-    font-size: 13.5px;
-    letter-spacing: 0.8px;
-    color: var(--slime-green);
-    text-transform: uppercase;
-  }
-
-  .rcpt-modal-close-btn {
-    background: #282836;
-    color: #FFFFFF;
-    border: 2px solid #3A3A4E;
-    border-radius: 8px;
-    width: 32px;
-    height: 32px;
+  .rcpt-modal-floating-close {
+    position: absolute;
+    top: -12px;
+    right: -8px;
+    z-index: 25;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #0f1c13;
+    color: #e3f2dc;
+    border: 2px solid rgba(82, 227, 137, 0.6);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    font-size: 16px;
     font-weight: 800;
-    font-size: 15px;
-    transition: background 0.15s ease, transform 0.1s ease;
+    transition: transform 0.12s ease, background 0.12s ease;
   }
 
-  .rcpt-modal-close-btn:hover {
+  .rcpt-modal-floating-close:hover {
+    transform: scale(1.1);
     background: var(--brain-pink);
     color: var(--void-black);
     border-color: var(--border-dark);
   }
 
-  .rcpt-modal-scroll-area {
-    padding: 18px;
-    overflow-y: auto;
-    background: #0D0D0D;
+  .rcpt-modal-raven-wrap {
+    position: relative;
+    width: 100%;
+    margin-bottom: -3px;
+    z-index: 5;
+    pointer-events: none;
+    user-select: none;
     display: flex;
     justify-content: center;
+    filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.75));
   }
 
-  .rcpt-modal-card {
+  .rcpt-modal-raven-svg {
     width: 100%;
-    background: #daead4;
+    height: auto;
+    display: block;
+  }
+
+  /* Authentic Engraved Vellum Paper Card Body */
+  .rcpt-modal-ticket-card {
+    position: relative;
+    width: 100%;
+    background-color: #daead4;
     background-image: 
-      radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.45) 0%, rgba(218, 234, 212, 0.25) 55%, rgba(193, 214, 185, 0.45) 100%),
-      linear-gradient(180deg, #daead4 0%, #d4e5ce 45%, #c5dec0 100%);
-    border: 2px solid #0f1c13;
-    outline: 1px solid rgba(15, 28, 19, 0.35);
-    outline-offset: -5px;
-    padding: 18px 20px 16px;
-    border-radius: 4px;
+      radial-gradient(ellipse at 50% 15%, rgba(255, 255, 255, 0.35) 0%, rgba(218, 234, 212, 0.2) 60%, rgba(185, 206, 177, 0.45) 100%),
+      linear-gradient(180deg, #daead4 0%, #d2e4cb 40%, #c8dcbf 100%);
+    color: #0f1a13;
+    padding: 24px 30px 42px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    color: #0b140e;
-    box-sizing: border-box;
+    gap: 14px;
+    z-index: 4;
+    box-shadow: 
+      inset 0 0 35px rgba(20, 32, 22, 0.08),
+      inset 0 0 2px rgba(15, 26, 17, 0.25),
+      0 24px 48px rgba(0, 0, 0, 0.85);
+    clip-path: polygon(
+      0% 0px, 100% 0px,
+      100% calc(100% - 12px), 97.5% 100%, 95% calc(100% - 12px), 92.5% 100%, 90% calc(100% - 12px), 87.5% 100%,
+      85% calc(100% - 12px), 82.5% 100%, 80% calc(100% - 12px), 77.5% 100%, 75% calc(100% - 12px), 72.5% 100%,
+      70% calc(100% - 12px), 67.5% 100%, 65% calc(100% - 12px), 62.5% 100%, 60% calc(100% - 12px), 57.5% 100%,
+      55% calc(100% - 12px), 52.5% 100%, 50% calc(100% - 12px), 47.5% 100%, 45% calc(100% - 12px), 42.5% 100%,
+      40% calc(100% - 12px), 37.5% 100%, 35% calc(100% - 12px), 32.5% 100%, 30% calc(100% - 12px), 27.5% 100%,
+      25% calc(100% - 12px), 22.5% 100%, 20% calc(100% - 12px), 17.5% 100%, 15% calc(100% - 12px), 12.5% 100%,
+      10% calc(100% - 12px), 7.5% 100%, 5% calc(100% - 12px), 2.5% 100%, 0% calc(100% - 12px)
+    );
   }
 
-  .rcpt-modal-head {
+  .rcpt-modal-ticket-card::before {
+    content: '';
+    position: absolute;
+    inset: 10px 12px 24px;
+    border: 1px solid rgba(18, 30, 21, 0.28);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .rcpt-modal-ticket-card::after {
+    content: '';
+    position: absolute;
+    inset: 13px 15px 27px;
+    border: 0.5px solid rgba(18, 30, 21, 0.14);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .rcpt-modal-ticket-card * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .rcpt-modal-tkt-head {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 2px;
+    gap: 3px;
+    padding-top: 2px;
   }
 
-  .rcpt-modal-emblem-wrap {
-    width: 44px;
-    height: 44px;
-    margin-bottom: 2px;
-  }
-
-  .rcpt-modal-pretitle {
+  .rcpt-modal-tkt-pretitle {
     font-family: 'Cinzel', serif;
-    font-size: 8px;
-    letter-spacing: 0.26em;
-    color: #1a2a1f;
-    font-weight: 700;
-  }
-
-  .rcpt-modal-doc-title {
-    font-family: 'Cinzel', serif;
-    font-size: 19px;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    color: #0b140e;
-    margin: 2px 0;
-  }
-
-  .rcpt-modal-subtitle {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7px;
-    letter-spacing: 0.2em;
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.28em;
     color: #2b4533;
-    font-weight: 600;
     text-transform: uppercase;
   }
 
-  .rcpt-modal-ornate-divider {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin: 3px 0;
-  }
-
-  .rcpt-modal-ornate-divider::before,
-  .rcpt-modal-ornate-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(15, 28, 19, 0.4);
-  }
-
-  .rcpt-modal-meta-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px 14px;
-    padding: 7px 10px;
-    background: rgba(15, 28, 19, 0.04);
-    border: 1px solid rgba(15, 28, 19, 0.18);
-    border-radius: 2px;
-  }
-
-  .rcpt-modal-meta-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .rcpt-modal-meta-lbl {
+  .rcpt-modal-tkt-title {
     font-family: 'Cinzel', serif;
-    font-size: 7.5px;
-    letter-spacing: 0.18em;
-    color: #2e4a36;
-    font-weight: 700;
-  }
-
-  .rcpt-modal-meta-val {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 10.5px;
-    font-weight: 800;
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
     color: #0b140e;
+    margin: 3px 0 1px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 
-  .rcpt-modal-meta-val.mono {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5px;
+  .rcpt-modal-tkt-divider-double {
+    width: 100%;
+    height: 4px;
+    border-top: 1.5px solid #0f1c13;
+    border-bottom: 0.5px solid #0f1c13;
+    margin: 4px 0 2px;
   }
 
-  .rcpt-modal-meta-val.status-badge {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    font-weight: 700;
-    background: rgba(82, 227, 137, 0.35);
-    border: 1px solid rgba(15, 28, 19, 0.35);
-    padding: 2px 6px;
-    border-radius: 2px;
-    align-self: flex-start;
-  }
-
-  .rcpt-modal-manifest {
+  .rcpt-modal-tkt-meta-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 9px;
+    padding: 2px 2px;
   }
 
-  .rcpt-modal-th-row {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 3px;
-    border-bottom: 1px solid rgba(15, 28, 19, 0.3);
-    font-family: 'Cinzel', serif;
-    font-size: 7.5px;
-    letter-spacing: 0.16em;
-    color: #2b4533;
-    font-weight: 800;
-  }
-
-  .rcpt-modal-item-row {
+  .rcpt-modal-tkt-row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 2px 0;
-    border-bottom: 1px dotted rgba(15, 28, 19, 0.18);
+    gap: 16px;
   }
 
-  .rcpt-modal-item-name {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+  .rcpt-modal-tkt-label {
+    font-family: 'Cinzel', serif;
     font-size: 10.5px;
     font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #2a4231;
+    white-space: nowrap;
+  }
+
+  .rcpt-modal-tkt-val {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #0c150f;
+    text-align: right;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+  }
+
+  .rcpt-modal-tkt-status-pill {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #164023;
+    white-space: nowrap;
+  }
+
+  .rcpt-modal-tkt-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    margin-left: 8px;
+    padding: 1.5px 0;
+    text-align: center;
+    border-radius: 2px;
+    background: rgba(18, 34, 23, 0.08);
+    color: #122417;
+    border: 1px solid rgba(18, 34, 23, 0.35);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .rcpt-modal-tkt-copy-btn.copied,
+  .rcpt-modal-tkt-copy-btn:hover {
+    background: #122417;
+    color: #e5f2de;
+  }
+
+  .rcpt-modal-tkt-divider-dashed {
+    width: 100%;
+    border-bottom: 1px dashed rgba(18, 32, 22, 0.35);
+    margin: 2px 0;
+  }
+
+  .rcpt-modal-manifest-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .rcpt-modal-manifest-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid rgba(18, 30, 21, 0.3);
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .rcpt-modal-item-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
     color: #0b140e;
   }
 
-  .rcpt-modal-total-box {
+  .rcpt-modal-item-qty {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #354d3d;
+    font-style: italic;
+    margin-top: 1px;
+  }
+
+  .rcpt-modal-item-price {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    font-weight: 800;
+    color: #0c160f;
+    margin-left: 12px;
+    white-space: nowrap;
+  }
+
+  .rcpt-modal-total-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 7px 12px;
-    background: rgba(15, 28, 19, 0.08);
-    border: 1.5px solid #0f1c13;
+    gap: 12px;
+    margin-top: 2px;
+    padding: 7px 10px;
+    border-top: 1.5px solid #0f1c13;
+    border-bottom: 3px double #0f1c13;
+    background: rgba(18, 32, 22, 0.04);
   }
 
-  .rcpt-modal-total-amt {
-    font-family: 'Cinzel', serif;
-    font-size: 19px;
+  .rcpt-modal-total-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
     font-weight: 900;
-    color: #0b140e;
+    color: #0b150e;
   }
 
-  .rcpt-modal-barcode-wrap {
+  .rcpt-modal-barcode-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
-    padding-top: 5px;
-    border-top: 1px dashed rgba(15, 28, 19, 0.35);
-  }
-
-  .rcpt-modal-barcode-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 7.5px;
-    font-weight: 700;
-    letter-spacing: 0.28em;
-    color: #122116;
-  }
-
-  .rcpt-modal-footer-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    background: #171720;
-    border-top: 2.5px solid #282836;
-  }
-
-  .rcpt-modal-print-btn {
-    font-family: 'Titan One', 'Archivo Black', sans-serif;
-    font-size: 12px;
-    text-transform: uppercase;
-    padding: 10px 18px;
-    background: var(--slime-green);
-    color: var(--void-black);
-    border: 2px solid var(--border-dark);
-    border-radius: 8px;
-    box-shadow: 3px 3px 0px var(--border-dark);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
     gap: 6px;
-    transition: transform 0.1s ease;
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(18, 32, 22, 0.35);
+    width: 100%;
   }
 
-  .rcpt-modal-print-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 1px 1px 0px var(--border-dark);
+  .rcpt-modal-barcode-svg {
+    width: 86%;
+    max-width: 320px;
+    height: 38px;
+    display: block;
+    shape-rendering: crispEdges;
+  }
+
+  .rcpt-modal-barcode-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: #1a2a1f;
+  }
+
+  .rcpt-modal-btn-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .rcpt-modal-btn {
+    flex: 1;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #0e1a12;
+    background: rgba(255, 255, 255, 0.35);
+    border: 1.5px solid #0f1c13;
+    border-radius: 2px;
+    box-shadow: 2px 2px 0px rgba(15, 28, 19, 0.35);
+    cursor: pointer;
+    transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+  }
+
+  .rcpt-modal-btn:hover {
+    background: #0f1c13;
+    color: #e5f2de;
+    transform: translateY(-1px);
+    box-shadow: 2px 3px 0px rgba(15, 28, 19, 0.5);
+  }
+
+  .rcpt-modal-btn.primary {
+    background: #0e1911;
+    color: #e3f2dc;
+    border: 1.5px solid #0e1911;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  }
+
+  .rcpt-modal-btn.primary:hover {
+    background: #1a2f21;
+    border-color: #1a2f21;
+    color: #ffffff;
   }
 `;
 
@@ -1217,6 +1298,7 @@ export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("ALL"); // "ALL", "ACTIVE", "READY"
   const [toastMsg, setToastMsg] = useState("");
   const [activeReceiptModal, setActiveReceiptModal] = useState(null);
+  const [copiedOrderId, setCopiedOrderId] = useState(false);
 
   const cartCount = (cartItems || []).reduce(
     (sum, item) => sum + (Number(item.quantity) || 1),
@@ -1652,7 +1734,7 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {/* RECEIPT MODAL POPUP */}
+        {/* RECEIPT MODAL POPUP (MATCHES AUTHENTIC PAPER RECEIPT DESIGN) */}
         {activeReceiptModal && (() => {
           const codeString = `ODY-${String(activeReceiptModal.orderId).replace(/[^a-zA-Z0-9]/g, "").slice(0, 12).toUpperCase()}`;
           const { bars, totalWidth } = generateCode128Svg(codeString);
@@ -1664,126 +1746,167 @@ export default function ProfilePage() {
                 if (e.target === e.currentTarget) setActiveReceiptModal(null);
               }}
             >
-              <div className="rcpt-modal-dialog">
-                <div className="rcpt-modal-topbar">
-                  <span className="rcpt-modal-title">OFFICIAL RECEIPT DISPATCH</span>
-                  <button
-                    className="rcpt-modal-close-btn"
-                    onClick={() => setActiveReceiptModal(null)}
-                    aria-label="Close"
-                  >
-                    ✕
-                  </button>
+              <div className="rcpt-modal-container">
+                {/* Floating Close Button */}
+                <button
+                  className="rcpt-modal-floating-close"
+                  onClick={() => setActiveReceiptModal(null)}
+                  title="Close Receipt"
+                  aria-label="Close Receipt"
+                >
+                  ✕
+                </button>
+
+                {/* SVG Raven Scroll Rod Top Header */}
+                <div className="rcpt-modal-raven-wrap" aria-hidden="true">
+                  <img
+                    src="/raven-receipt-top.svg?v=4"
+                    alt="Hooded Crow Perched on Scroll Header"
+                    className="rcpt-modal-raven-svg"
+                  />
                 </div>
 
-                <div className="rcpt-modal-scroll-area">
-                  <div className="rcpt-modal-card">
-                    {/* Header Crest */}
-                    <div className="rcpt-modal-head">
-                      <div className="rcpt-modal-emblem-wrap">
-                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
-                          <circle cx="40" cy="40" r="37" stroke="#0e1a12" strokeWidth="1.5" strokeDasharray="3 2" />
-                          <circle cx="40" cy="40" r="33" stroke="#0e1a12" strokeWidth="0.8" />
-                          <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" strokeWidth="0.5" />
-                          <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
-                          <circle cx="43" cy="28" r="1.8" fill="#52e389" />
-                          <path d="M40 8.2 L41.1 12 L44.5 13 L41.1 14 L40 17.5 L38.9 14 L35.5 13 L38.9 12 Z" fill="#23854b" />
-                        </svg>
-                      </div>
-                      <span className="rcpt-modal-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
-                      <h2 className="rcpt-modal-doc-title">SUPPLY ORDER RECEIPT</h2>
-                      <span className="rcpt-modal-subtitle">AUTHENTICATED CAMPUS SCRIPTORIUM DISPATCH RECORD</span>
-                      <div className="rcpt-modal-ornate-divider">
-                        <span style={{ padding: "0 8px", fontSize: 8, color: "#1e452c" }}>❖</span>
-                      </div>
-                    </div>
-
-                    {/* Metadata Grid */}
-                    <div className="rcpt-modal-meta-grid">
-                      <div className="rcpt-modal-meta-cell">
-                        <span className="rcpt-modal-meta-lbl">ORDER REFERENCE</span>
-                        <span className="rcpt-modal-meta-val mono">{activeReceiptModal.orderId}</span>
-                      </div>
-                      <div className="rcpt-modal-meta-cell">
-                        <span className="rcpt-modal-meta-lbl">DISPATCH STATUS</span>
-                        <span className="rcpt-modal-meta-val status-badge">{activeReceiptModal.status}</span>
-                      </div>
-                      <div className="rcpt-modal-meta-cell">
-                        <span className="rcpt-modal-meta-lbl">COLLECTION POINT</span>
-                        <span className="rcpt-modal-meta-val">{activeReceiptModal.pickupCounter}</span>
-                      </div>
-                      <div className="rcpt-modal-meta-cell">
-                        <span className="rcpt-modal-meta-lbl">RECORDED AT</span>
-                        <span className="rcpt-modal-meta-val">{activeReceiptModal.date}</span>
-                      </div>
-                    </div>
-
-                    <div style={{ borderTop: "1px dashed rgba(15, 28, 19, 0.35)", margin: "2px 0" }} />
-
-                    {/* Manifest Table */}
-                    <div className="rcpt-modal-manifest">
-                      <div className="rcpt-modal-th-row">
-                        <span style={{ flex: 1, textAlign: "left" }}>ITEM DESCRIPTION</span>
-                        <span style={{ width: 44, textAlign: "center" }}>QTY</span>
-                        <span style={{ width: 68, textAlign: "right" }}>AMOUNT</span>
-                      </div>
-                      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                        {(activeReceiptModal.items || []).map((item, idx) => (
-                          <div key={idx} className="rcpt-modal-item-row">
-                            <div style={{ flex: 1, textAlign: "left" }}>
-                              <div className="rcpt-modal-item-name">{item.name || item.title || "Item"}</div>
-                              {item.specs && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 7.5, color: "#3b5742" }}>{item.specs}</div>}
-                            </div>
-                            <div style={{ width: 44, textAlign: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 600, color: "#1a2a1f" }}>
-                              ×{item.quantity || item.qty || 1}
-                            </div>
-                            <div style={{ width: 68, textAlign: "right", fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, fontWeight: 800, color: "#0b140e" }}>
-                              ₹{((Number(item.price) || 0) * (Number(item.quantity || item.qty) || 1)).toFixed(0)}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Total Box */}
-                    <div className="rcpt-modal-total-box">
-                      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 9, fontWeight: 900, letterSpacing: "0.18em", color: "#0b140e" }}>TOTAL OFFERING PAID</span>
-                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 6.5, letterSpacing: "0.14em", color: "#315139" }}>OFFICIALLY TENDERED & SETTLED</span>
-                      </div>
-                      <span className="rcpt-modal-total-amt">₹{activeReceiptModal.total}</span>
-                    </div>
-
-                    {/* Barcode Section */}
-                    <div className="rcpt-modal-barcode-wrap">
-                      <svg viewBox={`0 0 ${totalWidth} 32`} preserveAspectRatio="none" style={{ width: "72%", maxWidth: 240, height: 30, display: "block", shapeRendering: "crispEdges" }}>
-                        {bars.map((bar, idx) => (
-                          <rect key={idx} x={bar.x} y="0" width={bar.w} height="32" fill="#0b160e" />
-                        ))}
+                {/* Authentic Engraved Vellum Paper Card Body */}
+                <div className="rcpt-modal-ticket-card">
+                  {/* Receipt Header */}
+                  <div className="rcpt-modal-tkt-head">
+                    <div style={{ width: 52, height: 52, margin: "0 auto 4px" }}>
+                      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
+                        <circle cx="40" cy="40" r="37" stroke="#0e1a12" strokeWidth="1.5" strokeDasharray="3 2" />
+                        <circle cx="40" cy="40" r="33" stroke="#0e1a12" strokeWidth="0.8" />
+                        <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" strokeWidth="0.5" />
+                        <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
+                        <circle cx="43" cy="28" r="1.8" fill="#52e389" />
+                        <path d="M40 11.2 L40.8 13.3 L43.5 14 L40.8 14.7 L40 16.8 L39.2 14.7 L36.5 14 L39.2 13.3 Z" fill="#23854b" />
                       </svg>
-                      <span className="rcpt-modal-barcode-text">* {codeString} *</span>
+                    </div>
+                    <span className="rcpt-modal-tkt-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
+                    <h2 className="rcpt-modal-tkt-title">SUPPLY ORDER RECEIPT</h2>
+                    <div className="rcpt-modal-tkt-divider-double" />
+                  </div>
+
+                  {/* Order Metadata */}
+                  <div className="rcpt-modal-tkt-meta-group">
+                    <div className="rcpt-modal-tkt-row">
+                      <span className="rcpt-modal-tkt-label">Order Reference</span>
+                      <span className="rcpt-modal-tkt-val">
+                        <span>{activeReceiptModal.orderId}</span>
+                        <button
+                          className={`rcpt-modal-tkt-copy-btn ${copiedOrderId ? "copied" : ""}`}
+                          title="Copy Order ID"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigator.clipboard.writeText(activeReceiptModal.orderId);
+                            setCopiedOrderId(true);
+                            setTimeout(() => setCopiedOrderId(false), 2000);
+                          }}
+                        >
+                          {copiedOrderId ? "✓ COPIED" : "COPY"}
+                        </button>
+                      </span>
                     </div>
 
-                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: 6.5, letterSpacing: "0.22em", color: "#3b5742", textAlign: "center", fontWeight: 700, textTransform: "uppercase" }}>
-                      ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+                    <div className="rcpt-modal-tkt-row">
+                      <span className="rcpt-modal-tkt-label">Dispatch Status</span>
+                      <span className="rcpt-modal-tkt-status-pill">
+                        {activeReceiptModal.status}
+                      </span>
+                    </div>
+
+                    <div className="rcpt-modal-tkt-row">
+                      <span className="rcpt-modal-tkt-label">Collection Desk</span>
+                      <span className="rcpt-modal-tkt-val" style={{ fontSize: "10px" }}>
+                        {activeReceiptModal.pickupCounter || "MAIN LIBRARY BASECAMP • PICKUP DESK 04"}
+                      </span>
+                    </div>
+
+                    <div className="rcpt-modal-tkt-row">
+                      <span className="rcpt-modal-tkt-label">Recorded At</span>
+                      <span className="rcpt-modal-tkt-val" style={{ fontSize: "10.5px" }}>
+                        {activeReceiptModal.date}
+                      </span>
                     </div>
                   </div>
-                </div>
 
-                <div className="rcpt-modal-footer-bar">
-                  <button
-                    className="rcpt-modal-print-btn"
-                    onClick={() => downloadOrPrintReceipt(activeReceiptModal)}
-                  >
-                    🖨 PRINT / DOWNLOAD PDF
-                  </button>
-                  <button
-                    className="rcpt-modal-close-btn"
-                    style={{ width: "auto", padding: "0 14px", fontSize: 12, fontFamily: "'Titan One', sans-serif" }}
-                    onClick={() => setActiveReceiptModal(null)}
-                  >
-                    CLOSE
-                  </button>
+                  <div className="rcpt-modal-tkt-divider-dashed" />
+
+                  {/* Manifest Section */}
+                  <div className="rcpt-modal-manifest-wrap">
+                    <div className="rcpt-modal-tkt-row" style={{ paddingBottom: 2 }}>
+                      <span className="rcpt-modal-tkt-label">ITEM MANIFEST</span>
+                      <span className="rcpt-modal-tkt-label">LINE TOTAL</span>
+                    </div>
+
+                    <div className="rcpt-modal-manifest-box">
+                      {(activeReceiptModal.items || []).map((item, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "baseline",
+                            paddingBottom: idx === (activeReceiptModal.items || []).length - 1 ? 0 : 6,
+                            borderBottom: idx === (activeReceiptModal.items || []).length - 1 ? "none" : "1px dotted rgba(18, 30, 21, 0.22)",
+                          }}
+                        >
+                          <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                            <span className="rcpt-modal-item-title">
+                              {item.name || item.title || "Supply Item"}
+                            </span>
+                            <span className="rcpt-modal-item-qty">
+                              QTY: {item.quantity || item.qty || 1}
+                              {item.specs ? ` • ${item.specs}` : ""}
+                            </span>
+                          </div>
+                          <span className="rcpt-modal-item-price">
+                            ₹{((Number(item.price) || 0) * (Number(item.quantity || item.qty) || 1)).toFixed(0)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Total Offering Row */}
+                  <div className="rcpt-modal-total-row">
+                    <span className="rcpt-modal-tkt-label" style={{ fontSize: "12px", color: "#0c150e" }}>
+                      TOTAL OFFERING
+                    </span>
+                    <span className="rcpt-modal-total-val">
+                      ₹{activeReceiptModal.total}
+                    </span>
+                  </div>
+
+                  {/* Scannable Barcode Section */}
+                  <div className="rcpt-modal-barcode-section">
+                    <svg
+                      className="rcpt-modal-barcode-svg"
+                      viewBox={`0 0 ${totalWidth} 32`}
+                      preserveAspectRatio="none"
+                    >
+                      {bars.map((bar, idx) => (
+                        <rect key={idx} x={bar.x} y="0" width={bar.w} height="32" fill="#0c160f" />
+                      ))}
+                    </svg>
+                    <span className="rcpt-modal-barcode-code">
+                      * {codeString} *
+                    </span>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="rcpt-modal-btn-row">
+                    <button
+                      className="rcpt-modal-btn primary"
+                      onClick={() => downloadOrPrintReceipt(activeReceiptModal)}
+                    >
+                      🖨 PRINT / DOWNLOAD PDF
+                    </button>
+                    <button
+                      className="rcpt-modal-btn"
+                      onClick={() => setActiveReceiptModal(null)}
+                    >
+                      CLOSE RECEIPT
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
