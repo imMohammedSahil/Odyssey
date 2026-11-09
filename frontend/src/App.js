@@ -22,54 +22,205 @@ import RitualOfferingPage from "./pages/RitualOfferingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BlobCursor from "./components/BlobCursor";
 
-const getCursorColor = (pathname) => {
-  // 1. Intro Screen
-  if (pathname === "/") return "#FF70A6"; // Brain Pink
+const getCursorConfig = (pathname) => {
+  // 1. Basecamp Student Desk 04 (/student) - Comic Zombie & Brain Pink Ambience
+  if (pathname.startsWith("/student")) {
+    return {
+      color: "#FF70A6", // Brain Pink - maximum punch against Slime Green & Void Black
+      material: "chrome",
+      size: 44,
+      wobble: 0.85,
+      goo: 1,
+      stretch: 0.48,
+      trail: 14,
+      shine: 1,
+      splashSpeed: 0.55,
+      splashCount: 7,
+    };
+  }
 
-  // 2. The 6 Requisition Aisle Pages
-  if (pathname.startsWith("/printing")) return "#00E599"; // Electric Emerald (matches #019E70 Print Lab)
-  if (pathname.startsWith("/writing")) return "#45B89E"; // Seafoam Jade (matches Writing Weaponry)
-  if (pathname.startsWith("/paper") || pathname.startsWith("/stationery/paper")) return "#FF3B47"; // Electric Crimson (matches Paper Reams)
-  if (pathname.startsWith("/measuring") || pathname.startsWith("/stationery/measuring")) return "#F56234"; // Electric Amber (matches Measuring & Drafting)
-  if (pathname.startsWith("/ritual-offering")) return "#BE2E2E"; // Occult Crimson Blood (matches Raven Altar)
-  if (pathname.startsWith("/student")) return "#9DE869"; // Slime Green (matches Basecamp Desk 04)
+  // 2. Intro Screen (/)
+  if (pathname === "/") {
+    return {
+      color: "#FF70A6", // Brain Pink
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
 
-  // Other Campus Operations
-  if (pathname.startsWith("/stationery/correction")) return "#FFA012"; // Pumpkin Orange
-  if (pathname.startsWith("/office") || pathname.startsWith("/stationery/office")) return "#C89F72"; // Desert Sand Bronze
-  if (pathname.startsWith("/stationery")) return "#00E599";
-  if (pathname.startsWith("/payment")) return "#FFA84A"; // Gothic Chapel Lantern Gold
-  if (pathname.startsWith("/receipt")) return "#FF70A6"; // Raven Receipt Pink
-  if (pathname.startsWith("/cart")) return "#FF70A6"; // Cart Pink
-  if (pathname.startsWith("/profile")) return "#FF70A6"; // Profile Pink
-  if (pathname.startsWith("/admin")) return "#7C5CFC"; // Admin Violet
-  return "#FF70A6";
+  // 3. Print Lab (/printing) - Deep Emerald Ambience
+  if (pathname.startsWith("/printing")) {
+    return {
+      color: "#00E599", // Electric Mint Emerald
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 4. Writing (/writing)
+  if (pathname.startsWith("/writing")) {
+    return {
+      color: "#45B89E", // Seafoam Jade
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 5. Paper (/paper)
+  if (pathname.startsWith("/paper") || pathname.startsWith("/stationery/paper")) {
+    return {
+      color: "#FF3B47", // Electric Crimson
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 6. Measuring (/measuring)
+  if (pathname.startsWith("/measuring") || pathname.startsWith("/stationery/measuring")) {
+    return {
+      color: "#F56234", // Electric Amber
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 7. Raven Altar (/ritual-offering) - Dark Occult Crypt
+  if (pathname.startsWith("/ritual-offering")) {
+    return {
+      color: "#BE2E2E", // Occult Crimson Blood
+      material: "chrome",
+      size: 44,
+      wobble: 0.85,
+      goo: 1,
+      stretch: 0.45,
+      trail: 13,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 8. Payment (/payment)
+  if (pathname.startsWith("/payment")) {
+    return {
+      color: "#FFA84A", // Gothic Chapel Lantern Gold
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 9. Cart & Profile (/cart, /profile)
+  if (pathname.startsWith("/cart") || pathname.startsWith("/profile")) {
+    return {
+      color: "#FF70A6", // Brain Pink
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  // 10. Admin (/admin)
+  if (pathname.startsWith("/admin")) {
+    return {
+      color: "#7C5CFC", // Cyber Violet
+      material: "chrome",
+      size: 42,
+      wobble: 0.8,
+      goo: 1,
+      stretch: 0.4,
+      trail: 12,
+      shine: 1,
+      splashSpeed: 0.5,
+      splashCount: 6,
+    };
+  }
+
+  return {
+    color: "#FF70A6",
+    material: "chrome",
+    size: 42,
+    wobble: 0.8,
+    goo: 1,
+    stretch: 0.4,
+    trail: 12,
+    shine: 1,
+    splashSpeed: 0.5,
+    splashCount: 6,
+  };
 };
 
 function GlobalBlobCursor() {
   const { pathname } = useLocation();
-  const color = getCursorColor(pathname);
+  const cfg = getCursorConfig(pathname);
 
   return (
     <BlobCursor
       key={pathname}
-      material="chrome"
-      color={color}
+      material={cfg.material}
+      color={cfg.color}
       blend="normal"
-      size={42}
+      size={cfg.size}
       morph={0}
       morphSpeed={0.4}
       depth={1}
-      trail={12}
+      trail={cfg.trail}
       lag={0.35}
-      goo={1}
-      stretch={0.4}
-      wobble={0.8}
+      goo={cfg.goo}
+      stretch={cfg.stretch}
+      wobble={cfg.wobble}
       drip={0}
-      shine={1}
+      shine={cfg.shine}
       splash={true}
-      splashCount={6}
-      splashSpeed={0.5}
+      splashCount={cfg.splashCount}
+      splashSpeed={cfg.splashSpeed}
       splashSize={0.5}
       splashGravity={0}
       regrow={0.5}
