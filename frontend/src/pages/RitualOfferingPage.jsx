@@ -125,15 +125,53 @@ const styles = `
     100% { transform: scale(1.04); filter: drop-shadow(0 0 16px rgba(217, 38, 38, 0.65)); }
   }
 
+  /* Ornate Altar Eyebrow Header */
+  .ritual-altar-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .ritual-altar-line {
+    flex: 1;
+    max-width: 44px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200, 159, 114, 0.45));
+  }
+
+  .ritual-altar-line.right {
+    background: linear-gradient(90deg, rgba(200, 159, 114, 0.45), transparent);
+  }
+
+  .ritual-altar-glyph {
+    font-size: 7px;
+    color: #D92626;
+    opacity: 0.85;
+  }
+
+  .ritual-altar-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: #C89F72;
+    text-shadow: 0 0 10px rgba(200, 159, 114, 0.25);
+  }
+
   .ritual-headline {
     font-family: 'Cinzel', serif;
-    font-size: 26px;
+    font-size: clamp(20px, 6.2vw, 24px);
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.07em;
     color: #F8F5EE;
     text-transform: uppercase;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    margin-bottom: 22px;
+    margin-bottom: 20px;
+    white-space: nowrap;
   }
 
   /* Consecrated Tribute Box (Evil Dark Red Blood-Obsidian) */
@@ -340,6 +378,15 @@ export default function RitualOfferingPage() {
               />
               <circle cx="40" cy="40" r="3.5" fill="#E2A342" />
             </svg>
+          </div>
+
+          {/* Ornate Shadow Altar Eyebrow */}
+          <div className="ritual-altar-eyebrow" aria-hidden="true">
+            <span className="ritual-altar-line" />
+            <span className="ritual-altar-glyph">◆</span>
+            <span className="ritual-altar-text">THE SHADOW ALTAR</span>
+            <span className="ritual-altar-glyph">◆</span>
+            <span className="ritual-altar-line right" />
           </div>
 
           <h1 className="ritual-headline">Offering Sealed</h1>
