@@ -160,7 +160,65 @@ Every arcade showcase page follows an identical locked geometry to eliminate lay
 
 ---
 
-## 10. Order Receipt Architecture (`/receipt`, `ReceiptPage.jsx`)
+## 11. Global Liquid Metal 3D Cursor Architecture (`BlobCursor.jsx`, `App.js`)
+
+A continuous liquid Three.js chrome blob cursor runs globally across the entire application:
+
+```
+[ Router: useLocation() ]
+          │ (pathname)
+          ▼
+[ getCursorConfig(pathname) ]
+  ├── Color & Material (Chrome, Pearl, Jelly, Ink)
+  ├── Fluid Viscosity (Size, Wobble, Stretch, Goo, Lag)
+  ├── Ectoplasmic Breathing (Morph, MorphSpeed)
+  └── Droplet Bursts (SplashCount, SplashSpeed, SplashSize)
+          │
+          ▼
+[ <BlobCursor key={pathname} ... /> ] (Instant re-mount & uniform updates on route change)
+```
+
+### Route-to-Cursor Color & Physics Manifest
+
+| Route | Theme / Atmosphere | Cursor Hex & Specs | Visual Alignment |
+| :--- | :--- | :--- | :--- |
+| **`/` (Intro Screen)** | Comic Neon & Retro Slate | `#FF70A6` (Brain Pink Chrome, `size: 42`, `trail: 12`) | Matches retro comic action & Bangers CTA |
+| **`/printing`** | Deep Seafoam Print Lab | `#00E599` (Electric Mint Emerald Chrome) | Matches Print Lab `#019E70` backdrop |
+| **`/writing`** | Writing Weaponry Armory | `#45B89E` (Seafoam Jade Chrome) | Matches Toxic Lime & Seafoam catalog cards |
+| **`/paper`** | Paper & Reams Crypt | `#FF3B47` (Electric Crimson Chrome) | Matches Gothic Velvet Abyss & hazard tags |
+| **`/measuring`** | Measuring & Drafting Lab | `#F56234` (Electric Amber Chrome) | Matches precision drafting bronze palette |
+| **`/stationery/correction`** | Twilight Night Correction | `#FFA012` (Pumpkin Orange Chrome) | High-contrast flame over `#2D114D` night purple |
+| **`/stationery/office`** | Midnight Slate Office Desk | `#C89F72` (Desert Bronze Gold Chrome) | Matches `#181513` midnight office slate |
+| **`/student` (Basecamp)** | Comic Zombie Armory | `#FF70A6` (Brain Pink Chrome, `wobble: 0.85`, `stretch: 0.48`, `splashCount: 7`) | Maximum contrast against `#9DE869` hero background |
+| **`/payment`** | Gothic Cemetery Midnight | `#FF2A1B` (Fiery Lantern Ember Chrome, `morph: 0.35`, `morphSpeed: 0.45`, `splashCount: 8`, `stretch: 0.52`) | Matches glowing iron lantern, red candles & occult sigils |
+| **`/ritual-offering`** | Occult Crypt Altar | `#BE2E2E` (Occult Crimson Blood Chrome, `size: 44`, `trail: 13`) | Matches dark occult altar atmosphere |
+| **`/cart` & `/profile`** | Campus Dispatch & ID Terminal | `#FF70A6` (Brain Pink Chrome) | Matches brand neon pink identity |
+| **`/admin`** | Telemetry Control | `#7C5CFC` (Cyber Violet Chrome) | Matches terminal administrative dashboard |
+
+### Anti-Selection Protection:
+- Rapid double/triple clicking to burst droplets triggers zero unwanted browser text selection (`BlobCursor.css` applies `user-select: none`, and `BlobCursor.jsx` intercepts non-input `e.detail > 1` mousedown events).
+
+---
+
+## 12. Requisition Aisles Directory ("THE EXPEDITION KIT") (`IntroPage.jsx`)
+
+The introductory home page features an interactive disclosure mechanism:
+1. **Single-Accordion Expandable Aisles**: Clicking an aisle title or vector toggle button (`+` rotating 45° to `×`) smoothly reveals inline comic-neomorphic cards and chips on the clean green canvas. Opening one aisle automatically closes any previously expanded aisle.
+2. **Typography & Outline**: Titles and aisle numbers feature neon pink (`#FF1A8C`) text with a rounded 3px black stroke (`paint-order: stroke fill`) strictly on `:hover`.
+3. **Divider Lines**: High-precision 2px dashed coupon perforated divider lines.
+4. **Hero CTA**: Google Font **Bangers** comic action styling with neon pink hover and hard black drop shadow. Positioned absolutely at the top right of the hero screen so it never tracks page scroll.
+5. **Footer Cleanup**: Bottom telemetry and copyright text removed for a focused, clean layout.
+
+---
+
+## 13. Payment Gateway Grounding & Perspective Alignment (`PaymentPage.jsx`)
+- **Backdrop Geometry**: `object-position: center center` on `/graveyard-gate-landscape.svg?v=28` preserves true vertical perspective.
+- **Midground Shrine Placement**: `.pay-center-container` is anchored via `flex: 1` with `padding: 0 0 3.5vh max(24px, calc(37% - 150px))` and `margin-bottom: -16px`, placing the Grim Reaper board recessed into the cobblestone path without foreground distortion.
+
+
+---
+
+## 14. Order Receipt Architecture (`/receipt`, `ReceiptPage.jsx`)
 
 The receipt fold is a hybrid vector-DOM architecture:
 
