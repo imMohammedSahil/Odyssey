@@ -78,8 +78,9 @@ const styles = `
 
   .od-top-btn:hover {
     background: #000000;
-    color: var(--bg-green);
-    transform: translateY(-2px) scale(1.02);
+    color: #FFFFFF;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
   }
 
   /* ──────────────────────────────────────────────────────────
