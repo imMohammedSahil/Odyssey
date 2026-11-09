@@ -125,16 +125,40 @@ const ScrollFloat = ({
     const scroller = scrollContainerRef?.current || window;
     const selector = splitBy === 'sentences'
       ? '.scroll-float-unit'
-      : splitBy === 'words'
+      : (splitBy === 'words' || splitBy === 'lines')
       ? '.scroll-float-word'
       : '.scroll-float-char';
     const pieces = el.querySelectorAll(selector);
-    const targets = pieces.length ? Array.from(pieces) : [textEl];
+    let targets = pieces.length ? Array.from(pieces) : [textEl];
+    let delays = [];
+
+    if (splitBy === 'lines') {
+      const words = el.querySelectorAll('.scroll-float-word');
+      const linesMap = new Map();
+      words.forEach(word => {
+        const top = Math.round(word.offsetTop / 8) * 8;
+        if (!linesMap.has(top)) linesMap.set(top, []);
+        linesMap.get(top).push(word);
+      });
+      const lines = Array.from(linesMap.values());
+      const lineDelays = getDelays(lines.length, order, stagger || 0.14);
+      const targetsList = [];
+      delays = [];
+      lines.forEach((lineWords, lineIndex) => {
+        lineWords.forEach(word => {
+          targetsList.push(word);
+          delays.push(lineDelays[lineIndex]);
+        });
+      });
+      targets = targetsList.length ? targetsList : (pieces.length ? Array.from(pieces) : [textEl]);
+    } else {
+      delays = getDelays(targets.length, order, stagger);
+    }
+
     const indexOf = new Map(targets.map((target, index) => [target, index]));
     const at = fn => (_, target) => fn(indexOf.get(target) ?? 0);
     const middle = (targets.length - 1) / 2;
     const edge = index => (middle > 0 ? (index - middle) / middle : 0);
-    const delays = getDelays(targets.length, order, stagger);
     const sign = direction === 'down' ? -1 : 1;
     const reach = Math.max(0, Number(distance) || 0) / 120;
     const squeeze = stretch > 0 ? stretch ** -0.43 : 1;

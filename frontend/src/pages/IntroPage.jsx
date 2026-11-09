@@ -507,15 +507,15 @@ export default function IntroPage() {
             containerClassName="od-manifesto-scroll-wrap"
             textClassName="od-manifesto-text"
             effect="float"
-            splitBy="words"
+            splitBy="lines"
             direction="up"
             order="start"
             animationDuration={1}
             ease="back.inOut(2)"
             scrollStart="center bottom+=50%"
             scrollEnd="bottom bottom-=40%"
-            stagger={0}
-            distance={80}
+            stagger={0.16}
+            distance={60}
             stretch={1}
             smoothing={0.2}
           >
