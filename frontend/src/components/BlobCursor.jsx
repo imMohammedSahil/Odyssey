@@ -286,8 +286,8 @@ const BlobCursor = ({
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const view = { width: 1, height: 1 };
     const pointer = { x: 0, y: 0, inside: false, down: false, hover: false, seen: false };
-    const xTo = gsap.quickTo(pointer, "x", { duration: 0.65, ease: "power2.out" });
-    const yTo = gsap.quickTo(pointer, "y", { duration: 0.65, ease: "power2.out" });
+    const xTo = gsap.quickTo(pointer, "x", { duration: 0.44, ease: "power2.out" });
+    const yTo = gsap.quickTo(pointer, "y", { duration: 0.44, ease: "power2.out" });
     const anchor = createBody();
     const core = Array.from({ length: CORE }, (_, i) => ({
       ...createBody(),
