@@ -13,14 +13,14 @@ export default function SmoothScroll() {
   const location = useLocation();
 
   useEffect(() => {
-    // Ultraslow, heavy, cinematic inertia tuning with comprehensive leak prevention
+    // Heavy fluid momentum calibrated to match the glob cursor's weight & decay
     const lenis = new Lenis({
-      duration: 2.6, // Deep, heavy cinematic glide
+      duration: 1.0, // Calibrated to match glob's 0.44s-0.7s settling time
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Viscous exponential deceleration
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.72, // Heavier inertia per notch
+      wheelMultiplier: 0.88, // Firm, weighty bite matching glob mass
       touchMultiplier: 1.2,
       infinite: false,
       prevent: (node) => {
