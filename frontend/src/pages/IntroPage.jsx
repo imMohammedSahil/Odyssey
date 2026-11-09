@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ElasticMesh from "../components/ElasticMesh";
 import BlobCursor from "../components/BlobCursor";
@@ -334,11 +334,11 @@ const styles = `
     transform: rotate(90deg);
   }
 
-  /* EXPANDABLE DRAWER & DOSSIER CARD */
+  /* MINIMALIST EXPANDABLE INFO (MATCHES GREEN BACKGROUND) */
   .od-dir-drawer {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
     opacity: 0;
     overflow: hidden;
   }
@@ -352,227 +352,35 @@ const styles = `
     min-height: 0;
   }
 
-  .od-dir-card {
-    background: #0A0A0A;
-    color: #F5F5F5;
-    border-radius: 18px;
-    padding: 30px 34px;
-    margin: 4px 0 28px 0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(157, 232, 105, 0.1);
+  .od-dir-info-wrap {
+    padding: 0 0 24px 44px;
+    max-width: 820px;
   }
 
-  .od-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 14px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .od-card-badge-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .od-card-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #9DE869;
-    box-shadow: 0 0 10px #9DE869;
-    animation: odPulse 1.8s infinite;
-  }
-
-  @keyframes odPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-  }
-
-  .od-card-category {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    color: #9DE869;
-    text-transform: uppercase;
-  }
-
-  .od-card-telemetry {
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
-    letter-spacing: 0.08em;
-  }
-
-  .od-card-close-btn {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    color: #FFFFFF;
-    padding: 6px 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-  }
-
-  .od-card-close-btn:hover {
-    background: #FF70A6;
-    border-color: #FF70A6;
-    color: #0A0A0A;
-    transform: scale(1.04);
-  }
-
-  .od-card-overview {
+  .od-dir-info-text {
     font-size: 15px;
     font-weight: 500;
     line-height: 1.65;
-    color: rgba(255, 255, 255, 0.88);
-    margin-bottom: 22px;
-    max-width: 920px;
+    color: var(--text-black);
   }
 
-  .od-card-specs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  .od-spec-box {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 12px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .od-spec-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: rgba(255, 255, 255, 0.45);
-    text-transform: uppercase;
-  }
-
-  .od-spec-val {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: #9DE869;
-  }
-
-  .od-card-features {
+  .od-dir-info-specs {
+    margin-top: 8px;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .od-feat-tag {
-    font-size: 12px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 999px;
-    padding: 5px 14px;
-  }
-
-  .od-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 18px;
-  }
-
-  .od-card-hint {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
-  }
-
-  .od-card-btn-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .od-card-secondary-btn {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 12px;
+    gap: 8px 16px;
+    font-size: 12.5px;
     font-weight: 700;
-    padding: 9px 18px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-
-  .od-card-secondary-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-
-  .od-card-action-btn {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: #9DE869;
-    border: none;
-    color: #0A0A0A;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    padding: 9px 20px;
-    border-radius: 999px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    transition: transform 0.15s ease, background 0.15s ease;
-  }
-
-  .od-card-action-btn:hover {
-    background: #FF70A6;
-    color: #0A0A0A;
-    transform: translateY(-2px);
+    color: var(--text-sub);
+    letter-spacing: 0.02em;
   }
 
   @media (max-width: 680px) {
-    .od-dir-card {
-      padding: 22px 18px;
-    }
-    .od-card-specs-grid {
-      grid-template-columns: 1fr;
-    }
-    .od-card-footer {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .od-card-btn-group {
-      width: 100%;
-      justify-content: space-between;
+    .od-dir-info-wrap {
+      padding: 0 0 20px 0;
     }
     .od-dir-left {
       gap: 16px;
-    }
-    .od-dir-pill-status {
-      display: none;
     }
   }
 
@@ -675,133 +483,37 @@ export default function IntroPage() {
       num: "01",
       name: "Report & Thesis Print Lab",
       desc: "1200 DPI Duplex · Wire-O Spiral · Frosted Covers",
-      category: "HIGH-DENSITY HARDWARE // AISLE 01",
-      telemetry: "DESK 04 DUPLEX ENGINE · ONLINE",
-      overview:
-        "Calibrated specifically for university thesis defenses and engineering blueprint submissions. High-density duplex laser rendering guarantees razor-sharp mathematical formulae, circuit schematics, and rich black text without show-through.",
-      specs: [
-        { label: "RESOLUTION", value: "1200 × 1200 DPI Laser" },
-        { label: "BINDING RIG", value: "Wire-O Metal / Thermal Spine" },
-        { label: "QUEUE TIME", value: "3–5 Min Avg / 100 Pgs" },
-      ],
-      features: [
-        "Single & Duplex Monochrome/Color",
-        "80–100 GSM Acid-Free Archival Bond",
-        "Translucent Frosted Shield Covers",
-        "Edge-to-Edge Vector Output",
-      ],
-      actionLabel: "Enter Print Lab",
-      route: "/printing",
+      info: "High-speed duplex laser thesis printing with Wire-O binding, thermal tape, and scratch-resistant frosted covers.",
     },
     {
       num: "02",
       name: "Writing Weaponry",
       desc: "Archival 0.5mm Gel · Drafting Pencils · Highlighters",
-      category: "TACTILE INSTRUMENTS // AISLE 02",
-      telemetry: "DISPENSER MATRIX · IN STOCK",
-      overview:
-        "Selected for marathon exam halls and uninterrupted drafting sessions. Featuring micro-precision needle tips with low-viscosity Japanese gel ink formulations that dry in under 1.2 seconds to eliminate sleeve smudge.",
-      specs: [
-        { label: "MICRO TIPS", value: "0.38mm & 0.5mm Archival" },
-        { label: "INK SYSTEM", value: "Waterproof / Non-Fading" },
-        { label: "DRAFTING LEADS", value: "HB & 2B Polymer-Infused" },
-      ],
-      features: [
-        "Knurled Ergonomic Metal Grips",
-        "Zero-Bleed Chisel Highlighters",
-        "Balanced Low-Center Pencils",
-        "Micro-Point Correction Mediums",
-      ],
-      actionLabel: "Enter Writing Aisle",
-      route: "/writing",
+      info: "Japanese micro-tip archival gel inks, balanced drafting leads, and quick-drying highlighters designed to eliminate sleeve smudging.",
     },
     {
       num: "03",
       name: "Parchment & Paper Reams",
       desc: "75 & 80 GSM High-Brightness A4 · Sticky Memos",
-      category: "FIBER & MEDIA // AISLE 03",
-      telemetry: "RAW STOCK REPOSITORY · CALIBRATED",
-      overview:
-        "Engineered elemental chlorine-free bond paper. Offers superior opacity for dense double-sided printing, blueprint sketching, and lab documentation with zero ink feathering.",
-      specs: [
-        { label: "BASIS WEIGHT", value: "75 GSM & 80 GSM Bond" },
-        { label: "WHITENESS", value: "98% ISO High-Reflectance" },
-        { label: "DIMENSIONS", value: "Standard A4 & A3 Formats" },
-      ],
-      features: [
-        "500-Sheet Moisture-Sealed Reams",
-        "Ultra-Smooth Matte Calendering",
-        "Repositionable Pastel Tab Flags",
-        "Archival Acid-Free Longevity",
-      ],
-      actionLabel: "Enter Paper Aisle",
-      route: "/paper",
+      info: "High-brightness chlorine-free bond paper reams with zero-bleed opacity for double-sided prints and blueprint schematics.",
     },
     {
       num: "04",
       name: "Measuring & Drafting",
       desc: "Steel Non-Slip Rulers · Geometry Kits · Cutting Mats",
-      category: "METROLOGY & RIGS // AISLE 04",
-      telemetry: "PRECISION CALIPER · ±0.1MM TOLERANCE",
-      overview:
-        "Heavyweight laser-etched stainless steel measuring rules, 5-ply self-healing cutting mats, and precision brass geometry sets built for architects, engineers, and physical model fabricators.",
-      specs: [
-        { label: "ACCURACY", value: "±0.1mm Laser Engraved" },
-        { label: "CUTTING PAD", value: "5-Ply Self-Healing Polymer" },
-        { label: "COMPASS RIG", value: "Heavy Solid Brass Core" },
-      ],
-      features: [
-        "30cm & 60cm Non-Slip Backed Rulers",
-        "Precision Set Squares & Protractors",
-        "Heavy-Duty A3 & A4 Cutting Mats",
-        "Dual-Metric / Imperial Scale Grids",
-      ],
-      actionLabel: "Enter Drafting Aisle",
-      route: "/measuring",
+      info: "Laser-etched stainless steel scales, heavy brass compass rigs, and self-healing cutting mats with ±0.1mm tolerance.",
     },
     {
       num: "05",
       name: "Raven Offering Altar",
       desc: "Contactless Mobile QR · Automated Receipt Sync",
-      category: "TRANSACTION CRYPT // AISLE 05",
-      telemetry: "INSTANT SETTLEMENT · SYNCHRONIZED",
-      overview:
-        "The sacred checkout altar for campus dues redemption. Instant dynamic UPI QR reconciliation with automated ledger dispatch. Clears submission locks and prints your encrypted cryptographic checkout token.",
-      specs: [
-        { label: "CLEARANCE", value: "< 1.8s Instant Reconcile" },
-        { label: "PROTOCOL", value: "Dynamic QR + Campus ID" },
-        { label: "LEDGER SYNC", value: "Automated Campus Sync" },
-      ],
-      features: [
-        "Contactless Mobile QR Payment",
-        "Instant Dues & Thesis Clearance",
-        "Zero-Fee Campus Student Rate",
-        "Direct Barcode Folio Generation",
-      ],
-      actionLabel: "Visit Raven Altar",
-      route: "/ritual-offering",
+      info: "Contactless UPI terminal for campus dues clearance, automated ghost ledger sync, and express submission tokens.",
     },
     {
       num: "06",
       name: "Archival Folio Receipts",
       desc: "Code 128 Barcode Verification · Express Desk 04 Pickup",
-      category: "DISPATCH LOGISTICS // AISLE 06",
-      telemetry: "DISPATCH QUEUE · CODE 128 ACTIVE",
-      overview:
-        "Your cryptographic footprint at Desk 04. Scan or verify your Code 128 barcode slip to collect finished spiral thesis copies, review transaction history, and check real-time machine queue status.",
-      specs: [
-        { label: "VERIFICATION", value: "Code 128 Optical Barcode" },
-        { label: "COLLECTION", value: "Express Desk 04 Counter" },
-        { label: "DISPATCH TRACK", value: "Real-Time Print Telemetry" },
-      ],
-      features: [
-        "Physical Thermal Receipt Format",
-        "Instant Cloud Folio Backup",
-        "Live Queue ETA Indicators",
-        "One-Touch Re-Print Dispatch",
-      ],
-      actionLabel: "Open Folio Counter",
-      route: "/student",
+      info: "Optical Code 128 barcode receipts for queue tracking and express dispatch verification at Desk 04.",
     },
   ];
 
@@ -958,76 +670,14 @@ export default function IntroPage() {
                     <span className={`od-dir-arrow ${isExpanded ? "is-open" : ""}`}>↗</span>
                   </div>
 
-                  {/* Expandable Info Dossier Drawer */}
+                  {/* Minimalist Info on Green Canvas */}
                   <div
                     className={`od-dir-drawer ${isExpanded ? "is-open" : ""}`}
                     aria-hidden={!isExpanded}
                   >
                     <div className="od-dir-drawer-inner">
-                      <div className="od-dir-card">
-                        <div className="od-card-top">
-                          <div className="od-card-badge-wrap">
-                            <span className="od-card-dot" />
-                            <span className="od-card-category">{item.category}</span>
-                            <span className="od-card-telemetry">· {item.telemetry}</span>
-                          </div>
-                          <button
-                            className="od-card-close-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              closeAisle(item.num);
-                            }}
-                            aria-label={`Close ${item.name} info`}
-                          >
-                            <span>CLOSE</span>
-                            <span>✕</span>
-                          </button>
-                        </div>
-
-                        <p className="od-card-overview">{item.overview}</p>
-
-                        <div className="od-card-specs-grid">
-                          {item.specs.map((sp, idx) => (
-                            <div key={idx} className="od-spec-box">
-                              <span className="od-spec-label">{sp.label}</span>
-                              <span className="od-spec-val">{sp.value}</span>
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="od-card-features">
-                          {item.features.map((feat, idx) => (
-                            <span key={idx} className="od-feat-tag">
-                              ✓ {feat}
-                            </span>
-                          ))}
-                        </div>
-
-                        <div className="od-card-footer">
-                          <span className="od-card-hint">
-                            Click to collapse or leave open while browsing next aisles.
-                          </span>
-                          <div className="od-card-btn-group">
-                            <button
-                              className="od-card-secondary-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                closeAisle(item.num);
-                              }}
-                            >
-                              Close
-                            </button>
-                            <button
-                              className="od-card-action-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleNavigate(item.route);
-                              }}
-                            >
-                              {item.actionLabel} →
-                            </button>
-                          </div>
-                        </div>
+                      <div className="od-dir-info-wrap">
+                        <p className="od-dir-info-text">{item.info}</p>
                       </div>
                     </div>
                   </div>
