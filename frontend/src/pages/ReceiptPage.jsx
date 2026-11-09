@@ -919,7 +919,7 @@ export default function ReceiptPage() {
               {/* SVG Raven Scroll Rod Top Header */}
               <div className="rcpt-raven-top-wrap" aria-hidden="true">
                 <img
-                  src="/raven-receipt-top.svg?v=crimson-aligned-4"
+                  src="/raven-receipt-top.svg"
                   alt="Hooded Crow Perched on Scroll Header"
                   className="rcpt-raven-top-svg"
                 />
