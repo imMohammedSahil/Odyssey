@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import gsap from 'gsap';
 
 import './BlobCursor.css';
 
@@ -413,13 +414,26 @@ const BlobCursor = ({
     const onMove = event => {
       if (event.pointerType === 'touch' && !pointer.down) return;
       const spot = locate(event);
-      if (spot.inside && (!pointer.inside || !pointer.seen) && swell.value < 0.05) place(spot.x, spot.y);
-      pointer.x = spot.x;
-      pointer.y = spot.y;
+      if (spot.inside && (!pointer.inside || !pointer.seen) && swell.value < 0.05) {
+        place(spot.x, spot.y);
+        pointer.x = spot.x;
+        pointer.y = spot.y;
+      }
       pointer.inside = spot.inside;
       pointer.seen = true;
       const target = event.target instanceof Element ? event.target : null;
       pointer.hover = spot.inside && !!target?.closest(INTERACTIVE);
+
+      // ✦ Ultra-heavy, slow, cinematic cursor momentum via GSAP
+      gsap.to(pointer, {
+        x: spot.x,
+        y: spot.y,
+        duration: 0.85,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onUpdate: start
+      });
+
       start();
     };
 
@@ -476,6 +490,7 @@ const BlobCursor = ({
       const spot = locate(event);
       if (!spot.inside) return;
       if (event.pointerType === 'touch' && swell.value < 0.05) place(spot.x, spot.y);
+      gsap.killTweensOf(pointer);
       pointer.x = spot.x;
       pointer.y = spot.y;
       pointer.inside = true;
@@ -848,6 +863,22 @@ const BlobCursor = ({
     };
     window.addEventListener('mousedown', preventMultiClickSelection);
 
+    const onBlobColorDirect = (e) => {
+      if (e.detail?.color) {
+        try {
+          const c = new THREE.Color(e.detail.color);
+          if (settingsRef.current) settingsRef.current.color = e.detail.color;
+          blobPhysical.color.copy(c);
+          sprayPhysical.color.copy(c);
+          blobFlat.color.copy(c);
+          sprayFlat.color.copy(c);
+          blobPhysical.needsUpdate = true;
+          start();
+        } catch (_) {}
+      }
+    };
+    window.addEventListener('odyssey_blob_color_direct', onBlobColorDirect);
+
     applyRef.current = apply;
     resize();
     apply();
@@ -855,6 +886,7 @@ const BlobCursor = ({
     return () => {
       alive = false;
       cancelAnimationFrame(raf);
+      gsap.killTweensOf(pointer);
       applyRef.current = null;
       restoreCursor?.();
       resizeObserver.disconnect();
@@ -865,6 +897,7 @@ const BlobCursor = ({
       document.removeEventListener('pointerout', onLeave);
       window.removeEventListener('blur', onBlur);
       window.removeEventListener('mousedown', preventMultiClickSelection);
+      window.removeEventListener('odyssey_blob_color_direct', onBlobColorDirect);
       blob.geometry.dispose();
       blobPhysical.dispose();
       blobFlat.dispose();
