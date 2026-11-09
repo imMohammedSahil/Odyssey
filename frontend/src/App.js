@@ -12,9 +12,12 @@ import PrintPage from "./pages/PrintPage";
 import Writing from "./pages/Writing";
 import Correction from "./pages/Correction";
 import Paper from "./pages/Paper";
+import Measuring from "./pages/Measuring";
+import Office from "./pages/Office";
 import StationeryPage from "./pages/StationeryPage";
 import ReceiptPage from "./pages/ReceiptPage";
 import AdminIntroPage from "./pages/AdminIntroPage";
+import RitualOfferingPage from "./pages/RitualOfferingPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -24,6 +27,7 @@ function App() {
       {/* Public Routes */}
       <Route path="/" element={<IntroPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/ritual-offering" element={<RitualOfferingPage />} />
 
       {/* Student Protected Routes */}
       <Route
@@ -76,6 +80,42 @@ function App() {
         element={
           <ProtectedRoute allowedRole="student">
             <Paper />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/stationery/measuring"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Measuring />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/measuring"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Measuring />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/stationery/office"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Office />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/office"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <Office />
           </ProtectedRoute>
         }
       />

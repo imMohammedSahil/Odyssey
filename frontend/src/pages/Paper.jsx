@@ -958,8 +958,8 @@ export default function Paper() {
         {/* 100% PURE VECTOR BACKDROP */}
         <div className="writing-bg-layer" aria-hidden="true">
           <img
-            src="/paper-landscape.svg?v=9"
-            alt=""
+            src="/paper-landscape.svg?v=12"
+            alt="Mignola Crimson Sky Cemetery Panorama"
             className="writing-bg-vector"
           />
         </div>
