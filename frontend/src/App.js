@@ -23,36 +23,11 @@ import RitualOfferingPage from "./pages/RitualOfferingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function ScrollToTop() {
-  const { pathname, search, hash } = useLocation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    if (hash) {
-      const el = document.querySelector(hash);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-    }
-
-    const resetScroll = () => {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-      if (document.documentElement) document.documentElement.scrollTop = 0;
-      if (document.body) document.body.scrollTop = 0;
-    };
-
-    resetScroll();
-    const rafId = requestAnimationFrame(resetScroll);
-    const timeoutId = setTimeout(resetScroll, 50);
-
-    return () => {
-      cancelAnimationFrame(rafId);
-      clearTimeout(timeoutId);
-    };
-  }, [pathname, search, hash]);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return null;
 }
