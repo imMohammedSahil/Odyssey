@@ -717,6 +717,8 @@ export default function IntroPage() {
     if (!sessionStorage.getItem("user")) {
       sessionStorage.setItem("user", "PETER PARKER");
     }
+    window.lenis?.scrollTo(0, { immediate: true });
+    window.scrollTo(0, 0);
     navigate(path);
   };
 

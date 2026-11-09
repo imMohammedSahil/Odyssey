@@ -744,6 +744,7 @@ export default function UploadOrder() {
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);
       }
+      window.lenis?.scrollTo(0, { immediate: true });
       window.scrollTo(0, 0);
     }
   }, [location.state, navigate, location.pathname, navType]);

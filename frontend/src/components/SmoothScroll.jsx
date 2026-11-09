@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
@@ -86,17 +86,14 @@ export default function SmoothScroll() {
     };
   }, []);
 
-  // Handle route changes and fixed viewport routes
-  useEffect(() => {
+  // Synchronously reset scroll to top before browser paints on route change
+  useLayoutEffect(() => {
     if (FIXED_VIEWPORT_ROUTES.includes(location.pathname)) {
       window.lenis?.stop();
     } else {
       window.lenis?.start();
-      if (window.lenis) {
-        window.lenis.scrollTo(0, { immediate: true });
-      } else {
-        window.scrollTo(0, 0);
-      }
+      window.lenis?.scrollTo(0, { immediate: true });
+      window.scrollTo(0, 0);
     }
   }, [location.pathname]);
 
