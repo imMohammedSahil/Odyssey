@@ -217,8 +217,8 @@ const ScrollFloat = ({
               scrollTrigger: {
                 trigger: inner.parentElement,
                 scroller,
-                start: 'top 90%',
-                end: 'top 55%',
+                start: 'top 75%',
+                end: 'top 40%',
                 scrub: smoothing > 0 ? smoothing : true,
                 invalidateOnRefresh: true
               }
