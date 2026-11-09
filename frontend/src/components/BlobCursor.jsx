@@ -841,6 +841,13 @@ const BlobCursor = ({
     document.addEventListener('pointerout', onLeave);
     window.addEventListener('blur', onBlur);
 
+    const preventMultiClickSelection = (e) => {
+      if (e.detail > 1 && !['INPUT', 'TEXTAREA'].includes(e.target?.tagName) && !e.target?.isContentEditable) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('mousedown', preventMultiClickSelection);
+
     applyRef.current = apply;
     resize();
     apply();
@@ -857,6 +864,7 @@ const BlobCursor = ({
       window.removeEventListener('pointercancel', onUp);
       document.removeEventListener('pointerout', onLeave);
       window.removeEventListener('blur', onBlur);
+      window.removeEventListener('mousedown', preventMultiClickSelection);
       blob.geometry.dispose();
       blobPhysical.dispose();
       blobFlat.dispose();
