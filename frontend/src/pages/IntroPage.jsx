@@ -699,8 +699,8 @@ export default function IntroPage() {
         setTimeout(() => {
           setShowRest(true);
         }, 850);
-      }, 350);
-    }, 1800);
+      }, 400);
+    }, 3200);
 
     return () => clearTimeout(minLoadTimer);
   }, []);
