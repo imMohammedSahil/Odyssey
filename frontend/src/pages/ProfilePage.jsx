@@ -698,7 +698,7 @@ const css = `
   .pf-order-card-footer {
     background: #FFFFFF;
     border-top: none;
-    padding: 14px 22px 18px;
+    padding: 10px 22px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -708,7 +708,13 @@ const css = `
 
   .pf-order-total-block {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .pf-order-total-line {
+    display: flex;
+    align-items: baseline;
     gap: 8px;
   }
 
@@ -1263,9 +1269,6 @@ export default function ProfilePage() {
                           <span className="pf-order-id-badge">
                             #{order.orderId || `OD-${1000 + idx}`}
                           </span>
-                          <span className="pf-order-date">
-                            {order.date || "Recent Dispatch"}
-                          </span>
                         </div>
 
                         <div className={`pf-status-badge ${badgeClass}`}>
@@ -1310,8 +1313,13 @@ export default function ProfilePage() {
                       {/* Order Card Footer */}
                       <div className="pf-order-card-footer">
                         <div className="pf-order-total-block">
-                          <span className="pf-total-label">Grand Total:</span>
-                          <span className="pf-total-val">₹{order.total || 0}</span>
+                          <div className="pf-order-total-line">
+                            <span className="pf-total-label">Grand Total:</span>
+                            <span className="pf-total-val">₹{order.total || 0}</span>
+                          </div>
+                          <span className="pf-order-date">
+                            {order.date || "Recent Dispatch"}
+                          </span>
                         </div>
 
                         <div className="pf-order-actions">
