@@ -469,6 +469,9 @@ const BlobCursor = ({
       if (event.relatedTarget) return;
       pointer.inside = false;
       pointer.down = false;
+      if (typeof window !== 'undefined') {
+        window.odyssey_blob_tail = { x: -100, y: -100, vx: 0, vy: 0, active: false };
+      }
       start();
     };
 
@@ -775,6 +778,18 @@ const BlobCursor = ({
       const dt = Math.min(1 / 30, Math.max(1 / 240, (now - last) / 1000));
       last = now;
       step(dt);
+      if (typeof window !== 'undefined') {
+        const s = settingsRef.current;
+        const tailIndex = Math.max(0, (s.trail || 1) - 1);
+        const tailNode = s.trail > 0 && chain[tailIndex] ? chain[tailIndex] : anchor;
+        window.odyssey_blob_tail = {
+          x: tailNode.x,
+          y: tailNode.y,
+          vx: tailNode.vx,
+          vy: tailNode.vy,
+          active: pointer.inside && pointer.seen
+        };
+      }
       const built = build();
       const shown = built.blob || built.spray;
       blob.visible = built.blob;

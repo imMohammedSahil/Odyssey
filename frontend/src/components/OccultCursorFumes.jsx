@@ -80,29 +80,11 @@ export default function OccultCursorFumes() {
       });
     };
 
+    const lastTail = { x: -100, y: -100 };
+
     const onPointerMove = (e) => {
       const px = e.clientX;
       const py = e.clientY;
-
-      if (mouse.x > 0) {
-        mouse.vx = px - mouse.x;
-        mouse.vy = py - mouse.y;
-
-        // Continuous path interpolation so smoke forms an unbroken fluid trail
-        const dist = Math.hypot(px - mouse.x, py - mouse.y);
-        const steps = Math.min(8, Math.max(1, Math.floor(dist / 5)));
-        for (let s = 1; s <= steps; s++) {
-          const t = s / steps;
-          const ix = mouse.x + (px - mouse.x) * t;
-          const iy = mouse.y + (py - mouse.y) * t;
-          spawnSmokePuff(ix, iy, currentDrain, 1);
-        }
-
-        // Spawn occasional ember sparks only when living (drain < 0.4)
-        if (currentDrain < 0.4 && Math.random() < 0.25) {
-          spawnEmber(px, py);
-        }
-      }
 
       mouse.x = px;
       mouse.y = py;
@@ -133,6 +115,8 @@ export default function OccultCursorFumes() {
       mouse.active = false;
       mouse.x = -100;
       mouse.y = -100;
+      lastTail.x = -100;
+      lastTail.y = -100;
     };
 
     window.addEventListener("pointermove", onPointerMove, { passive: true });
@@ -156,37 +140,78 @@ export default function OccultCursorFumes() {
 
       tick++;
 
-      // Idle smoke puff when hovering
-      if (mouse.active && mouse.x > 0 && mouse.y > 0 && tick % 4 === 0) {
-        spawnSmokePuff(mouse.x, mouse.y, currentDrain, 0.7);
-        if (currentDrain < 0.4 && Math.random() < 0.15) {
-          spawnEmber(mouse.x, mouse.y);
+      // ✦ Read exact trailing tail coordinates from BlobCursor so smoke NEVER spawns ahead of the blob
+      const tailData = window.odyssey_blob_tail;
+      const isTailValid = tailData && tailData.x > 0 && tailData.y > 0 && tailData.active;
+      const tx = isTailValid ? tailData.x : mouse.x;
+      const ty = isTailValid ? tailData.y : mouse.y;
+      const isAlive = isTailValid ? true : mouse.active && mouse.x > 0;
+
+      if (isAlive && tx > 0 && ty > 0) {
+        if (lastTail.x > 0) {
+          const dx = tx - lastTail.x;
+          const dy = ty - lastTail.y;
+          const dist = Math.hypot(dx, dy);
+
+          mouse.vx = dx;
+          mouse.vy = dy;
+
+          if (dist > 1.2) {
+            // Continuous path interpolation along the blob's actual trailing tail path
+            const steps = Math.min(8, Math.max(1, Math.floor(dist / 5)));
+            for (let s = 1; s <= steps; s++) {
+              const t = s / steps;
+              const ix = lastTail.x + dx * t;
+              const iy = lastTail.y + dy * t;
+              spawnSmokePuff(ix, iy, currentDrain, 1);
+            }
+
+            if (currentDrain < 0.4 && Math.random() < 0.25) {
+              spawnEmber(tx, ty);
+            }
+          }
+        } else {
+          spawnSmokePuff(tx, ty, currentDrain, 1);
         }
+
+        lastTail.x = tx;
+        lastTail.y = ty;
+
+        // Idle smoke puff when hovering
+        if (tick % 4 === 0) {
+          spawnSmokePuff(tx, ty, currentDrain, 0.7);
+          if (currentDrain < 0.4 && Math.random() < 0.15) {
+            spawnEmber(tx, ty);
+          }
+        }
+
+        // 1. Hot Liquid Core Glow Aura at the tail origin
+        if (currentDrain < 0.85) {
+          const glowRadius = 18 + Math.sin(tick * 0.12) * 2;
+          const glowAlpha = (1 - currentDrain) * 0.28;
+          const glow = ctx.createRadialGradient(
+            tx,
+            ty,
+            2,
+            tx,
+            ty,
+            glowRadius
+          );
+          glow.addColorStop(0, `rgba(45, 10, 10, ${glowAlpha})`);
+          glow.addColorStop(0.5, `rgba(32, 6, 6, ${glowAlpha * 0.4})`);
+          glow.addColorStop(1, "rgba(20, 4, 4, 0)");
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(tx, ty, glowRadius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      } else {
+        lastTail.x = -100;
+        lastTail.y = -100;
       }
 
       mouse.vx *= 0.55;
       mouse.vy *= 0.55;
-
-      // 1. Hot Liquid Core Glow Aura (only at the origin where smoke is born from the metal)
-      if (mouse.active && mouse.x > 0 && mouse.y > 0 && currentDrain < 0.85) {
-        const glowRadius = 18 + Math.sin(tick * 0.12) * 2;
-        const glowAlpha = (1 - currentDrain) * 0.28;
-        const glow = ctx.createRadialGradient(
-          mouse.x,
-          mouse.y,
-          2,
-          mouse.x,
-          mouse.y,
-          glowRadius
-        );
-        glow.addColorStop(0, `rgba(45, 10, 10, ${glowAlpha})`);
-        glow.addColorStop(0.5, `rgba(32, 6, 6, ${glowAlpha * 0.4})`);
-        glow.addColorStop(1, "rgba(20, 4, 4, 0)");
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, glowRadius, 0, Math.PI * 2);
-        ctx.fill();
-      }
 
       // 2. Realistic Volumetric Smoke Plume (Monotonic falloff + Gaussian blur = 100% seamless fluid, Zero concentric rings)
       for (let i = smokes.length - 1; i >= 0; i--) {
