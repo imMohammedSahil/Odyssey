@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { downloadOrPrintReceipt } from "../utils/printReceipt";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
@@ -1036,7 +1037,7 @@ export default function ProfilePage() {
     return s === "PRINTING" || s === "PROCESSING" || s === "PENDING" || s === "AWAITING PAYMENT";
   }).length;
 
-  // View Receipt handler
+  // View Receipt handler - downloads/prints PDF directly without navigating away
   const handleViewReceipt = (order) => {
     localStorage.setItem(
       "odysseyReceipt",
@@ -1048,7 +1049,7 @@ export default function ProfilePage() {
         status: order.status || "READY",
       })
     );
-    navigate("/receipt");
+    downloadOrPrintReceipt(order);
   };
 
   // Re-order items
