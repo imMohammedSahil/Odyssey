@@ -294,8 +294,16 @@ const styles = `
 
   .od-dir-num {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     color: rgba(10, 10, 10, 0.5);
+    transition: color 0.15s ease, -webkit-text-stroke 0.15s ease;
+  }
+
+  .od-dir-row:hover .od-dir-num,
+  .od-dir-item-wrap.is-expanded .od-dir-num {
+    color: #FF1A8C;
+    -webkit-text-stroke: 0.6px #0A0A0A;
+    paint-order: stroke fill;
   }
 
   .od-dir-name {
@@ -303,12 +311,14 @@ const styles = `
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text-black);
-    transition: color 0.15s ease;
+    transition: color 0.15s ease, -webkit-text-stroke 0.15s ease;
   }
 
   .od-dir-row:hover .od-dir-name,
   .od-dir-item-wrap.is-expanded .od-dir-name {
-    color: var(--brain-pink);
+    color: #FF1A8C;
+    -webkit-text-stroke: 1.2px #0A0A0A;
+    paint-order: stroke fill;
   }
 
   .od-dir-desc {
@@ -321,16 +331,20 @@ const styles = `
     font-size: 22px;
     font-weight: 700;
     color: var(--text-black);
-    transition: transform 0.25s ease, color 0.2s ease;
+    transition: transform 0.25s ease, color 0.2s ease, -webkit-text-stroke 0.2s ease;
   }
 
   .od-dir-row:hover .od-dir-arrow {
-    color: var(--brain-pink);
+    color: #FF1A8C;
+    -webkit-text-stroke: 0.8px #0A0A0A;
+    paint-order: stroke fill;
     transform: translate(4px, -4px);
   }
 
   .od-dir-item-wrap.is-expanded .od-dir-arrow {
-    color: var(--brain-pink);
+    color: #FF1A8C;
+    -webkit-text-stroke: 0.8px #0A0A0A;
+    paint-order: stroke fill;
     transform: rotate(90deg);
   }
 
