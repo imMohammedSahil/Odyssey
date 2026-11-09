@@ -182,13 +182,7 @@ const styles = `
   }
 
   .od-scroll-guide-line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: 100%;
-    background: rgba(10, 10, 10, 0.18);
+    display: none;
   }
 
   .od-scroll-comet-stream {
@@ -481,7 +475,6 @@ export default function IntroPage() {
           <button className="od-scroll-down-indicator" onClick={scrollToNext} aria-label="Scroll down">
             <span className="od-scroll-text">Scroll</span>
             <div className="od-scroll-comet-track">
-              <div className="od-scroll-guide-line" />
               <div className="od-scroll-comet-stream">
                 <svg
                   width="12"
