@@ -526,24 +526,24 @@ const css = `
   }
 
   .pf-order-card {
-    background: var(--parchment);
+    background: #FFFFFF; /* Pure white card */
     border: 3.5px solid var(--border-dark);
     border-radius: 16px;
-    box-shadow: var(--shadow-comic);
+    box-shadow: 5px 5px 0px var(--border-dark);
     overflow: hidden;
     transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
 
   .pf-order-card:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: var(--shadow-comic-lg);
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0px var(--border-dark);
   }
 
-  /* Order Card Header */
+  /* Order Card Header - seamless white, no horizontal line */
   .pf-order-card-header {
-    background: var(--parchment-dark);
-    border-bottom: 3px solid var(--border-dark);
-    padding: 16px 22px;
+    background: #FFFFFF;
+    border-bottom: none;
+    padding: 18px 22px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -560,10 +560,10 @@ const css = `
 
   .pf-order-id-badge {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13.5px;
     letter-spacing: 0.8px;
     background: var(--void-black);
-    color: var(--parchment);
+    color: var(--slime-green);
     padding: 5px 12px;
     border-radius: 6px;
     border: 2px solid var(--border-dark);
@@ -575,7 +575,7 @@ const css = `
   .pf-order-date {
     font-size: 12.5px;
     font-weight: 700;
-    color: #4b4b4b;
+    color: #666677;
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -612,7 +612,7 @@ const css = `
   }
 
   .pf-status-badge.other {
-    background: #E0E0E0;
+    background: #E5E5EB;
     color: var(--void-black);
   }
 
@@ -623,12 +623,12 @@ const css = `
     background: var(--void-black);
   }
 
-  /* Order Items Body */
+  /* Order Items Body - clean seamless strips without horizontal lines */
   .pf-order-items-table {
-    padding: 16px 22px;
+    padding: 10px 22px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
   }
 
   .pf-item-row {
@@ -636,10 +636,19 @@ const css = `
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 10px 14px;
-    background: #FFFFFF;
-    border: 2.5px solid var(--border-dark);
-    border-radius: 10px;
+    padding: 11px 16px;
+    background: #F4F4F8;
+    border: none;
+    border-left: 5px solid var(--slime-green);
+    border-radius: 8px;
+  }
+
+  .pf-item-row:nth-child(even) {
+    border-left-color: var(--brain-pink);
+  }
+
+  .pf-item-row:nth-child(3n) {
+    border-left-color: var(--hazard-gold);
   }
 
   .pf-item-info {
@@ -672,7 +681,7 @@ const css = `
   .pf-item-qty-pill {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
     font-size: 11px;
-    background: var(--parchment-dark);
+    background: var(--hazard-gold);
     color: var(--void-black);
     padding: 3px 8px;
     border-radius: 6px;
@@ -695,11 +704,11 @@ const css = `
     white-space: nowrap;
   }
 
-  /* Order Footer */
+  /* Order Footer - seamless bottom without horizontal divider line */
   .pf-order-card-footer {
-    background: var(--parchment-dark);
-    border-top: 3px solid var(--border-dark);
-    padding: 14px 22px;
+    background: #FFFFFF;
+    border-top: none;
+    padding: 14px 22px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -718,12 +727,12 @@ const css = `
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: #4b4b4b;
+    color: #666677;
   }
 
   .pf-total-val {
     font-family: 'Titan One', 'Archivo Black', 'Plus Jakarta Sans', sans-serif;
-    font-size: 20px;
+    font-size: 22px;
     color: var(--void-black);
   }
 
@@ -762,7 +771,7 @@ const css = `
     font-size: 12px;
     text-transform: uppercase;
     padding: 9px 18px;
-    background: var(--hazard-gold);
+    background: var(--slime-green);
     color: var(--void-black);
     border: 2.5px solid var(--border-dark);
     border-radius: 8px;
