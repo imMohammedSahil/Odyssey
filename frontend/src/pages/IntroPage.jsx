@@ -238,7 +238,7 @@ const styles = `
   }
 
   /* ──────────────────────────────────────────────────────────
-     3. MINIMALIST AISLE DIRECTORY & EXPANDABLE DOSSIERS
+     3. MINIMALIST AISLE DIRECTORY
   ────────────────────────────────────────────────────────── */
   .od-directory-section {
     max-width: 1140px;
@@ -252,7 +252,7 @@ const styles = `
     align-items: flex-end;
     border-bottom: 1.5px solid var(--border-line);
     padding-bottom: 20px;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
   }
 
   .od-dir-title {
@@ -265,27 +265,25 @@ const styles = `
 
   .od-dir-item-wrap {
     border-bottom: 1.5px solid var(--border-line);
-    transition: border-color 0.25s ease;
+    transition: border-color 0.2s ease;
   }
 
-  .od-dir-item-wrap.is-expanded {
-    border-bottom-color: rgba(10, 10, 10, 0.4);
+  .od-dir-item-wrap:hover {
+    border-color: var(--text-black);
   }
 
   .od-dir-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 26px 8px;
+    padding: 28px 0;
     cursor: pointer;
     text-decoration: none;
-    border-radius: 12px;
-    transition: padding-left 0.2s ease, background 0.2s ease;
+    transition: padding-left 0.2s ease;
   }
 
   .od-dir-row:hover {
-    padding-left: 14px;
-    background: rgba(10, 10, 10, 0.04);
+    padding-left: 12px;
   }
 
   .od-dir-left {
@@ -296,9 +294,8 @@ const styles = `
 
   .od-dir-num {
     font-size: 14px;
-    font-weight: 700;
-    color: rgba(10, 10, 10, 0.45);
-    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: rgba(10, 10, 10, 0.5);
   }
 
   .od-dir-name {
@@ -307,7 +304,6 @@ const styles = `
     letter-spacing: -0.02em;
     color: var(--text-black);
     transition: color 0.15s ease;
-    margin-bottom: 2px;
   }
 
   .od-dir-row:hover .od-dir-name,
@@ -321,62 +317,21 @@ const styles = `
     color: var(--text-sub);
   }
 
-  .od-dir-right {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .od-dir-pill-status {
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  .od-dir-arrow {
+    font-size: 22px;
+    font-weight: 700;
     color: var(--text-black);
-    background: rgba(10, 10, 10, 0.08);
-    padding: 5px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(10, 10, 10, 0.12);
-    transition: all 0.2s ease;
+    transition: transform 0.25s ease, color 0.2s ease;
   }
 
-  .od-dir-row:hover .od-dir-pill-status {
-    background: #0A0A0A;
-    color: #9DE869;
-    border-color: #0A0A0A;
+  .od-dir-row:hover .od-dir-arrow {
+    color: var(--brain-pink);
+    transform: translate(4px, -4px);
   }
 
-  .od-dir-item-wrap.is-expanded .od-dir-pill-status {
-    background: var(--brain-pink);
-    color: #0A0A0A;
-    border-color: var(--brain-pink);
-  }
-
-  .od-dir-toggle-icon {
-    font-size: 20px;
-    font-weight: 800;
-    line-height: 1;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(10, 10, 10, 0.06);
-    color: var(--text-black);
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .od-dir-row:hover .od-dir-toggle-icon {
-    background: #0A0A0A;
-    color: #FFFFFF;
-    transform: scale(1.08);
-  }
-
-  .od-dir-item-wrap.is-expanded .od-dir-toggle-icon {
-    background: #0A0A0A;
-    color: #9DE869;
-    transform: rotate(180deg);
+  .od-dir-item-wrap.is-expanded .od-dir-arrow {
+    color: var(--brain-pink);
+    transform: rotate(90deg);
   }
 
   /* EXPANDABLE DRAWER & DOSSIER CARD */
@@ -1000,14 +955,7 @@ export default function IntroPage() {
                       </div>
                     </div>
 
-                    <div className="od-dir-right">
-                      <span className="od-dir-pill-status">
-                        {isExpanded ? "Open Dossier" : "Read Specs"}
-                      </span>
-                      <span className="od-dir-toggle-icon">
-                        {isExpanded ? "−" : "+"}
-                      </span>
-                    </div>
+                    <span className={`od-dir-arrow ${isExpanded ? "is-open" : ""}`}>↗</span>
                   </div>
 
                   {/* Expandable Info Dossier Drawer */}
