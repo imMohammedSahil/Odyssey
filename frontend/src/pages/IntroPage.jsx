@@ -447,20 +447,10 @@ const styles = `
 
 export default function IntroPage() {
   const navigate = useNavigate();
-  const [expandedAisles, setExpandedAisles] = useState({});
+  const [openAisle, setOpenAisle] = useState(null);
 
   const toggleAisle = (num) => {
-    setExpandedAisles((prev) => ({
-      ...prev,
-      [num]: !prev[num],
-    }));
-  };
-
-  const closeAisle = (num) => {
-    setExpandedAisles((prev) => ({
-      ...prev,
-      [num]: false,
-    }));
+    setOpenAisle((prev) => (prev === num ? null : num));
   };
 
   const handleNavigate = (path = "/student") => {
@@ -639,7 +629,7 @@ export default function IntroPage() {
 
           <div>
             {directory.map((item) => {
-              const isExpanded = !!expandedAisles[item.num];
+              const isExpanded = openAisle === item.num;
 
               return (
                 <div
