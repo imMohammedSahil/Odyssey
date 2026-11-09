@@ -167,23 +167,28 @@ const getCursorConfig = (pathname) => {
     };
   }
 
-  // 8. Payment (/payment)
+  // 10. Payment Gateway (/payment) - Gothic Chapel Crypt, Fiery Lantern Core & Blood Ruby Chrome
   if (pathname.startsWith("/payment")) {
     return {
-      color: "#FFA84A", // Gothic Chapel Lantern Gold
+      color: "#FF2A1B", // Fiery Lantern Ember / Occult Crimson Ruby
       material: "chrome",
-      size: 42,
-      wobble: 0.8,
+      size: 46,
+      morph: 0.35,
+      morphSpeed: 0.45,
+      wobble: 0.9,
       goo: 1,
-      stretch: 0.4,
-      trail: 12,
+      stretch: 0.52,
+      trail: 14,
       shine: 1,
-      splashSpeed: 0.5,
-      splashCount: 6,
+      lag: 0.36,
+      splashSpeed: 0.62,
+      splashCount: 8,
+      splashSize: 0.55,
+      regrow: 0.45,
     };
   }
 
-  // 9. Cart & Profile (/cart, /profile)
+  // 11. Cart & Profile (/cart, /profile)
   if (pathname.startsWith("/cart") || pathname.startsWith("/profile")) {
     return {
       color: "#FF70A6", // Brain Pink
@@ -199,7 +204,7 @@ const getCursorConfig = (pathname) => {
     };
   }
 
-  // 10. Admin (/admin)
+  // 12. Admin (/admin)
   if (pathname.startsWith("/admin")) {
     return {
       color: "#7C5CFC", // Cyber Violet
@@ -236,26 +241,26 @@ function GlobalBlobCursor() {
   return (
     <BlobCursor
       key={pathname}
-      material={cfg.material}
+      material={cfg.material || "chrome"}
       color={cfg.color}
-      blend="normal"
-      size={cfg.size}
-      morph={0}
-      morphSpeed={0.4}
+      blend={cfg.blend || "normal"}
+      size={cfg.size || 42}
+      morph={cfg.morph ?? 0}
+      morphSpeed={cfg.morphSpeed ?? 0.4}
       depth={1}
-      trail={cfg.trail}
-      lag={0.35}
-      goo={cfg.goo}
-      stretch={cfg.stretch}
-      wobble={cfg.wobble}
-      drip={0}
-      shine={cfg.shine}
+      trail={cfg.trail ?? 12}
+      lag={cfg.lag ?? 0.35}
+      goo={cfg.goo ?? 1}
+      stretch={cfg.stretch ?? 0.4}
+      wobble={cfg.wobble ?? 0.8}
+      drip={cfg.drip ?? 0}
+      shine={cfg.shine ?? 1}
       splash={true}
-      splashCount={cfg.splashCount}
-      splashSpeed={cfg.splashSpeed}
-      splashSize={0.5}
-      splashGravity={0}
-      regrow={0.5}
+      splashCount={cfg.splashCount ?? 6}
+      splashSpeed={cfg.splashSpeed ?? 0.5}
+      splashSize={cfg.splashSize ?? 0.5}
+      splashGravity={cfg.splashGravity ?? 0}
+      regrow={cfg.regrow ?? 0.5}
       shadow={false}
       hideCursor={true}
     />
