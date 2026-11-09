@@ -4,7 +4,7 @@ import ElasticMesh from "../components/ElasticMesh";
 import BlobCursor from "../components/BlobCursor";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Titan+One&display=swap');
 
   :root {
     --bg-green: #9DE869;

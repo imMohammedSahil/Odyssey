@@ -131,6 +131,25 @@ vec2 smoothSlope(vec2 uv) {
   return mix(mix(d, c, sx), mix(b, a, sx), sy);
 }
 
+vec4 smoothField(vec2 uv) {
+  vec2 size = vec2(textureSize(uField, 0));
+  vec2 cell = uv * size - 0.5;
+  vec2 f = fract(cell);
+  cell -= f;
+  vec4 xc = cubic(f.x);
+  vec4 yc = cubic(f.y);
+  vec4 corner = cell.xxyy + vec2(-0.5, 1.5).xyxy;
+  vec4 sum = vec4(xc.xz + xc.yw, yc.xz + yc.yw);
+  vec4 offset = (corner + vec4(xc.yw, yc.yw) / sum) / size.xxyy;
+  vec4 a = texture(uField, offset.xz);
+  vec4 b = texture(uField, offset.yz);
+  vec4 c = texture(uField, offset.xw);
+  vec4 d = texture(uField, offset.yw);
+  float sx = sum.x / (sum.x + sum.y);
+  float sy = sum.z / (sum.z + sum.w);
+  return mix(mix(d, c, sx), mix(b, a, sx), sy);
+}
+
 float panel(vec3 r, vec3 center, vec2 size, float soft) {
   vec3 forward = normalize(center);
   vec3 side = normalize(cross(vec3(0.0, 1.0, 0.0), forward));
@@ -169,11 +188,11 @@ void main() {
   vec3 arrived = settle(vRest);
   vec2 rest = arrived.xy;
   float presence = arrived.z;
-  vec4 field = texture(uField, rest);
+  vec4 field = smoothField(rest);
   float edge = field.y;
   float edgeWidth = max(fwidth(edge), 0.0001);
   if (edge < -3.0 * edgeWidth || presence <= 0.001) discard;
-  float cover = clamp(edge / edgeWidth + 0.5, 0.0, 1.0);
+  float cover = smoothstep(-edgeWidth, edgeWidth, edge);
 
   vec2 slope = smoothSlope(rest);
   mat2 strain = mat2(vStrain.xy, vStrain.zw);
@@ -524,11 +543,13 @@ const ElasticMesh = ({
     const gl = canvas?.getContext('webgl2', {
       alpha: true,
       premultipliedAlpha: true,
-      antialias: false,
+      antialias: true,
       depth: false,
       stencil: false
     });
     if (!container || !canvas || !gl) return undefined;
+    gl.getExtension('OES_texture_float_linear');
+    gl.getExtension('EXT_color_buffer_float');
 
     const surfaceProgram = link(gl, SURFACE);
     const shadowProgram = link(gl, SHADOW);
@@ -792,6 +813,9 @@ const ElasticMesh = ({
       canvas2d.height = fh;
       const ctx = canvas2d.getContext('2d', { willReadFrequently: true });
       if (!ctx) return;
+      ctx.textRendering = 'geometricPrecision';
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       let drawn = false;
       if (s.src) {
         const image = new Image();
@@ -860,8 +884,9 @@ const ElasticMesh = ({
       const signed = new Float32Array(count);
       for (let i = 0; i < count; i++) {
         binary[i] = mask[i] > 0.5 ? 1 : 0;
+        const rawDist = inside[i] > 0 ? inside[i] - 0.5 : 0.5 - outside[i];
         signed[i] =
-          mask[i] > 0.02 && mask[i] < 0.98 ? mask[i] - 0.5 : inside[i] > 0 ? inside[i] - 0.5 : 0.5 - outside[i];
+          mask[i] > 0.02 && mask[i] < 0.98 ? (mask[i] - 0.5) * 0.7 + rawDist * 0.3 : rawDist;
       }
       const labels = new Int32Array(count);
       const parts = [];
@@ -908,8 +933,8 @@ const ElasticMesh = ({
         part.delay = rank * gap;
       });
       const owners = parts.length <= 64 ? nearestLabels(labels, fw, fh) : new Float32Array(count);
-      const solution = blurField(inflateField(binary, fw, fh), fw, fh, 2);
-      const edges = blurField(signed, fw, fh, 2);
+      const solution = blurField(inflateField(binary, fw, fh), fw, fh, 2.5);
+      const edges = blurField(signed, fw, fh, 3.5);
       const shadowMask = blurField(binary, fw, fh, Math.max(4, Math.min(fw, fh) * 0.045));
       const field = new Float32Array(count * 4);
       const sdf = new Float32Array(count);
