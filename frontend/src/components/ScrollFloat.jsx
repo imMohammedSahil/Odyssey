@@ -201,8 +201,8 @@ const ScrollFloat = ({
               scrollTrigger: {
                 trigger: lead,
                 scroller,
-                start: 'top 92%',
-                end: 'top 68%',
+                start: 'top 85%',
+                end: 'top 40%',
                 scrub: smoothing > 0 ? smoothing : true,
                 invalidateOnRefresh: true
               }
