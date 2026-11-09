@@ -429,7 +429,7 @@ export default function IntroPage() {
           wobble={0.8}
           drip={0}
           shine={1}
-          splash={false}
+          splash={true}
           splashCount={6}
           splashSpeed={0.5}
           splashSize={0.5}
