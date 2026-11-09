@@ -455,7 +455,7 @@ export default function IntroPage() {
               fontWeight={900}
               color="#FF70A6"
               material="balloon"
-              inflate={1.1}
+              inflate={0.98}
               stiffness={0.45}
               wobble={0.65}
               grabRadius={80}

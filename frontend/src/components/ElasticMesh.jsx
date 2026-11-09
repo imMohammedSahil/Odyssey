@@ -171,12 +171,12 @@ vec3 studio(vec3 r, float blur) {
   vec3 ground = mix(groundNear, groundFar, smoothstep(0.0, -0.4, y));
   float edge = 0.004 + blur;
   vec3 c = mix(ground, sky, smoothstep(-edge, edge, y));
-  float glow = 0.035 + blur;
-  c += vec3(2.2) * exp(-pow((y - 0.02) / glow, 2.0)) * (0.035 / glow);
-  c += vec3(7.0) * panel(r, vec3(-0.55, 0.55, 0.62), vec2(0.36, 0.2), 0.025 + blur);
-  c += vec3(4.5) * panel(r, vec3(0.9, 0.18, 0.4), vec2(0.045, 0.85), 0.01 + blur) * (0.045 / (0.045 + blur));
-  c += vec3(3.2) * panel(r, vec3(-0.95, 0.1, 0.32), vec2(0.035, 0.7), 0.01 + blur) * (0.035 / (0.035 + blur));
-  c += vec3(2.4) * panel(r, vec3(0.0, 0.92, 0.38), vec2(1.1, 0.045), 0.01 + blur) * (0.045 / (0.045 + blur));
+  float glow = 0.06 + blur;
+  c += vec3(2.2) * exp(-pow((y - 0.02) / glow, 2.0)) * (0.04 / glow);
+  c += vec3(6.0) * panel(r, vec3(-0.55, 0.55, 0.62), vec2(0.42, 0.26), 0.08 + blur);
+  c += vec3(3.8) * panel(r, vec3(0.9, 0.18, 0.4), vec2(0.08, 0.85), 0.06 + blur) * (0.06 / (0.06 + blur));
+  c += vec3(2.8) * panel(r, vec3(-0.95, 0.1, 0.32), vec2(0.06, 0.7), 0.06 + blur) * (0.06 / (0.06 + blur));
+  c += vec3(2.0) * panel(r, vec3(0.0, 0.92, 0.38), vec2(1.1, 0.08), 0.06 + blur) * (0.06 / (0.06 + blur));
   return c;
 }
 
@@ -933,16 +933,19 @@ const ElasticMesh = ({
         part.delay = rank * gap;
       });
       const owners = parts.length <= 64 ? nearestLabels(labels, fw, fh) : new Float32Array(count);
-      const solution = blurField(inflateField(binary, fw, fh), fw, fh, 2.5);
-      const edges = blurField(signed, fw, fh, 3.5);
+      const solution = blurField(inflateField(binary, fw, fh), fw, fh, 3.5);
+      const edges = blurField(signed, fw, fh, 4.0);
       const shadowMask = blurField(binary, fw, fh, Math.max(4, Math.min(fw, fh) * 0.045));
+      const rawHeights = new Float32Array(count);
+      for (let i = 0; i < count; i++) {
+        rawHeights[i] = Math.sqrt(Math.max(0, 2 * solution[i])) / scale;
+      }
+      const heights = blurField(rawHeights, fw, fh, 2.5);
       const field = new Float32Array(count * 4);
       const sdf = new Float32Array(count);
-      const heights = new Float32Array(count);
       for (let i = 0; i < count; i++) {
         const distance = edges[i] / scale;
         sdf[i] = distance;
-        heights[i] = Math.sqrt(Math.max(0, 2 * solution[i])) / scale;
         field[i * 4] = heights[i];
         field[i * 4 + 1] = distance;
         field[i * 4 + 2] = shadowMask[i];
@@ -950,15 +953,28 @@ const ElasticMesh = ({
       }
       const slopes = new Float32Array(count * 2);
       for (let y = 0; y < fh; y++) {
+        const ym1 = Math.max(0, y - 1) * fw;
+        const y0 = y * fw;
+        const yp1 = Math.min(fh - 1, y + 1) * fw;
         for (let x = 0; x < fw; x++) {
-          const i = y * fw + x;
-          let gx = (heights[y * fw + Math.min(fw - 1, x + 1)] - heights[y * fw + Math.max(0, x - 1)]) * 0.5 * scale;
-          let gy = (heights[Math.min(fh - 1, y + 1) * fw + x] - heights[Math.max(0, y - 1) * fw + x]) * 0.5 * scale;
+          const xm1 = Math.max(0, x - 1);
+          const xp1 = Math.min(fw - 1, x + 1);
+          let gx = (
+            (heights[ym1 + xp1] - heights[ym1 + xm1]) +
+            2 * (heights[y0 + xp1] - heights[y0 + xm1]) +
+            (heights[yp1 + xp1] - heights[yp1 + xm1])
+          ) * 0.125 * scale;
+          let gy = (
+            (heights[yp1 + xm1] - heights[ym1 + xm1]) +
+            2 * (heights[yp1 + x] - heights[ym1 + x]) +
+            (heights[yp1 + xp1] - heights[ym1 + xp1])
+          ) * 0.125 * scale;
           const steep = Math.hypot(gx, gy);
-          if (steep > 7) {
-            gx *= 7 / steep;
-            gy *= 7 / steep;
+          if (steep > 6.0) {
+            gx *= 6.0 / steep;
+            gy *= 6.0 / steep;
           }
+          const i = y0 + x;
           slopes[i * 2] = gx;
           slopes[i * 2 + 1] = gy;
         }
