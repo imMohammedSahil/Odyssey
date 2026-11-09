@@ -470,7 +470,7 @@ const BlobCursor = ({
       pointer.inside = false;
       pointer.down = false;
       if (typeof window !== 'undefined') {
-        window.odyssey_blob_tail = { x: -100, y: -100, vx: 0, vy: 0, active: false };
+        window.odyssey_blob_tail = { x: -100, y: -100, headX: -100, headY: -100, vx: 0, vy: 0, active: false };
       }
       start();
     };
@@ -785,6 +785,8 @@ const BlobCursor = ({
         window.odyssey_blob_tail = {
           x: tailNode.x,
           y: tailNode.y,
+          headX: anchor.x,
+          headY: anchor.y,
           vx: tailNode.vx,
           vy: tailNode.vy,
           active: pointer.inside && pointer.seen

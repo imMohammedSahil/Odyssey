@@ -20,13 +20,11 @@ const styles = `
     position: relative;
     overflow-x: hidden;
     overflow-y: hidden;
-    cursor: pointer;
     user-select: none;
   }
 
   .rcpt-root.revealed {
     overflow-y: auto;
-    cursor: default;
   }
 
   /* ── 100% PURE VECTOR BACKDROP ── */
@@ -154,7 +152,6 @@ const styles = `
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 12.5px;
     font-weight: 800;
-    cursor: pointer;
     box-shadow: 3px 3px 0px #020804;
     display: flex;
     align-items: center;
@@ -178,7 +175,6 @@ const styles = `
     justify-content: flex-start;
     padding: 240px 16px 160px;
     background: #000000;
-    cursor: default;
   }
 
   .rcpt-ticket-assembly {
@@ -388,7 +384,6 @@ const styles = `
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.08em;
-    cursor: pointer !important;
     user-select: none !important;
     white-space: nowrap;
     transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
@@ -579,7 +574,6 @@ const styles = `
     border: 1.5px solid #0f1c13;
     border-radius: 2px;
     box-shadow: 2px 2px 0px rgba(15, 28, 19, 0.35);
-    cursor: pointer !important;
     user-select: none !important;
     transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
   }

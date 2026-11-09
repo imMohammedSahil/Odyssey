@@ -17,7 +17,8 @@
 }
 
 @media (pointer: fine) {
-  body, body * {
+  *, *::before, *::after,
+  html, body, button, a, input, select, textarea, div, span, label, svg {
     cursor: none !important;
   }
 }

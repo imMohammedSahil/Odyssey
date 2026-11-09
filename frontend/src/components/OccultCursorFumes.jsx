@@ -41,16 +41,35 @@ export default function OccultCursorFumes() {
     const embers = [];
     const MAX_EMBERS = 25;
 
-    const spawnSmokePuff = (x, y, drainVal, density = 1) => {
+    const spawnSmokePuff = (x, y, drainVal, density = 1, backDir = null) => {
       if (smokes.length >= MAX_SMOKES) smokes.shift();
       const angle = Math.random() * Math.PI * 2;
-      const spread = 1 + Math.random() * 5;
+      const spread = 1 + Math.random() * 4;
+
+      let vx = (Math.random() - 0.5) * 0.55 - (mouse.vx || 0) * 0.04;
+      let vy = -0.5 - Math.random() * 0.8 - (mouse.vy || 0) * 0.04;
+
+      if (backDir && backDir.dist > 2) {
+        // Bias smoke velocity along the trailing tail vector away from the head
+        vx += backDir.nx * (0.35 + Math.random() * 0.45);
+        vy += backDir.ny * (0.35 + Math.random() * 0.45);
+
+        // Strip any forward velocity component pointing towards the head
+        const forwardDot = vx * (-backDir.nx) + vy * (-backDir.ny);
+        if (forwardDot > 0) {
+          vx -= (-backDir.nx) * forwardDot * 1.15;
+          vy -= (-backDir.ny) * forwardDot * 1.15;
+        }
+      }
+
+      const spawnX = x + Math.cos(angle) * spread + (backDir && backDir.dist > 2 ? backDir.nx * 2 : 0);
+      const spawnY = y + Math.sin(angle) * spread + (backDir && backDir.dist > 2 ? backDir.ny * 2 : 0);
 
       smokes.push({
-        x: x + Math.cos(angle) * spread,
-        y: y + Math.sin(angle) * spread,
-        vx: (Math.random() - 0.5) * 0.65 - mouse.vx * 0.04,
-        vy: -0.5 - Math.random() * 1.0 - mouse.vy * 0.04,
+        x: spawnX,
+        y: spawnY,
+        vx,
+        vy,
         size: 9 + Math.random() * 6,
         maxSize: 32 + Math.random() * 14, // Compact & agile size
         rotation: Math.random() * Math.PI * 2,
@@ -142,12 +161,20 @@ export default function OccultCursorFumes() {
 
       // ✦ Read exact trailing tail coordinates from BlobCursor so smoke NEVER spawns ahead of the blob
       const tailData = window.odyssey_blob_tail;
-      const isTailValid = tailData && tailData.x > 0 && tailData.y > 0 && tailData.active;
-      const tx = isTailValid ? tailData.x : mouse.x;
-      const ty = isTailValid ? tailData.y : mouse.y;
-      const isAlive = isTailValid ? true : mouse.active && mouse.x > 0;
+      const isAlive = !!(tailData && tailData.x > 0 && tailData.y > 0 && tailData.active);
 
-      if (isAlive && tx > 0 && ty > 0) {
+      if (isAlive) {
+        const tx = tailData.x;
+        const ty = tailData.y;
+
+        // Compute direction from head to tail so smoke strictly flows backwards
+        const headX = (tailData.headX && tailData.headX > 0) ? tailData.headX : tx;
+        const headY = (tailData.headY && tailData.headY > 0) ? tailData.headY : ty;
+        const bdx = tx - headX;
+        const bdy = ty - headY;
+        const bdist = Math.hypot(bdx, bdy);
+        const backDir = bdist > 2 ? { nx: bdx / bdist, ny: bdy / bdist, dist: bdist } : null;
+
         if (lastTail.x > 0) {
           const dx = tx - lastTail.x;
           const dy = ty - lastTail.y;
@@ -156,22 +183,27 @@ export default function OccultCursorFumes() {
           mouse.vx = dx;
           mouse.vy = dy;
 
-          if (dist > 1.2) {
+          if (dist > 1.2 && dist < 45) {
             // Continuous path interpolation along the blob's actual trailing tail path
-            const steps = Math.min(8, Math.max(1, Math.floor(dist / 5)));
+            const steps = Math.min(6, Math.max(1, Math.floor(dist / 6)));
             for (let s = 1; s <= steps; s++) {
               const t = s / steps;
               const ix = lastTail.x + dx * t;
               const iy = lastTail.y + dy * t;
-              spawnSmokePuff(ix, iy, currentDrain, 1);
+              spawnSmokePuff(ix, iy, currentDrain, 1, backDir);
             }
 
             if (currentDrain < 0.4 && Math.random() < 0.25) {
               spawnEmber(tx, ty);
             }
+          } else if (dist >= 45) {
+            // Cursor jumped/teleported: reset without streaking
+            mouse.vx = 0;
+            mouse.vy = 0;
           }
         } else {
-          spawnSmokePuff(tx, ty, currentDrain, 1);
+          mouse.vx = 0;
+          mouse.vy = 0;
         }
 
         lastTail.x = tx;
@@ -179,7 +211,7 @@ export default function OccultCursorFumes() {
 
         // Idle smoke puff when hovering
         if (tick % 4 === 0) {
-          spawnSmokePuff(tx, ty, currentDrain, 0.7);
+          spawnSmokePuff(tx, ty, currentDrain, 0.7, backDir);
           if (currentDrain < 0.4 && Math.random() < 0.15) {
             spawnEmber(tx, ty);
           }
@@ -208,6 +240,8 @@ export default function OccultCursorFumes() {
       } else {
         lastTail.x = -100;
         lastTail.y = -100;
+        mouse.vx = 0;
+        mouse.vy = 0;
       }
 
       mouse.vx *= 0.55;

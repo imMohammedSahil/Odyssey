@@ -50,6 +50,13 @@ html, body, #root {
   }
 }
 
+@media (pointer: fine) {
+  *, *::before, *::after,
+  html, body, button, a, input, select, textarea, div, span, label, svg {
+    cursor: none !important;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
