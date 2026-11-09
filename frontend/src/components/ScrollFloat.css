@@ -19,6 +19,14 @@
   white-space: nowrap;
 }
 
+.scroll-float-sentence {
+  display: inline;
+}
+
+.scroll-float-unit {
+  display: inline-block;
+}
+
 .scroll-float-char {
   display: inline-block;
 }
@@ -34,3 +42,4 @@
   white-space: nowrap;
   border: 0;
 }
+

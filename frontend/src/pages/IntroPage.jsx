@@ -507,16 +507,16 @@ export default function IntroPage() {
             containerClassName="od-manifesto-scroll-wrap"
             textClassName="od-manifesto-text"
             effect="float"
-            splitBy="words"
+            splitBy="sentences"
             direction="up"
-            order="center"
+            order="start"
             animationDuration={1}
             ease="back.inOut(2)"
             scrollStart="center bottom+=50%"
             scrollEnd="bottom bottom-=40%"
-            stagger={0.025}
-            distance={80}
-            stretch={1.8}
+            stagger={0.12}
+            distance={50}
+            stretch={1.1}
             smoothing={0.2}
           >
             I’m Odyssey, a campus survival armory that prints project theses, stocks precision stationery, and settles dues at the raven altar. Deadlines that feel like child’s play. Tools that give you your sleep back. Survive the deadline.

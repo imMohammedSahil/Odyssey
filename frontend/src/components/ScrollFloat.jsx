@@ -81,6 +81,16 @@ const ScrollFloat = ({
 
   const splitText = useMemo(() => {
     if (text === null) return null;
+    if (splitBy === 'sentences') {
+      const sentences = text.match(/[^.!?]+[.!?]+(?:\s+|$)|[^.!?]+$/g) || [text];
+      return sentences.map((sentence, sIndex) => (
+        <span className="scroll-float-sentence" key={sIndex}>
+          <span className="scroll-float-unit" style={shiftStyle}>
+            {sentence.trim()}
+          </span>{' '}
+        </span>
+      ));
+    }
     return text.split(/(\s+)/).map((word, wordIndex) =>
       word.trim() === '' ? (
         word
@@ -113,7 +123,12 @@ const ScrollFloat = ({
     if (scrollContainerRef && !scrollContainerRef.current) return;
 
     const scroller = scrollContainerRef?.current || window;
-    const pieces = el.querySelectorAll(splitBy === 'words' ? '.scroll-float-word' : '.scroll-float-char');
+    const selector = splitBy === 'sentences'
+      ? '.scroll-float-unit'
+      : splitBy === 'words'
+      ? '.scroll-float-word'
+      : '.scroll-float-char';
+    const pieces = el.querySelectorAll(selector);
     const targets = pieces.length ? Array.from(pieces) : [textEl];
     const indexOf = new Map(targets.map((target, index) => [target, index]));
     const at = fn => (_, target) => fn(indexOf.get(target) ?? 0);
@@ -261,3 +276,4 @@ const ScrollFloat = ({
 };
 
 export default ScrollFloat;
+
