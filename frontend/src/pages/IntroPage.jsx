@@ -624,7 +624,7 @@ export default function IntroPage() {
         {/* ── 3. MINIMALIST AISLE DIRECTORY ── */}
         <section className="od-directory-section">
           <div className="od-dir-header">
-            <span className="od-dir-title">Requisition Aisles</span>
+            <span className="od-dir-title">THE EXPEDITION KIT</span>
           </div>
 
           <div>
