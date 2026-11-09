@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { downloadOrPrintReceipt } from "../utils/printReceipt";
+import { downloadOrPrintReceipt, generateCode128Svg } from "../utils/printReceipt";
 
 const css = `
-  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap');
 
   *, *::before, *::after {
     box-sizing: border-box;
@@ -886,9 +886,310 @@ const css = `
     animation: toastSlideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
   }
 
-  @keyframes toastSlideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+  /* ── RECEIPT MODAL POPUP ── */
+  .rcpt-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(13, 13, 13, 0.88);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: rcptFadeIn 0.15s ease-out;
+  }
+
+  @keyframes rcptFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .rcpt-modal-dialog {
+    max-width: 540px;
+    width: 100%;
+    max-height: 92vh;
+    background: #0D0D0D;
+    border: 3.5px solid var(--border-dark);
+    border-radius: 16px;
+    box-shadow: 8px 8px 0px var(--slime-green);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: rcptScaleUp 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes rcptScaleUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .rcpt-modal-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: #171720;
+    border-bottom: 2.5px solid #282836;
+  }
+
+  .rcpt-modal-title {
+    font-family: 'Titan One', 'Archivo Black', sans-serif;
+    font-size: 13.5px;
+    letter-spacing: 0.8px;
+    color: var(--slime-green);
+    text-transform: uppercase;
+  }
+
+  .rcpt-modal-close-btn {
+    background: #282836;
+    color: #FFFFFF;
+    border: 2px solid #3A3A4E;
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 15px;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .rcpt-modal-close-btn:hover {
+    background: var(--brain-pink);
+    color: var(--void-black);
+    border-color: var(--border-dark);
+  }
+
+  .rcpt-modal-scroll-area {
+    padding: 18px;
+    overflow-y: auto;
+    background: #0D0D0D;
+    display: flex;
+    justify-content: center;
+  }
+
+  .rcpt-modal-card {
+    width: 100%;
+    background: #daead4;
+    background-image: 
+      radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.45) 0%, rgba(218, 234, 212, 0.25) 55%, rgba(193, 214, 185, 0.45) 100%),
+      linear-gradient(180deg, #daead4 0%, #d4e5ce 45%, #c5dec0 100%);
+    border: 2px solid #0f1c13;
+    outline: 1px solid rgba(15, 28, 19, 0.35);
+    outline-offset: -5px;
+    padding: 18px 20px 16px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #0b140e;
+    box-sizing: border-box;
+  }
+
+  .rcpt-modal-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+  }
+
+  .rcpt-modal-emblem-wrap {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 2px;
+  }
+
+  .rcpt-modal-pretitle {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.26em;
+    color: #1a2a1f;
+    font-weight: 700;
+  }
+
+  .rcpt-modal-doc-title {
+    font-family: 'Cinzel', serif;
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: #0b140e;
+    margin: 2px 0;
+  }
+
+  .rcpt-modal-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    color: #2b4533;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .rcpt-modal-ornate-divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 3px 0;
+  }
+
+  .rcpt-modal-ornate-divider::before,
+  .rcpt-modal-ornate-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(15, 28, 19, 0.4);
+  }
+
+  .rcpt-modal-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px 14px;
+    padding: 7px 10px;
+    background: rgba(15, 28, 19, 0.04);
+    border: 1px solid rgba(15, 28, 19, 0.18);
+    border-radius: 2px;
+  }
+
+  .rcpt-modal-meta-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .rcpt-modal-meta-lbl {
+    font-family: 'Cinzel', serif;
+    font-size: 7.5px;
+    letter-spacing: 0.18em;
+    color: #2e4a36;
+    font-weight: 700;
+  }
+
+  .rcpt-modal-meta-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #0b140e;
+  }
+
+  .rcpt-modal-meta-val.mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+  }
+
+  .rcpt-modal-meta-val.status-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 700;
+    background: rgba(82, 227, 137, 0.35);
+    border: 1px solid rgba(15, 28, 19, 0.35);
+    padding: 2px 6px;
+    border-radius: 2px;
+    align-self: flex-start;
+  }
+
+  .rcpt-modal-manifest {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .rcpt-modal-th-row {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(15, 28, 19, 0.3);
+    font-family: 'Cinzel', serif;
+    font-size: 7.5px;
+    letter-spacing: 0.16em;
+    color: #2b4533;
+    font-weight: 800;
+  }
+
+  .rcpt-modal-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 2px 0;
+    border-bottom: 1px dotted rgba(15, 28, 19, 0.18);
+  }
+
+  .rcpt-modal-item-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10.5px;
+    font-weight: 800;
+    color: #0b140e;
+  }
+
+  .rcpt-modal-total-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 12px;
+    background: rgba(15, 28, 19, 0.08);
+    border: 1.5px solid #0f1c13;
+  }
+
+  .rcpt-modal-total-amt {
+    font-family: 'Cinzel', serif;
+    font-size: 19px;
+    font-weight: 900;
+    color: #0b140e;
+  }
+
+  .rcpt-modal-barcode-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding-top: 5px;
+    border-top: 1px dashed rgba(15, 28, 19, 0.35);
+  }
+
+  .rcpt-modal-barcode-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: #122116;
+  }
+
+  .rcpt-modal-footer-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #171720;
+    border-top: 2.5px solid #282836;
+  }
+
+  .rcpt-modal-print-btn {
+    font-family: 'Titan One', 'Archivo Black', sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    background: var(--slime-green);
+    color: var(--void-black);
+    border: 2px solid var(--border-dark);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px var(--border-dark);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.1s ease;
+  }
+
+  .rcpt-modal-print-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px var(--border-dark);
   }
 `;
 
@@ -915,6 +1216,7 @@ export default function ProfilePage() {
   const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("ALL"); // "ALL", "ACTIVE", "READY"
   const [toastMsg, setToastMsg] = useState("");
+  const [activeReceiptModal, setActiveReceiptModal] = useState(null);
 
   const cartCount = (cartItems || []).reduce(
     (sum, item) => sum + (Number(item.quantity) || 1),
@@ -1037,19 +1339,16 @@ export default function ProfilePage() {
     return s === "PRINTING" || s === "PROCESSING" || s === "PENDING" || s === "AWAITING PAYMENT";
   }).length;
 
-  // View Receipt handler - downloads/prints PDF directly without navigating away
+  // View Receipt handler - opens receipt modal popup directly on the page
   const handleViewReceipt = (order) => {
-    localStorage.setItem(
-      "odysseyReceipt",
-      JSON.stringify({
-        orderId: order.orderId || order._id || "OD-ONLINE",
-        items: order.items || [],
-        total: order.total || 0,
-        date: order.date || new Date().toLocaleString(),
-        status: order.status || "READY",
-      })
-    );
-    downloadOrPrintReceipt(order);
+    setActiveReceiptModal({
+      orderId: order.orderId || order._id || "OD-ONLINE",
+      items: order.items || [],
+      total: order.total || 0,
+      date: order.date || new Date().toLocaleString(),
+      status: (order.status || "CONFIRMED").toUpperCase(),
+      pickupCounter: "MAIN LIBRARY BASECAMP • PICKUP DESK 04",
+    });
   };
 
   // Re-order items
@@ -1352,6 +1651,144 @@ export default function ProfilePage() {
             <span>{toastMsg}</span>
           </div>
         )}
+
+        {/* RECEIPT MODAL POPUP */}
+        {activeReceiptModal && (() => {
+          const codeString = `ODY-${String(activeReceiptModal.orderId).replace(/[^a-zA-Z0-9]/g, "").slice(0, 12).toUpperCase()}`;
+          const { bars, totalWidth } = generateCode128Svg(codeString);
+
+          return (
+            <div
+              className="rcpt-modal-overlay"
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setActiveReceiptModal(null);
+              }}
+            >
+              <div className="rcpt-modal-dialog">
+                <div className="rcpt-modal-topbar">
+                  <span className="rcpt-modal-title">OFFICIAL RECEIPT DISPATCH</span>
+                  <button
+                    className="rcpt-modal-close-btn"
+                    onClick={() => setActiveReceiptModal(null)}
+                    aria-label="Close"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="rcpt-modal-scroll-area">
+                  <div className="rcpt-modal-card">
+                    {/* Header Crest */}
+                    <div className="rcpt-modal-head">
+                      <div className="rcpt-modal-emblem-wrap">
+                        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
+                          <circle cx="40" cy="40" r="37" stroke="#0e1a12" strokeWidth="1.5" strokeDasharray="3 2" />
+                          <circle cx="40" cy="40" r="33" stroke="#0e1a12" strokeWidth="0.8" />
+                          <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" strokeWidth="0.5" />
+                          <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
+                          <circle cx="43" cy="28" r="1.8" fill="#52e389" />
+                          <path d="M40 8.2 L41.1 12 L44.5 13 L41.1 14 L40 17.5 L38.9 14 L35.5 13 L38.9 12 Z" fill="#23854b" />
+                        </svg>
+                      </div>
+                      <span className="rcpt-modal-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
+                      <h2 className="rcpt-modal-doc-title">SUPPLY ORDER RECEIPT</h2>
+                      <span className="rcpt-modal-subtitle">AUTHENTICATED CAMPUS SCRIPTORIUM DISPATCH RECORD</span>
+                      <div className="rcpt-modal-ornate-divider">
+                        <span style={{ padding: "0 8px", fontSize: 8, color: "#1e452c" }}>❖</span>
+                      </div>
+                    </div>
+
+                    {/* Metadata Grid */}
+                    <div className="rcpt-modal-meta-grid">
+                      <div className="rcpt-modal-meta-cell">
+                        <span className="rcpt-modal-meta-lbl">ORDER REFERENCE</span>
+                        <span className="rcpt-modal-meta-val mono">{activeReceiptModal.orderId}</span>
+                      </div>
+                      <div className="rcpt-modal-meta-cell">
+                        <span className="rcpt-modal-meta-lbl">DISPATCH STATUS</span>
+                        <span className="rcpt-modal-meta-val status-badge">{activeReceiptModal.status}</span>
+                      </div>
+                      <div className="rcpt-modal-meta-cell">
+                        <span className="rcpt-modal-meta-lbl">COLLECTION POINT</span>
+                        <span className="rcpt-modal-meta-val">{activeReceiptModal.pickupCounter}</span>
+                      </div>
+                      <div className="rcpt-modal-meta-cell">
+                        <span className="rcpt-modal-meta-lbl">RECORDED AT</span>
+                        <span className="rcpt-modal-meta-val">{activeReceiptModal.date}</span>
+                      </div>
+                    </div>
+
+                    <div style={{ borderTop: "1px dashed rgba(15, 28, 19, 0.35)", margin: "2px 0" }} />
+
+                    {/* Manifest Table */}
+                    <div className="rcpt-modal-manifest">
+                      <div className="rcpt-modal-th-row">
+                        <span style={{ flex: 1, textAlign: "left" }}>ITEM DESCRIPTION</span>
+                        <span style={{ width: 44, textAlign: "center" }}>QTY</span>
+                        <span style={{ width: 68, textAlign: "right" }}>AMOUNT</span>
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                        {(activeReceiptModal.items || []).map((item, idx) => (
+                          <div key={idx} className="rcpt-modal-item-row">
+                            <div style={{ flex: 1, textAlign: "left" }}>
+                              <div className="rcpt-modal-item-name">{item.name || item.title || "Item"}</div>
+                              {item.specs && <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 7.5, color: "#3b5742" }}>{item.specs}</div>}
+                            </div>
+                            <div style={{ width: 44, textAlign: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 9.5, fontWeight: 600, color: "#1a2a1f" }}>
+                              ×{item.quantity || item.qty || 1}
+                            </div>
+                            <div style={{ width: 68, textAlign: "right", fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, fontWeight: 800, color: "#0b140e" }}>
+                              ₹{((Number(item.price) || 0) * (Number(item.quantity || item.qty) || 1)).toFixed(0)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Total Box */}
+                    <div className="rcpt-modal-total-box">
+                      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                        <span style={{ fontFamily: "'Cinzel', serif", fontSize: 9, fontWeight: 900, letterSpacing: "0.18em", color: "#0b140e" }}>TOTAL OFFERING PAID</span>
+                        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 6.5, letterSpacing: "0.14em", color: "#315139" }}>OFFICIALLY TENDERED & SETTLED</span>
+                      </div>
+                      <span className="rcpt-modal-total-amt">₹{activeReceiptModal.total}</span>
+                    </div>
+
+                    {/* Barcode Section */}
+                    <div className="rcpt-modal-barcode-wrap">
+                      <svg viewBox={`0 0 ${totalWidth} 32`} preserveAspectRatio="none" style={{ width: "72%", maxWidth: 240, height: 30, display: "block", shapeRendering: "crispEdges" }}>
+                        {bars.map((bar, idx) => (
+                          <rect key={idx} x={bar.x} y="0" width={bar.w} height="32" fill="#0b160e" />
+                        ))}
+                      </svg>
+                      <span className="rcpt-modal-barcode-text">* {codeString} *</span>
+                    </div>
+
+                    <div style={{ fontFamily: "'Cinzel', serif", fontSize: 6.5, letterSpacing: "0.22em", color: "#3b5742", textAlign: "center", fontWeight: 700, textTransform: "uppercase" }}>
+                      ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rcpt-modal-footer-bar">
+                  <button
+                    className="rcpt-modal-print-btn"
+                    onClick={() => downloadOrPrintReceipt(activeReceiptModal)}
+                  >
+                    🖨 PRINT / DOWNLOAD PDF
+                  </button>
+                  <button
+                    className="rcpt-modal-close-btn"
+                    style={{ width: "auto", padding: "0 14px", fontSize: 12, fontFamily: "'Titan One', sans-serif" }}
+                    onClick={() => setActiveReceiptModal(null)}
+                  >
+                    CLOSE
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </>
   );

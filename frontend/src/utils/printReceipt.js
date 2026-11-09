@@ -13,7 +13,7 @@ const CODE128_PATTERNS = [
   "114131", "311141", "411131", "211412", "211214", "211232", "2331112"
 ];
 
-function generateCode128Svg(rawText) {
+export function generateCode128Svg(rawText) {
   const text = String(rawText || "ODY-CAMPUS");
   const codes = [104];
   let checkSum = 104;
