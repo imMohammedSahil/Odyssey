@@ -408,7 +408,7 @@ export default function RitualOfferingPage() {
           {/* Altar Covenant Bar */}
           <div className="ritual-meta-bar">
             <span>COVENANT <span className="ritual-meta-sigil">#{sigilCode}</span></span>
-            <span>COMMUNION SEALED</span>
+            <span>SOUL CONSECRATED</span>
           </div>
         </div>
       </div>
