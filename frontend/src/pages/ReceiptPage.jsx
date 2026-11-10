@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { chunkManifestItems } from "../utils/printReceipt";
+import { baseAudio, paymentAudio } from "../utils/audioManager";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -1083,55 +1084,6 @@ function getWandScreenPos(width, height) {
   return { originX, originY, renderW, renderH, offsetX, offsetY, scale };
 }
 
-function projectPt(x, y, renderW, renderH, offsetX, offsetY) {
-  return {
-    x: offsetX + (x / 1672) * renderW,
-    y: offsetY + (y / 941) * renderH
-  };
-}
-
-// Draws a stroke path from vertex 0 up to currentDistance from wand tip
-function drawStrokeLine(ctx, stroke, currentDist, renderW, renderH, offsetX, offsetY) {
-  if (currentDist < stroke.minD) return null;
-
-  const pts = stroke.pts;
-  if (!pts || pts.length < 2) return null;
-
-  let fraction = 1.0;
-  if (currentDist < stroke.maxD && stroke.maxD > stroke.minD) {
-    fraction = Math.max(0, Math.min(1.0, (currentDist - stroke.minD) / (stroke.maxD - stroke.minD)));
-  }
-
-  const numSegments = pts.length - 1;
-  const targetSegment = fraction * numSegments;
-  const fullSegments = Math.floor(targetSegment);
-  const segFraction = targetSegment - fullSegments;
-
-  ctx.beginPath();
-  const p0 = projectPt(pts[0][0], pts[0][1], renderW, renderH, offsetX, offsetY);
-  ctx.moveTo(p0.x, p0.y);
-
-  let lastX = p0.x;
-  let lastY = p0.y;
-
-  for (let i = 1; i <= fullSegments; i++) {
-    const pt = projectPt(pts[i][0], pts[i][1], renderW, renderH, offsetX, offsetY);
-    ctx.lineTo(pt.x, pt.y);
-    lastX = pt.x;
-    lastY = pt.y;
-  }
-
-  if (segFraction > 0 && fullSegments < numSegments) {
-    const pPrev = projectPt(pts[fullSegments][0], pts[fullSegments][1], renderW, renderH, offsetX, offsetY);
-    const pNext = projectPt(pts[fullSegments + 1][0], pts[fullSegments + 1][1], renderW, renderH, offsetX, offsetY);
-    lastX = pPrev.x + (pNext.x - pPrev.x) * segFraction;
-    lastY = pPrev.y + (pNext.y - pPrev.y) * segFraction;
-    ctx.lineTo(lastX, lastY);
-  }
-
-  return { tipX: lastX, tipY: lastY, fraction, isComplete: fraction >= 1.0 };
-}
-
 // ── ISO/IEC 15417 Code 128B Specification (Genuinely Scannable) ──
 const CODE128_PATTERNS = [
   "212222", "222122", "222221", "121223", "121322", "131222", "122213", "122312", "132212", "221213",
@@ -1209,6 +1161,15 @@ function dispatchBlobColor(t, force = false) {
 
 export default function ReceiptPage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // ✦ Ensure starting base track is dead stopped & darker ambient continues
+    baseAudio.stop();
+    paymentAudio.continueNormally();
+    try {
+      localStorage.setItem("odyssey_unlocked_altar_theme", "true");
+    } catch (_) {}
+  }, []);
 
   // 0 = pitch black | 0.5 = tease 1 | 1 = waiting click 2 | 1.5 = tease 2 | 2 = waiting click 3 | 3 = paint spill flowing | 4 = fully revealed
   const [stage, setStage] = useState(0);
