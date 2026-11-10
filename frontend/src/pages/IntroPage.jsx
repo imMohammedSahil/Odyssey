@@ -906,24 +906,23 @@ export default function IntroPage() {
           )}
 
           <div className="od-mesh-wrap">
-            {loadingState === "ready" && (
-              <ElasticMesh
-                text="Odyssey"
-                fontFamily="'Titan One', 'Archivo Black', cursive, sans-serif"
-                fontWeight={900}
-                color="#FF70A6"
-                material="balloon"
-                inflate={1.02}
-                stiffness={0.46}
-                wobble={0.6}
-                grabRadius={80}
-                stretch={0.6}
-                press={0.6}
-                shadow={0.5}
-                intro={true}
-                theme="dark"
-              />
-            )}
+            <ElasticMesh
+              text="Odyssey"
+              fontFamily="'Titan One', 'Archivo Black', cursive, sans-serif"
+              fontWeight={900}
+              color="#FF70A6"
+              material="balloon"
+              inflate={1.02}
+              stiffness={0.46}
+              wobble={0.6}
+              grabRadius={80}
+              stretch={0.6}
+              press={0.6}
+              shadow={0.5}
+              intro={true}
+              playIntro={loadingState === "ready"}
+              theme="dark"
+            />
           </div>
 
           <div className={`od-subtitle ${showRest ? "is-visible" : ""}`}>
