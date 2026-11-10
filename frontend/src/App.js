@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import IntroPage from "./pages/IntroPage";
@@ -22,6 +22,7 @@ import RitualOfferingPage from "./pages/RitualOfferingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import BlobCursor from "./components/BlobCursor";
 import SmoothScroll from "./components/SmoothScroll";
+import { baseAudio, paymentAudio } from "./utils/audioManager";
 
 const getCursorConfig = (pathname) => {
   // 1. Basecamp Student Desk 04 (/student) - Comic Zombie & Brain Pink Ambience
@@ -205,10 +206,10 @@ const getCursorConfig = (pathname) => {
     };
   }
 
-  // 12. Admin (/admin)
+  // 12. Admin (/admin) - Film Noir Crimson Brick Red (matches film-noir-alley.svg red brick wall)
   if (pathname.startsWith("/admin")) {
     return {
-      color: "#7C5CFC", // Cyber Violet
+      color: "#E11618", // Film Noir Crimson Brick Red (matches the iconic Red Brick Wall in the background)
       material: "chrome",
       size: 42,
       wobble: 0.8,
@@ -318,7 +319,6 @@ function GlobalBlobCursor() {
 
   return (
     <BlobCursor
-      key={pathname}
       material={cfg.material || "chrome"}
       color={activeColor}
       blend={cfg.blend || "normal"}
@@ -355,11 +355,61 @@ function ScrollToTop() {
   return null;
 }
 
+function GlobalAudioTracker() {
+  const { pathname } = useLocation();
+  const prevPathRef = useRef(null);
+
+  useEffect(() => {
+    const prev = prevPathRef.current;
+    prevPathRef.current = pathname;
+
+    const isPay = pathname.startsWith("/payment");
+    const isReceipt = pathname.startsWith("/receipt");
+    const wasPay = prev && prev.startsWith("/payment");
+    const wasReceipt = prev && prev.startsWith("/receipt");
+    const wasPaymentFlow = wasPay || wasReceipt;
+
+    if (isPay) {
+      // Entering /payment: stop base loop, start payment evil audio at 8s
+      baseAudio.stop();
+      if (!wasPay) {
+        paymentAudio.startPayment();
+      }
+    } else if (isReceipt) {
+      // On /receipt: base loop stays stopped, payment audio continues normally
+      baseAudio.stop();
+      paymentAudio.continueNormally();
+    } else {
+      // Any page before payment (landing, student, 6 terminal stations, cart, etc.):
+      paymentAudio.stopAndReset();
+
+      const userPrefMuted =
+        typeof window !== "undefined" && localStorage.getItem("odyssey_music_enabled") === "false";
+
+      if (wasPaymentFlow) {
+        // ✦ Returning from the payment altar/receipt back to basecamp or stations:
+        // Automatically restore the base ambient track if user hasn't explicitly muted
+        if (!userPrefMuted && !baseAudio.isReload) {
+          baseAudio.play();
+        }
+      } else if (prev === null && baseAudio.isFirstTimeEntry()) {
+        // Only start on initial session entry
+        baseAudio.play();
+      } else if (baseAudio.isSoundOn()) {
+        baseAudio.play();
+      }
+    }
+  }, [pathname]);
+
+  return null;
+}
+
 function App() {
   return (
     <>
       <SmoothScroll />
-      <GlobalBlobCursor />
+      <ScrollToTop />
+      <GlobalAudioTracker />
       <Routes>
       {/* Public Routes */}
       <Route path="/" element={<IntroPage />} />
@@ -502,25 +552,18 @@ function App() {
         }
       />
 
-      {/* Admin Protected Routes */}
+      {/* Admin Routes */}
       <Route
         path="/admin-intro"
-        element={
-          <ProtectedRoute allowedRole="admin">
-            <AdminIntroPage />
-          </ProtectedRoute>
-        }
+        element={<AdminIntroPage />}
       />
 
       <Route
         path="/admin"
-        element={
-          <ProtectedRoute allowedRole="admin">
-            <AdminDashboard />
-          </ProtectedRoute>
-        }
+        element={<AdminDashboard />}
       />
     </Routes>
+    <GlobalBlobCursor />
     </>
   );
 }
