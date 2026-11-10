@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { downloadOrPrintReceipt, generateCode128Svg } from "../utils/printReceipt";
+import SoundToggleButton from "../components/SoundToggleButton";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap');
@@ -149,6 +150,21 @@ const css = `
     box-shadow: 1px 1px 0px var(--border-dark);
   }
 
+  .pf-nav-sound {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
+  .pf-nav-sound:hover {
+    background: #FF5A96;
+  }
+
+  .pf-nav-sound.is-sound-on,
+  .pf-nav-sound.is-sound-off {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
   .pf-nav-cart {
     background: var(--brain-pink);
     color: var(--void-black);
@@ -158,6 +174,8 @@ const css = `
     background: var(--hazard-gold);
     color: var(--void-black);
   }
+
+
 
   /* ── HERO BANNER TITLE ── */
   .pf-banner-content {
@@ -218,6 +236,7 @@ const css = `
     display: flex;
     flex-direction: column;
     gap: 32px;
+    position: relative;
   }
 
   /* ── CADET IDENTITY CARD ── */
@@ -987,7 +1006,7 @@ const css = `
   .rcpt-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 99999;
+    z-index: 9990;
     background: rgba(6, 10, 7, 0.90);
     backdrop-filter: blur(10px);
     display: flex;
@@ -1402,6 +1421,231 @@ const css = `
     transform: translateY(1px);
     box-shadow: 1px 1px 0px rgba(15, 28, 19, 0.35);
   }
+
+  /* ── THE SOUNDS OF ODYSSEY (AUDITORY LORE & TRIBUTE) ── */
+  .pf-sounds-section {
+    margin-top: 48px;
+    background: var(--parchment);
+    border: 3.5px solid var(--border-dark);
+    border-radius: 20px;
+    box-shadow: var(--shadow-comic-lg);
+    padding: 36px 32px 48px;
+  }
+
+  .pf-sounds-header-box {
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    border-bottom: 2px dashed rgba(13, 13, 13, 0.2);
+    padding-bottom: 20px;
+  }
+
+  .pf-sounds-pill {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--void-black);
+    color: var(--slime-green);
+    padding: 5px 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .pf-sounds-title {
+    font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+    font-size: clamp(24px, 3.2vw, 34px);
+    color: var(--void-black);
+    letter-spacing: 0.5px;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .pf-sounds-subtitle {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #4A564F;
+    margin-top: 4px;
+    max-width: 100%;
+    line-height: 1.5;
+  }
+
+  .pf-sounds-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+
+  .pf-sound-card {
+    background: #FFFFFF;
+    border: 3px solid var(--border-dark);
+    border-radius: 16px;
+    padding: 24px 22px;
+    box-shadow: var(--shadow-comic);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .pf-sound-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-comic-lg);
+  }
+
+  .pf-sound-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .pf-sound-tag {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border: 2px solid var(--border-dark);
+    border-radius: 999px;
+    box-shadow: 1.5px 1.5px 0px var(--border-dark);
+  }
+
+  .pf-sound-tag.tag-gf {
+    background: var(--hazard-gold);
+    color: var(--void-black);
+  }
+
+  .pf-sound-tag.tag-locked {
+    background: var(--void-black);
+    color: var(--brain-pink);
+  }
+
+  .pf-sound-tag.tag-unlocked {
+    background: #BE2E2E;
+    color: #FFFFFF;
+  }
+
+  .pf-sound-track-name {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--void-black);
+    line-height: 1.25;
+    margin-bottom: 5px;
+  }
+
+  .pf-sound-artist {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: #D81B60;
+    margin-bottom: 10px;
+  }
+
+  .pf-sound-role-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--void-black);
+    background: var(--slime-green);
+    border: 1.5px solid var(--border-dark);
+    padding: 3px 8px;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 14px;
+    width: fit-content;
+  }
+
+  .pf-sound-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #2F3934;
+    font-weight: 500;
+  }
+
+  /* ✦ YIN & YANG THEMED SOUND CARDS ✦ */
+  .pf-sound-card.pf-sound-card-yang {
+    background: #FFFFFF !important;
+    border: 3.5px solid var(--border-dark) !important;
+    border-radius: 16px;
+    box-shadow: 5px 5px 0px var(--border-dark) !important;
+    color: var(--void-black);
+  }
+
+  .pf-sound-card.pf-sound-card-yang:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0px var(--border-dark) !important;
+  }
+
+  .pf-sound-card.pf-sound-card-yang .pf-sound-track-name {
+    color: var(--void-black);
+  }
+
+  .pf-sound-card.pf-sound-card-yang .pf-sound-artist {
+    color: #4A5568;
+  }
+
+  .pf-sound-card.pf-sound-card-yang .pf-sound-role-chip {
+    background: #FFFFFF;
+    color: var(--void-black);
+    border: 1.5px solid var(--border-dark);
+  }
+
+  .pf-sound-card.pf-sound-card-yang .pf-sound-desc {
+    color: #2D3748;
+  }
+
+  /* YIN (DARK / ABYSSAL) */
+  .pf-sound-card.pf-sound-card-yin {
+    background: #0B0E0D !important;
+    border: 2.5px solid #FFFFFF !important;
+    border-radius: 16px;
+    box-shadow: 0 0 0 2px var(--border-dark), 5px 5px 0px var(--border-dark) !important;
+    color: #FFFFFF;
+  }
+
+  .pf-sound-card.pf-sound-card-yin:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 0 0 0 2px var(--border-dark), 7px 7px 0px var(--border-dark) !important;
+  }
+
+  .pf-sound-card.pf-sound-card-yin .pf-sound-track-name {
+    color: #FFFFFF !important;
+  }
+
+  .pf-sound-card.pf-sound-card-yin .pf-sound-artist {
+    color: rgba(255, 255, 255, 0.72) !important;
+  }
+
+  .pf-sound-card.pf-sound-card-yin .pf-sound-role-chip {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #E2E8F0 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.28) !important;
+  }
+
+  .pf-sound-card.pf-sound-card-yin .pf-sound-desc {
+    color: rgba(240, 240, 240, 0.82) !important;
+  }
+
+  .pf-sound-card.pf-sound-card-yin .pf-sound-desc strong {
+    color: #FFFFFF !important;
+  }
+
+  /* Locked / Unlocked subtle distinctions for Yin card */
+  .pf-sound-card.pf-sound-card-yin.is-locked .pf-sound-track-name {
+    letter-spacing: 0.5px;
+  }
 `;
 
 function getStatusBadgeClass(status) {
@@ -1442,6 +1686,22 @@ export default function ProfilePage() {
   const [toastMsg, setToastMsg] = useState("");
   const [activeReceiptModal, setActiveReceiptModal] = useState(null);
   const [copiedOrderId, setCopiedOrderId] = useState(false);
+  const [hasUnlockedAltarSong, setHasUnlockedAltarSong] = useState(() => {
+    try {
+      return localStorage.getItem("odyssey_unlocked_altar_theme") === "true";
+    } catch (_) {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      const unlocked = localStorage.getItem("odyssey_unlocked_altar_theme") === "true";
+      setHasUnlockedAltarSong(unlocked);
+    } catch (_) {}
+  }, []);
+
+
 
   const cartCount = (cartItems || []).reduce(
     (sum, item) => sum + (Number(item.quantity) || 1),
@@ -1648,6 +1908,8 @@ export default function ProfilePage() {
             </div>
 
             <div className="pf-nav-actions">
+              <SoundToggleButton className="pf-nav-btn pf-nav-sound" />
+
               <button
                 className="pf-nav-btn pf-nav-cart"
                 onClick={() => navigate("/cart")}
@@ -1935,6 +2197,137 @@ export default function ProfilePage() {
               )}
             </div>
           </section>
+
+          {/* 3. THE SOUNDS OF ODYSSEY: AUDITORY LORE & TRIBUTE */}
+          <section className="pf-sounds-section">
+            <div className="pf-sounds-header-box">
+              <div>
+                <h2 className="pf-sounds-title">The Sounds of Odyssey</h2>
+                <p className="pf-sounds-subtitle">
+                  From the dreamlike Oregon woods to the subterranean abyss of the offering altar — honoring the masters behind our frequencies.
+                </p>
+              </div>
+            </div>
+
+            <div className="pf-sounds-grid">
+              {/* ✦ 1. FIRST TRACK (YANG): GRAVITY FALLS / DREAMSCAPERERS ✦ */}
+              <div className="pf-sound-card pf-sound-card-yang">
+                <div>
+                  <h3 className="pf-sound-track-name">Dreamscaperers Outro</h3>
+                  <div className="pf-sound-artist">Composed by Brad Breeck · Created by Alex Hirsch · Gravity Falls OST</div>
+                  <div className="pf-sound-role-chip">Landing Page · Basecamp · All 6 Terminal Stations</div>
+                  <p className="pf-sound-desc">
+                    Originally crafted by visionary composer <strong>Brad Breeck</strong> for <em>Gravity Falls</em>. Built around warm kalimba chimes, nostalgic analog keys, and surreal woodblock echoes, this loop encapsulates the cozy mystery of the Pacific Northwest mystery shack before the storm hits.
+                  </p>
+
+                  {/* WRITTEN TRIBUTE */}
+                  <div
+                    style={{
+                      background: "rgba(13, 13, 13, 0.04)",
+                      padding: "12px 14px",
+                      borderRadius: "8px",
+                      marginTop: "16px",
+                      fontSize: "12px",
+                      lineHeight: "1.6",
+                      color: "#1F2937",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "9px",
+                        fontWeight: 800,
+                        letterSpacing: "0.1em",
+                        color: "#4B5563",
+                        textTransform: "uppercase",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      A WRITTEN TRIBUTE
+                    </div>
+                    <p style={{ margin: "0 0 6px 0", fontStyle: "italic", color: "#374151" }}>
+                      &ldquo;To Alex Hirsch and Brad Breeck: Thank you for crafting a world brimming with mystery, laughter, and wonder. Gravity Falls inspired the curious soul and adventurous spirit of Odyssey — proving that the strangest mysteries feel like home when built with heart.&rdquo;
+                    </p>
+                    <div
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "11px",
+                        fontWeight: 700,
+                        color: "var(--void-black)",
+                      }}
+                    >
+                      — Mohammed Sahil, Creator of Odyssey
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ✦ 2. SECOND TRACK (YIN): SURPRISE / LOCKED OR UNLOCKED ✦ */}
+              {!hasUnlockedAltarSong ? (
+                <div className="pf-sound-card pf-sound-card-yin is-locked">
+                  <div>
+                    <h3 className="pf-sound-track-name">??? · The Abyssal Frequency</h3>
+                    <div className="pf-sound-artist">Classified Occult Composer · Sealed Vault</div>
+                    <div className="pf-sound-role-chip">Grim Reaper's Offering Shrine · Checkout Gate</div>
+                    <p className="pf-sound-desc">
+                      A cosmic dark-ambient frequency resting in subterranean depths. This tribute remains shrouded in cemetery fog until you journey past Basecamp, place your offering with the Grim Reaper at the payment altar, and hear it echo through the graveyard.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="pf-sound-card pf-sound-card-yin is-unlocked">
+                  <div>
+                    <h3 className="pf-sound-track-name">Cthulhu: Abyssal Drone</h3>
+                    <div className="pf-sound-artist">A Cryo Chamber Collaboration · Simon Heath</div>
+                    <div className="pf-sound-role-chip">The Grim Reaper's Altar · Archival Manifest</div>
+                    <p className="pf-sound-desc">
+                      A monument to cosmic dread crafted by dark ambient imprint <strong>Cryo Chamber</strong> and <strong>Simon Heath</strong>. Layered with cavernous modular sub-bass, subterranean tomb reverbs, and suffocating tension — soundtracking your trial before the Grim Reaper.
+                    </p>
+
+                    {/* WRITTEN TRIBUTE */}
+                    <div
+                      style={{
+                        background: "rgba(255, 255, 255, 0.04)",
+                        padding: "12px 14px",
+                        borderRadius: "8px",
+                        marginTop: "16px",
+                        fontSize: "12px",
+                        lineHeight: "1.6",
+                        color: "#D1D5DB",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "9px",
+                          fontWeight: 800,
+                          letterSpacing: "0.1em",
+                          color: "#FFFFFF",
+                          textTransform: "uppercase",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        A WRITTEN TRIBUTE
+                      </div>
+                      <p style={{ margin: "0 0 6px 0", fontStyle: "italic", color: "#E5E7EB" }}>
+                        &ldquo;To Simon Heath and Cryo Chamber: Thank you for mastering the art of sonic darkness and cosmic atmosphere. Your subterranean drones gave the Grim Reaper&rsquo;s Altar its spine-chilling weight and cinematic depth.&rdquo;
+                      </p>
+                      <div
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          color: "#F9FAFB",
+                        }}
+                      >
+                        — Mohammed Sahil, Creator of Odyssey
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
         </main>
 
         {/* TOAST FEEDBACK */}
@@ -2110,6 +2503,7 @@ export default function ProfilePage() {
             </div>
           );
         })()}
+
       </div>
     </>
   );
