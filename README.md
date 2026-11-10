@@ -1,8 +1,8 @@
 # Odyssey
 
-**Campus Stationery Requisition, Document Print Automation & Neo-Brutalist Arcade Pre-Order Ecosystem**
+**Halloween-Themed Campus Stationery Requisition, Document Print Automation & Neo-Brutalist Arcade Pre-Order Ecosystem**
 
-Odyssey is an asynchronous, high-throughput campus stationery requisition and document print pre-ordering platform engineered to eliminate physical service bottlenecks in university libraries and print centers. Built on a decoupled React 19 single-page architecture and an Express/MongoDB service gateway, Odyssey unifies student order dispatch, real-time client-side UPI payment verification, WebGL spatial physics, and administrative telemetry into a performant, zero-layout-shift web ecosystem.
+Odyssey is an asynchronous, high-throughput campus stationery requisition and document print pre-ordering platform engineered to eliminate physical service bottlenecks in university libraries and print centers. Wrapped in an immersive Halloween-inspired visual universe—featuring moonlit gothic cemeteries, hooded reaper ritual shrines, haunted ink labs, and pulp horror comic aesthetics—Odyssey unifies student order dispatch, real-time client-side UPI payment verification, WebGL spatial physics, and administrative telemetry into a performant, zero-layout-shift web ecosystem.
 
 ---
 
