@@ -507,10 +507,12 @@ const ElasticMesh = ({
   press = 0.5,
   shadow = 0.5,
   intro = true,
+  playIntro = true,
   theme = 'dark',
   dpr,
   className = '',
   style,
+  onReady,
   ...rest
 }) => {
   const containerRef = useRef(null);
@@ -533,8 +535,10 @@ const ElasticMesh = ({
     press: clamp(press, 0, 1),
     shadow: clamp(shadow, 0, 1),
     intro,
+    playIntro: Boolean(playIntro),
     light: theme === 'light',
-    dpr
+    dpr,
+    onReady
   };
   const settingsRef = useRef(settings);
   settingsRef.current = settings;
@@ -840,7 +844,13 @@ const ElasticMesh = ({
       } else {
         const family = s.fontFamily;
         const weight = s.fontWeight;
-        if (document.fonts) await document.fonts.load(`${weight} 100px ${family}`).catch(() => null);
+        if (document.fonts) {
+          await Promise.race([
+            document.fonts.load(`${weight} 100px ${family}`),
+            document.fonts.load(`100px ${family}`),
+            document.fonts.ready
+          ]).catch(() => null);
+        }
         if (token !== state.buildToken) return;
         const lines = s.text.split('\n');
         ctx.font = `${weight} 100px ${family}`;
@@ -1004,6 +1014,9 @@ const ElasticMesh = ({
       state.ready = true;
       buildMesh();
       wake();
+      try {
+        settingsRef.current?.onReady?.();
+      } catch (_) {}
     };
 
     const solve = (dt, s) => {
@@ -1248,8 +1261,13 @@ const ElasticMesh = ({
       const dt = last ? Math.min(0.05, (now - last) / 1000) : 1 / 60;
       last = now;
 
-      if (reduce || !s.intro) state.clock = 10;
-      else if (state.ready && state.clock < 10) state.clock = state.clock + dt > 1.8 ? 10 : state.clock + dt;
+      if (reduce || !s.intro) {
+        state.clock = 10;
+      } else if (!s.playIntro) {
+        state.clock = 0;
+      } else if (state.ready && state.clock < 10) {
+        state.clock = state.clock + dt > 1.8 ? 10 : state.clock + dt;
+      }
 
       const hover = state.hover;
       const pointer = state.pointer;
@@ -1297,7 +1315,7 @@ const ElasticMesh = ({
 
       const settling =
         !state.ready ||
-        state.clock < 10 ||
+        (s.playIntro && state.clock < 10) ||
         Math.abs(goal - hover.power) > 0.002 ||
         turning ||
         Math.hypot(pointer.x - hover.x, pointer.y - hover.y) > 0.1 ||
