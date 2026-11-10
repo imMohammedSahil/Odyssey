@@ -365,6 +365,7 @@ function GlobalAudioTracker() {
 
     const isPay = pathname.startsWith("/payment");
     const isReceipt = pathname.startsWith("/receipt");
+    const isAdmin = pathname.startsWith("/admin");
     const wasPay = prev && prev.startsWith("/payment");
     const wasReceipt = prev && prev.startsWith("/receipt");
     const wasPaymentFlow = wasPay || wasReceipt;
@@ -379,6 +380,10 @@ function GlobalAudioTracker() {
       // On /receipt: base loop stays stopped, payment audio continues normally
       baseAudio.stop();
       paymentAudio.continueNormally();
+    } else if (isAdmin) {
+      // On /admin: base loop stops to allow Admin Film Noir soundtrack to play exclusively
+      baseAudio.stop();
+      paymentAudio.stopAndReset();
     } else {
       // Any page before payment (landing, student, 6 terminal stations, cart, etc.):
       paymentAudio.stopAndReset();
