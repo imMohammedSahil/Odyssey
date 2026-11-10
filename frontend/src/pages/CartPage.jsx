@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useCart } from "../context/CartContext";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import SoundToggleButton from "../components/SoundToggleButton";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
@@ -73,6 +74,21 @@ const css = `
   .nb-back-btn:hover {
     transform: translate(2px, 2px);
     box-shadow: 1px 1px 0px var(--border-dark);
+  }
+
+  .nb-sound-btn {
+    background: var(--brain-pink) !important;
+    color: var(--void-black) !important;
+  }
+
+  .nb-sound-btn:hover {
+    background: #FF5A96 !important;
+  }
+
+  .nb-sound-btn.is-sound-on,
+  .nb-sound-btn.is-sound-off {
+    background: var(--brain-pink) !important;
+    color: var(--void-black) !important;
   }
 
   .nb-nav-brand {
@@ -614,6 +630,7 @@ export default function CartPage() {
             <button className="nb-back-btn" onClick={handleExitToStudent}>
               ← BASECAMP
             </button>
+            <SoundToggleButton className="nb-back-btn nb-sound-btn" />
           </nav>
 
           <div className="nb-cart-title-box">
