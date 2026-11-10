@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 export default function Stationery() {
   const [categories, setCategories] = useState([]);
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/stationery")
+    axios.get(`${API_BASE_URL}/api/stationery`)
       .then(res => setCategories(res.data))
       .catch(err => console.error(err));
   }, []);

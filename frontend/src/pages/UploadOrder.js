@@ -5,6 +5,7 @@ import PhoneChatDispatch from "../components/PhoneChatDispatch";
 import ZombieLeft from "../components/ZombieLeft";
 import SoundToggleButton from "../components/SoundToggleButton";
 import ZombieRight from "../components/ZombieRight";
+import { API_BASE_URL } from "../config/api";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
@@ -708,11 +709,11 @@ export default function UploadOrder() {
         const studentId = sessionStorage.getItem("user");
         if (!studentId) return;
 
-        const res = await fetch(`http://localhost:5000/api/profile/${studentId}`);
+        const res = await fetch(`${API_BASE_URL}/api/profile/${studentId}`);
         const data = await res.json();
 
         if (data?.profilePhoto) {
-          setPhoto("http://localhost:5000" + data.profilePhoto);
+          setPhoto(API_BASE_URL + data.profilePhoto);
         }
       } catch (err) {
         console.log("Photo load skipped");

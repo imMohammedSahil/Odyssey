@@ -29,3 +29,4 @@ The Odyssey maintainers take security and data integrity seriously. If you disco
 - We will acknowledge receipt of your report within **48 hours**.
 - We will provide a timeline for validation and release of a patch.
 - We kindly ask that you keep the details confidential until a fix has been published.
+

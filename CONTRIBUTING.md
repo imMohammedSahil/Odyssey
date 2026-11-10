@@ -91,3 +91,4 @@ perf: optimize cumulative luminance threshold slicing
    - What problem is solved or what capability is added.
    - Any visual changes (include screenshots or GIFs if applicable).
    - How the change was tested locally.
+

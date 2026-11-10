@@ -5,6 +5,7 @@ import axios from "axios";
 import QRCode from "qrcode";
 import OccultCursorFumes from "../components/OccultCursorFumes";
 import { baseAudio, paymentAudio } from "../utils/audioManager";
+import { API_BASE_URL } from "../config/api";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -439,7 +440,7 @@ export default function PaymentPage() {
     let isMounted = true;
 
     axios
-      .post("http://localhost:5000/api/ritual/session", {
+      .post(`${API_BASE_URL}/api/ritual/session`, {
         total,
         items: effectiveItems,
       })
@@ -491,7 +492,7 @@ export default function PaymentPage() {
     const interval = setInterval(async () => {
       if (!isPolling) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/ritual/status/${sessionId}`);
+        const res = await axios.get(`${API_BASE_URL}/api/ritual/status/${sessionId}`);
         if (res.data && res.data.status === "completed") {
           isPolling = false;
           handlePaymentComplete();
@@ -540,7 +541,7 @@ export default function PaymentPage() {
 
       // Attempt backend order creation
       try {
-        const res = await axios.post("http://localhost:5000/api/orders", {
+        const res = await axios.post(`${API_BASE_URL}/api/orders`, {
           stationeryItems: effectiveItems.map((item) => ({
             name: item.name,
             quantity: item.quantity,

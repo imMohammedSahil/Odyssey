@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -1277,7 +1278,7 @@ export default function AdminDashboard() {
   // Sync orders from API & local storage
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/orders");
+      const res = await axios.get(`${API_BASE_URL}/api/orders`);
       const serverOrders = Array.isArray(res.data) ? res.data : [];
       const localOrders = JSON.parse(localStorage.getItem("odysseyOrders")) || [];
 
@@ -1317,7 +1318,7 @@ export default function AdminDashboard() {
   const updateStatus = async (id, status) => {
     if (!isAdminMode) return;
     try {
-      await axios.patch(`http://localhost:5000/api/orders/${id}/status`, { status });
+      await axios.patch(`${API_BASE_URL}/api/orders/${id}/status`, { status });
       fetchOrders();
 
       const localOrders = JSON.parse(localStorage.getItem("odysseyOrders")) || [];

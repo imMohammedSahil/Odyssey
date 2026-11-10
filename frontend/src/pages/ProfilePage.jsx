@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { downloadOrPrintReceipt, generateCode128Svg } from "../utils/printReceipt";
 import SoundToggleButton from "../components/SoundToggleButton";
+import { API_BASE_URL } from "../config/api";
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap');
@@ -1754,17 +1755,17 @@ export default function ProfilePage() {
         const studentId = sessionStorage.getItem("user");
         if (studentId) {
           const profileRes = await axios.get(
-            `http://localhost:5000/api/profile/${studentId}`
+            `${API_BASE_URL}/api/profile/${studentId}`
           );
           if (profileRes.data?.profilePhoto) {
-            setPhoto("http://localhost:5000" + profileRes.data.profilePhoto);
+            setPhoto(API_BASE_URL + profileRes.data.profilePhoto);
           }
           if (profileRes.data?.name) {
             setDisplayName(profileRes.data.name);
           }
         }
 
-        const ordersRes = await axios.get("http://localhost:5000/api/orders");
+        const ordersRes = await axios.get(`${API_BASE_URL}/api/orders`);
         if (Array.isArray(ordersRes.data)) {
           // Normalize server orders
           const normalizedServerOrders = ordersRes.data.map((o) => ({
