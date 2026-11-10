@@ -26,3 +26,9 @@ desktop.ini
 # Backup temp files
 *.bak
 
+# Local dev documentation (kept locally, not on GitHub)
+HANDOFF.md
+THEME_SPEC.md
+README.md
+
+
