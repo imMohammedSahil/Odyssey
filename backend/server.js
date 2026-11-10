@@ -289,32 +289,39 @@ app.get("/", (req, res) => {
     .routes-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 14px;
     }
 
     .route-row {
-      background: #0B0E0D;
-      border: 2.5px solid #FFFFFF;
+      border: 3px solid var(--border-dark);
       border-radius: 12px;
-      padding: 12px 16px;
-      box-shadow: 0 0 0 2px var(--border-dark), 4px 4px 0px var(--border-dark);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-comic-sm);
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      justify-content: flex-start;
+      gap: 18px;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
-      color: #FFFFFF;
+      color: var(--void-black);
     }
 
     .route-row:hover {
       transform: translate(-1.5px, -1.5px);
-      box-shadow: 0 0 0 2px var(--border-dark), 6px 6px 0px var(--border-dark);
+      box-shadow: var(--shadow-comic);
     }
+
+    /* Solid Signature Colors for Each Row */
+    .route-row.row-pink { background: var(--brain-pink); }
+    .route-row.row-gold { background: var(--hazard-gold); }
+    .route-row.row-seafoam { background: var(--seafoam); }
+    .route-row.row-green { background: var(--slime-green); }
 
     .route-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      min-width: 220px;
+      flex-shrink: 0;
     }
 
     .method-pill {
@@ -322,26 +329,23 @@ app.get("/", (req, res) => {
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 6px;
-      border: 1.5px solid var(--border-dark);
-      color: var(--void-black);
+      background: var(--void-black);
+      color: #FFFFFF;
       letter-spacing: 0.5px;
     }
-
-    .method-pill.method-post { background: var(--brain-pink); }
-    .method-pill.method-get { background: var(--seafoam); }
 
     .route-path {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13.5px;
-      font-weight: 700;
-      color: #FFFFFF;
+      font-weight: 800;
+      color: var(--void-black);
       letter-spacing: 0.2px;
     }
 
     .route-desc {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      font-weight: 700;
+      color: #111827;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
@@ -436,30 +440,30 @@ app.get("/", (req, res) => {
           <span class="manifest-title">Active Gateway Manifest</span>
         </div>
         <div class="routes-list">
-          <div class="route-row">
+          <div class="route-row row-pink">
             <div class="route-left">
-              <span class="method-pill method-post">POST</span>
+              <span class="method-pill">POST</span>
               <span class="route-path">/api/orders</span>
             </div>
             <span class="route-desc">Student checkout & requisition queue manifest</span>
           </div>
-          <div class="route-row">
+          <div class="route-row row-gold">
             <div class="route-left">
-              <span class="method-pill method-post">POST</span>
+              <span class="method-pill">POST</span>
               <span class="route-path">/api/ritual/session</span>
             </div>
             <span class="route-desc">Dynamic UPI QR payment handshake</span>
           </div>
-          <div class="route-row">
+          <div class="route-row row-seafoam">
             <div class="route-left">
-              <span class="method-pill method-get">GET</span>
+              <span class="method-pill">GET</span>
               <span class="route-path">/api/profile/:id</span>
             </div>
             <span class="route-desc">Student history & avatar telemetry</span>
           </div>
-          <div class="route-row">
+          <div class="route-row row-green">
             <div class="route-left">
-              <span class="method-pill method-get">GET</span>
+              <span class="method-pill">GET</span>
               <span class="route-path">/api/stationery</span>
             </div>
             <span class="route-desc">Aisles & inventory specifications</span>
