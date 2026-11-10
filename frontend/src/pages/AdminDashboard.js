@@ -1135,9 +1135,23 @@ export default function AdminDashboard() {
   }, []);
 
   // Ambient YouTube Soundtrack (https://youtu.be/by2pM_0Sf8c)
-  const [hasAudioStarted, setHasAudioStarted] = useState(false);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const hasVisitedAdmin = typeof window !== "undefined" && sessionStorage.getItem("odyssey_admin_visited") === "true";
+  const savedAdminMusic = typeof window !== "undefined" ? localStorage.getItem("odyssey_admin_music") : null;
+
+  // First time entering /admin: automatically start music
+  // Subsequent visits or refreshes: obey manual sound button state
+  const initialMusicOn = !hasVisitedAdmin ? true : (savedAdminMusic === null ? true : savedAdminMusic === "true");
+
+  const [hasAudioStarted, setHasAudioStarted] = useState(initialMusicOn);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(initialMusicOn);
   const ytIframeRef = useRef(null);
+
+  useEffect(() => {
+    if (!hasVisitedAdmin && typeof window !== "undefined") {
+      sessionStorage.setItem("odyssey_admin_visited", "true");
+      localStorage.setItem("odyssey_admin_music", "true");
+    }
+  }, [hasVisitedAdmin]);
 
   const applyAudioVolume = (vol = 20) => {
     if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
@@ -1170,10 +1184,36 @@ export default function AdminDashboard() {
     return () => window.removeEventListener("message", handleYTMessage);
   }, []);
 
+  // Browser Autoplay fallback: if iframe autoplay is blocked, start smoothly on first user click
+  useEffect(() => {
+    if (isAudioPlaying) {
+      const handleUserGesture = () => {
+        applyAudioVolume(20);
+        if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
+          try {
+            ytIframeRef.current.contentWindow.postMessage(
+              JSON.stringify({ event: "command", func: "playVideo", args: [] }),
+              "*"
+            );
+          } catch (e) {}
+        }
+      };
+      window.addEventListener("click", handleUserGesture, { once: true, passive: true });
+      window.addEventListener("keydown", handleUserGesture, { once: true, passive: true });
+      return () => {
+        window.removeEventListener("click", handleUserGesture);
+        window.removeEventListener("keydown", handleUserGesture);
+      };
+    }
+  }, [isAudioPlaying]);
+
   const toggleAmbientAudio = () => {
     if (!hasAudioStarted) {
       setHasAudioStarted(true);
       setIsAudioPlaying(true);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("odyssey_admin_music", "true");
+      }
       return;
     }
 
@@ -1187,6 +1227,9 @@ export default function AdminDashboard() {
         } catch (e) {}
       }
       setIsAudioPlaying(false);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("odyssey_admin_music", "false");
+      }
     } else {
       if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
         try {
@@ -1198,6 +1241,9 @@ export default function AdminDashboard() {
         } catch (e) {}
       }
       setIsAudioPlaying(true);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("odyssey_admin_music", "true");
+      }
     }
   };
 
