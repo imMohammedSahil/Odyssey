@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ElasticMesh from "../components/ElasticMesh";
 import ScrollFloat from "../components/ScrollFloat";
+import MusicWaveIcon from "../components/MusicWaveIcon";
+import { useAudioState } from "../utils/audioManager";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Titan+One&display=swap');
@@ -149,16 +151,16 @@ const styles = `
      UIVERSE HIDE-AND-SEEK LOADER (THEMED TO ODYSSEY HERO PALETTE)
   ────────────────────────────────────────────────────────── */
   .od-loader-overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: var(--bg-green);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 50;
-    pointer-events: none;
+    z-index: 999;
+    touch-action: none;
     transition: opacity 0.5s ease-out;
   }
 
@@ -283,6 +285,16 @@ const styles = `
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
+  }
+
+  .od-dead-pink {
+    color: var(--brain-pink);
+    font-weight: 800;
+    display: inline;
+    letter-spacing: inherit;
+    -webkit-text-stroke: 0.9px var(--text-black);
+    paint-order: stroke fill;
+    text-shadow: 0 1px 2px rgba(10, 10, 10, 0.12);
   }
 
   .od-cursor {
@@ -688,7 +700,7 @@ export default function IntroPage() {
   const introSeen = typeof window !== "undefined" && sessionStorage.getItem("odyssey_intro_seen") === "true";
   const [loadingState, setLoadingState] = useState(introSeen ? "ready" : "loading");
   const [showRest, setShowRest] = useState(introSeen);
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  const { isSoundOn, toggleSound } = useAudioState();
 
   useEffect(() => {
     if (introSeen) return;
@@ -708,6 +720,44 @@ export default function IntroPage() {
     return () => clearTimeout(minLoadTimer);
   }, [introSeen]);
 
+  // Lock scrolling during loading screen
+  useEffect(() => {
+    if (loadingState !== "ready") {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      window.lenis?.stop();
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+      const blockScroll = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      };
+
+      const blockKeys = (e) => {
+        if (["Space", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"].includes(e.code)) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener("wheel", blockScroll, { passive: false });
+      window.addEventListener("touchmove", blockScroll, { passive: false });
+      window.addEventListener("keydown", blockKeys, { passive: false });
+
+      return () => {
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+        window.removeEventListener("wheel", blockScroll);
+        window.removeEventListener("touchmove", blockScroll);
+        window.removeEventListener("keydown", blockKeys);
+      };
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      window.lenis?.start();
+      window.lenis?.resize();
+    }
+  }, [loadingState]);
+
   const toggleAisle = (num) => {
     setOpenAisle((prev) => (prev === num ? null : num));
   };
@@ -717,8 +767,23 @@ export default function IntroPage() {
     if (!sessionStorage.getItem("user")) {
       sessionStorage.setItem("user", "PETER PARKER");
     }
-    window.lenis?.scrollTo(0, { immediate: true });
-    window.scrollTo(0, 0);
+    sessionStorage.removeItem("student_scroll_card");
+    sessionStorage.removeItem("student_scroll_y");
+
+    if (document.activeElement && typeof document.activeElement.blur === "function") {
+      document.activeElement.blur();
+    }
+
+    if (window.lenis) {
+      window.lenis.stop();
+      window.lenis.animatedScroll = 0;
+      window.lenis.targetScroll = 0;
+      window.lenis.velocity = 0;
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
     navigate(path);
   };
 
@@ -810,24 +875,12 @@ export default function IntroPage() {
         {/* ── TOP RIGHT CONTROLS: SOUND TOGGLE & ENTER BASECAMP PILL ── */}
         <div className={`od-top-right-wrap ${showRest ? "is-visible" : ""}`}>
           <button
-            className={`od-sound-btn ${soundEnabled ? "is-active" : ""}`}
-            onClick={() => setSoundEnabled((prev) => !prev)}
-            aria-label={soundEnabled ? "Mute audio" : "Enable audio"}
+            className={`od-sound-btn ${isSoundOn ? "is-active" : ""}`}
+            onClick={toggleSound}
+            aria-label={isSoundOn ? "Mute audio" : "Enable audio"}
           >
-            {soundEnabled ? (
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
-              </svg>
-            ) : (
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
-            )}
-            <span>{soundEnabled ? "SOUND ON" : "SOUND OFF"}</span>
+            <MusicWaveIcon isPlaying={isSoundOn} />
+            <span>{isSoundOn ? "SOUND ON" : "SOUND OFF"}</span>
           </button>
 
           <button className="od-top-btn" onClick={() => handleNavigate("/student")}>
@@ -874,7 +927,8 @@ export default function IntroPage() {
           </div>
 
           <div className={`od-subtitle ${showRest ? "is-visible" : ""}`}>
-            Survive the deadline. <span className="od-cursor" />
+            <span>Survive the <span className="od-dead-pink">dead</span>line.</span>
+            <span className="od-cursor" />
           </div>
 
           {/* Falling Comet Scroll Indicator */}
