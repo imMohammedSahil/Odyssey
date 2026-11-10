@@ -1153,7 +1153,7 @@ export default function AdminDashboard() {
     }
   }, [hasVisitedAdmin]);
 
-  const applyAudioVolume = (vol = 20) => {
+  const applyAudioVolume = (vol = 4) => {
     if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
       try {
         ytIframeRef.current.contentWindow.postMessage(
@@ -1166,7 +1166,7 @@ export default function AdminDashboard() {
 
   const handleIframeLoad = () => {
     [300, 700, 1200, 2000, 3000].forEach((delay) => {
-      setTimeout(() => applyAudioVolume(20), delay);
+      setTimeout(() => applyAudioVolume(4), delay);
     });
   };
 
@@ -1176,7 +1176,7 @@ export default function AdminDashboard() {
       try {
         const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
         if (data && (data.event === "onReady" || data.event === "infoDelivery")) {
-          applyAudioVolume(20);
+          applyAudioVolume(4);
         }
       } catch (e) {}
     };
@@ -1188,7 +1188,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isAudioPlaying) {
       const handleUserGesture = () => {
-        applyAudioVolume(20);
+        applyAudioVolume(4);
         if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
           try {
             ytIframeRef.current.contentWindow.postMessage(
@@ -1233,7 +1233,7 @@ export default function AdminDashboard() {
     } else {
       if (ytIframeRef.current && ytIframeRef.current.contentWindow) {
         try {
-          applyAudioVolume(20);
+          applyAudioVolume(4);
           ytIframeRef.current.contentWindow.postMessage(
             JSON.stringify({ event: "command", func: "playVideo", args: [] }),
             "*"
