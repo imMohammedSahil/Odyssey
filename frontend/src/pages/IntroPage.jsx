@@ -74,13 +74,13 @@ const styles = `
     letter-spacing: 0.06em;
     background: var(--pill-dark);
     color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     height: 40px;
     padding: 0 16px;
     border-radius: 999px;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 4px 0 #000000, 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -92,9 +92,14 @@ const styles = `
   .od-sound-btn:hover {
     background: #000000;
     color: #FFFFFF;
-    transform: translateY(-2px) scale(1.05);
-    border-color: rgba(255, 255, 255, 0.28);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+    transform: none;
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 0 #000000, 0 8px 18px rgba(0, 0, 0, 0.28);
+  }
+
+  .od-sound-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #000000, 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
   .od-sound-btn.is-active {
@@ -110,12 +115,13 @@ const styles = `
     letter-spacing: 0.06em;
     background: var(--pill-dark);
     color: #FFFFFF;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    padding: 10px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    height: 40px;
+    padding: 0 22px;
     border-radius: 999px;
     cursor: pointer;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+    box-shadow: 0 4px 0 #000000, 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -126,8 +132,14 @@ const styles = `
   .od-top-btn:hover {
     background: #000000;
     color: #FFFFFF;
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+    transform: none;
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 0 #000000, 0 8px 18px rgba(0, 0, 0, 0.28);
+  }
+
+  .od-top-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #000000, 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
   /* ──────────────────────────────────────────────────────────
