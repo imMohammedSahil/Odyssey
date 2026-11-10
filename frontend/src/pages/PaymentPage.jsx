@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import QRCode from "qrcode";
 import OccultCursorFumes from "../components/OccultCursorFumes";
+import { baseAudio, paymentAudio } from "../utils/audioManager";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&family=JetBrains+Mono:wght@500;700&display=swap');
@@ -370,11 +371,17 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [qrSvg, setQrSvg] = useState("");
-  const [offeringAccepted, setOfferingAccepted] = useState(false);
+  const [offeringAccepted] = useState(false);
   const [sessionId, setSessionId] = useState(() => "ritual_" + Date.now() + "_" + Math.floor(1000 + Math.random() * 9000));
   const [offerUrl, setOfferUrl] = useState("");
   const [localIp, setLocalIp] = useState("192.168.0.101");
   const [reaperDrain, setReaperDrain] = useState(0);
+
+  // ✦ AUDIO ROUTING: Instantly kill starting loop & guarantee dark evil ambient plays exclusively
+  useEffect(() => {
+    baseAudio.stop();
+    paymentAudio.startPayment();
+  }, []);
 
   // Sync cursor proximity drain to modulate Grim Reaper eyes
   useEffect(() => {
@@ -420,6 +427,13 @@ export default function PaymentPage() {
   const detectedIp = localIp || (window.location.hostname === "localhost" ? "192.168.0.101" : window.location.hostname);
   const targetUrl = offerUrl || `http://${detectedIp}:3000/ritual-offering?session=${sessionId}&total=${total}`;
 
+  // Mark altar theme unlocked for credits reveal
+  useEffect(() => {
+    try {
+      localStorage.setItem("odyssey_unlocked_altar_theme", "true");
+    } catch (_) {}
+  }, []);
+
   // 1. Register ritual session with backend & retrieve local network IP for mobile scanning
   useEffect(() => {
     let isMounted = true;
@@ -446,6 +460,7 @@ export default function PaymentPage() {
     return () => {
       isMounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [total]);
 
   // 2. Generate dynamic scannable mobile QR code SVG pointing to targetUrl
@@ -513,6 +528,7 @@ export default function PaymentPage() {
       window.removeEventListener("storage", handleStorageChange);
       if (bc) bc.close();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId, loading, offeringAccepted]);
 
   const handlePaymentComplete = async () => {
