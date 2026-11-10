@@ -156,28 +156,83 @@ To guarantee high visual contrast and distinct atmospheric identities across eac
 
 ---
 
-## Directory Organization
+## Detailed Directory Organization
 
 ```
 Odyssey/
 |-- backend/
-|   |-- models/            # Mongoose data schemas (Order, User, Inventory)
-|   |-- routes/            # Express endpoint dispatchers (orderRoutes, ritualRoutes)
-|   |-- uploads/           # Document ingestion staging area for print files
-|   |-- server.js          # Express entrypoint and database connection initialization
-|   `-- package.json       # Backend runtime dependencies
+|   |-- config/
+|   |   |-- db.js                  # MongoDB Mongoose connection handler
+|   |   `-- multer.js              # Multer configuration for file uploads
+|   |-- controllers/
+|   |   |-- messageController.js   # Chat dispatch and user messaging logic
+|   |   `-- orderController.js     # Order placement, queue status updates, and queries
+|   |-- data/
+|   |   `-- stationeryData.js      # Seed datasets for stationery inventory catalog
+|   |-- middleware/
+|   |   `-- uploadProfile.js       # Disk storage and validation for profile images
+|   |-- models/
+|   |   |-- Message.js             # Mongoose schema for dispatch messaging records
+|   |   |-- Order.js               # Primary order schema (items, pricing, queue state)
+|   |   `-- User.js                # Student and administrative user schema
+|   |-- routes/
+|   |   |-- messageRoutes.js       # Endpoints for real-time order chat messages
+|   |   |-- orderRoutes.js         # Order dispatch, retrieval, and queue management APIs
+|   |   |-- profileRoutes.js       # Student profile and avatar management endpoints
+|   |   |-- ritualRoutes.js        # Checkout transaction verification and telemetry
+|   |   |-- stationeryRoutes.js    # Catalog queries for product aisles and brands
+|   |   `-- uploadRoutes.js        # Document ingestion pipeline for print files
+|   |-- server.js                  # Express application entrypoint and middleware orchestration
+|   `-- package.json               # Backend dependencies (Express, Mongoose, Multer, CORS)
 |-- frontend/
-|   |-- public/            # Vector backdrops, ambient soundscapes, and video media
-|   |-- src/
-|   |   |-- components/    # Reusable UI modules (BlobCursor, SmoothScroll, ElasticMesh)
-|   |   |-- context/       # React CartContext state manager and local synchronization
-|   |   |-- pages/         # Route views (Intro, Basecamp, Aisles, Payment, Receipt, Admin)
-|   |   |-- utils/         # Audio managers, UPI QR builder, and print dispatchers
-|   |   |-- App.js         # Master routing map and cursor physics matrix
-|   |   `-- index.css      # Core typographic hierarchy and styling rules
-|   `-- package.json       # Frontend dependencies (React 19, Three.js, Lenis)
-|-- .gitignore             # Git exclusion rules
-`-- start.bat              # Dual server startup automation
+|   |-- public/
+|   |   |-- *.svg                  # Cumulative vector landscapes (graveyard, paper, office)
+|   |   |-- *.mp3                  # Ambient audio soundscapes (cthulhu, landing, chapel)
+|   |   |-- *.mp4                  # Hardware-accelerated intro cinematic videos
+|   |   `-- index.html             # Document shell, viewport settings, and web font links
+|   `-- src/
+|       |-- components/
+|       |   |-- BlobCursor.jsx     # WebGL Three.js liquid chrome cursor with fluid dynamics
+|       |   |-- BlobCursor.css     # Layering and pointer-events rules for cursor canvas
+|       |   |-- ChatBox.jsx        # Order dispatch communication drawer
+|       |   |-- ElasticMesh.jsx    # Canvas elastic deformation mesh controller
+|       |   |-- ElasticMesh.css    # Layout and z-index controls for mesh canvas
+|       |   |-- MusicWaveIcon.jsx  # SVG animated equalizers for audio playback indicators
+|       |   |-- OccultCursorFumes.jsx # Particle trail effects for ritual payment views
+|       |   |-- PhoneChatDispatch.jsx # Mobile-responsive notification dispatch modal
+|       |   |-- ProtectedRoute.js  # Role-based route guard for administrative views
+|       |   |-- ScrollFloat.jsx    # Floating action elements with scroll-triggered transforms
+|       |   |-- SmoothScroll.jsx   # Lenis smooth scroll provider wrapping application views
+|       |   `-- SoundToggleButton.jsx # Global soundscape mute/unmute control with state persistence
+|       |-- context/
+|       |   `-- CartContext.js     # Global cart state, item mutations, and localStorage sync
+|       |-- pages/
+|       |   |-- AdminDashboard.js  # Film Noir library administration and print queue monitor
+|       |   |-- AdminIntroPage.jsx # Gateway landing for administrative staff
+|       |   |-- CartPage.jsx       # Order manifest verification and checkout routing
+|       |   |-- ConfirmOrder.jsx   # Intermediate order verification view
+|       |   |-- Correction.jsx     # Requisition aisle: Twilight correction and highlighters
+|       |   |-- IntroPage.jsx      # Arcade landing screen with expandable aisle accordion
+|       |   |-- Measuring.jsx      # Requisition aisle: Drafting rulers and geometry instruments
+|       |   |-- Office.jsx         # Requisition aisle: Fasteners, desk organizers, and clips
+|       |   |-- Paper.jsx          # Requisition aisle: Specialized reams and notebook bindings
+|       |   |-- PaymentPage.jsx    # Gothic ritual checkout shrine with dynamic UPI QR
+|       |   |-- PrintPage.jsx      # High-volume document upload, page count, and layout config
+|       |   |-- ProfilePage.jsx    # Student history, active order tokens, and receipt archives
+|       |   |-- ReceiptPage.jsx    # Thermal dossier receipt with barcode and print styles
+|       |   |-- RitualOfferingPage.jsx # Occult ritual tribute confirmation ceremony
+|       |   |-- StationeryPage.js  # Unified catalog view across multiple product categories
+|       |   |-- UploadOrder.js     # Basecamp Student Desk 04 order staging area
+|       |   `-- Writing.jsx        # Requisition aisle: Pens, micro-tips, and ink cartridges
+|       |-- utils/
+|       |   |-- audioManager.js    # Ambient soundtrack manager with gain crossfades
+|       |   |-- paymentAudioManager.js # Payment shrine audio controller and sound triggers
+|       |   `-- printReceipt.js    # Print preview generation and thermal styling formatters
+|       |-- App.js                 # Central router and dynamic route-to-cursor config mapper
+|       |-- index.css              # Neo-brutalist theme tokens, typography, and base CSS
+|       `-- index.js               # React 19 root mounting and DOM initialization
+|-- .gitignore                     # Git tracking exclusions
+`-- start.bat                      # Dual-launch automation for backend and frontend servers
 ```
 
 ---
