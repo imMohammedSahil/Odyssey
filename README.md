@@ -272,8 +272,7 @@ Odyssey/
 |       |-- App.js                 # Central router and dynamic route-to-cursor config mapper
 |       |-- index.css              # Neo-brutalist theme tokens, typography, and base CSS
 |       `-- index.js               # React 19 root mounting and DOM initialization
-|-- .gitignore                     # Git tracking exclusions
-`-- start.bat                      # Dual-launch automation for backend and frontend servers
+`-- .gitignore                     # Git tracking exclusions
 ```
 
 ---
@@ -305,18 +304,7 @@ Configure the application by establishing environment configurations within the 
 - **npm** or **yarn**
 - **MongoDB**: Active MongoDB service running locally or accessible via MongoDB Atlas
 
-### Quick Launch (Windows Automation)
-Execute the batch script from the repository root:
-
-```cmd
-.\start.bat
-```
-
-This concurrently launches:
-- **Backend API Gateway**: `http://localhost:5000`
-- **Frontend Reactive Application**: `http://localhost:3000`
-
-### Manual Step-by-Step Setup
+### Step-by-Step Setup
 
 1. **Clone the repository**:
    ```bash
