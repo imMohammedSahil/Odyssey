@@ -6,7 +6,7 @@
   height: 100vh;
   overflow: hidden;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 2147483647 !important;
 }
 
 .blob-cursor-canvas {
