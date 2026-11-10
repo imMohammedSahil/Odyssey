@@ -3,7 +3,7 @@
 **Halloween-Themed Campus Stationery Requisition & Document Print Pre-Order Platform**
 
 > Live Application: [odyssey-official.vercel.app](https://odyssey-official.vercel.app)  
-> Admin Telemetry: [odyssey-official.vercel.app/admin](https://odyssey-official.vercel.app/admin)  
+> Admin Dashboard: [odyssey-official.vercel.app/admin](https://odyssey-official.vercel.app/admin)  
 > API Service: [odyssey-backend-e0fx.onrender.com](https://odyssey-backend-e0fx.onrender.com)
 
 Odyssey is an asynchronous, high-throughput campus stationery requisition and document print pre-ordering platform engineered to eliminate physical service bottlenecks in university libraries and print centers. Wrapped in an immersive Halloween-inspired visual universe—featuring moonlit gothic cemeteries, hooded reaper ritual shrines, haunted ink labs, and pulp horror comic aesthetics—Odyssey unifies student order dispatch, real-time client-side UPI payment verification, WebGL spatial physics, and administrative queue telemetry (with public read-only guest inspection) into a performant, zero-layout-shift web ecosystem.
