@@ -94,3 +94,99 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #BDDD6F #0D0D0D;
 }
+
+/* ──────────────────────────────────────────────────────────
+   🎵 ODYSSEY MUSIC WAVE ICON (AUDIO-SYNCED RESUME & FREEZE)
+   Features 5 dynamic wave bars oscillating around the center axis,
+   forming continuous organic wave crests, troughs, and amplitudes.
+   When paused/muted: freezes instantly at exact crests and amplitude.
+   When resumed: continues smoothly from that exact wave position.
+────────────────────────────────────────────────────────── */
+.od-music-wave {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 14px;
+  width: 17px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
+.od-music-wave-bar {
+  display: block;
+  width: 2.2px;
+  height: 14px;
+  background-color: currentColor;
+  border-radius: 999px;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Active running state */
+.od-music-wave.is-playing .od-music-wave-bar {
+  animation-play-state: running !important;
+}
+
+/* Freezes at the exact sub-pixel amplitude and crests */
+.od-music-wave.is-paused .od-music-wave-bar {
+  animation-play-state: paused !important;
+}
+
+.od-music-wave-bar-1 {
+  animation: odWaveAnim1 1.12s ease-in-out infinite;
+}
+.od-music-wave-bar-2 {
+  animation: odWaveAnim2 0.82s ease-in-out infinite;
+}
+.od-music-wave-bar-3 {
+  animation: odWaveAnim3 1.34s ease-in-out infinite;
+}
+.od-music-wave-bar-4 {
+  animation: odWaveAnim4 0.94s ease-in-out infinite;
+}
+.od-music-wave-bar-5 {
+  animation: odWaveAnim5 1.18s ease-in-out infinite;
+}
+
+@keyframes odWaveAnim1 {
+  0%   { transform: scaleY(0.28); }
+  22%  { transform: scaleY(0.72); }
+  48%  { transform: scaleY(0.35); }
+  72%  { transform: scaleY(0.88); }
+  100% { transform: scaleY(0.28); }
+}
+
+@keyframes odWaveAnim2 {
+  0%   { transform: scaleY(0.68); }
+  25%  { transform: scaleY(0.32); }
+  52%  { transform: scaleY(1.00); } /* Primary Crest 1 */
+  78%  { transform: scaleY(0.42); }
+  100% { transform: scaleY(0.68); }
+}
+
+@keyframes odWaveAnim3 {
+  0%   { transform: scaleY(0.32); }
+  28%  { transform: scaleY(0.85); }
+  54%  { transform: scaleY(0.24); } /* Trough Valley */
+  82%  { transform: scaleY(0.64); }
+  100% { transform: scaleY(0.32); }
+}
+
+@keyframes odWaveAnim4 {
+  0%   { transform: scaleY(0.80); }
+  22%  { transform: scaleY(0.38); }
+  50%  { transform: scaleY(0.96); } /* Primary Crest 2 */
+  76%  { transform: scaleY(0.30); }
+  100% { transform: scaleY(0.80); }
+}
+
+@keyframes odWaveAnim5 {
+  0%   { transform: scaleY(0.35); }
+  26%  { transform: scaleY(0.66); }
+  52%  { transform: scaleY(0.30); }
+  78%  { transform: scaleY(0.82); }
+  100% { transform: scaleY(0.35); }
+}
+

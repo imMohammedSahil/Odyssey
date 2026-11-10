@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
@@ -267,48 +267,40 @@ export default function RitualOfferingPage() {
   const sessionId = searchParams.get("session") || "demo_session";
   const total = searchParams.get("total") || "150";
 
-  const [completed, setCompleted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const completeRitual = async () => {
-    setLoading(true);
-    try {
-      // 1. Mark in localStorage and BroadcastChannel for instant cross-tab / local network sync
-      localStorage.setItem("odyssey_ritual_completed_" + sessionId, "true");
-      try {
-        const bc = new BroadcastChannel("odyssey_ritual");
-        bc.postMessage({ type: "RITUAL_COMPLETED", sessionId, total });
-        bc.close();
-      } catch (bcErr) {}
-
-      // 2. Subtle physical haptic feedback on mobile
-      if (typeof navigator !== "undefined" && navigator.vibrate) {
-        navigator.vibrate([40, 30, 80]);
-      }
-
-      // 3. Notify backend API
-      const backendHost = window.location.hostname || "localhost";
-      try {
-        await axios.post(`/api/ritual/complete/${sessionId}`, {
-          total: Number(total),
-        });
-      } catch (proxyErr) {
-        await axios.post(`http://${backendHost}:5000/api/ritual/complete/${sessionId}`, {
-          total: Number(total),
-        });
-      }
-
-      setCompleted(true);
-    } catch (err) {
-      setCompleted(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const completeRitual = async () => {
+      try {
+        // 1. Mark in localStorage and BroadcastChannel for instant cross-tab / local network sync
+        localStorage.setItem("odyssey_ritual_completed_" + sessionId, "true");
+        try {
+          const bc = new BroadcastChannel("odyssey_ritual");
+          bc.postMessage({ type: "RITUAL_COMPLETED", sessionId, total });
+          bc.close();
+        } catch (bcErr) {}
+
+        // 2. Subtle physical haptic feedback on mobile
+        if (typeof navigator !== "undefined" && navigator.vibrate) {
+          navigator.vibrate([40, 30, 80]);
+        }
+
+        // 3. Notify backend API
+        const backendHost = window.location.hostname || "localhost";
+        try {
+          await axios.post(`/api/ritual/complete/${sessionId}`, {
+            total: Number(total),
+          });
+        } catch (proxyErr) {
+          await axios.post(`http://${backendHost}:5000/api/ritual/complete/${sessionId}`, {
+            total: Number(total),
+          });
+        }
+      } catch (err) {
+        // Ignore background notify error
+      }
+    };
+
     completeRitual();
-  }, [sessionId]);
+  }, [sessionId, total]);
 
   // Synchronize document body & mobile status bar color
   useEffect(() => {

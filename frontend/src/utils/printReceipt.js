@@ -49,6 +49,51 @@ export function generateCode128Svg(rawText) {
   return { bars, totalWidth: x };
 }
 
+/**
+ * Partitions items across A4 folios cleanly so that:
+ * - 1 page order: up to 10 items fit alongside full header, 4-quadrant metadata, total box, and barcode.
+ * - Multi-page order:
+ *     Page 1 takes up to 10 items (with full header & metadata).
+ *     Middle pages take up to 14 items (with continuation header).
+ *     Final page takes remaining items (<= 10 items) + total box + barcode.
+ */
+export function chunkManifestItems(items) {
+  if (!items || items.length === 0) {
+    return [{ page: 1, totalPages: 1, items: [], isFirst: true, isLast: true }];
+  }
+  if (items.length <= 10) {
+    return [{ page: 1, totalPages: 1, items: [...items], isFirst: true, isLast: true }];
+  }
+
+  const pages = [];
+  // Page 1 takes the first 10 items
+  pages.push(items.slice(0, 10));
+  let remaining = items.slice(10);
+
+  while (remaining.length > 0) {
+    if (remaining.length <= 10) {
+      pages.push(remaining);
+      remaining = [];
+    } else if (remaining.length <= 14) {
+      const half = Math.ceil(remaining.length / 2);
+      pages.push(remaining.slice(0, half));
+      remaining = remaining.slice(half);
+    } else {
+      pages.push(remaining.slice(0, 14));
+      remaining = remaining.slice(14);
+    }
+  }
+
+  const totalPages = pages.length;
+  return pages.map((pageItems, idx) => ({
+    page: idx + 1,
+    totalPages,
+    items: pageItems,
+    isFirst: idx === 0,
+    isLast: idx === totalPages - 1,
+  }));
+}
+
 export function downloadOrPrintReceipt(order) {
   const receiptData = {
     orderId: order.orderId || order._id || "OD-ONLINE",
@@ -66,7 +111,9 @@ export function downloadOrPrintReceipt(order) {
     .map(b => `<rect x="${b.x}" y="0" width="${b.w}" height="32" fill="#0b160e" />`)
     .join("");
 
-  const itemsHtml = (receiptData.items || []).map(item => `
+  const folios = chunkManifestItems(receiptData.items);
+
+  const renderFolioItemsHtml = (items) => (items || []).map(item => `
     <div class="rcpt-pdf-table-row">
       <div class="rcpt-pdf-td desc">
         <div class="rcpt-pdf-item-name">${item.name || item.title || "Item"}</div>
@@ -76,6 +123,124 @@ export function downloadOrPrintReceipt(order) {
       <div class="rcpt-pdf-td price">₹${((Number(item.price) || 0) * (Number(item.quantity || item.qty) || 1)).toFixed(0)}</div>
     </div>
   `).join("");
+
+  const foliosHtml = folios.map(folio => {
+    return `
+    <div class="rcpt-pdf-document">
+      <div class="rcpt-pdf-frame">
+        <div class="rcpt-pdf-card">
+          ${folio.isFirst ? `
+            <div class="rcpt-pdf-head">
+              <div class="rcpt-pdf-emblem-wrap">
+                <svg class="rcpt-pdf-emblem-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="40" cy="40" r="37" stroke="#0e1a12" stroke-width="1.5" stroke-dasharray="3 2" />
+                  <circle cx="40" cy="40" r="33" stroke="#0e1a12" stroke-width="0.8" />
+                  <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" stroke-width="0.5" />
+                  <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
+                  <circle cx="43" cy="28" r="1.8" fill="#52e389" />
+                  <path d="M40 11.2 L40.8 13.3 L43.5 14 L40.8 14.7 L40 16.8 L39.2 14.7 L36.5 14 L39.2 13.3 Z" fill="#23854b" />
+                </svg>
+              </div>
+              <span class="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
+              <h1 class="rcpt-pdf-title">SUPPLY ORDER RECEIPT</h1>
+              <span class="rcpt-pdf-subtitle">AUTHENTICATED CAMPUS SCRIPTORIUM DISPATCH RECORD</span>
+              <div class="rcpt-pdf-divider-ornate">
+                <span class="rcpt-pdf-ornate-diamond">❖</span>
+              </div>
+            </div>
+
+            <div class="rcpt-pdf-meta-grid">
+              <div class="rcpt-pdf-meta-cell">
+                <span class="rcpt-pdf-meta-label">ORDER REFERENCE</span>
+                <span class="rcpt-pdf-meta-val mono">${receiptData.orderId}</span>
+              </div>
+              <div class="rcpt-pdf-meta-cell">
+                <span class="rcpt-pdf-meta-label">DISPATCH STATUS</span>
+                <span class="rcpt-pdf-meta-val status-badge">${receiptData.status}</span>
+              </div>
+              <div class="rcpt-pdf-meta-cell">
+                <span class="rcpt-pdf-meta-label">COLLECTION POINT</span>
+                <span class="rcpt-pdf-meta-val">${receiptData.pickupCounter}</span>
+              </div>
+              <div class="rcpt-pdf-meta-cell">
+                <span class="rcpt-pdf-meta-label">RECORDED AT</span>
+                <span class="rcpt-pdf-meta-val">${receiptData.date}</span>
+              </div>
+            </div>
+
+            <div class="rcpt-pdf-divider-dashed"></div>
+          ` : `
+            <div class="rcpt-pdf-head continuation">
+              <div class="rcpt-pdf-emblem-wrap">
+                <svg class="rcpt-pdf-emblem-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="40" cy="40" r="37" stroke="#0e1a12" stroke-width="1.5" stroke-dasharray="3 2" />
+                  <circle cx="40" cy="40" r="33" stroke="#0e1a12" stroke-width="0.8" />
+                  <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
+                  <circle cx="43" cy="28" r="1.8" fill="#52e389" />
+                </svg>
+              </div>
+              <span class="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • ${folio.isLast ? "FINAL DISPATCH MANIFEST" : "MANIFEST CONTINUATION"} —</span>
+              <h2 class="rcpt-pdf-title" style="font-size: 15px !important; margin: 0 !important;">SUPPLY ORDER RECEIPT</h2>
+              <span class="rcpt-pdf-subtitle">ORDER REF: ${receiptData.orderId} • FOLIO ${folio.page} OF ${folio.totalPages}</span>
+              <div class="rcpt-pdf-divider-ornate">
+                <span class="rcpt-pdf-ornate-diamond">❖</span>
+              </div>
+            </div>
+          `}
+
+          <div class="rcpt-pdf-manifest">
+            <div class="rcpt-pdf-table-head">
+              <span class="rcpt-pdf-th desc">ITEM DESCRIPTION</span>
+              <span class="rcpt-pdf-th qty">QTY</span>
+              <span class="rcpt-pdf-th price">AMOUNT</span>
+            </div>
+            <div class="rcpt-pdf-table-body">
+              ${renderFolioItemsHtml(folio.items)}
+            </div>
+          </div>
+
+          ${folio.isLast ? `
+            <div class="rcpt-pdf-total-box">
+              <div class="rcpt-pdf-total-left">
+                <span class="rcpt-pdf-total-label">TOTAL OFFERING PAID</span>
+                <span class="rcpt-pdf-total-sub">OFFICIALLY TENDERED & SETTLED</span>
+              </div>
+              <span class="rcpt-pdf-total-amount">₹${receiptData.total}</span>
+            </div>
+
+            <div class="rcpt-pdf-barcode-section">
+              <svg viewBox="0 0 ${totalWidth} 32" preserveAspectRatio="none" class="rcpt-pdf-barcode-svg">
+                ${barcodeBarsHtml}
+              </svg>
+              <span class="rcpt-pdf-barcode-text">* ${codeString} *</span>
+            </div>
+
+            <div class="rcpt-pdf-card-stamp">
+              ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+            </div>
+          ` : `
+            <div class="rcpt-pdf-continuation-banner">
+              <span>— MANIFEST CONTINUED ON FOLIO ${folio.page + 1} OF ${folio.totalPages} —</span>
+            </div>
+
+            <div class="rcpt-pdf-card-stamp">
+              ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
+            </div>
+          `}
+        </div>
+
+        <div class="rcpt-pdf-page-footer">
+          <div class="rcpt-pdf-footer-rule"></div>
+          <div class="rcpt-pdf-footer-row">
+            <span>ODYSSEY CAMPUS PRINT ARCHIVES</span>
+            <span>FOLIO ${folio.page} OF ${folio.totalPages}${folio.isLast ? "" : ` • CONTINUED ON FOLIO ${folio.page + 1}`}</span>
+            <span>RECORD REF: ${receiptData.orderId}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
+  }).join("");
 
   const fullHtml = `<!DOCTYPE html>
 <html>
@@ -100,12 +265,9 @@ export function downloadOrPrintReceipt(order) {
       margin: 0 !important;
       padding: 0 !important;
       width: 210mm !important;
-      height: 297mm !important;
-      max-height: 297mm !important;
       background: #000000 !important;
       background-color: #000000 !important;
       color: #0b140e !important;
-      overflow: hidden !important;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     .rcpt-pdf-document {
@@ -115,6 +277,7 @@ export function downloadOrPrintReceipt(order) {
       align-items: center !important;
       width: 210mm !important;
       height: 297mm !important;
+      min-height: 297mm !important;
       max-height: 297mm !important;
       margin: 0 !important;
       padding: 9mm 12mm 7mm !important;
@@ -122,6 +285,14 @@ export function downloadOrPrintReceipt(order) {
       background-color: #000000 !important;
       box-sizing: border-box !important;
       overflow: hidden !important;
+      page-break-after: always !important;
+      break-after: page !important;
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+    .rcpt-pdf-document:last-child {
+      page-break-after: avoid !important;
+      break-after: avoid !important;
     }
     .rcpt-pdf-frame {
       width: 100% !important;
@@ -160,6 +331,14 @@ export function downloadOrPrintReceipt(order) {
       align-items: center !important;
       text-align: center !important;
       gap: 2px !important;
+    }
+    .rcpt-pdf-head.continuation {
+      gap: 1px !important;
+    }
+    .rcpt-pdf-head.continuation .rcpt-pdf-emblem-wrap {
+      width: 30px !important;
+      height: 30px !important;
+      margin-bottom: 0 !important;
     }
     .rcpt-pdf-emblem-wrap {
       width: 44px !important;
@@ -394,6 +573,20 @@ export function downloadOrPrintReceipt(order) {
       font-weight: 700 !important;
       text-transform: uppercase !important;
     }
+    .rcpt-pdf-continuation-banner {
+      width: 100% !important;
+      text-align: center !important;
+      font-family: 'Cinzel', serif !important;
+      font-size: 8px !important;
+      letter-spacing: 0.22em !important;
+      font-weight: 700 !important;
+      color: #2e4a36 !important;
+      padding: 6px 10px !important;
+      background: rgba(15, 28, 19, 0.05) !important;
+      border: 1px dashed rgba(15, 28, 19, 0.25) !important;
+      margin-top: auto !important;
+      box-sizing: border-box !important;
+    }
     .rcpt-pdf-page-footer {
       width: 100% !important;
       display: flex !important;
@@ -422,90 +615,7 @@ export function downloadOrPrintReceipt(order) {
   </style>
 </head>
 <body>
-  <div class="rcpt-pdf-document">
-    <div class="rcpt-pdf-frame">
-      <div class="rcpt-pdf-card">
-        <div class="rcpt-pdf-head">
-          <div class="rcpt-pdf-emblem-wrap">
-            <svg class="rcpt-pdf-emblem-svg" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="40" cy="40" r="37" stroke="#0e1a12" stroke-width="1.5" stroke-dasharray="3 2" />
-              <circle cx="40" cy="40" r="33" stroke="#0e1a12" stroke-width="0.8" />
-              <circle cx="40" cy="40" r="30" stroke="rgba(35, 133, 75, 0.4)" stroke-width="0.5" />
-              <path d="M40 18 C35 24 33 30 33 36 C33 39 34 41 36 43 C30 43 25 46 23 51 C29 50 34 50 38 52 C37 55 35 59 33 63 C37 60 41 57 44 57 C42 61 41 64 40 68 C46 62 51 56 54 49 C56 49 58 49 60 48 C58 47 57 46 55 45 C57 41 57 34 52 27 C48 22 44 19 40 18 Z" fill="#0e1a12" />
-              <circle cx="43" cy="28" r="1.8" fill="#52e389" />
-              <path d="M40 11.2 L40.8 13.3 L43.5 14 L40.8 14.7 L40 16.8 L39.2 14.7 L36.5 14 L39.2 13.3 Z" fill="#23854b" />
-            </svg>
-          </div>
-          <span class="rcpt-pdf-pretitle">— THE RAVEN ARCHIVES • EST. 2026 —</span>
-          <h1 class="rcpt-pdf-title">SUPPLY ORDER RECEIPT</h1>
-          <span class="rcpt-pdf-subtitle">AUTHENTICATED CAMPUS SCRIPTORIUM DISPATCH RECORD</span>
-          <div class="rcpt-pdf-divider-ornate">
-            <span class="rcpt-pdf-ornate-diamond">❖</span>
-          </div>
-        </div>
-
-        <div class="rcpt-pdf-meta-grid">
-          <div class="rcpt-pdf-meta-cell">
-            <span class="rcpt-pdf-meta-label">ORDER REFERENCE</span>
-            <span class="rcpt-pdf-meta-val mono">${receiptData.orderId}</span>
-          </div>
-          <div class="rcpt-pdf-meta-cell">
-            <span class="rcpt-pdf-meta-label">DISPATCH STATUS</span>
-            <span class="rcpt-pdf-meta-val status-badge">${receiptData.status}</span>
-          </div>
-          <div class="rcpt-pdf-meta-cell">
-            <span class="rcpt-pdf-meta-label">COLLECTION POINT</span>
-            <span class="rcpt-pdf-meta-val">${receiptData.pickupCounter}</span>
-          </div>
-          <div class="rcpt-pdf-meta-cell">
-            <span class="rcpt-pdf-meta-label">RECORDED AT</span>
-            <span class="rcpt-pdf-meta-val">${receiptData.date}</span>
-          </div>
-        </div>
-
-        <div class="rcpt-pdf-divider-dashed"></div>
-
-        <div class="rcpt-pdf-manifest">
-          <div class="rcpt-pdf-table-head">
-            <span class="rcpt-pdf-th desc">ITEM DESCRIPTION</span>
-            <span class="rcpt-pdf-th qty">QTY</span>
-            <span class="rcpt-pdf-th price">AMOUNT</span>
-          </div>
-          <div class="rcpt-pdf-table-body">
-            ${itemsHtml}
-          </div>
-        </div>
-
-        <div class="rcpt-pdf-total-box">
-          <div class="rcpt-pdf-total-left">
-            <span class="rcpt-pdf-total-label">TOTAL OFFERING PAID</span>
-            <span class="rcpt-pdf-total-sub">OFFICIALLY TENDERED & SETTLED</span>
-          </div>
-          <span class="rcpt-pdf-total-amount">₹${receiptData.total}</span>
-        </div>
-
-        <div class="rcpt-pdf-barcode-section">
-          <svg viewBox="0 0 ${totalWidth} 32" preserveAspectRatio="none" class="rcpt-pdf-barcode-svg">
-            ${barcodeBarsHtml}
-          </svg>
-          <span class="rcpt-pdf-barcode-text">* ${codeString} *</span>
-        </div>
-
-        <div class="rcpt-pdf-card-stamp">
-          ODYSSEY SCRIPTORIUM • ARCHIVAL DISPATCH VERIFICATION SEAL
-        </div>
-      </div>
-
-      <div class="rcpt-pdf-page-footer">
-        <div class="rcpt-pdf-footer-rule"></div>
-        <div class="rcpt-pdf-footer-row">
-          <span>ODYSSEY CAMPUS PRINT ARCHIVES</span>
-          <span>FOLIO 1 OF 1</span>
-          <span>RECORD REF: ${receiptData.orderId}</span>
-        </div>
-      </div>
-    </div>
-  </div>
+  ${foliosHtml}
 </body>
 </html>`;
 
@@ -546,4 +656,3 @@ export function downloadOrPrintReceipt(order) {
     }, 2500);
   }, 350);
 }
-

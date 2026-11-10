@@ -13,6 +13,10 @@ export default function SmoothScroll() {
   const location = useLocation();
 
   useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
     // Enhanced heavy fluid momentum with deep viscous resistance matching the glob cursor
     const lenis = new Lenis({
       duration: 1.95, // Substantially heavier fluid glide with deep viscous damping
@@ -91,9 +95,16 @@ export default function SmoothScroll() {
     if (FIXED_VIEWPORT_ROUTES.includes(location.pathname)) {
       window.lenis?.stop();
     } else {
-      window.lenis?.start();
-      window.lenis?.scrollTo(0, { immediate: true });
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      if (window.lenis) {
+        window.lenis.animatedScroll = 0;
+        window.lenis.targetScroll = 0;
+        window.lenis.velocity = 0;
+        window.lenis.start();
+        window.lenis.resize();
+      }
     }
   }, [location.pathname]);
 

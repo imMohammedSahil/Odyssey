@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const orderRoutes = require("./routes/orderRoutes");
+const ritualRoutes = require("./routes/ritualRoutes");
 
 const app = express();
 
@@ -14,6 +15,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/campuscart")
 .catch(err => console.log(err));
 
 app.use("/api/orders", orderRoutes);
+app.use("/api/ritual", ritualRoutes);
 
 app.get("/", (req, res) => {
 res.send("API Running");

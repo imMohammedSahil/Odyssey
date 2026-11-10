@@ -416,9 +416,9 @@ export default function PaymentPage() {
   const isDemo = cartItems.length === 0;
   const effectiveItems = isDemo
     ? [
-        { name: "Campus Print & Binding (24 Pgs)", price: 60, quantity: 1 },
-        { name: "A5 Hardcover Grid Journal", price: 90, quantity: 1 }
-      ]
+      { name: "Campus Print & Binding (24 Pgs)", price: 60, quantity: 1 },
+      { name: "A5 Hardcover Grid Journal", price: 90, quantity: 1 }
+    ]
     : cartItems;
 
   const total = isDemo ? 150 : calculatedTotal;
@@ -431,7 +431,7 @@ export default function PaymentPage() {
   useEffect(() => {
     try {
       localStorage.setItem("odyssey_unlocked_altar_theme", "true");
-    } catch (_) {}
+    } catch (_) { }
   }, []);
 
   // 1. Register ritual session with backend & retrieve local network IP for mobile scanning
@@ -520,7 +520,7 @@ export default function PaymentPage() {
           handlePaymentComplete();
         }
       };
-    } catch (e) {}
+    } catch (e) { }
 
     return () => {
       isPolling = false;

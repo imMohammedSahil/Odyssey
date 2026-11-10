@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import SoundToggleButton from "../components/SoundToggleButton";
 import * as pdfjsLib from "pdfjs-dist";
 
 // PDF.js worker setup with fallback
@@ -1411,6 +1412,7 @@ function Print() {
             <button className="print-btn-pill" onClick={() => navigate(-1)}>
               ← BACK TO BASE
             </button>
+            <SoundToggleButton className="print-btn-pill" />
             <Link to="/cart" className="print-btn-pill print-cart-pill">
               CART ({cartItems ? cartItems.length : 0})
             </Link>

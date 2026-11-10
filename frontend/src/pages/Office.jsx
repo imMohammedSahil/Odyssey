@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import SoundToggleButton from "../components/SoundToggleButton";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=Titan+One&display=swap');
@@ -908,6 +909,7 @@ export default function Office() {
             >
               ← BACK TO BASE
             </button>
+            <SoundToggleButton className="writing-btn-pill" />
             <Link to="/cart" className="writing-btn-pill writing-cart-pill">
               CART ({cartItems ? cartItems.length : 0})
             </Link>

@@ -249,24 +249,42 @@ const chatStyles = `
   }
 `;
 
-export default function ChatBox({ role = "student", openStudent = null }) {
+export default function ChatBox({
+  role = "student",
+  openStudent = null,
+  currentUser = null,
+  isAdmin = null,
+}) {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const effectiveUser = (currentUser || sessionStorage.getItem("user") || "PETER PARKER").trim();
+  const effectiveIsAdmin =
+    isAdmin !== null
+      ? isAdmin
+      : role === "admin" || sessionStorage.getItem("role") === "admin";
+
+  const [selectedStudent, setSelectedStudent] = useState(
+    effectiveIsAdmin ? openStudent : effectiveUser
+  );
 
   const bottomRef = useRef(null);
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    if (openStudent) {
-      setSelectedStudent(openStudent);
-      setTimeout(() => {
-        if (chatContainerRef.current) {
-          chatContainerRef.current.dataset.justOpened = "true";
-        }
-      }, 0);
+    if (effectiveIsAdmin) {
+      if (openStudent) {
+        setSelectedStudent(openStudent);
+        setTimeout(() => {
+          if (chatContainerRef.current) {
+            chatContainerRef.current.dataset.justOpened = "true";
+          }
+        }, 0);
+      }
+    } else {
+      setSelectedStudent(effectiveUser);
     }
-  }, [openStudent]);
+  }, [openStudent, effectiveIsAdmin, effectiveUser]);
 
   const [lastSeen, setLastSeen] = useState(
     JSON.parse(localStorage.getItem("chatLastSeen")) || {}
@@ -274,7 +292,13 @@ export default function ChatBox({ role = "student", openStudent = null }) {
 
   const loadChat = () => {
     const stored = localStorage.getItem("odysseyChat") || "[]";
-    if (stored) setChat(JSON.parse(stored));
+    if (stored) {
+      try {
+        setChat(JSON.parse(stored));
+      } catch (e) {
+        setChat([]);
+      }
+    }
   };
 
   useEffect(() => {
@@ -298,7 +322,9 @@ export default function ChatBox({ role = "student", openStudent = null }) {
   };
 
   useEffect(() => {
-    if (!selectedStudent) return;
+    const activeTarget = effectiveIsAdmin ? selectedStudent : effectiveUser;
+    if (!activeTarget) return;
+
     const container = chatContainerRef.current;
     if (container?.dataset.justOpened === "true") {
       container.scrollTo({ top: container.scrollHeight, behavior: "auto" });
@@ -308,39 +334,42 @@ export default function ChatBox({ role = "student", openStudent = null }) {
     if (isNearBottom()) {
       container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
     }
+
     const latestMsg = chat
-      .filter(msg => msg.name === selectedStudent)
+      .filter((msg) => (msg.name || "").toLowerCase() === activeTarget.toLowerCase())
       .slice(-1)[0];
+
     if (latestMsg) {
-      setLastSeen(prev => {
-        const updated = { ...prev, [selectedStudent]: latestMsg.timestamp };
+      setLastSeen((prev) => {
+        const updated = { ...prev, [activeTarget]: latestMsg.timestamp };
         localStorage.setItem("chatLastSeen", JSON.stringify(updated));
         return updated;
       });
     }
-  }, [chat, selectedStudent]);
+  }, [chat, selectedStudent, effectiveIsAdmin, effectiveUser]);
 
+  // List of unique students that Admin can inspect (only in full admin mode)
   const studentList = [
-  ...new Set(
-    chat
-      .filter(msg => msg.sender !== "Admin")
-      .map(msg => msg.name)
-      .filter(
-        name =>
-          name &&
-          name.trim() !== "" &&
-          name.toLowerCase() !== "admin" &&
-          name.toLowerCase() !== "student" // removes old dummy account
-      )
-  )
-];
+    ...new Set(
+      chat
+        .filter((msg) => msg.sender !== "Admin")
+        .map((msg) => msg.name)
+        .filter(
+          (name) =>
+            name &&
+            name.trim() !== "" &&
+            name.toLowerCase() !== "admin" &&
+            name.toLowerCase() !== "student"
+        )
+    ),
+  ];
 
   const getUnreadCount = (student) => {
     const last = lastSeen[student] || 0;
     return chat.filter(
-      msg =>
-        msg.name === student &&
-        msg.sender !== sessionStorage.getItem("user") &&
+      (msg) =>
+        (msg.name || "").toLowerCase() === (student || "").toLowerCase() &&
+        msg.sender !== (effectiveIsAdmin ? "Admin" : effectiveUser) &&
         msg.timestamp > last
     ).length;
   };
@@ -352,10 +381,10 @@ export default function ChatBox({ role = "student", openStudent = null }) {
         chatContainerRef.current.dataset.justOpened = "true";
       }
     }, 0);
-    const latest = chat.filter(msg => msg.name === name).slice(-1)[0];
+    const latest = chat.filter((msg) => (msg.name || "").toLowerCase() === (name || "").toLowerCase()).slice(-1)[0];
     const updated = {
       ...lastSeen,
-      [name]: latest ? latest.timestamp : Date.now()
+      [name]: latest ? latest.timestamp : Date.now(),
     };
     setLastSeen(updated);
     localStorage.setItem("chatLastSeen", JSON.stringify(updated));
@@ -363,18 +392,18 @@ export default function ChatBox({ role = "student", openStudent = null }) {
 
   const sendMessage = () => {
     if (!message.trim()) return;
+    const targetStudent = effectiveIsAdmin ? selectedStudent : effectiveUser;
+    if (!targetStudent) return;
+
     const newMsg = {
-      sender: sessionStorage.getItem("user") || "Admin",
-      name:
-        role === "admin"
-          ? selectedStudent
-          : sessionStorage.getItem("user"),
-      text: message,
+      sender: effectiveIsAdmin ? "Admin" : effectiveUser,
+      name: targetStudent,
+      text: message.trim(),
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
       }),
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
     const stored = JSON.parse(localStorage.getItem("odysseyChat")) || [];
     const updated = [...stored, newMsg];
@@ -383,9 +412,12 @@ export default function ChatBox({ role = "student", openStudent = null }) {
     setMessage("");
   };
 
-  const isOutgoing = (msg) =>
-    msg.sender === sessionStorage.getItem("user") ||
-    (role === "admin" && msg.sender === "Admin");
+  const isOutgoing = (msg) => {
+    if (effectiveIsAdmin) {
+      return msg.sender === "Admin";
+    }
+    return (msg.sender || "").toLowerCase().trim() === effectiveUser.toLowerCase().trim();
+  };
 
   const bubbleClass = (msg) =>
     `cb-bubble ${isOutgoing(msg) ? "outgoing" : "incoming"}`;
@@ -397,22 +429,38 @@ export default function ChatBox({ role = "student", openStudent = null }) {
     }
   };
 
+  // Filter messages strictly for privacy:
+  // If Admin: only messages for the selectedStudent
+  // If User: ONLY messages where msg.name or msg.sender matches effectiveUser
+  const visibleMessages = effectiveIsAdmin
+    ? selectedStudent
+      ? chat.filter(
+          (msg) => (msg.name || "").toLowerCase().trim() === selectedStudent.toLowerCase().trim()
+        )
+      : []
+    : chat.filter((msg) => {
+        const u = effectiveUser.toLowerCase().trim();
+        const msgName = (msg.name || "").toLowerCase().trim();
+        const msgSender = (msg.sender || "").toLowerCase().trim();
+        return msgName === u || msgSender === u;
+      });
+
   return (
     <>
       <style>{chatStyles}</style>
       <div
         className="cb-root"
         style={{
-          height: role === "admin" ? "100%" : "380px",
-          maxWidth: role === "admin" ? "100%" : "420px",
-          border: role === "admin" ? "none" : "1px solid rgba(130, 100, 210, 0.12)",
-          borderRadius: role === "admin" ? 0 : 12,
+          height: "100%",
+          maxWidth: "100%",
+          border: "none",
+          borderRadius: 0,
           overflow: "hidden",
         }}
       >
         {/* HEADER */}
         <div className="cb-header">
-          {role === "admin" && selectedStudent && (
+          {effectiveIsAdmin && selectedStudent && (
             <button
               className="cb-back-btn"
               onClick={() => setSelectedStudent(null)}
@@ -421,76 +469,83 @@ export default function ChatBox({ role = "student", openStudent = null }) {
               ←
             </button>
           )}
-          {role === "admin" && selectedStudent && (
-            <div className="cb-header-dot" />
-          )}
+
+          <div className="cb-header-dot" />
+
           <span className="cb-header-title">
-            {role === "admin"
+            {effectiveIsAdmin
               ? selectedStudent
-                ? selectedStudent
+                ? `@${selectedStudent}`
                 : "Student Chats"
-              : "Support Chat"}
+              : `Admin Support · Direct Channel`}
           </span>
         </div>
 
         {/* MESSAGE AREA */}
         <div ref={chatContainerRef} className="cb-messages">
-          {/* Admin student list */}
-          {role === "admin" && !selectedStudent && (
-            studentList.length === 0
-              ? <p className="cb-empty">No conversations yet</p>
-              : studentList.map((name, i) => (
+          {/* Admin view: student directory */}
+          {effectiveIsAdmin && !selectedStudent && (
+            studentList.length === 0 ? (
+              <p className="cb-empty">No conversations yet</p>
+            ) : (
+              studentList.map((name, i) => (
                 <div
                   key={i}
                   className="cb-student-row"
                   onClick={() => openChat(name)}
                 >
-                  <span className="cb-student-name">{name}</span>
+                  <span className="cb-student-name">@{name}</span>
                   {getUnreadCount(name) > 0 && (
-                    <span className="cb-unread-badge">{getUnreadCount(name)}</span>
+                    <span className="cb-unread-badge">
+                      {getUnreadCount(name)}
+                    </span>
                   )}
                 </div>
               ))
+            )
           )}
 
-          {/* Admin: messages for selected student */}
-          {role === "admin" && selectedStudent &&
-            chat
-              .filter(msg => msg.name === selectedStudent)
-              .map((msg, i) => (
-                <div key={i} className={`cb-msg-row ${isOutgoing(msg) ? "outgoing" : "incoming"}`}>
+          {/* Active conversation messages */}
+          {(selectedStudent || !effectiveIsAdmin) && (
+            visibleMessages.length === 0 ? (
+              <p className="cb-empty">
+                {effectiveIsAdmin
+                  ? "No messages with this student yet"
+                  : "No messages with Admin yet — say hello 👋"}
+              </p>
+            ) : (
+              visibleMessages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`cb-msg-row ${
+                    isOutgoing(msg) ? "outgoing" : "incoming"
+                  }`}
+                >
                   <span className={bubbleClass(msg)}>
                     {msg.text}
                     <div className="cb-time">{msg.time}</div>
                   </span>
                 </div>
-              ))}
-
-          {/* Student: all messages */}
-          {role !== "admin" &&
-            (chat.length === 0
-              ? <p className="cb-empty">No messages yet — say hello 👋</p>
-              : chat.map((msg, i) => (
-                <div key={i} className={`cb-msg-row ${isOutgoing(msg) ? "outgoing" : "incoming"}`}>
-                  <span className={bubbleClass(msg)}>
-                    {msg.text}
-                    <div className="cb-time">{msg.time}</div>
-                  </span>
-                </div>
-              )))}
+              ))
+            )
+          )}
 
           <div ref={bottomRef} />
         </div>
 
         {/* INPUT */}
-        {(role !== "admin" || selectedStudent) && (
+        {(selectedStudent || !effectiveIsAdmin) && (
           <div className="cb-input-area">
             <input
               className="cb-input"
               value={message}
-              onChange={e => setMessage(e.target.value)}
+              onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Type a message…"
+              placeholder={
+                effectiveIsAdmin
+                  ? `Reply to @${selectedStudent}...`
+                  : "Type a message to Admin..."
+              }
             />
             <button
               className="cb-send-btn"

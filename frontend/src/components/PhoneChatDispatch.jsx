@@ -114,6 +114,50 @@ const phoneStyles = `
     border-bottom: 1.5px solid #0D0D0D;
     letter-spacing: 0.04em;
     flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .neo-ps-battery-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .neo-ps-battery-gauge {
+    position: relative;
+    width: 14px;
+    height: 7px;
+    border: 1px solid #8E9AA0;
+    border-radius: 2px;
+    padding: 1px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.45);
+    box-sizing: border-box;
+  }
+
+  .neo-ps-battery-gauge::after {
+    content: '';
+    position: absolute;
+    right: -2.5px;
+    top: 1.5px;
+    width: 1.5px;
+    height: 3px;
+    background: #8E9AA0;
+    border-radius: 0 1px 1px 0;
+  }
+
+  .neo-ps-battery-fill {
+    height: 100%;
+    border-radius: 1px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+  }
+
+  .neo-ps-bolt-icon {
+    width: 7px;
+    height: 7px;
+    color: #FACC15;
+    display: inline-block;
   }
 
   /* Phone Screen: Chat Header */
@@ -199,7 +243,7 @@ const phoneStyles = `
     display: flex;
     flex-direction: column;
     gap: 7px;
-    background: linear-gradient(rgba(9, 10, 14, 0.08), rgba(9, 10, 14, 0.16)), url('/phone-wallpaper.jpg') center/cover no-repeat;
+    background: linear-gradient(rgba(9, 10, 14, 0.08), rgba(9, 10, 14, 0.16)), url('/admin-phone-wallpaper.jpg') center/cover no-repeat;
     scroll-behavior: smooth;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -383,6 +427,44 @@ export default function PhoneChatDispatch() {
     return () => clearInterval(timer);
   }, []);
 
+  // Hardware Battery Status Sync via Web Battery API
+  const [batteryLevel, setBatteryLevel] = useState(100);
+  const [isCharging, setIsCharging] = useState(false);
+
+  useEffect(() => {
+    let batteryInstance = null;
+    let handleLevel = null;
+    let handleCharging = null;
+
+    if (typeof navigator !== "undefined" && "getBattery" in navigator) {
+      navigator
+        .getBattery()
+        .then((battery) => {
+          batteryInstance = battery;
+          const updateBattery = () => {
+            setBatteryLevel(Math.round(battery.level * 100));
+            setIsCharging(Boolean(battery.charging));
+          };
+          updateBattery();
+
+          handleLevel = () => updateBattery();
+          handleCharging = () => updateBattery();
+          battery.addEventListener("levelchange", handleLevel);
+          battery.addEventListener("chargingchange", handleCharging);
+        })
+        .catch(() => {
+          setBatteryLevel(98);
+        });
+    }
+
+    return () => {
+      if (batteryInstance) {
+        if (handleLevel) batteryInstance.removeEventListener("levelchange", handleLevel);
+        if (handleCharging) batteryInstance.removeEventListener("chargingchange", handleCharging);
+      }
+    };
+  }, []);
+
   // Sync chat in real-time from localStorage & storage events
   const loadChat = () => {
     try {
@@ -487,7 +569,23 @@ export default function PhoneChatDispatch() {
             {/* Status Bar */}
             <div className="neo-ps-statusbar">
               <span>{clockTime || "12:00"}</span>
-              <span>100% 🔋</span>
+              <div className="neo-ps-battery-wrap">
+                {isCharging && (
+                  <svg className="neo-ps-bolt-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M13 2L4 14h7l-2 8 11-12h-7l2-8z" />
+                  </svg>
+                )}
+                <span>{batteryLevel}%</span>
+                <div className="neo-ps-battery-gauge">
+                  <div
+                    className="neo-ps-battery-fill"
+                    style={{
+                      width: `${Math.max(10, Math.min(100, batteryLevel))}%`,
+                      backgroundColor: batteryLevel <= 20 ? "#EF4444" : isCharging ? "#10B981" : "#8E9AA0",
+                    }}
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Chat Top Bar */}
