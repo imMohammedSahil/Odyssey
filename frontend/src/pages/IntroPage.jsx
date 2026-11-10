@@ -697,15 +697,12 @@ const styles = `
 export default function IntroPage() {
   const navigate = useNavigate();
   const [openAisle, setOpenAisle] = useState(null);
-  const introSeen = typeof window !== "undefined" && sessionStorage.getItem("odyssey_intro_seen") === "true";
-  const [loadingState, setLoadingState] = useState(introSeen ? "ready" : "loading");
-  const [showRest, setShowRest] = useState(introSeen);
+  const [loadingState, setLoadingState] = useState("loading");
+  const [showRest, setShowRest] = useState(false);
   const { isSoundOn, toggleSound } = useAudioState();
 
   useEffect(() => {
-    if (introSeen) return;
-
-    sessionStorage.setItem("odyssey_intro_seen", "true");
+    sessionStorage.removeItem("odyssey_intro_seen");
     // ✦ 4 hideAndSeek wave iterations (up -> down -> up -> down).
     // As the final letter 'G' finishes dipping beneath the cutoff line at 4450ms,
     // LOADING is 100% hidden, and Odyssey immediately emerges from left to right.
@@ -718,7 +715,7 @@ export default function IntroPage() {
     }, 4450);
 
     return () => clearTimeout(minLoadTimer);
-  }, [introSeen]);
+  }, []);
 
   // Lock scrolling during loading screen
   useEffect(() => {
