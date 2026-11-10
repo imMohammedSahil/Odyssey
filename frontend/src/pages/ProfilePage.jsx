@@ -2489,7 +2489,7 @@ export default function ProfilePage() {
                       className="rcpt-modal-btn primary"
                       onClick={() => downloadOrPrintReceipt(activeReceiptModal)}
                     >
-                      🖨 PRINT / DOWNLOAD PDF
+                      PRINT / DOWNLOAD PDF
                     </button>
                     <button
                       className="rcpt-modal-btn secondary"
