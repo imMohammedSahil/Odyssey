@@ -70,273 +70,440 @@ app.get("/", (req, res) => {
   <title>Odyssey API Gateway — Operational</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Titan+One&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --slime-green: #9DE869;
+      --void-black: #0D0D0D;
+      --seafoam: #45B89E;
+      --hazard-gold: #F7B919;
+      --brain-pink: #FF70A6;
+      --parchment: #F9F9F3;
+      --parchment-dark: #EDECE2;
+      --border-dark: #0D0D0D;
+      --shadow-comic: 4px 4px 0px #0D0D0D;
+      --shadow-comic-sm: 2.5px 2.5px 0px #0D0D0D;
+      --shadow-comic-lg: 6px 6px 0px #0D0D0D;
+    }
+
     body {
-      background-color: #07090E;
-      color: #E2E8F0;
-      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background-color: var(--void-black);
+      color: var(--void-black);
+      font-family: 'Plus Jakarta Sans', sans-serif;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Neo-Brutalist Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 14px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0D0D0D;
+      border-left: 3px solid #222222;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #9DE869;
+      border: 3px solid #0D0D0D;
+      border-radius: 6px;
+      box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.4), inset 2px 2px 0px rgba(255, 255, 255, 0.5);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF70A6;
+    }
+
+    /* Top Slime Green Navigation Banner */
+    .top-bar {
+      background-color: var(--slime-green);
+      border-bottom: 4px solid var(--border-dark);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 4px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      font-size: 24px;
+      letter-spacing: 1px;
+      color: var(--void-black);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      background: var(--hazard-gold);
+      color: var(--void-black);
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 2.5px solid var(--border-dark);
+      box-shadow: var(--shadow-comic-sm);
+    }
+
+    .top-status-badge {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      background: var(--parchment);
+      color: var(--void-black);
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 2.5px solid var(--border-dark);
+      box-shadow: var(--shadow-comic-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .beacon-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #10B981;
+      border-radius: 50%;
+      border: 1.5px solid var(--border-dark);
+      box-shadow: 0 0 8px #10B981;
+      animation: beaconPulse 1.8s infinite;
+    }
+
+    @keyframes beaconPulse {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
+
+    /* Main Content Area */
+    .main-wrap {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
-      position: relative;
-      overflow-x: hidden;
-    }
-    .bg-grid {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      padding: 40px 20px 60px;
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
+        radial-gradient(circle, rgba(157, 232, 105, 0.08) 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
     }
-    .glow {
-      position: absolute;
-      width: 480px;
-      height: 480px;
-      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-    .container {
-      position: relative;
-      z-index: 1;
+
+    .card-panel {
+      background: var(--parchment);
+      border: 3.5px solid var(--border-dark);
+      border-radius: 20px;
+      box-shadow: var(--shadow-comic-lg);
+      max-width: 780px;
       width: 100%;
-      max-width: 680px;
-      background: rgba(13, 17, 23, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 36px 32px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 20px;
-      margin-bottom: 24px;
-    }
-    .title-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #10B981;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .beacon {
-      width: 8px;
-      height: 8px;
-      background-color: #10B981;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #10B981;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-    h1 {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #FFFFFF;
-    }
-    .subtitle {
-      font-size: 13px;
-      color: #94A3B8;
-      margin-top: 4px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      padding: 14px 16px;
-    }
-    .card-label {
-      font-size: 11px;
-      color: #64748B;
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 6px;
-    }
-    .card-value {
-      font-size: 13.5px;
-      font-weight: 600;
-      color: #F1F5F9;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .endpoints-title {
-      font-size: 12px;
-      color: #94A3B8;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 12px;
-    }
-    .endpoints-list {
+      padding: 34px 30px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      margin-bottom: 28px;
+      gap: 24px;
     }
-    .endpoint {
+
+    /* Card Header */
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 3px dashed rgba(13, 13, 13, 0.2);
+      padding-bottom: 22px;
+    }
+
+    .hero-title {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      font-size: clamp(30px, 4.5vw, 46px);
+      text-transform: uppercase;
+      color: var(--brain-pink);
+      -webkit-text-stroke: 2.5px var(--border-dark);
+      paint-order: stroke fill;
+      text-shadow: 4px 4px 0px var(--border-dark);
+      line-height: 1.05;
+      letter-spacing: 1.2px;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #2D3748;
+      letter-spacing: 0.2px;
+    }
+
+    /* Feature Telemetry Grid */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .telemetry-box {
+      border: 3px solid var(--border-dark);
+      border-radius: 12px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow-comic-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .telemetry-box.box-green { background: var(--slime-green); }
+    .telemetry-box.box-gold { background: var(--hazard-gold); }
+    .telemetry-box.box-seafoam { background: var(--seafoam); }
+    .telemetry-box.box-pink { background: var(--brain-pink); }
+
+    .telemetry-label {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--void-black);
+    }
+
+    .telemetry-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--void-black);
+    }
+
+    /* Manifest Section */
+    .manifest-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .manifest-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .manifest-badge {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      font-size: 11px;
+      background: var(--void-black);
+      color: var(--slime-green);
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .manifest-title {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--void-black);
+      letter-spacing: 0.8px;
+    }
+
+    .routes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .route-row {
+      background: #FFFFFF;
+      border: 2.5px solid var(--border-dark);
+      border-radius: 10px;
+      padding: 10px 14px;
+      box-shadow: var(--shadow-comic-sm);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 12px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      gap: 12px;
+      transition: transform 0.1s ease;
     }
-    .method {
-      font-weight: 700;
-      color: #38BDF8;
+
+    .route-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .method-pill {
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
       font-size: 11px;
-      padding: 2px 6px;
-      background: rgba(56, 189, 248, 0.1);
-      border-radius: 4px;
-      margin-right: 8px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 2px solid var(--border-dark);
+      color: var(--void-black);
+      letter-spacing: 0.5px;
     }
-    .path { color: #E2E8F0; }
-    .desc { color: #64748B; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11.5px; }
-    .actions {
+
+    .method-pill.method-post { background: var(--brain-pink); }
+    .method-pill.method-get { background: var(--seafoam); }
+
+    .route-path {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--void-black);
+    }
+
+    .route-desc {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #4A5568;
+    }
+
+    /* Action Buttons */
+    .actions-row {
       display: flex;
       align-items: center;
       gap: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 20px;
+      padding-top: 6px;
     }
-    .btn {
+
+    .comic-btn {
       flex: 1;
-      padding: 12px 18px;
-      border-radius: 8px;
+      height: 46px;
+      padding: 0 16px;
+      border-radius: 10px;
+      border: 3.5px solid var(--border-dark);
+      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
       font-size: 13px;
-      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
       text-decoration: none;
-      text-align: center;
-      transition: all 0.15s ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      box-shadow: var(--shadow-comic);
+      cursor: pointer;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      color: var(--void-black);
     }
-    .btn-primary {
-      background: #10B981;
-      color: #041F14;
+
+    .comic-btn:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0px var(--border-dark);
     }
-    .btn-primary:hover {
-      background: #059669;
-      color: #FFFFFF;
-    }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.06);
-      color: #CBD5E1;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #FFFFFF;
-    }
-    @media (max-width: 580px) {
-      .grid { grid-template-columns: 1fr; }
-      .actions { flex-direction: column; }
-      .endpoint .desc { display: none; }
+
+    .btn-pink { background: var(--brain-pink); }
+    .btn-gold { background: var(--hazard-gold); }
+    .btn-green { background: var(--slime-green); }
+
+    @media (max-width: 640px) {
+      .card-panel { padding: 22px 18px; }
+      .telemetry-grid { grid-template-columns: 1fr; }
+      .actions-row { flex-direction: column; }
+      .comic-btn { width: 100%; }
+      .route-desc { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="glow"></div>
-  <div class="container">
-    <div class="header">
-      <div>
-        <h1>Odyssey API Gateway</h1>
-        <div class="subtitle">Decoupled RESTful Service Architecture</div>
-      </div>
-      <div class="badge">
-        <span class="beacon"></span>
-        <span>ONLINE</span>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="card">
-        <div class="card-label">Database Status</div>
-        <div class="card-value">${dbConnected ? "MongoDB Atlas (Online)" : "Connecting..."}</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Runtime Engine</div>
-        <div class="card-value">Node.js + Express 5</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Deployment Region</div>
-        <div class="card-value">Oregon, US (Render)</div>
-      </div>
-      <div class="card">
-        <div class="card-label">Client Application</div>
-        <div class="card-value">Vercel Production</div>
-      </div>
-    </div>
-
-    <div class="endpoints-title">Active Gateway Routes</div>
-    <div class="endpoints-list">
-      <div class="endpoint">
-        <div><span class="method">POST</span><span class="path">/api/orders</span></div>
-        <span class="desc">Student checkout & queue manifest</span>
-      </div>
-      <div class="endpoint">
-        <div><span class="method">POST</span><span class="path">/api/ritual/session</span></div>
-        <span class="desc">Dynamic UPI QR payment handshake</span>
-      </div>
-      <div class="endpoint">
-        <div><span class="method">GET</span><span class="path">/api/profile/:id</span></div>
-        <span class="desc">Student history & avatar telemetry</span>
-      </div>
-      <div class="endpoint">
-        <div><span class="method">GET</span><span class="path">/api/stationery</span></div>
-        <span class="desc">Aisles & inventory specifications</span>
-      </div>
-    </div>
-
-    <div class="actions">
-      <a href="https://odyssey-official.vercel.app" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-        Launch Web Application →
+  <div class="top-bar">
+    <div class="brand-wrap">
+      <a href="https://odyssey-official.vercel.app" class="brand-logo" target="_blank" rel="noopener noreferrer">
+        ODYSSEY
       </a>
-      <a href="https://github.com/imMohammedSahil/Odyssey" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
-        GitHub Repository ↗
-      </a>
-      <a href="/health" class="btn btn-secondary" target="_blank">
-        Raw Health JSON ↗
-      </a>
+      <span class="brand-badge">REST GATEWAY</span>
+    </div>
+    <div class="top-status-badge">
+      <span class="beacon-dot"></span>
+      <span>${dbConnected ? "SYSTEM OPERATIONAL" : "CONNECTING..."}</span>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    <div class="card-panel">
+      <div class="card-header">
+        <div>
+          <h1 class="hero-title">API GATEWAY</h1>
+          <p class="hero-subtitle">High-Throughput Campus Cart & Stationery Requisition Tier</p>
+        </div>
+      </div>
+
+      <div class="telemetry-grid">
+        <div class="telemetry-box box-green">
+          <div class="telemetry-label">DATABASE PERSISTENCE</div>
+          <div class="telemetry-value">${dbConnected ? "MongoDB Atlas (Online)" : "Connecting..."}</div>
+        </div>
+        <div class="telemetry-box box-gold">
+          <div class="telemetry-label">RUNTIME ENGINE</div>
+          <div class="telemetry-value">Node.js + Express 5</div>
+        </div>
+        <div class="telemetry-box box-seafoam">
+          <div class="telemetry-label">CLOUD INFRASTRUCTURE</div>
+          <div class="telemetry-value">Oregon, US (Render Cloud)</div>
+        </div>
+        <div class="telemetry-box box-pink">
+          <div class="telemetry-label">CONNECTED CLIENT</div>
+          <div class="telemetry-value">Vercel Production</div>
+        </div>
+      </div>
+
+      <div class="manifest-wrap">
+        <div class="manifest-header">
+          <span class="manifest-badge">ROUTES</span>
+          <span class="manifest-title">Active Gateway Manifest</span>
+        </div>
+        <div class="routes-list">
+          <div class="route-row">
+            <div class="route-left">
+              <span class="method-pill method-post">POST</span>
+              <span class="route-path">/api/orders</span>
+            </div>
+            <span class="route-desc">Student checkout & requisition queue manifest</span>
+          </div>
+          <div class="route-row">
+            <div class="route-left">
+              <span class="method-pill method-post">POST</span>
+              <span class="route-path">/api/ritual/session</span>
+            </div>
+            <span class="route-desc">Dynamic UPI QR payment handshake</span>
+          </div>
+          <div class="route-row">
+            <div class="route-left">
+              <span class="method-pill method-get">GET</span>
+              <span class="route-path">/api/profile/:id</span>
+            </div>
+            <span class="route-desc">Student history & avatar telemetry</span>
+          </div>
+          <div class="route-row">
+            <div class="route-left">
+              <span class="method-pill method-get">GET</span>
+              <span class="route-path">/api/stationery</span>
+            </div>
+            <span class="route-desc">Aisles & inventory specifications</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <a href="https://odyssey-official.vercel.app" class="comic-btn btn-pink" target="_blank" rel="noopener noreferrer">
+          Launch Web App →
+        </a>
+        <a href="https://github.com/imMohammedSahil/Odyssey" class="comic-btn btn-gold" target="_blank" rel="noopener noreferrer">
+          GitHub Repo ↗
+        </a>
+        <a href="/health" class="comic-btn btn-green" target="_blank">
+          Health JSON ↗
+        </a>
+      </div>
     </div>
   </div>
 </body>
