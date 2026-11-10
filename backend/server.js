@@ -299,8 +299,8 @@ app.get("/", (req, res) => {
       box-shadow: var(--shadow-comic-sm);
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      gap: 18px;
+      justify-content: space-between;
+      gap: 12px;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
       color: var(--void-black);
     }
@@ -319,9 +319,7 @@ app.get("/", (req, res) => {
     .route-left {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 220px;
-      flex-shrink: 0;
+      gap: 12px;
     }
 
     .method-pill {
