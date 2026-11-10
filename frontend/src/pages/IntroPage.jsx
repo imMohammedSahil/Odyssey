@@ -69,14 +69,15 @@ const styles = `
 
   .od-sound-btn {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
+    text-transform: uppercase;
     letter-spacing: 0.06em;
     background: var(--pill-dark);
-    color: rgba(255, 255, 255, 0.7);
+    color: #FFFFFF;
     border: 1px solid rgba(255, 255, 255, 0.18);
     height: 40px;
-    padding: 0 16px;
+    padding: 0 18px;
     border-radius: 999px;
     cursor: pointer;
     box-shadow: 0 4px 0 #000000, 0 6px 16px rgba(0, 0, 0, 0.2);
@@ -103,8 +104,8 @@ const styles = `
   }
 
   .od-sound-btn.is-active {
-    color: var(--brain-pink);
-    border-color: rgba(255, 112, 166, 0.45);
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.35);
   }
 
   .od-top-btn {
