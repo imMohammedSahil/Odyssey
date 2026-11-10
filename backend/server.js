@@ -163,36 +163,6 @@ app.get("/", (req, res) => {
       box-shadow: var(--shadow-comic-sm);
     }
 
-    .top-status-badge {
-      font-family: 'Titan One', 'Archivo Black', cursive, sans-serif;
-      background: var(--parchment);
-      color: var(--void-black);
-      font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      border: 2.5px solid var(--border-dark);
-      box-shadow: var(--shadow-comic-sm);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .beacon-dot {
-      width: 10px;
-      height: 10px;
-      background-color: #10B981;
-      border-radius: 50%;
-      border: 1.5px solid var(--border-dark);
-      box-shadow: 0 0 8px #10B981;
-      animation: beaconPulse 1.8s infinite;
-    }
-
-    @keyframes beaconPulse {
-      0% { transform: scale(0.9); opacity: 0.8; }
-      50% { transform: scale(1.15); opacity: 1; }
-      100% { transform: scale(0.9); opacity: 0.8; }
-    }
-
     /* Main Content Area */
     .main-wrap {
       flex: 1;
@@ -421,10 +391,6 @@ app.get("/", (req, res) => {
         ODYSSEY
       </a>
       <span class="brand-badge">REST GATEWAY</span>
-    </div>
-    <div class="top-status-badge">
-      <span class="beacon-dot"></span>
-      <span>${dbConnected ? "SYSTEM OPERATIONAL" : "CONNECTING..."}</span>
     </div>
   </div>
 
