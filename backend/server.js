@@ -293,22 +293,28 @@ app.get("/", (req, res) => {
     }
 
     .route-row {
-      background: #FFFFFF;
-      border: 2.5px solid var(--border-dark);
-      border-radius: 10px;
-      padding: 10px 14px;
-      box-shadow: var(--shadow-comic-sm);
+      background: #0B0E0D;
+      border: 2.5px solid #FFFFFF;
+      border-radius: 12px;
+      padding: 12px 16px;
+      box-shadow: 0 0 0 2px var(--border-dark), 4px 4px 0px var(--border-dark);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      transition: transform 0.1s ease;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      color: #FFFFFF;
+    }
+
+    .route-row:hover {
+      transform: translate(-1.5px, -1.5px);
+      box-shadow: 0 0 0 2px var(--border-dark), 6px 6px 0px var(--border-dark);
     }
 
     .route-left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .method-pill {
@@ -316,7 +322,7 @@ app.get("/", (req, res) => {
       font-size: 11px;
       padding: 3px 8px;
       border-radius: 6px;
-      border: 2px solid var(--border-dark);
+      border: 1.5px solid var(--border-dark);
       color: var(--void-black);
       letter-spacing: 0.5px;
     }
@@ -326,15 +332,17 @@ app.get("/", (req, res) => {
 
     .route-path {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
-      color: var(--void-black);
+      color: #FFFFFF;
+      letter-spacing: 0.2px;
     }
 
     .route-desc {
       font-size: 12.5px;
       font-weight: 600;
-      color: #4A5568;
+      color: rgba(255, 255, 255, 0.72);
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     /* Action Buttons */
