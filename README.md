@@ -228,8 +228,4 @@ This starts:
    - Receipt Confirmation: `http://localhost:3000/receipt`
    - Admin Telemetry Dashboard: `http://localhost:3000/admin`
 
----
 
-## Project Lineage
-
-Odyssey evolved from the initial **CampusCart** hackathon system created collaboratively by **Mohammed Sahil**, **Madhava**, and **Nandan**. While the original prototype validated automated campus ordering workflows, **Odyssey** represents an architectural, mechanical, and visual overhaul designed by **Mohammed Sahil**, introducing WebGL spatial cursor dynamics, dynamic vector stacking, ambient soundscape management, and production-grade deployment standards.
