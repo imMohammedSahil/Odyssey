@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { useNavigate, useLocation, useNavigationType } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import PhoneChatDispatch from "../components/PhoneChatDispatch";
 import ZombieLeft from "../components/ZombieLeft";
+import SoundToggleButton from "../components/SoundToggleButton";
 import ZombieRight from "../components/ZombieRight";
 
 const styles = `
@@ -62,13 +63,17 @@ const styles = `
 
   .neo-logo {
     font-family: 'Mosko Mappa', 'Titan One', 'Archivo Black', cursive, sans-serif;
-    font-size: 22px;
+    font-size: 26px;
+    line-height: 1;
     text-transform: uppercase;
-    color: var(--void-black);
-    letter-spacing: 1.2px;
+    color: var(--brain-pink);
+    -webkit-text-stroke: 2.5px var(--border-dark);
+    paint-order: stroke fill;
+    letter-spacing: 1.5px;
+    text-shadow: 3px 3px 0px var(--border-dark);
     display: flex;
     align-items: center;
-    gap: 8px;
+    user-select: none;
   }
 
   .neo-badge-pill {
@@ -122,6 +127,35 @@ const styles = `
 
   .neo-btn-cart {
     background: var(--brain-pink);
+  }
+
+  .neo-btn-admin {
+    background: #7C5CFC;
+    color: #FFFFFF;
+  }
+
+  .neo-btn-admin:hover {
+    background: #6A44F2;
+    color: #FFFFFF;
+  }
+
+  .neo-btn-sound {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
+  .neo-btn-sound:hover {
+    background: #FF5A96;
+  }
+
+  .neo-btn-sound.is-sound-on {
+    background: var(--brain-pink);
+    color: var(--void-black);
+  }
+
+  .neo-btn-sound.is-sound-off {
+    background: var(--brain-pink);
+    color: var(--void-black);
   }
 
   .neo-btn-logout {
@@ -622,6 +656,29 @@ export default function UploadOrder() {
   const navType = useNavigationType();
   const isRestoringRef = useRef(navType === "POP");
 
+  useLayoutEffect(() => {
+    const savedCard = sessionStorage.getItem("student_scroll_card");
+    const savedY = sessionStorage.getItem("student_scroll_y");
+    if (navType !== "POP" || (!savedCard && !savedY)) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      if (window.lenis) {
+        window.lenis.animatedScroll = 0;
+        window.lenis.targetScroll = 0;
+        window.lenis.velocity = 0;
+      }
+    } else if (savedY !== null) {
+      const rawY = parseInt(savedY, 10);
+      if (!isNaN(rawY) && rawY >= 0) {
+        window.scrollTo({ top: rawY, left: 0, behavior: "instant" });
+        if (window.lenis) {
+          window.lenis.scrollTo(rawY, { immediate: true });
+        }
+      }
+    }
+  }, [navType]);
+
   useEffect(() => {
     let scrollTimeout = null;
     const handleScroll = () => {
@@ -708,17 +765,21 @@ export default function UploadOrder() {
       if (savedCard || savedY) {
         isRestoringRef.current = true;
         const restore = () => {
-          if (savedCard) {
-            const el = document.getElementById(savedCard);
-            if (el) {
-              el.scrollIntoView({ block: "center", behavior: "instant" });
+          if (savedY !== null && savedY !== undefined) {
+            const rawY = parseInt(savedY, 10);
+            if (!isNaN(rawY) && rawY >= 0) {
+              window.scrollTo({ top: rawY, left: 0, behavior: "instant" });
+              if (window.lenis) {
+                window.lenis.scrollTo(rawY, { immediate: true });
+              }
               return;
             }
           }
-          if (savedY) {
-            const rawY = parseInt(savedY, 10);
-            if (rawY > 0) {
-              window.scrollTo({ top: rawY, behavior: "instant" });
+          if (savedCard) {
+            const el = document.getElementById(savedCard);
+            if (el) {
+              el.scrollIntoView({ block: "nearest", behavior: "instant" });
+              return;
             }
           }
         };
@@ -744,8 +805,6 @@ export default function UploadOrder() {
       if (window.location.hash) {
         window.history.replaceState(null, "", window.location.pathname);
       }
-      window.lenis?.scrollTo(0, { immediate: true });
-      window.scrollTo(0, 0);
     }
   }, [location.state, navigate, location.pathname, navType]);
 
@@ -808,12 +867,14 @@ export default function UploadOrder() {
               style={{ cursor: "pointer" }}
             >
               <span className="neo-logo">
-                🧟 ODYSSEY
+                ODYSSEY
               </span>
               <span className="neo-badge-pill">BASECAMP</span>
             </div>
 
             <div className="neo-nav-actions">
+              <SoundToggleButton className="neo-btn-pill neo-btn-sound" />
+
               <button
                 className="neo-btn-pill neo-btn-cart"
                 onClick={() => navigate("/cart")}
@@ -837,6 +898,9 @@ export default function UploadOrder() {
                 onClick={() => {
                   sessionStorage.removeItem("role");
                   sessionStorage.removeItem("user");
+                  sessionStorage.removeItem("student_scroll_card");
+                  sessionStorage.removeItem("student_scroll_y");
+                  sessionStorage.removeItem("odyssey_intro_seen");
                   navigate("/");
                 }}
               >
