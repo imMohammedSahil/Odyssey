@@ -8,8 +8,6 @@
 > Admin Dashboard: [odyssey-official.vercel.app/admin](https://odyssey-official.vercel.app/admin)  
 > API Service: [odyssey-backend-e0fx.onrender.com](https://odyssey-backend-e0fx.onrender.com)
 
-[Architecture](#architectural-overview) &nbsp;•&nbsp; [Specifications](#technical-specifications) &nbsp;•&nbsp; [Order Lifecycle](#order-and-transaction-lifecycle) &nbsp;•&nbsp; [Subsystems](#core-subsystems-and-technical-implementations) &nbsp;•&nbsp; [API Reference](#restful-api-documentation) &nbsp;•&nbsp; [Directory](#detailed-directory-organization) &nbsp;•&nbsp; [Setup](#local-installation-and-execution)
-
 Odyssey is an asynchronous, high-throughput campus stationery requisition and document print pre-ordering platform engineered to eliminate physical service bottlenecks in university libraries and print centers. Wrapped in an immersive Halloween-inspired visual universe—featuring moonlit gothic cemeteries, hooded reaper ritual shrines, haunted ink labs, and pulp horror comic aesthetics—Odyssey unifies student order dispatch, real-time client-side UPI payment verification, WebGL spatial physics, and administrative queue telemetry (with public read-only guest inspection) into a performant, zero-layout-shift web ecosystem.
 
 ---
