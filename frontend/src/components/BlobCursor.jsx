@@ -11,7 +11,6 @@ const HEAD_BLEND = 0.6;
 const MAX_TRAIL = 16;
 const MAX_DROPS = 96;
 const MAX_PARTS = 48;
-const DROP_LIFE = 30;
 const MATERIALS = ['chrome', 'jelly', 'pearl', 'ink'];
 const BLENDS = ['normal', 'difference', 'exclusion', 'multiply', 'screen', 'overlay'];
 const INTERACTIVE = 'a, button, input, select, textarea, label, summary, [role="button"], [data-blob-grow]';
