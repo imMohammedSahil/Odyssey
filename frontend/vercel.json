@@ -1,9 +1,10 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!_vercel).*)",
       "destination": "/index.html"
     }
   ]
 }
+
 
