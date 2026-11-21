@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const rateLimit = require("express-rate-limit");
 
 const orderRoutes = require("./routes/orderRoutes");
 const ritualRoutes = require("./routes/ritualRoutes");
@@ -13,8 +14,40 @@ const messageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 
-const corsOrigin = process.env.CORS_ORIGIN || "*";
-app.use(cors({ origin: corsOrigin, credentials: true }));
+// Secure CORS configuration
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map(o => o.trim())
+  : ["http://localhost:3000", "http://127.0.0.1:3000", "https://odyssey-official.vercel.app"];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || (typeof origin === "string" && origin.endsWith(".vercel.app"))) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS origin not allowed"));
+    }
+  },
+  credentials: true
+}));
+
+// Rate limiters to prevent DoS & brute-force attacks
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many requests from this IP, please try again later." }
+});
+
+const writeLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many write operations, please try again later." }
+});
+
+app.use("/api", generalLimiter);
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -31,12 +64,12 @@ mongoose.connect(MONGO_URI)
     console.error("MongoDB connection error:", err);
   });
 
-app.use("/api/orders", orderRoutes);
-app.use("/api/ritual", ritualRoutes);
-app.use("/api/profile", profileRoutes);
+app.use("/api/orders", writeLimiter, orderRoutes);
+app.use("/api/ritual", writeLimiter, ritualRoutes);
+app.use("/api/profile", writeLimiter, profileRoutes);
 app.use("/api/stationery", stationeryRoutes);
-app.use("/api/upload", uploadRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/api/upload", writeLimiter, uploadRoutes);
+app.use("/api/messages", writeLimiter, messageRoutes);
 
 // Raw JSON health check endpoint for monitoring tools
 app.get("/health", (req, res) => {

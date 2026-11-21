@@ -373,7 +373,14 @@ export default function PaymentPage() {
   const [loading, setLoading] = useState(false);
   const [qrSvg, setQrSvg] = useState("");
   const [offeringAccepted] = useState(false);
-  const [sessionId, setSessionId] = useState(() => "ritual_" + Date.now() + "_" + Math.floor(1000 + Math.random() * 9000));
+  const [sessionId, setSessionId] = useState(() => {
+    if (typeof window !== "undefined" && window.crypto && window.crypto.getRandomValues) {
+      const arr = new Uint32Array(1);
+      window.crypto.getRandomValues(arr);
+      return "ritual_" + Date.now() + "_" + ((arr[0] % 9000) + 1000);
+    }
+    return "ritual_" + Date.now() + "_" + Date.now().toString(36);
+  });
   const [offerUrl, setOfferUrl] = useState("");
   const [localIp, setLocalIp] = useState("192.168.0.101");
   const [reaperDrain, setReaperDrain] = useState(0);
