@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const os = require("os");
+const crypto = require("crypto");
 
 // In-memory session store for transient ritual offering sessions
 const ritualSessions = new Map();
@@ -33,7 +34,7 @@ router.get("/network-info", (req, res) => {
 // 2. Create or register a ritual session
 router.post("/session", (req, res) => {
   const { total = 150, items = [] } = req.body;
-  const sessionId = "ritual_" + Date.now() + "_" + Math.floor(1000 + Math.random() * 9000);
+  const sessionId = "ritual_" + Date.now() + "_" + crypto.randomBytes(4).toString("hex");
   const localIp = getLocalIpAddress();
 
   const sessionData = {
