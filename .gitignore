@@ -5,6 +5,7 @@ backend/node_modules/
 
 # Production builds
 frontend/build/
+frontend/dist/
 build/
 dist/
 
