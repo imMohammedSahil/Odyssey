@@ -1,8 +1,10 @@
+<p align="center">
+  <img src="frontend/public/og-image.png" alt="Odyssey Banner" width="100%" />
+</p>
+
 # Odyssey
 
 **Halloween-Themed Campus Stationery Requisition & Document Print Pre-Order Platform**
-
-![Odyssey Banner](frontend/public/og-image.png)
 
 > Live Application: [odyssey-official.vercel.app](https://odyssey-official.vercel.app)  
 > Admin Dashboard: [odyssey-official.vercel.app/admin](https://odyssey-official.vercel.app/admin)  
